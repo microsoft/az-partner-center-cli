@@ -19,7 +19,14 @@ jobs:
         uses: actions/setup-python@v2.2.2
         with:
           python-version: 3.7
-
+      - name: Set Configurations
+        run: |
+          echo "tenant_id: \"${TENANT_ID}\"" >> config.yml
+          echo "azure_preview_subscription: \"${SUBSCRIPTION_ID}\"" >> config.yml
+          echo "aad_id: \"${AAD_ID}\"" >> config.yml
+          echo "aad_secret: \"${AAD_SECRET}\"" >> config.yml
+          echo "access_id: \"${ACCESS_ID}\"" >> config.yml
+        
       - name: TOX Run Unit Tests
         uses: ymyzk/run-tox-gh-actions@v0.1
         with: 
@@ -27,11 +34,5 @@ jobs:
 
       - name: TOX Run Integration Tests
         uses: ymyzk/run-tox-gh-actions@v0.1
-        env: # Or as an environment variable
-          AAD_ID: ${{ secrets.AAD_ID }}
-          AAD_SECRET: ${{ secrets.AAD_SECRET }}
-          ACCESS_ID: ${{ secrets.ACCESS_ID }}
-          SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-          TENANT_ID: ${{ secrets.TENANT_ID }}
         with: 
           tox-args: -e py37-integration
