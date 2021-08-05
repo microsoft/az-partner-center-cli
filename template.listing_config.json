@@ -1,0 +1,53 @@
+{
+  "description": "<p>This is a description that uses html tags </p>",
+  "short_description": "Description",
+  "keywords": [
+    "design",
+    "simulation",
+    "engineer"
+  ],
+  "title": "website.Design",
+  "listing_contacts": [
+    {
+      "type": "CustomerSupport",
+      "email": "name@email.com",
+      "name": "FirstName LastName",
+      "phone": "+5555555555",
+      "uri": "https://website.design/moreinfo/contactus"
+    }
+  ],
+  "listing_uris": [
+    {
+      "type": "PrivacyUri",
+      "displayText": "Privacy Url",
+      "uri": "https://website.design/eula"
+    }
+  ],
+  "summary": "Summary for Test",
+  "version": "0.0.0",
+  "allow_jit_access": true,
+  "policies": [],
+  "azure_subscription": "",
+  "industries": "",
+  "categories": "",
+  "offer-listing-properties": {
+    "resourceType": "AzureListing",
+    "description": "Description for Test",
+    "summary": "Summary for Test",
+    "languageCode": "en-us",
+    "title": "website.Design",
+    "shortDescription": "Description",
+    "publisherName": "name",
+    "keywords": [
+      "design",
+      "simulation",
+      "engineer"
+    ]
+  },
+  "allowedCustomerActions": [
+      "Microsoft.Storage/*;Microsoft.MachineLearningServices/*;Microsoft.DocumentDB/*;Microsoft.Kubernetes/*;Microsoft.Insights/*;Microsoft.KeyVault/*;Microsoft.Databricks/*;Microsoft.ManagedIdentity/*;Microsoft.ContainerService/*;Microsoft.MachineLearning/*;Microsoft.Synapse/*;Microsoft.Network/*"
+  ],
+  "allowedDataActions": [
+      "Microsoft.Storage/*;Microsoft.MachineLearningServices/*;Microsoft.DocumentDB/*;Microsoft.Kubernetes/*;Microsoft.Insights/*;Microsoft.KeyVault/*;Microsoft.Databricks/*;Microsoft.ManagedIdentity/*;Microsoft.ContainerService/*;Microsoft.MachineLearning/*;Microsoft.Synapse/*;Microsoft.Network/*"
+  ]
+}

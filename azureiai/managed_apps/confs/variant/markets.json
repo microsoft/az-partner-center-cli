@@ -1,0 +1,566 @@
+[
+  {
+    "marketCode": "AD",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AF",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AL",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AM",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AT",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AU",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "AZ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BB",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BD",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BG",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BH",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BM",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BN",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BW",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BY",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "BZ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CH",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CI",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CL",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CM",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CV",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CW",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CY",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "CZ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "DE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "DK",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "DO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "DZ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "EC",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "EE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "EG",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "ES",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "ET",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "FI",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "FJ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "FO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "FR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "GB",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "GE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "GH",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "GR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "GT",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "HK",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "HN",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "HR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "HU",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "ID",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "IE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "IL",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "IN",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "IQ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "IS",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "IT",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "JM",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "JO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "JP",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "KE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "KG",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "KN",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "KR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "KW",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "KY",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "KZ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "LB",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "LI",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "LK",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "LT",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "LU",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "LV",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "LY",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MC",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MD",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "ME",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MK",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MN",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MT",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MU",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MX",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "MY",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "NA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "NG",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "NI",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "NL",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "NO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "NP",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "NZ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "OM",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PH",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PK",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PL",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PS",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PT",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "PY",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "QA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "RO",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "RS",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "RU",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "RW",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "SA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "SE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "SG",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "SI",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "SK",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "SN",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "SV",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "TH",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "TJ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "TM",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "TN",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "TR",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "TT",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "TW",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "TZ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "UA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "UG",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "US",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "UY",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "UZ",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "VA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "VE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "VI",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "VN",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "YE",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "ZA",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "ZM",
+    "state": "Disabled"
+  },
+  {
+    "marketCode": "ZW",
+    "state": "Disabled"
+  }
+]
