@@ -75,42 +75,6 @@ def test_ama_publish(ama, plan_name, app_path_fix, app_zip, json_listing_config,
 
 
 @pytest.mark.integration
-def test_ama_update(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
-    prepared = ama.prepare_publish(
-        plan_name=plan_name,
-        app_path=app_path_fix,
-        app=app_zip,
-        json_listing_config=json_listing_config,
-        config_yml=config_yml,
-        logo_large="r_216_216.png",
-        logo_small="r_48_48.png",
-        logo_medium="r_90_90.png",
-        logo_wide="r_255_115.png",
-    )
-    assert prepared
-
-    submission = ama.submission_status()
-    assert submission
-
-    published = ama.publish()
-    assert published
-    assert published.id
-
-    prepared_update = ama.prepare_plan(
-        plan_name=plan_name + "2",
-        app_path=app_path_fix,
-        app=app_zip,
-        json_listing_config=json_listing_config,
-        config_yml=config_yml,
-    )
-    assert prepared_update
-
-    published = ama.publish()
-    assert published
-    assert published.id
-
-
-@pytest.mark.integration
 def test_ama_get_offers(ama):
     offers = ama.get_offers()
     assert offers.value
