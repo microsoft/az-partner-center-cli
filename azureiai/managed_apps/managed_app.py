@@ -81,8 +81,8 @@ class ManagedApplication(Offer):
             "resourceType": "AzureSkuVariant",
             "state": "Active",
             "friendlyName": plan_name,
-            "leadGenID": "publisher_name." + self.name,
-            "externalID": self.name,
+            "leadGenID": "publisher_name." + self.name + plan_name,
+            "externalID": self.name + plan_name,
             "cloudAvailabilities": ["public-azure"],
             "SubType": "managed-application",
         }
@@ -214,16 +214,6 @@ class ManagedApplication(Offer):
 
         return True
 
-    @staticmethod
-    def _get_allowed_actions(json_config):
-        allowed_customer_actions = None
-        if "allowedCustomerActions" in json_config:
-            allowed_customer_actions = json_config["allowedCustomerActions"]
-        allowed_data_actions = None
-        if "allowedDataActions" in json_config:
-            allowed_data_actions = json_config["allowedDataActions"]
-        return allowed_customer_actions, allowed_data_actions
-
     def publish(self):
         """
         Create new AMA and complete all fields for publication
@@ -278,6 +268,66 @@ class ManagedApplication(Offer):
         self._ids["submission_id"] = response.id
         return response
 
+    def prepare_plan(
+        self,
+        plan_name: str,
+        app_path: str,
+        app: str,
+        json_listing_config: str = "json_config.json",
+        config_yml: str = "config.yml",
+    ) -> bool:
+        """
+        Create new AMA and complete all fields for publication.
+
+        :param plan_name: Display Name of Plan
+        :param logo_large: PNG 216x216 Pixels
+        :param logo_small: PNG 48x48 Pixels
+        :param logo_medium: PNG 90x90 Pixels
+        :param logo_wide: PNG 255x115 Pixels
+        :param app_path: Path to Managed Application Zip. Example: C:\\User\\
+        :param app: Managed Application Zip (including extension). Example: my_app.zip
+        :param json_listing_config:
+        :param config_yml: Configuration YML, see README for directions to config
+
+        :return: binary outcome of preparation
+        """
+
+        if not os.path.isfile(os.path.join(app_path, app)):
+            raise FileNotFoundError("Managed Application Zip - Not Found", os.path.join(app_path, app))
+        if not os.path.isfile(os.path.join(app_path, json_listing_config)):
+            raise FileNotFoundError("JSON Config - Not Found")
+        with open(Path(app_path).joinpath(json_listing_config), "r") as read_file:
+            json_config = json.load(read_file)
+        version = json_config["version"]
+        allow_jit_access = json_config["allow_jit_access"]
+        policies = json_config["policies"]
+        azure_subscription = json_config["azure_subscription"]
+        allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(json_config)
+        self.create_plan(plan_name=plan_name)
+
+        package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
+
+        package.set(
+            app_zip_dir=app_path,
+            file_name=app,
+            version=version,
+            allow_jit_access=allow_jit_access,
+            policies=policies,
+            config_yaml=config_yml,
+            allowed_customer_actions=allowed_customer_actions,
+            allowed_data_actions=allowed_data_actions,
+        )
+
+        offer_listing_properties = json_config["offer-listing-properties"]
+
+        offer_listing = OfferListing(product_id=self.get_product_id(), authorization=self.get_auth())
+        offer_listing.set(properties=offer_listing_properties)
+
+        availability = ProductAvailability(product_id=self.get_product_id(), authorization=self.get_auth())
+        availability.set(azure_subscription=azure_subscription)
+
+        return True
+
     def submission_status(self):
         """
         Get Submission Status
@@ -288,6 +338,16 @@ class ManagedApplication(Offer):
             authorization=self.get_auth(),
             product_id=self.get_product_id(),
         )
+
+    @staticmethod
+    def _get_allowed_actions(json_config):
+        allowed_customer_actions = None
+        if "allowedCustomerActions" in json_config:
+            allowed_customer_actions = json_config["allowedCustomerActions"]
+        allowed_data_actions = None
+        if "allowedDataActions" in json_config:
+            allowed_data_actions = json_config["allowedDataActions"]
+        return allowed_customer_actions, allowed_data_actions
 
     def _get_variant_draft_instance_id(self, module: str, retry: int = 0) -> str:
         api_response = self._apis["branches"].products_product_id_branches_get_by_module_modulemodule_get(
