@@ -27,5 +27,11 @@ jobs:
 
       - name: TOX Run Integration Tests
         uses: ymyzk/run-tox-gh-actions@v0.1
+        env: # Or as an environment variable
+          AAD_ID: ${{ secrets.AAD_ID }}
+          AAD_SECRET: ${{ secrets.AAD_SECRET }}
+          ACCESS_ID: ${{ secrets.ACCESS_ID }}
+          SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
         with: 
           tox-args: -e py37-integration
