@@ -21,12 +21,12 @@ jobs:
           python-version: 3.7
       - name: Set Configurations
         run: |
-          echo "tenant_id: \"${TENANT_ID}\"" >> config.yml
-          echo "azure_preview_subscription: \"${SUBSCRIPTION_ID}\"" >> config.yml
-          echo "aad_id: \"${AAD_ID}\"" >> config.yml
-          echo "aad_secret: \"${AAD_SECRET}\"" >> config.yml
-          echo "access_id: \"${ACCESS_ID}\"" >> config.yml
-        
+          echo "tenant_id: \"${{ secrets.TENANT_ID }}\"" >> config.yml
+          echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
+          echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
+          echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
+          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
+
       - name: TOX Run Unit Tests
         uses: ymyzk/run-tox-gh-actions@v0.1
         with: 
