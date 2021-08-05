@@ -15,11 +15,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 3.7
+      - name: Set Configurations
+        run: |
+          echo "tenant_id: \"${{ secrets.TENANT_ID }}\"" >> config.yml
+          echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
+          echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
+          echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
+          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
 
-      - name: GitHub Action for pytest
-        uses: cclauss/GitHub-Action-for-pytest@0.5.0
-
-      - name: Run tox-gh-actions
+      - name: TOX Run Unit Tests
         uses: ymyzk/run-tox-gh-actions@v0.1
         with: 
           tox-args: -e py37-unit
+
+      - name: TOX Run Integration Tests
+        uses: ymyzk/run-tox-gh-actions@v0.1
+        with: 
+          tox-args: -e py37-integration

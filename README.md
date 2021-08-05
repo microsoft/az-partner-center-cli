@@ -1,33 +1,193 @@
-# Project
+# azureiai-managed-apps
+This application wraps the swagger generate client of the partner ingestion apis. 
+The documentation can be found [here](https://apidocs.microsoft.com/services/partneringestion/#/)
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+## Requirements.
 
-As the maintainer of this project, please make a few updates:
+Python 3.7+ (Expected to work with Python 3.6+)
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+# Command Line
+### Create Manifest File
+1. Copy `template.manifest.yml` and create new file `manifest.yml`.
+1. Copy `template.config.yml` and create new file `config.yml`.
+1. Complete `manifest.yml` with pointers to required files.
+    1. managed_app.zip
+    1. app_listing_config.json
+    1. Small Logo Image (png) - 48x48
+    1. Medium Logo Image (png) - 90x90
+    1. Large Logo Image (png) - 216x216
+    1. Wide Logo Image (png) - 255x115
+1. Complete `config.yml`.
+    * **tenant_id**: Who will publish the managed app
+    * **azure_preview_subscription**: Who will be the preview audience
+    * **aad_id** and **aad_secret**: Service principal used for calling partner API
+    * **access_id**: Service principal will have access to managed resource group
 
-## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+#### Install
+```shell script
+# Must not use -e when doing pip install
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+# From Production Release PyPi
+pip install --extra-index-url=https://msazure.pkgs.visualstudio.com/One/_packaging/agai-eap-release/pypi/simple/ azureiai-managed-apps
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+# From Release Candidate PyPi
+pip install --extra-index-url=https://msazure.pkgs.visualstudio.com/One/_packaging/agai-development-pypi/pypi/simple/ azureiai-managed-apps
 
-## Trademarks
+# From Source
+git clone https://msazure.visualstudio.com/One/_git/AGAI-IndustryAI-Template
+pip install src/azureiai-managed-apps
+```
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+#### Usage
+```shell script
+ama_name='dciborow-test'
+product_id=$(ama create --ama-name $ama_name 2>&1 | jq '.product_id' -r)
+ama publish --ama-name $ama_name --product-id $product_id
+
+ama status --product-id $product_id
+
+ama delete --product-id $product_id
+```
+
+
+## Setup
+### Create Configuration File
+1. Copy `template.config.yml` and create new file `config.yml`
+1. Fill in tenant_id, typically `72f988bf-86f1-41af-91ab-2d7cd011db47` for Microsoft's tenant.
+1. Fill in the Subscription that will have Preview access `azure_preview_subscription`
+1. Create a Service Principal and provide the id `aad_id` and key `aad_secret`
+
+
+### Generate Swagger Python Client
+Insure Java in installed on the machine with `java -v` Download current stable 3.x.x branch (OpenAPI version 3)
+
+```shell script
+pip install -e .
+```
+
+This runs the following commands are part of the setup.py. You can also run these commands individually. 
+
+```shell script
+wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.22/swagger-codegen-cli-3.0.22.jar -O swagger-codegen-cli.jar
+java -jar swagger-code-get-cli.jar generate -i Partner_Ingestion_SwaggerDocument.json -l python -o temp
+cp temp/swagger_client ./
+```
+
+# Usage
+
+## 
+```python
+""" Create New Azure Managed Application """
+from  azureiai.managed_apps import ManagedApplication 
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yaml,
+)
+ama.create()
+```
+
+##
+```python
+""" Get Existing Azure Managed Application """
+from azureiai.managed_apps import ManagedApplication 
+
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+product_id = "3d00b4ab-50e5-49af-a2e6-5d800b8979cf"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yaml,
+)
+ama.set_product_id(product_id)
+
+```
+
+##
+```python
+""" Get List of Azure Managed Applications """
+from azureiai.managed_apps import ManagedApplication 
+
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yaml,
+)
+offers = ama.get_offers()
+for offer in offers.values:
+    print(offer.name)
+```
+
+## 
+```python
+""" Publish Azure Managed Applications """
+from azureiai.managed_apps import ManagedApplication 
+
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+manifest_yml="src/azureiai-managed-apps/manifest.yml"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yml
+)
+ama.manifest_publish(
+    manifest_yml=manifest_yml,
+    config_yml=config_yml
+)
+ama.publish()
+ama.promote()
+```
+
+
+## 
+```python
+""" Publish Azure Managed Applications """
+from azureiai.managed_apps import ManagedApplication 
+
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+plan_name="FirstOffer"
+
+app_path = "src/azureiai-managed-apps/"
+app = "App.zip"
+logo_small = "r_48_48.png"
+logo_medium = "r_90_90.png"
+logo_large = "r_216_216.png"
+logo_wide = "r_255_155.png"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yaml,
+)
+ama.prepare_publish(
+    plan_name=plan_name,
+    app_path=app_path,
+    app=app,
+    logo_small=logo_small,
+    logo_medium=logo_medium,
+    logo_large=logo_large,
+    logo_wide=logo_wide
+)
+ama.publish()
+ama.promote()
+```
+
+
+# Databricks Deployment
+
+```shell script
+ama db create resource \
+  --resource-id $DATABRICKS_RESOURCE_ID \
+  --host $DATABRICKS_WORKSPACE_URL
+
+ama db create compute \
+  --resource-id $DATABRICKS_RESOURCE_ID \
+  --host $DATABRICKS_WORKSPACE_URL
+```
