@@ -81,7 +81,10 @@ def ama(ama_name, config_yml):
     ama = ManagedApplication(ama_name, config_yaml=config_yml)
     ama.create()
     yield ama
-    ama.delete()
+    try:
+        ama.delete()
+    except Exception:
+        pass
 
 
 @pytest.fixture

@@ -29,7 +29,7 @@ def _inject_pid(file_name_full_path, pid):
     :param file_name_full_path: Full file path to zip of Azure Managed Application.
     :param pid: Managed Application PID to be injected into ARM Template.
     """
-    with zipfile.ZipFile(file_name_full_path, "r") as zip_ref:
+    with zipfile.ZipFile(file_name_full_path) as zip_ref:
         zip_ref.extractall(file_name_full_path.replace(".zip", "-temp"))
     with open(file_name_full_path.replace(".zip", "-temp/mainTemplate.json"), "rt") as fin:
         data = fin.read()
@@ -129,16 +129,7 @@ class Package(VariantPlanConfiguration):
             body=put_body,
         )
 
-        state = None
-        while state != "Processed":
-            get_response = self.package_api.products_product_id_packages_package_id_get(
-                product_id=self.product_id,
-                package_id=post_response.id,
-                authorization=self.authorization,
-            )
-            state = get_response.state
-            if state == "ProcessFailed":
-                raise ConnectionError("Uploading AMA Zip Failed with State: ProcessedFailed. Check if PID is required")
+        self._check_upload(post_response)
 
         settings = self.get()
         odata_etag = settings["@odata.etag"]
@@ -174,3 +165,15 @@ class Package(VariantPlanConfiguration):
                 package_configuration_id=settings_id,
                 body=settings,
             )
+
+    def _check_upload(self, post_response):
+        state = None
+        while state != "Processed":
+            get_response = self.package_api.products_product_id_packages_package_id_get(
+                product_id=self.product_id,
+                package_id=post_response.id,
+                authorization=self.authorization,
+            )
+            state = get_response.state
+            if state == "ProcessFailed":
+                raise ConnectionError("Uploading AMA Zip Failed with State: ProcessedFailed. Check if PID is required")

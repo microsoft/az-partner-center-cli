@@ -61,3 +61,13 @@ class Properties(OfferConfigurations):
             property_id=property_id,
             body=properties,
         )
+
+    @classmethod
+    def create(cls, ama, json_config):
+        industries = json_config["industries"]
+        categories = json_config["categories"]
+        version = json_config["version"]
+
+        offer_listing_properties = cls(product_id=ama.get_product_id(), authorization=ama.get_auth())
+        offer_listing_properties.set(industries=industries, categories=categories, version=version)
+        return offer_listing_properties

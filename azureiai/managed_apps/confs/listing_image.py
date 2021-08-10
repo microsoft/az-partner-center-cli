@@ -50,7 +50,7 @@ class ListingImage(OfferConfigurations):
         )
         status_code = self.upload_using_sas(api_response.file_sas_uri, Path(file_path).joinpath(file_name))
         if status_code != 201:
-            raise BaseException("Upload via SAS Failed")
+            raise ConnectionError("Upload via SAS Failed")
         body = {
             "resourceType": "ListingImage",
             "fileName": file_name,

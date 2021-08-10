@@ -29,7 +29,7 @@ def test_ama_create_mock(ama_mock):
 
 def test_create_plan_mock(ama_mock, plan_name):
 
-    ama_mock.create_plan(plan_name)
+    ama_mock._create_new_plan(plan_name)
     assert ama_mock._ids["plan_id"]
 
 
@@ -423,7 +423,7 @@ def test_force_500(plan_name, ama_name, monkeypatch):
 
     with pytest.raises(RetryException):
         try:
-            ama.create_plan(plan_name=plan_name)
+            ama._create_new_plan(plan_name=plan_name)
         except RetryException as exception:
             print(exception)
             raise exception

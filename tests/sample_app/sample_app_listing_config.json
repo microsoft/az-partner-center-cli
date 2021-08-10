@@ -1,4 +1,5 @@
 {
+  "product_id": "411968ab-9f17-40dd-8378-f22d8e39acbb",
   "description": "<p>This is a description that uses html tags </p>",
   "short_description": "Description",
   "keywords": [
@@ -47,7 +48,7 @@
     "summary": "Summary for Test",
     "languageCode": "en-us",
     "title": "website.Design",
-    "shortDescription": "Description",
+    "shortDescription": "Description of plan",
     "publisherName": "name",
     "keywords": [
       "design",

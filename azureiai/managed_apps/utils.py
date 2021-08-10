@@ -23,7 +23,7 @@ def get_draft_instance_id(product_id, authorization, module: str, retry: int = 0
     if not api_response.value:
         if retry < 5:
             return get_draft_instance_id(product_id, authorization, module=module, retry=retry + 1)
-        raise BaseException("Retry Failed")
+        raise ConnectionError("Retry Failed")
     return api_response.value[0].current_draft_instance_id
 
 

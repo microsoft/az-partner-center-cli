@@ -1,6 +1,7 @@
 #  ---------------------------------------------------------
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
+import json
 import shutil
 from collections import namedtuple
 from pathlib import Path
@@ -25,7 +26,7 @@ def test_ama_create(ama):
 
 @pytest.mark.integration
 def test_create_plan(ama, plan_name):
-    ama.create_plan(plan_name)
+    ama._create_new_plan(plan_name)
 
 
 @pytest.mark.integration
@@ -75,7 +76,45 @@ def test_ama_publish(ama, plan_name, app_path_fix, app_zip, json_listing_config,
 
 
 @pytest.mark.integration
-def test_ama_update(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+def test_ama_update_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+    prepared = ama.prepare_publish(
+        plan_name=plan_name,
+        app_path=app_path_fix,
+        app=app_zip,
+        json_listing_config=json_listing_config,
+        config_yml=config_yml,
+        logo_large="r_216_216.png",
+        logo_small="r_48_48.png",
+        logo_medium="r_90_90.png",
+        logo_wide="r_255_115.png",
+    )
+    assert prepared
+
+    submission = ama.submission_status()
+    assert submission
+
+    with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
+        json_config = json.load(read_file)
+
+    json_config["version"] = "0.0.1"
+    ama._set_technical_configuration(json_config, app_zip.replace(".zip", "2.zip"), app_path_fix, config_yml)
+
+    published = ama.publish()
+    assert published
+    assert published.id
+
+
+@pytest.mark.integration
+def test_ama_update_existing(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+    with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
+        json_config = json.load(read_file)
+    json_config["version"] = "0.0.3"
+    ama.set_product_id(json_config["product_id"])
+    ama.update(json_config=json_config, app=app_zip, app_path=app_path_fix, config_yml=config_yml)
+
+
+@pytest.mark.integration
+def test_ama_2nd_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
     prepared = ama.prepare_publish(
         plan_name=plan_name,
         app_path=app_path_fix,
@@ -96,18 +135,35 @@ def test_ama_update(ama, plan_name, app_path_fix, app_zip, json_listing_config, 
     assert published
     assert published.id
 
-    prepared_update = ama.prepare_plan(
-        plan_name=plan_name + "2",
-        app_path=app_path_fix,
-        app=app_zip,
-        json_listing_config=json_listing_config,
-        config_yml=config_yml,
-    )
-    assert prepared_update
+    ama._create_new_plan(plan_name=plan_name + "2")
 
-    published = ama.publish()
-    assert published
-    assert published.id
+    # with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
+    #     json_config = json.load(read_file)
+
+    # version = json_config["version"]
+    # allow_jit_access = json_config["allow_jit_access"]
+    # policies = json_config["policies"]
+
+    # allowed_customer_actions, allowed_data_actions = ama._get_allowed_actions(json_config)
+    # ama._set_technical_configuration(allow_jit_access, allowed_customer_actions, allowed_data_actions, app_zip,
+    #                                  app_path_fix, config_yml, policies, version)
+
+    # ama._set_plan_listing(json_config)
+    # azure_subscription = json_config["azure_subscription"]
+    # ama._set_pricing_and_availability(azure_subscription)
+
+    # prepared_update = ama.prepare_plan(
+    #     plan_name=plan_name + "2",
+    #     app_path=app_path_fix,
+    #     app=app_zip,
+    #     json_listing_config=json_listing_config,
+    #     config_yml=config_yml,
+    # )
+    # assert prepared_update
+
+    # published = ama.publish()
+    # assert published
+    # assert published.id
 
 
 @pytest.mark.integration
