@@ -137,34 +137,6 @@ def test_ama_2nd_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config
 
     ama._create_new_plan(plan_name=plan_name + "2")
 
-    # with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
-    #     json_config = json.load(read_file)
-
-    # version = json_config["version"]
-    # allow_jit_access = json_config["allow_jit_access"]
-    # policies = json_config["policies"]
-
-    # allowed_customer_actions, allowed_data_actions = ama._get_allowed_actions(json_config)
-    # ama._set_technical_configuration(allow_jit_access, allowed_customer_actions, allowed_data_actions, app_zip,
-    #                                  app_path_fix, config_yml, policies, version)
-
-    # ama._set_plan_listing(json_config)
-    # azure_subscription = json_config["azure_subscription"]
-    # ama._set_pricing_and_availability(azure_subscription)
-
-    # prepared_update = ama.prepare_plan(
-    #     plan_name=plan_name + "2",
-    #     app_path=app_path_fix,
-    #     app=app_zip,
-    #     json_listing_config=json_listing_config,
-    #     config_yml=config_yml,
-    # )
-    # assert prepared_update
-
-    # published = ama.publish()
-    # assert published
-    # assert published.id
-
 
 @pytest.mark.integration
 def test_ama_get_offers(ama):
