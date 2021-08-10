@@ -234,9 +234,7 @@ class ManagedApplication(Offer):
             product_id=self.get_product_id(),
         )
 
-    def update(
-        self, app_path: str, app: str, json_config, config_yml: str = "config.yml"
-    ):
+    def update(self, app_path: str, app: str, json_config, config_yml: str = "config.yml"):
         """
         Update existing AMA and complete all fields for publication.
 
