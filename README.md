@@ -1,74 +1,193 @@
-# Swagger Codegen for the default library
+# azureiai-managed-apps
+This application wraps the swagger generate client of the partner ingestion apis. 
+The documentation can be found [here](https://apidocs.microsoft.com/services/partneringestion/#/)
 
-## Overview
-This is a boiler-plate project to generate your own client library with Swagger.  Its goal is
-to get you started with the basic plumbing so you can put in your own logic.  It won't work without
-your changes applied.
+## Requirements.
 
-## What's Swagger?
-The goal of Swagger™ is to define a standard, language-agnostic interface to REST APIs which allows both humans and computers to discover and understand the capabilities of the service without access to source code, documentation, or through network traffic inspection. When properly defined via Swagger, a consumer can understand and interact with the remote service with a minimal amount of implementation logic. Similar to what interfaces have done for lower-level programming, Swagger removes the guesswork in calling the service.
+Python 3.7+ (Expected to work with Python 3.6+)
+
+# Command Line
+### Create Manifest File
+1. Copy `template.manifest.yml` and create new file `manifest.yml`.
+1. Copy `template.config.yml` and create new file `config.yml`.
+1. Complete `manifest.yml` with pointers to required files.
+    1. managed_app.zip
+    1. app_listing_config.json
+    1. Small Logo Image (png) - 48x48
+    1. Medium Logo Image (png) - 90x90
+    1. Large Logo Image (png) - 216x216
+    1. Wide Logo Image (png) - 255x115
+1. Complete `config.yml`.
+    * **tenant_id**: Who will publish the managed app
+    * **azure_preview_subscription**: Who will be the preview audience
+    * **aad_id** and **aad_secret**: Service principal used for calling partner API
+    * **access_id**: Service principal will have access to managed resource group
 
 
-Check out [OpenAPI-Spec](https://github.com/OAI/OpenAPI-Specification) for additional information about the Swagger project, including additional libraries with support for other languages and more. 
+#### Install
+```shell script
+# Must not use -e when doing pip install
 
-## How do I use this?
-At this point, you've likely generated a client setup.  It will include something along these lines:
+# From Production Release PyPi
+pip install azure-ai-managed-app-utils
 
-```
-.
-|- README.md    // this file
-|- pom.xml      // build script
-|-- src
-|--- main
-|---- java
-|----- io.swagger.codegen.DefaultGenerator.java // generator file
-|---- resources
-|----- default // template files
-|----- META-INF
-|------ services
-|------- io.swagger.codegen.CodegenConfig
-```
+# From Release Candidate PyPi
+pip install --extra-index-url=https://test.pypi.com/simple/ azure-ai-managed-app-utils
 
-You _will_ need to make changes in at least the following:
-
-`DefaultGenerator.java`
-
-Templates in this folder:
-
-`src/main/resources/default`
-
-Once modified, you can run this:
-
-```
-mvn package
+# From Source
+git clone https://github.com/microsoft/ai-managed-app-utils
+pip install src/ai-managed-app-utils
 ```
 
-In your generator project.  A single jar file will be produced in `target`.  You can now use that with codegen:
+#### Usage
+```shell script
+ama_name='dciborow-test'
+product_id=$(ama create --ama-name $ama_name 2>&1 | jq '.product_id' -r)
+ama publish --ama-name $ama_name --product-id $product_id
 
-```
-java -cp /path/to/swagger-codegen-cli.jar:/path/to/your.jar io.swagger.codegen.Codegen -l default -i /path/to/swagger.yaml -o ./test
-```
+ama status --product-id $product_id
 
-Now your templates are available to the client generator and you can write output values
-
-## But how do I modify this?
-The `DefaultGenerator.java` has comments in it--lots of comments.  There is no good substitute
-for reading the code more, though.  See how the `DefaultGenerator` implements `CodegenConfig`.
-That class has the signature of all values that can be overridden.
-
-For the templates themselves, you have a number of values available to you for generation.
-You can execute the `java` command from above while passing different debug flags to show
-the object you have available during client generation:
-
-```
-# The following additional debug options are available for all codegen targets:
-# -DdebugSwagger prints the OpenAPI Specification as interpreted by the codegen
-# -DdebugModels prints models passed to the template engine
-# -DdebugOperations prints operations passed to the template engine
-# -DdebugSupportingFiles prints additional data passed to the template engine
-
-java -DdebugOperations -cp /path/to/swagger-codegen-cli.jar:/path/to/your.jar io.swagger.codegen.Codegen -l default -i /path/to/swagger.yaml -o ./test
+ama delete --product-id $product_id
 ```
 
-Will, for example, output the debug info for operations.  You can use this info
-in the `api.mustache` file.
+
+## Setup
+### Create Configuration File
+1. Copy `template.config.yml` and create new file `config.yml`
+1. Fill in tenant_id, typically `72f988bf-86f1-41af-91ab-2d7cd011db47` for Microsoft's tenant.
+1. Fill in the Subscription that will have Preview access `azure_preview_subscription`
+1. Create a Service Principal and provide the id `aad_id` and key `aad_secret`
+
+
+### Generate Swagger Python Client
+Insure Java in installed on the machine with `java -v` Download current stable 3.x.x branch (OpenAPI version 3)
+
+```shell script
+pip install -e .
+```
+
+This runs the following commands are part of the setup.py. You can also run these commands individually. 
+
+```shell script
+wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.22/swagger-codegen-cli-3.0.22.jar -O swagger-codegen-cli.jar
+java -jar swagger-code-get-cli.jar generate -i Partner_Ingestion_SwaggerDocument.json -l python -o temp
+cp temp/swagger_client ./
+```
+
+# Usage
+
+## 
+```python
+""" Create New Azure Managed Application """
+from  azureiai.managed_apps import ManagedApplication 
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yaml,
+)
+ama.create()
+```
+
+##
+```python
+""" Get Existing Azure Managed Application """
+from azureiai.managed_apps import ManagedApplication 
+
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+product_id = "3d00b4ab-50e5-49af-a2e6-5d800b8979cf"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yaml,
+)
+ama.set_product_id(product_id)
+
+```
+
+##
+```python
+""" Get List of Azure Managed Applications """
+from azureiai.managed_apps import ManagedApplication 
+
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yaml,
+)
+offers = ama.get_offers()
+for offer in offers.values:
+    print(offer.name)
+```
+
+## 
+```python
+""" Publish Azure Managed Applications """
+from azureiai.managed_apps import ManagedApplication 
+
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+manifest_yml="src/azureiai-managed-apps/manifest.yml"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yml
+)
+ama.manifest_publish(
+    manifest_yml=manifest_yml,
+    config_yml=config_yml
+)
+ama.publish()
+ama.promote()
+```
+
+
+## 
+```python
+""" Publish Azure Managed Applications """
+from azureiai.managed_apps import ManagedApplication 
+
+ama_name="Sample-App"
+config_yaml="src/azureiai-managed-apps/config.yml"
+plan_name="FirstOffer"
+
+app_path = "src/azureiai-managed-apps/"
+app = "App.zip"
+logo_small = "r_48_48.png"
+logo_medium = "r_90_90.png"
+logo_large = "r_216_216.png"
+logo_wide = "r_255_155.png"
+
+ama = ManagedApplication(
+    ama_name,
+    config_yaml,
+)
+ama.prepare_publish(
+    plan_name=plan_name,
+    app_path=app_path,
+    app=app,
+    logo_small=logo_small,
+    logo_medium=logo_medium,
+    logo_large=logo_large,
+    logo_wide=logo_wide
+)
+ama.publish()
+ama.promote()
+```
+
+
+# Databricks Deployment
+
+```shell script
+ama db create resource \
+  --resource-id $DATABRICKS_RESOURCE_ID \
+  --host $DATABRICKS_WORKSPACE_URL
+
+ama db create compute \
+  --resource-id $DATABRICKS_RESOURCE_ID \
+  --host $DATABRICKS_WORKSPACE_URL
+```
