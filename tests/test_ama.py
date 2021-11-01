@@ -1,6 +1,7 @@
 #  ---------------------------------------------------------
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
+import json
 import shutil
 from collections import namedtuple
 from pathlib import Path
@@ -25,7 +26,7 @@ def test_ama_create(ama):
 
 @pytest.mark.integration
 def test_create_plan(ama, plan_name):
-    ama.create_plan(plan_name)
+    ama._create_new_plan(plan_name)
 
 
 @pytest.mark.integration
@@ -59,10 +60,6 @@ def test_ama_publish(ama, plan_name, app_path_fix, app_zip, json_listing_config,
         app=app_zip,
         json_listing_config=json_listing_config,
         config_yml=config_yml,
-        logo_large="r_216_216.png",
-        logo_small="r_48_48.png",
-        logo_medium="r_90_90.png",
-        logo_wide="r_255_115.png",
     )
     assert prepared
 
@@ -72,6 +69,61 @@ def test_ama_publish(ama, plan_name, app_path_fix, app_zip, json_listing_config,
     published = ama.publish()
     assert published
     assert published.id
+
+
+@pytest.mark.integration
+def test_ama_update_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+    prepared = ama.prepare_publish(
+        plan_name=plan_name,
+        app_path=app_path_fix,
+        app=app_zip,
+        json_listing_config=json_listing_config,
+        config_yml=config_yml,
+    )
+    assert prepared
+
+    submission = ama.submission_status()
+    assert submission
+
+    with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
+        json_config = json.load(read_file)
+
+    json_config["version"] = "0.0.1"
+    ama._set_technical_configuration(json_config, app_zip, app_path_fix, config_yml)
+
+    published = ama.publish()
+    assert published
+    assert published.id
+
+
+@pytest.mark.integration
+def test_ama_update_existing(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+    with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
+        json_config = json.load(read_file)
+    json_config["version"] = "0.0.3"
+    ama.set_product_id("411968ab-9f17-40dd-8378-f22d8e39acbb")
+    ama.update(json_listing_config=json_listing_config, app=app_zip, app_path=app_path_fix, config_yml=config_yml)
+
+
+@pytest.mark.integration
+def test_ama_2nd_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+    prepared = ama.prepare_publish(
+        plan_name=plan_name,
+        app_path=app_path_fix,
+        app=app_zip,
+        json_listing_config=json_listing_config,
+        config_yml=config_yml,
+    )
+    assert prepared
+
+    submission = ama.submission_status()
+    assert submission
+
+    published = ama.publish()
+    assert published
+    assert published.id
+
+    ama._create_new_plan(plan_name=plan_name + "2")
 
 
 @pytest.mark.integration
@@ -97,7 +149,9 @@ def test_swagger_integration(swagger_json):
 
 
 @pytest.mark.integration
-def test_ama_publish_prepare_error(ama, plan_name, app_path_fix, app_zip, json_listing_config, template_config):
+def test_ama_publish_prepare_error(
+    ama, plan_name, app_path_fix, app_zip, json_listing_config, broken_json_listing_config, template_config
+):
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
             plan_name=plan_name,
@@ -105,10 +159,6 @@ def test_ama_publish_prepare_error(ama, plan_name, app_path_fix, app_zip, json_l
             app_path=app_path_fix,
             json_listing_config=json_listing_config,
             config_yml=template_config,
-            logo_large="r_216_216.png",
-            logo_small="r_48_48.png",
-            logo_medium="r_90_90.png",
-            logo_wide="r_255_115.png",
         )
 
     with pytest.raises(FileNotFoundError):
@@ -116,48 +166,32 @@ def test_ama_publish_prepare_error(ama, plan_name, app_path_fix, app_zip, json_l
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=json_listing_config,
+            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
-            logo_large="216_216.png",
-            logo_small="r_48_48.png",
-            logo_medium="r_90_90.png",
-            logo_wide="r_255_115.png",
         )
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=json_listing_config,
+            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
-            logo_small="216_216.png",
-            logo_large="r_216_216.png",
-            logo_medium="r_90_90.png",
-            logo_wide="r_255_115.png",
         )
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=json_listing_config,
+            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
-            logo_medium="216_216.png",
-            logo_large="r_216_216.png",
-            logo_small="r_48_48.png",
-            logo_wide="r_255_115.png",
         )
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=json_listing_config,
+            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
-            logo_wide="216_216.png",
-            logo_large="r_216_216.png",
-            logo_small="r_48_48.png",
-            logo_medium="r_90_90.png",
         )
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
@@ -165,10 +199,6 @@ def test_ama_publish_prepare_error(ama, plan_name, app_path_fix, app_zip, json_l
             app_path=app_path_fix,
             app=app_zip,
             config_yml=template_config,
-            logo_wide="r_216_216.png",
-            logo_large="r_216_216.png",
-            logo_small="r_48_48.png",
-            logo_medium="r_90_90.png",
         )
 
 

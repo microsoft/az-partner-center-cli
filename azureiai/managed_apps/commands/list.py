@@ -9,7 +9,7 @@ List  existing Azure Managed Applications using the command 'list'.
 import argparse
 
 from azureiai.managed_apps import ManagedApplication
-from azureiai.managed_apps.commands import add_command, add_config_yml
+from azureiai.managed_apps.commands.common import add_config_yml, add_command
 
 
 def run():

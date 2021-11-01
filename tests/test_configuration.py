@@ -45,21 +45,21 @@ def reseller(ama):
 @pytest.fixture
 def feature_availability(ama, plan_name):
     """Properties PyTest Fixture"""
-    ama.create_plan(plan_name=plan_name)
+    ama._create_new_plan(plan_name=plan_name)
     return FeatureAvailability(product_id=ama.get_product_id(), authorization=ama.get_auth())
 
 
 @pytest.fixture
 def package(ama, plan_name):
     """Package PyTest Fixture"""
-    ama.create_plan(plan_name=plan_name)
+    ama._create_new_plan(plan_name=plan_name)
     return Package(product_id=ama.get_product_id(), authorization=ama.get_auth())
 
 
 @pytest.fixture
 def offer_list(ama, plan_name):
     """Package PyTest Fixture"""
-    ama.create_plan(plan_name=plan_name)
+    ama._create_new_plan(plan_name=plan_name)
     return OfferListing(product_id=ama.get_product_id(), authorization=ama.get_auth())
 
 
@@ -86,7 +86,7 @@ def test_force_500(ama, plan_name, monkeypatch):
 
     with pytest.raises(RetryException):
         try:
-            ama.create_plan(plan_name=plan_name)
+            ama._create_new_plan(plan_name=plan_name)
         except RetryException as exception:
             print(exception)
             raise exception

@@ -32,6 +32,19 @@ class ListingImage(OfferConfigurations):
         :param logo_type: image logo type: [large, medium, small, wide]
         :return: api_response
         """
+
+        api_response = self.listing_image_api.products_product_id_listings_listing_id_images_get(
+            authorization=self.authorization, product_id=self.product_id, listing_id=self.list.get().id
+        )
+        for value in api_response.value:
+            if value.file_name == file_name:
+                self.listing_image_api.products_product_id_listings_listing_id_images_image_id_delete(
+                    authorization=self.authorization,
+                    product_id=self.product_id,
+                    listing_id=self.list.get().id,
+                    image_id=value.id,
+                )
+
         image_id = str(uuid.uuid4())
 
         body = {
@@ -42,6 +55,7 @@ class ListingImage(OfferConfigurations):
             "order": 0,
             "id": image_id,
         }
+
         api_response = self.listing_image_api.products_product_id_listings_listing_id_images_post(
             authorization=self.authorization,
             product_id=self.product_id,
@@ -50,7 +64,7 @@ class ListingImage(OfferConfigurations):
         )
         status_code = self.upload_using_sas(api_response.file_sas_uri, Path(file_path).joinpath(file_name))
         if status_code != 201:
-            raise BaseException("Upload via SAS Failed")
+            raise ConnectionError("Upload via SAS Failed")
         body = {
             "resourceType": "ListingImage",
             "fileName": file_name,

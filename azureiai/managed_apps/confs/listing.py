@@ -32,20 +32,20 @@ class Listing(ListingOfferConfigurations):
         settings = self.get()
         odata_etag = settings.odata_etag
         settings_id = settings.id
-        with open(properties, "r") as read_file:
+        with open(properties, "r", encoding="utf8") as read_file:
             listing_config = json.load(read_file)
 
             properties = {
                 "resourceType": "AzureListing",
-                "summary": listing_config["summary"],
-                "listingUris": listing_config["listing_uris"],
-                "listingContacts": listing_config["listing_contacts"],
+                "title": listing_config["offer_listing"]["title"],
+                "publisherName": listing_config["offer_listing"]["publisher_name"],
+                "summary": listing_config["offer_listing"]["summary"],
+                "shortDescription": listing_config["offer_listing"]["short_description"],
+                "description": listing_config["offer_listing"]["description"],
+                "keywords": listing_config["offer_listing"]["keywords"],
+                "listingContacts": listing_config["offer_listing"]["listing_contacts"],
+                "listingUris": listing_config["offer_listing"]["listing_uris"],
                 "languageCode": "en-us",
-                "title": listing_config["title"],
-                "description": listing_config["description"],
-                "shortDescription": listing_config["short_description"],
-                "publisherName": "Microsoft Corp.",
-                "keywords": listing_config["keywords"],
                 "@odata.etag": odata_etag,
                 "id": settings_id,
             }

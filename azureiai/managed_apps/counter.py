@@ -1,6 +1,7 @@
 #  ---------------------------------------------------------
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
+"""API Response Counter"""
 
 
 def inc_counter(api_response):

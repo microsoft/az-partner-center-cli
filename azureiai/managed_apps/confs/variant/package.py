@@ -10,12 +10,13 @@ from pathlib import Path
 
 import yaml
 
+from swagger_client import PackageApi, PackageConfigurationApi
+
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import (
     VariantPlanConfiguration,
 )
 from azureiai.managed_apps.utils import ACCESS_ID, TENANT_ID
-from swagger_client import PackageApi, PackageConfigurationApi
 
 
 def _inject_pid(file_name_full_path, pid):
@@ -31,11 +32,11 @@ def _inject_pid(file_name_full_path, pid):
     """
     with zipfile.ZipFile(file_name_full_path, "r") as zip_ref:
         zip_ref.extractall(file_name_full_path.replace(".zip", "-temp"))
-    with open(file_name_full_path.replace(".zip", "-temp/mainTemplate.json"), "rt") as fin:
+    with open(file_name_full_path.replace(".zip", "-temp/mainTemplate.json"), "rt", encoding="utf8") as fin:
         data = fin.read()
         data = re.sub(r"pid-(.*)-partnercenter", "pid-" + pid + "-partnercenter", data)
 
-    with open(file_name_full_path.replace(".zip", "-temp/mainTemplate.json"), "wt") as fin:
+    with open(file_name_full_path.replace(".zip", "-temp/mainTemplate.json"), "wt", encoding="utf8") as fin:
         fin.write(data)
 
     os.remove(file_name_full_path)
@@ -129,22 +130,13 @@ class Package(VariantPlanConfiguration):
             body=put_body,
         )
 
-        state = None
-        while state != "Processed":
-            get_response = self.package_api.products_product_id_packages_package_id_get(
-                product_id=self.product_id,
-                package_id=post_response.id,
-                authorization=self.authorization,
-            )
-            state = get_response.state
-            if state == "ProcessFailed":
-                raise ConnectionError("Uploading AMA Zip Failed with State: ProcessedFailed. Check if PID is required")
+        self._check_upload(post_response)
 
         settings = self.get()
         odata_etag = settings["@odata.etag"]
         settings_id = settings["id"]
 
-        with open(config_yaml) as file:
+        with open(config_yaml, encoding="utf8") as file:
             config_settings = yaml.safe_load(file)
 
             tenant_id = os.getenv(TENANT_ID, config_settings["tenant_id"])
@@ -157,7 +149,7 @@ class Package(VariantPlanConfiguration):
                 "canEnableCustomerActions": "true",
                 "allowedCustomerActions": allowed_customer_actions,
                 "allowedDataActions": allowed_data_actions,
-                "deploymentMode": "Complete",
+                "deploymentMode": "Incremental",
                 "publicAzureTenantID": tenant_id,
                 "publicAzureAuthorizations": [{"principalID": access_id, "roleDefinitionID": "Contributor"}],
                 "azureGovernmentTenantID": "string",
@@ -167,10 +159,22 @@ class Package(VariantPlanConfiguration):
                 "id": settings_id,
             }
 
-            self.api.products_product_id_packageconfigurations_package_configuration_id_put(
+            return self.api.products_product_id_packageconfigurations_package_configuration_id_put(
                 authorization=self.authorization,
                 if_match=odata_etag,
                 product_id=self.product_id,
                 package_configuration_id=settings_id,
                 body=settings,
             )
+
+    def _check_upload(self, post_response):
+        state = None
+        while state != "Processed":
+            get_response = self.package_api.products_product_id_packages_package_id_get(
+                product_id=self.product_id,
+                package_id=post_response.id,
+                authorization=self.authorization,
+            )
+            state = get_response.state
+            if state == "ProcessFailed":
+                raise ConnectionError("Uploading AMA Zip Failed with State: ProcessedFailed. Check if PID is required")

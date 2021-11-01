@@ -20,7 +20,6 @@ class Properties(OfferConfigurations):
 
     def set(
         self,
-        industries,
         categories,
         version,
         use_enterprise_contract=True,
@@ -28,7 +27,6 @@ class Properties(OfferConfigurations):
         """
         Set Properties for Application
 
-        :param industries: Default: Retail
         :param categories:  Default: analytics
         :param version: Default 1.1.1
         :param use_enterprise_contract: Default: True
@@ -41,7 +39,7 @@ class Properties(OfferConfigurations):
 
         properties = {
             "resourceType": "AzureProperty",
-            "industries": [industries],
+            "industries": [""],
             "categories": [categories],
             "submissionVersion": submission_version,
             "productTags": ["y89royn4xnxbe5e9mfmm6ukufp1hn8gt6d6osyd83sprfgdtib8jqfmikiya5hmf"],

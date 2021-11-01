@@ -15,10 +15,10 @@ from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from azureiai.managed_apps.confs.variant import Package
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import VariantPlanConfiguration
 from azureiai.managed_apps.managed_app import ManagedApplication
-from azureiai.managed_apps.offer import Offer
+from azureiai.partner_center.offer import Offer
 from azureiai.managed_apps.swagger import download_swagger_jar
 from azureiai.managed_apps.utils import get_draft_instance_id
-from swagger_client import BranchesApi, PackageConfigurationApi, ProductApi, ResellerConfigurationApi
+from swagger_client import BranchesApi, PackageConfigurationApi, ResellerConfigurationApi
 from swagger_client.rest import ApiException
 from swagger_client.rest import RESTClientObject
 
@@ -29,7 +29,7 @@ def test_ama_create_mock(ama_mock):
 
 def test_create_plan_mock(ama_mock, plan_name):
 
-    ama_mock.create_plan(plan_name)
+    ama_mock._create_new_plan(plan_name)
     assert ama_mock._ids["plan_id"]
 
 
@@ -49,16 +49,12 @@ def test_ama_publish_prepare_mock(ama_mock, plan_name, app_path_fix, app_zip, js
         app=app_zip,
         json_listing_config=json_listing_config,
         config_yml=template_config,
-        logo_large="r_216_216.png",
-        logo_small="r_48_48.png",
-        logo_medium="r_90_90.png",
-        logo_wide="r_255_115.png",
     )
     assert prepared
 
 
 def test_ama_publish_prepare_error_mock(
-    ama_mock, plan_name, app_path_fix, app_zip, json_listing_config, template_config
+    ama_mock, plan_name, app_path_fix, app_zip, json_listing_config, broken_json_listing_config, template_config
 ):
     with pytest.raises(FileNotFoundError):
         assert ama_mock.prepare_publish(
@@ -67,10 +63,6 @@ def test_ama_publish_prepare_error_mock(
             app_path=app_path_fix,
             json_listing_config=json_listing_config,
             config_yml=template_config,
-            logo_large="r_216_216.png",
-            logo_small="r_48_48.png",
-            logo_medium="r_90_90.png",
-            logo_wide="r_255_115.png",
         )
 
     with pytest.raises(FileNotFoundError):
@@ -78,48 +70,32 @@ def test_ama_publish_prepare_error_mock(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=json_listing_config,
+            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
-            logo_large="216_216.png",
-            logo_small="r_48_48.png",
-            logo_medium="r_90_90.png",
-            logo_wide="r_255_115.png",
         )
     with pytest.raises(FileNotFoundError):
         assert ama_mock.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=json_listing_config,
+            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
-            logo_small="216_216.png",
-            logo_large="r_216_216.png",
-            logo_medium="r_90_90.png",
-            logo_wide="r_255_115.png",
         )
     with pytest.raises(FileNotFoundError):
         assert ama_mock.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=json_listing_config,
+            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
-            logo_medium="216_216.png",
-            logo_large="r_216_216.png",
-            logo_small="r_48_48.png",
-            logo_wide="r_255_115.png",
         )
     with pytest.raises(FileNotFoundError):
         assert ama_mock.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=json_listing_config,
+            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
-            logo_wide="216_216.png",
-            logo_large="r_216_216.png",
-            logo_small="r_48_48.png",
-            logo_medium="r_90_90.png",
         )
     with pytest.raises(FileNotFoundError):
         assert ama_mock.prepare_publish(
@@ -127,10 +103,6 @@ def test_ama_publish_prepare_error_mock(
             app_path=app_path_fix,
             app=app_zip,
             config_yml=template_config,
-            logo_wide="r_216_216.png",
-            logo_large="r_216_216.png",
-            logo_small="r_48_48.png",
-            logo_medium="r_90_90.png",
         )
 
 
@@ -423,7 +395,7 @@ def test_force_500(plan_name, ama_name, monkeypatch):
 
     with pytest.raises(RetryException):
         try:
-            ama.create_plan(plan_name=plan_name)
+            ama._create_new_plan(plan_name=plan_name)
         except RetryException as exception:
             print(exception)
             raise exception

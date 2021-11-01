@@ -54,6 +54,11 @@ def json_listing_config():
 
 
 @pytest.fixture
+def broken_json_listing_config():
+    return "sample_broken_listing_config.json"
+
+
+@pytest.fixture
 def config_yml():
     test_path = Path(__file__).parents[1]
     config_path = test_path.joinpath("config.yml")
@@ -81,7 +86,10 @@ def ama(ama_name, config_yml):
     ama = ManagedApplication(ama_name, config_yaml=config_yml)
     ama.create()
     yield ama
-    ama.delete()
+    try:
+        ama.delete()
+    except Exception:
+        pass
 
 
 @pytest.fixture
@@ -97,17 +105,51 @@ def ama_mock(ama_name, monkeypatch):
     def mock_package_get(self):
         return {"@odata.etag": "not-nothing", "id": "id-something"}
 
-    def mock_products_get(self, authorization):
-        variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(
-            *["variant-id", "draft-instance-id"]
+    def mock_products_get(self, authorization, **kwargs):
+        variant = namedtuple("variant", ["name", "variant_id", "current_draft_instance_id"])(
+            *["test_vm", "variant-id", "draft-instance-id"]
         )
-        return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
+        response_json = namedtuple("response", ["value", "odata_etag", "id"])(
+            *[
+                [
+                    {"name": "test_vm", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
+                    {
+                        "name": "cicd-test",
+                        "id": "1234abcd",
+                        "variant_id": "abcd1324",
+                        "current_draft_instance_id": "123",
+                    },
+                    {"name": "test_ma", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
+                ],
+                "",
+                "",
+            ]
+        )
+
+        class ResponeJson:
+            def __init__(self, response_json):
+                self.response_json = response_json
+
+            def to_dict(self):
+                return self.response_json._asdict()
+
+        return ResponeJson(response_json)
 
     def mock_delete(self, product_id, authorization):
         return ""
 
     def mock_products_post(self, authorization, body):
-        return namedtuple("response", ["id"])(*["product-id"])
+        response_json = namedtuple("response", ["id"])(*["product-id"])
+
+        class ResponeJson:
+            def __init__(self, response_json):
+                self.response_json = response_json
+                self.id = response_json.id
+
+            def to_dict(self):
+                return self.response_json
+
+        return ResponeJson(response_json)
 
     def mock_variant_response_fa_get(self, authorization, product_id, instance_id, expand):
         variant = namedtuple("a_value", ["id", "odata_etag"])(*["id-not-none", "otag-id"])
@@ -187,6 +229,11 @@ def ama_mock(ama_name, monkeypatch):
     def mock_put_request(url, data, headers, params):
         return namedtuple("response", ["status_code"])(*[201])
 
+    def mock_image_listing(self, authorization, product_id, listing_id):
+        return namedtuple("response", ["value"])(
+            *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
+        )
+
     monkeypatch.setattr(ManagedApplication, "get_auth", mock_auth)
     monkeypatch.setattr(VariantApi, "products_product_id_variants_post", mock_variant_post)
     monkeypatch.setattr(ProductApi, "products_product_id_delete", mock_delete)
@@ -244,6 +291,7 @@ def ama_mock(ama_name, monkeypatch):
     monkeypatch.setattr(
         ListingImageApi, "products_product_id_listings_listing_id_images_image_id_put", mock_image_response
     )
+    monkeypatch.setattr(ListingImageApi, "products_product_id_listings_listing_id_images_get", mock_image_listing)
     monkeypatch.setattr(
         ResellerConfigurationApi, "products_product_id_reseller_configuration_post", mock_reseller_response
     )
