@@ -1,0 +1,35 @@
+{
+  "$schema"    : "https://json-schema.org/draft/2020-12/schema",
+  "$id"        : "https://example.com/product.schema.json",
+  "title"      : "Azure Partner Center Schemas - Manifest",
+  "description": "A configuration for a product in the Azure Partner Center",
+  "type"       : "object",
+  "properties" : {
+    "tenant_id": {
+      "description": "Azure Tenant ID",
+      "type": "string"
+    },
+    "azure_preview_subscription": {
+      "description": "Azure Subscription ID",
+      "type": "string"
+    },
+    "aad_id": {
+      "description": "Azure Active Diretory ID",
+      "type": "string"
+    },
+    "aad_secret": {
+      "description": "Azure Active Directory Secret",
+      "type": "string"
+    },
+    "access_id": {
+      "description": "JIT User Azure Active Directory ID",
+      "type": "string"
+    }
+  },
+  "required"   : [
+    "tenant_id",
+    "azure_preview_subscription",
+    "aad_id",
+    "aad_secret"
+  ]
+}
