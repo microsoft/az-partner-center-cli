@@ -52,6 +52,10 @@ def get_variant_draft_instance_id(product_id, authorization, module: str, retry:
 
 
 ACCESS_ID = "ACCESS_ID"
-TENANT_ID = "TENANT_ID"
-AAD_ID = "AAD_ID"
-AAD_CRED = "AAD_SECRET"
+TENANT_ID = "AZURE_TENANT_ID"
+AAD_ID = "AZURE_CLIENT_ID"
+AAD_CRED = "AZURE_CLIENT_SECRET"
+CONFIG_YML = r"config.yml"
+APP_NAME = "sample_app"
+AZURE_APPLICATION = "AzureApplication"
+JSON_LISTING_CONFIG = "listing_config.json"

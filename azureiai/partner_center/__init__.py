@@ -5,11 +5,11 @@
 import json
 import sys
 
-from azureiai.partner_center.cli_parser import CLIParser
+from azureiai.partner_center.offer import OfferParser
 from azureiai.partner_center.plan import PlanCLIParser, Plan
 
 
-def run(submission: CLIParser):
+def run(submission: OfferParser):
     """CLI Application"""
     subgroup = sys.argv[1]
     command = sys.argv[2]

@@ -24,11 +24,11 @@ from azureiai.managed_apps.confs.variant import (
     Package,
 )
 from azureiai.managed_apps.counter import inc_counter
-from azureiai.partner_center.offer import Offer
+from azureiai.partner_center.abstract_offer import AbstractOffer
 from swagger_client.rest import ApiException
 
 
-class ManagedApplication(Offer):
+class ManagedApplication(AbstractOffer):
     """
     Azure Managed Application
 

@@ -2,17 +2,18 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """CLI Wrapper for Creating, Updating, or Deleting Azure Virtual Machines"""
-from azureiai.partner_center.cli_parser import CLIParser
-from azureiai.partner_center.submission import Submission
+from azureiai.managed_apps.utils import CONFIG_YML
+from azureiai.partner_center import OfferParser
+from azureiai.partner_center.offer import Offer
 
 AZURE_VIRTUAL_MACHINE = "AzureThirdPartyVirtualMachine"
 
 
-class VirtualMachine(Submission):
+class VirtualMachine(Offer):
     """Azure Partner Center Virtual Machine offer."""
 
     def __init__(
-        self, name=None, config_yaml=r"config.yml", app_path: str = "sample_app", json_listing_config="vm_config.json"
+        self, name=None, config_yaml=CONFIG_YML, app_path: str = "sample_app", json_listing_config="vm_config.json"
     ):
         super().__init__(
             name=name,
@@ -23,7 +24,7 @@ class VirtualMachine(Submission):
         )
 
 
-class VirtualMachineCLI(CLIParser):
+class VirtualMachineOffer(OfferParser):
     """Methods for Virtual Machine"""
 
     def __init__(self):

@@ -2,22 +2,21 @@ import json
 from pathlib import Path
 
 from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
-from azureiai.partner_center import CLIParser
-from azureiai.partner_center.submission import Submission
+from azureiai.managed_apps.utils import CONFIG_YML, AZURE_APPLICATION, APP_NAME, JSON_LISTING_CONFIG
+from azureiai.partner_center import OfferParser
+from azureiai.partner_center.offer import Offer
 
-AZURE_APPLICATION = "AzureApplication"
 
-
-class Plan(Submission):
+class Plan(Offer):
     """Azure Partner Center Managed Application Submission"""
 
     def __init__(
         self,
         plan_name=None,
         name=None,
-        config_yaml=r"config.yml",
-        app_path: str = "sample_app",
-        json_listing_config="ma_config.json",
+        config_yaml=CONFIG_YML,
+        app_path: str = APP_NAME,
+        json_listing_config=JSON_LISTING_CONFIG,
         subtype="",
     ):
         super().__init__(
@@ -84,6 +83,7 @@ class Plan(Submission):
         return api_response.to_dict()
 
     def show(self):
+        """Get the Details about a Application Plan"""
         if not self._ids["product_id"]:
             self._set_product_id()
 
@@ -98,6 +98,7 @@ class Plan(Submission):
         raise LookupError(f"Plan with this name not found: {self.plan_name}")
 
     def delete(self) -> {}:
+        """Delete an Application Plan"""
         if not self._ids["plan_id"]:
             self.show()
 
@@ -162,7 +163,7 @@ class Plan(Submission):
                 allowed_customer_actions=allowed_customer_actions,
                 allowed_data_actions=allowed_data_actions,
             )
-        elif self.subtype == "st":
+        if self.subtype == "st":
 
             package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
             return package.set(
@@ -173,6 +174,7 @@ class Plan(Submission):
                 resource_type="AzureSolutionTemplatePackageConfiguration",
                 config_yaml=self.config_yaml,
             )
+        return {}
 
     @staticmethod
     def _get_allowed_actions(json_config):
@@ -185,7 +187,7 @@ class Plan(Submission):
         return allowed_customer_actions, allowed_data_actions
 
 
-class PlanCLIParser(CLIParser):
+class PlanCLIParser(OfferParser):
     """CLI Parser for Marketplace Plans"""
 
     def __init__(self):

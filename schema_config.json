@@ -6,7 +6,7 @@
   "type"       : "object",
   "properties" : {
     "tenant_id": {
-      "description": "Azure Tenant ID",
+      "description": "Azure Tenant ID, required",
       "type": "string"
     },
     "azure_preview_subscription": {
@@ -22,7 +22,7 @@
       "type": "string"
     },
     "access_id": {
-      "description": "JIT User Azure Active Directory ID",
+      "description": "JIT User Azure Active Directory ID, required",
       "type": "string"
     }
   },
