@@ -14,6 +14,7 @@ from tests.cli_tests import (
     get_status,
     list_command,
     status_check,
+    update_ama,
 )
 
 
@@ -34,8 +35,8 @@ def test_list(config_yml, monkeypatch):
 
 
 @pytest.mark.integration
-def test_create_then_delete(config_yml, monkeypatch):
-    create_then_delete(config_yml, monkeypatch)
+def test_create_then_delete(config_yml, monkeypatch, manifest_yml):
+    create_then_delete(config_yml, monkeypatch, manifest_yml)
 
 
 @pytest.mark.integration
@@ -49,6 +50,11 @@ def test_create_publish_delete(config_yml, manifest_yml, monkeypatch):
 
 
 @pytest.mark.integration
+def test_create_update_publish_delete(config_yml, manifest_yml, monkeypatch):
+    update_ama(config_yml, manifest_yml, monkeypatch)
+
+
+@pytest.mark.integration
 def test_create_publish_publish_delete(config_yml, manifest_yml, monkeypatch):
     create_publish_publish_delete(config_yml, manifest_yml, monkeypatch)
 
@@ -59,8 +65,8 @@ def test_create_publish_missing_config(config_yml, manifest_yml, monkeypatch):
 
 
 @pytest.mark.integration
-def test_create_publish_missing_manifest(config_yml, monkeypatch):
-    create_publish_missing_manifest(config_yml, monkeypatch)
+def test_create_publish_missing_manifest(config_yml, monkeypatch, manifest_yml):
+    create_publish_missing_manifest(config_yml, monkeypatch, manifest_yml)
 
 
 @pytest.mark.integration

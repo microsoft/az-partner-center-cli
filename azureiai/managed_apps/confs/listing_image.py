@@ -32,6 +32,19 @@ class ListingImage(OfferConfigurations):
         :param logo_type: image logo type: [large, medium, small, wide]
         :return: api_response
         """
+
+        api_response = self.listing_image_api.products_product_id_listings_listing_id_images_get(
+            authorization=self.authorization, product_id=self.product_id, listing_id=self.list.get().id
+        )
+        for value in api_response.value:
+            if value.file_name == file_name:
+                self.listing_image_api.products_product_id_listings_listing_id_images_image_id_delete(
+                    authorization=self.authorization,
+                    product_id=self.product_id,
+                    listing_id=self.list.get().id,
+                    image_id=value.id,
+                )
+
         image_id = str(uuid.uuid4())
 
         body = {
@@ -42,6 +55,7 @@ class ListingImage(OfferConfigurations):
             "order": 0,
             "id": image_id,
         }
+
         api_response = self.listing_image_api.products_product_id_listings_listing_id_images_post(
             authorization=self.authorization,
             product_id=self.product_id,

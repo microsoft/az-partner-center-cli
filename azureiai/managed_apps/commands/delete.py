@@ -9,7 +9,7 @@ Delete an existing Azure Managed Application using the command 'delete'.
 import argparse
 
 from azureiai.managed_apps import ManagedApplication
-from azureiai.managed_apps.commands import add_command, add_config_yml, add_product_id
+from azureiai.managed_apps.commands.common import add_config_yml, add_command, add_product_id
 
 
 def run():

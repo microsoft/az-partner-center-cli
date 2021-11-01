@@ -1,6 +1,7 @@
 import argparse
-import json
 from collections import namedtuple
+import json
+import sys
 
 import pytest
 from azureiai import ama_app
@@ -24,8 +25,8 @@ def list_command(config_yml, monkeypatch):
     assert output
 
 
-def create_then_delete(config_yml, monkeypatch):
-    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml}
+def create_then_delete(config_yml, monkeypatch, manifest_yml):
+    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml, "manifest_yml": manifest_yml}
     setup_patched_app(monkeypatch, create_args)
     product_id_json = json.loads(ama_app.main())
     assert product_id_json
@@ -36,15 +37,17 @@ def create_then_delete(config_yml, monkeypatch):
 
 
 def create_publish_delete(config_yml, manifest_yml, monkeypatch):
-    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml}
+    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml, "manifest_yml": manifest_yml}
     setup_patched_app(monkeypatch, create_args)
     product_id_json = json.loads(ama_app.main())
     assert product_id_json
     product_id = product_id_json["product_id"]
+    offer_id = product_id_json["offer_id"]
     publish_args = {
         "command": "publish",
         "ama_name": "cicd-test",
         "product_id": product_id,
+        "offer_id": offer_id,
         "config_yml": config_yml,
         "manifest_yml": manifest_yml,
     }
@@ -64,17 +67,40 @@ def create_publish_delete(config_yml, manifest_yml, monkeypatch):
     ama_app.main()
 
 
+def update_ama(config_yml, manifest_yml, monkeypatch):
+    update_args = {
+        "command": "update",
+        "ama_name": "cicd-test",
+        "product_id": "411968ab-9f17-40dd-8378-f22d8e39acbb",
+        "offer_id": "2b89558b-8ed3-4d45-b79d-833bda781b7e",
+        "config_yml": config_yml,
+        "manifest_yml": manifest_yml,
+    }
+    setup_patched_app(monkeypatch, update_args)
+    publish_args = {
+        "command": "publish",
+        "ama_name": "cicd-test",
+        "product_id": "411968ab-9f17-40dd-8378-f22d8e39acbb",
+        "offer_id": "2b89558b-8ed3-4d45-b79d-833bda781b7e",
+        "config_yml": config_yml,
+        "manifest_yml": manifest_yml,
+    }
+    setup_patched_app(monkeypatch, publish_args)
+    ama_app.main()
+
+
 def create_publish_publish_delete(config_yml, manifest_yml, monkeypatch):
-    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml}
+    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml, "manifest_yml": manifest_yml}
     setup_patched_app(monkeypatch, create_args)
     product_id_json = json.loads(ama_app.main())
     assert product_id_json
     product_id = product_id_json["product_id"]
-
+    offer_id = product_id_json["offer_id"]
     publish_args = {
         "command": "publish",
         "ama_name": "cicd-test",
         "product_id": product_id,
+        "offer_id": offer_id,
         "config_yml": config_yml,
         "manifest_yml": manifest_yml,
     }
@@ -160,15 +186,17 @@ def create_publish_missing_config(config_yml, manifest_yml, monkeypatch):
 
 
 def publish_missing_config(config_yml, manifest_yml, monkeypatch):
-    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml}
+    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml, "manifest_yml": manifest_yml}
     setup_patched_app(monkeypatch, create_args)
     product_id_json = json.loads(ama_app.main())
     assert product_id_json
     product_id = product_id_json["product_id"]
+    offer_id = product_id_json["offer_id"]
     publish_args = {
         "command": "publish",
         "ama_name": "cicd-test",
         "product_id": product_id,
+        "offer_id": offer_id,
         "config_yml": "not-config",
         "manifest_yml": manifest_yml,
     }
@@ -180,8 +208,8 @@ def publish_missing_config(config_yml, manifest_yml, monkeypatch):
     ama_app.main()
 
 
-def create_publish_missing_manifest(config_yml, monkeypatch):
-    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml}
+def create_publish_missing_manifest(config_yml, monkeypatch, manifest_yml):
+    create_args = {"command": "create", "ama_name": "cicd-test", "config_yml": config_yml, "manifest_yml": manifest_yml}
     setup_patched_app(monkeypatch, create_args)
     product_id_json = json.loads(ama_app.main())
     assert product_id_json
@@ -223,3 +251,5 @@ def setup_patched_app(monkeypatch, input_args):
 
     monkeypatch.setattr(argparse.ArgumentParser, "parse_known_args", get_known_args)
     monkeypatch.setattr(argparse.ArgumentParser, "parse_args", get_args)
+
+    monkeypatch.setattr(sys, "argv", [""] + list(input_args.values()))

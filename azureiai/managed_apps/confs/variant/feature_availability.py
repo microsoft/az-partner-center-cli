@@ -5,19 +5,19 @@
 import json
 from pathlib import Path
 
-from swagger_client import FeatureAvailabilityApi
-
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import (
     VariantPlanConfiguration,
 )
+from swagger_client import FeatureAvailabilityApi
 
 
 class FeatureAvailability(VariantPlanConfiguration):
     """Managed Application Offer - Feature Availability Configuration"""
 
-    def __init__(self, product_id, authorization):
+    def __init__(self, product_id, authorization, subtype="ma"):
         super().__init__(product_id, authorization)
         self.fa_api = FeatureAvailabilityApi()
+        self.subtype = subtype
 
     def get(self):
         """Get Availability for Application"""
@@ -52,8 +52,13 @@ class FeatureAvailability(VariantPlanConfiguration):
             "resourceType": "FeatureAvailability",
             "visibility": visibility,
             "marketStates": market_states,
-            "subscriptionAudiences": [{"ID": azure_subscription}],
-            "priceSchedules": [
+            "subscriptionAudiences": azure_subscription,
+            "@odata.etag": odata_etag,
+            "id": settings_id,
+        }
+        if self.subtype == "ma":
+
+            body["priceSchedules"] = [
                 {
                     "isBaseSchedule": False,
                     "marketCodes": ["US"],
@@ -66,10 +71,8 @@ class FeatureAvailability(VariantPlanConfiguration):
                         }
                     ],
                 }
-            ],
-            "@odata.etag": odata_etag,
-            "id": settings_id,
-        }
+            ]
+
         self.fa_api.products_product_id_featureavailabilities_feature_availability_id_put(
             authorization=self.authorization,
             if_match=odata_etag,
@@ -87,6 +90,6 @@ class FeatureAvailability(VariantPlanConfiguration):
         :return: Dict of markets loaded from json
         """
         market_json = Path(__file__).parents[0].joinpath("markets.json")
-        with open(market_json, "r") as json_file:
+        with open(market_json, "r", encoding="utf8") as json_file:
             data = json_file.read()
             return json.loads(data)

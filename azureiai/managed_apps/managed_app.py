@@ -11,23 +11,21 @@ from pathlib import Path
 
 import yaml
 
-from swagger_client.rest import ApiException
-
 from azureiai import RetryException
 from azureiai.managed_apps.confs import (
     Listing,
     ListingImage,
     ProductAvailability,
     Properties,
-    ResellerConfiguration,
 )
 from azureiai.managed_apps.confs.variant import (
     FeatureAvailability,
     OfferListing,
     Package,
 )
-from azureiai.managed_apps.offer import Offer
 from azureiai.managed_apps.counter import inc_counter
+from azureiai.partner_center.offer import Offer
+from swagger_client.rest import ApiException
 
 
 class ManagedApplication(Offer):
@@ -44,6 +42,14 @@ class ManagedApplication(Offer):
         :param product_id: Product ID of existing managed application.
         """
         self._ids["product_id"] = product_id
+
+    def set_offer_id(self, offer_id: str):
+        """
+        Set Offer ID from existing application.
+
+        :param offer_id: Offer ID of existing managed application.
+        """
+        self._ids["plan_id"] = offer_id
 
     def create(self):
         """Create new Azure Managed Application and set product id."""
@@ -77,14 +83,10 @@ class ManagedApplication(Offer):
         :param config_yml: path to config.yml, see template.config.yml for example.
         :return: Publish Outcome
         """
-        with open(manifest_yml) as file:
+        with open(manifest_yml, encoding="utf8") as file:
             manifest = yaml.safe_load(file)
         return self.prepare_publish(
             plan_name=manifest["plan_name"],
-            logo_large=manifest["logo_large"],
-            logo_medium=manifest["logo_medium"],
-            logo_small=manifest["logo_small"],
-            logo_wide=manifest["logo_wide"],
             app_path=manifest["app_path"],
             app=manifest["app"],
             json_listing_config=manifest["json_listing_config"],
@@ -92,12 +94,12 @@ class ManagedApplication(Offer):
         )
 
     def prepare_plan(
-        self,
-        plan_name: str,
-        app_path: str,
-        app: str,
-        json_listing_config: str = "json_config.json",
-        config_yml: str = "config.yml",
+            self,
+            plan_name: str,
+            app_path: str,
+            app: str,
+            json_listing_config: str = "json_config.json",
+            config_yml: str = "config.yml",
     ) -> bool:
         """
         Create new AMA and complete all fields for publication.
@@ -115,7 +117,7 @@ class ManagedApplication(Offer):
             raise FileNotFoundError("Managed Application Zip - Not Found", os.path.join(app_path, app))
         if not os.path.isfile(os.path.join(app_path, json_listing_config)):
             raise FileNotFoundError("JSON Config - Not Found")
-        with open(Path(app_path).joinpath(json_listing_config), "r") as read_file:
+        with open(Path(app_path).joinpath(json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
         self._create_plan(app, app_path, config_yml, json_config, plan_name)
@@ -123,16 +125,12 @@ class ManagedApplication(Offer):
         return True
 
     def prepare_publish(
-        self,
-        plan_name: str,
-        logo_large: str,
-        logo_small: str,
-        logo_medium: str,
-        logo_wide: str,
-        app_path: str,
-        app: str,
-        json_listing_config: str = "json_config.json",
-        config_yml: str = "config.yml",
+            self,
+            plan_name: str,
+            app_path: str,
+            app: str,
+            json_listing_config: str = "json_config.json",
+            config_yml: str = "config.yml",
     ) -> bool:
         """
         Create new AMA and complete all fields for publication.
@@ -154,13 +152,13 @@ class ManagedApplication(Offer):
             raise FileNotFoundError("Managed Application Zip - Not Found", os.path.join(app_path, app))
         if not os.path.isfile(os.path.join(app_path, json_listing_config)):
             raise FileNotFoundError("JSON Config - Not Found")
-        with open(Path(app_path).joinpath(json_listing_config), "r") as read_file:
+        with open(Path(app_path).joinpath(json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
         self._create_plan(app, app_path, config_yml, json_config, plan_name)
 
         self._set_properties(json_config)
-        self._set_offer_listing(app_path, json_listing_config, logo_large, logo_medium, logo_small, logo_wide)
+        self._set_offer_listing(app_path, json_listing_config, update_image=True)
         self._set_plan_listing(json_config)
 
         self._set_preview_audience(json_config)
@@ -180,35 +178,20 @@ class ManagedApplication(Offer):
             "resourceType": "SubmissionCreationRequest",
             "targets": [{"type": "Scope", "value": "preview"}],
             "resources": [
-                {
-                    "type": "Availability",
-                    "value": self._get_draft_instance_id("Availability"),
-                },
+                {"type": "Availability", "value": self._get_draft_instance_id("Availability")},
                 {"type": "Property", "value": self._get_draft_instance_id("Property")},
                 {"type": "Package", "value": self._get_draft_instance_id("Package")},
                 {"type": "Listing", "value": self._get_draft_instance_id("Listing")},
-                {
-                    "type": "ResellerConfiguration",
-                    "value": self.get_product_id() + "-ResellerInstance",
-                },
                 {"type": "Cosell", "value": self._get_draft_instance_id("Cosell")},
+                {"type": "ResellerConfiguration", "value": self.get_product_id() + "-ResellerInstance"},
             ],
             "variantResources": [
                 {
                     "variantID": self._ids["plan_id"],
                     "resources": [
-                        {
-                            "type": "Availability",
-                            "value": self._get_variant_draft_instance_id("Availability"),
-                        },
-                        {
-                            "type": "Package",
-                            "value": self._get_variant_draft_instance_id("Package"),
-                        },
-                        {
-                            "type": "Listing",
-                            "value": self._get_variant_draft_instance_id("Listing"),
-                        },
+                        {"type": "Availability", "value": self._get_variant_draft_instance_id("Availability")},
+                        {"type": "Package", "value": self._get_variant_draft_instance_id("Package")},
+                        {"type": "Listing", "value": self._get_variant_draft_instance_id("Listing")},
                     ],
                 }
             ],
@@ -234,7 +217,10 @@ class ManagedApplication(Offer):
             product_id=self.get_product_id(),
         )
 
-    def update(self, app_path: str, app: str, json_config, config_yml: str = "config.yml"):
+    def update(
+            self, app_path: str, app: str, json_listing_config, config_yml: str = "config.yml",
+            update_image: bool = True
+    ):
         """
         Update existing AMA and complete all fields for publication.
 
@@ -242,11 +228,19 @@ class ManagedApplication(Offer):
         :param app: Managed Application Zip (including extension). Example: my_app.zip
         :param json_listing_config:
         :param config_yml: Configuration YML, see README for directions to config
+        :param update_image: Select if photos should be updated, default: True
 
         :return: binary outcome of preparation
         """
-        self.set_product_id(json_config["product_id"])
-        self._set_technical_configuration(
+        with open(Path(app_path).joinpath(json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+
+        self._set_properties(json_config)
+        self._set_offer_listing(app_path, json_listing_config, update_image)
+        self._set_plan_listing(json_config)
+        self._set_preview_audience(json_config)
+
+        return self._set_technical_configuration(
             json_config,
             app,
             app_path,
@@ -285,48 +279,54 @@ class ManagedApplication(Offer):
             raise RetryException() from api_expection
 
     def _set_plan_listing(self, json_config):
-        offer_listing_properties = json_config["offer-listing-properties"]
+        offer_listing_properties = json_config["plan_overview"][0]["plan_listing"]
         offer_listing = OfferListing(product_id=self.get_product_id(), authorization=self.get_auth())
         offer_listing.set(properties=offer_listing_properties)
 
-    def _set_offer_listing(self, app_path, json_listing_config, logo_large, logo_medium, logo_small, logo_wide):
-        if not os.path.isfile(os.path.join(app_path, logo_large)):
-            raise FileNotFoundError("Logo Large - Not Found")
-        if not os.path.isfile(os.path.join(app_path, logo_small)):
-            raise FileNotFoundError("Logo Small - Not Found")
-        if not os.path.isfile(os.path.join(app_path, logo_medium)):
-            raise FileNotFoundError("Logo Medium - Not Found")
-        if not os.path.isfile(os.path.join(app_path, logo_wide)):
-            raise FileNotFoundError("Logo Wide - Not Found")
+    def _set_offer_listing(self, app_path, json_listing_config, update_image=False):
+        with open(Path(app_path).joinpath(json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
 
         listing = Listing(product_id=self.get_product_id(), authorization=self.get_auth())
         listing.set(properties=Path(app_path).joinpath(json_listing_config))
-        listing_image = ListingImage(product_id=self.get_product_id(), authorization=self.get_auth())
-        listing_image.set(file_name=logo_large, file_path=app_path, logo_type="AzureLogoLarge")
-        listing_image.set(file_name=logo_small, file_path=app_path, logo_type="AzureLogoSmall")
-        listing_image.set(file_name=logo_medium, file_path=app_path, logo_type="AzureLogoMedium")
-        listing_image.set(file_name=logo_wide, file_path=app_path, logo_type="AzureLogoWide")
+
+        if update_image:
+            logo_large = json_config["offer_listing"]["listing_logos"]["logo_large"]
+            logo_medium = json_config["offer_listing"]["listing_logos"]["logo_medium"]
+            logo_small = json_config["offer_listing"]["listing_logos"]["logo_small"]
+            logo_wide = json_config["offer_listing"]["listing_logos"]["logo_wide"]
+
+            if not os.path.isfile(os.path.join(app_path, logo_large)):
+                raise FileNotFoundError("Logo Large - Not Found")
+            if not os.path.isfile(os.path.join(app_path, logo_small)):
+                raise FileNotFoundError("Logo Small - Not Found")
+            if not os.path.isfile(os.path.join(app_path, logo_medium)):
+                raise FileNotFoundError("Logo Medium - Not Found")
+            if not os.path.isfile(os.path.join(app_path, logo_wide)):
+                raise FileNotFoundError("Logo Wide - Not Found")
+
+            listing_image = ListingImage(product_id=self.get_product_id(), authorization=self.get_auth())
+            listing_image.set(file_name=logo_large, file_path=app_path, logo_type="AzureLogoLarge")
+            listing_image.set(file_name=logo_small, file_path=app_path, logo_type="AzureLogoSmall")
+            listing_image.set(file_name=logo_medium, file_path=app_path, logo_type="AzureLogoMedium")
+            listing_image.set(file_name=logo_wide, file_path=app_path, logo_type="AzureLogoWide")
 
     def _set_properties(self, json_config):
-        industries = json_config["industries"]
-        categories = json_config["categories"]
-        version = json_config["version"]
-        offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
-        offer_listing_properties.set(industries=industries, categories=categories, version=version)
+        categories = json_config["property_settings"]["category"]
+        version = json_config["plan_overview"][0]["technical_configuration"]["version"]
 
-    def _set_resell_through_csps(self):
-        reseller = ResellerConfiguration(product_id=self.get_product_id(), authorization=self.get_auth())
-        reseller.set()
+        offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
+        offer_listing_properties.set(categories=categories, version=version)
 
     def _set_preview_audience(self, json_config):
-        azure_subscription = json_config["azure_subscription"]
+        azure_subscription = json_config["preview_audience"]["subscriptions"]
+
         availability = ProductAvailability(product_id=self.get_product_id(), authorization=self.get_auth())
         availability.set(azure_subscription=azure_subscription)
 
     def _create_plan(self, app, app_path, config_yml, json_config, plan_name):
 
-        azure_subscription = json_config["azure_subscription"]
-
+        azure_subscription = json_config["plan_overview"][0]["pricing_and_availability"]["azure_private_subscriptions"]
         self._create_new_plan(plan_name=plan_name)
 
         self._set_technical_configuration(
@@ -343,20 +343,21 @@ class ManagedApplication(Offer):
         feature_availability.set(azure_subscription=azure_subscription)
 
     def _set_technical_configuration(
-        self,
-        json_config,
-        app,
-        app_path,
-        config_yml,
+            self,
+            json_config,
+            app,
+            app_path,
+            config_yml,
     ):
 
-        version = json_config["version"]
-        allow_jit_access = json_config["allow_jit_access"]
-        policies = json_config["policies"]
+        version = json_config["plan_overview"][0]["technical_configuration"]["version"]
+
+        allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
+        policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
 
         allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(json_config)
         package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
-        package.set(
+        return package.set(
             app_zip_dir=app_path,
             file_name=app,
             version=version,
@@ -371,10 +372,11 @@ class ManagedApplication(Offer):
     def _get_allowed_actions(json_config):
         allowed_customer_actions = None
         if "allowedCustomerActions" in json_config:
-            allowed_customer_actions = json_config["allowedCustomerActions"]
+            allowed_customer_actions = json_config["plan_overview"][0]["technical_configuration"][
+                "allowedCustomerActions"]
         allowed_data_actions = None
         if "allowedDataActions" in json_config:
-            allowed_data_actions = json_config["allowedDataActions"]
+            allowed_data_actions = json_config["plan_overview"][0]["technical_configuration"]["allowedDataActions"]
         return allowed_customer_actions, allowed_data_actions
 
     def _get_variant_draft_instance_id(self, module: str, retry: int = 0) -> str:

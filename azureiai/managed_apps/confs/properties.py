@@ -20,7 +20,6 @@ class Properties(OfferConfigurations):
 
     def set(
         self,
-        industries,
         categories,
         version,
         use_enterprise_contract=True,
@@ -28,7 +27,6 @@ class Properties(OfferConfigurations):
         """
         Set Properties for Application
 
-        :param industries: Default: Retail
         :param categories:  Default: analytics
         :param version: Default 1.1.1
         :param use_enterprise_contract: Default: True
@@ -41,7 +39,7 @@ class Properties(OfferConfigurations):
 
         properties = {
             "resourceType": "AzureProperty",
-            "industries": [industries],
+            "industries": [""],
             "categories": [categories],
             "submissionVersion": submission_version,
             "productTags": ["y89royn4xnxbe5e9mfmm6ukufp1hn8gt6d6osyd83sprfgdtib8jqfmikiya5hmf"],
@@ -61,13 +59,3 @@ class Properties(OfferConfigurations):
             property_id=property_id,
             body=properties,
         )
-
-    @classmethod
-    def create(cls, ama, json_config):
-        industries = json_config["industries"]
-        categories = json_config["categories"]
-        version = json_config["version"]
-
-        offer_listing_properties = cls(product_id=ama.get_product_id(), authorization=ama.get_auth())
-        offer_listing_properties.set(industries=industries, categories=categories, version=version)
-        return offer_listing_properties

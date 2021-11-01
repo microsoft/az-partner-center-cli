@@ -40,7 +40,7 @@ class ProductAvailability(OfferConfigurations):
             "resourceType": "ProductAvailability",
             "visibility": visibility,
             "enterpriseLicensing": "Online",
-            "audiences": [{"Type": "PreviewMarketplaceGroup", "Values": [azure_subscription]}],
+            "audiences": [{"Type": "PreviewMarketplaceGroup", "Values": azure_subscription}],
             "@odata.etag": odata_etag,
             "id": settings_id,
         }

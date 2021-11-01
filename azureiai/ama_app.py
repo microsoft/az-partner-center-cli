@@ -11,6 +11,7 @@ from azureiai.managed_apps.commands import (
     list as list_command,
     publish,
     status,
+    update,
 )
 
 
@@ -27,6 +28,7 @@ def main():
         "list": list_command.run,
         "publish": publish.run,
         "status": status.run,
+        "update": update.run,
     }
 
     output = commands[args.command]()

@@ -6,9 +6,11 @@ Interface for Plan Configuration Settings
 
 Plan configurations must use the variant draft instance to retrieve settings.
 """
+from time import sleep
+
 from azureiai import RetryException
-from azureiai.managed_apps.counter import inc_counter
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
+from azureiai.managed_apps.counter import inc_counter
 
 
 class VariantPlanConfiguration(OfferConfigurations):

@@ -11,6 +11,7 @@ from tests.cli_tests import (
     create_then_delete,
     list_command,
     status_check,
+    update_ama,
 )
 
 
@@ -27,8 +28,12 @@ def test_list_mock(config_yml, monkeypatch, ama_mock):
     list_command(config_yml, monkeypatch)
 
 
-def test_create_then_delete_mock(config_yml, monkeypatch, ama_mock):
-    create_then_delete(config_yml, monkeypatch)
+def test_create_then_delete_mock(config_yml, monkeypatch, manifest_yml, ama_mock):
+    create_then_delete(config_yml, monkeypatch, manifest_yml)
+
+
+def test_create_update_delete_mock(config_yml, manifest_yml, monkeypatch, ama_mock):
+    update_ama(config_yml, manifest_yml, monkeypatch)
 
 
 def test_create_publish_delete_mock(config_yml, manifest_yml, monkeypatch, ama_mock):
@@ -43,5 +48,5 @@ def test_create_publish_missing_config_mock(config_yml, manifest_yml, monkeypatc
     create_publish_missing_config(config_yml, manifest_yml, monkeypatch)
 
 
-def test_create_publish_missing_manifest_mock(config_yml, monkeypatch, ama_mock):
-    create_publish_missing_manifest(config_yml, monkeypatch)
+def test_create_publish_missing_manifest_mock(config_yml, monkeypatch, ama_mock, manifest_yml):
+    create_publish_missing_manifest(config_yml, monkeypatch, manifest_yml)
