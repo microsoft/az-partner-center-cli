@@ -6,9 +6,11 @@ import json
 import os
 from pathlib import Path
 
+import requests
+import yaml
+
 from azureiai.managed_apps.confs import Properties, ProductAvailability, Listing, ListingImage
 from azureiai.managed_apps.utils import CONFIG_YML, APP_NAME, JSON_LISTING_CONFIG
-
 from azureiai.partner_center.abstract_offer import AbstractOffer
 from azureiai.partner_center.abstract_parser import AbstractParser
 

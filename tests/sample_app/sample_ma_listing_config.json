@@ -1,10 +1,10 @@
 {
-  "offer_setup"            : {
-    "alias"    : "industrial-ai-ama",
+  "offer_setup"                : {
+    "alias"    : "test_ma",
     "testDrive": false,
     "crm"      : ""
   },
-  "property_settings"      : {
+  "property_settings"          : {
     "categories": [
       {
         "category"   : "analytics",
@@ -16,11 +16,11 @@
     ],
     "category"  : "analytics"
   },
-  "offer_listing"          : {
-    "title"              : "MMLSpark on Databricks",
-    "publisher_name"     : "Microsoft Corp.",
-    "summary"            : "<Search results Summary*>",
-    "short_description"  : "<Short description*>",
+  "offer_listing"              : {
+    "title"               : "test_ma",
+    "publisher_name"      : "Microsoft Corp.",
+    "summary"            : "Search results Summary",
+    "short_description"  : "Short description",
     "description"        : "<p>This is a description that uses html tags </p>",
     "keywords"           : [
       "design",
@@ -63,22 +63,23 @@
     "listing_screenshots": {},
     "listing_videos"     : {}
   },
-  "preview_audience"       : {
+  "preview_audience"           : {
     "subscriptions": [
       "422895b2-0fda-4709-9ab8-7df1295fedd7"
     ]
   },
-  "technical_configuration": {
+  "technical_configuration"    : {
     "_note"         : "Only required for emitting metering events",
     "tenant_id"     : "<AAD Tenant Id>",
     "application_id": "<AAD Application ID>"
   },
-  "plan_overview"          : [
+  "plan_overview"              : [
     {
       "plan_listing"            : {
-        "title"           : "<planName*>",
-        "shortDescription": "<planSummary*>",
-        "description"     : "<planDescription*>"
+        "title"           : "test_ma_plan",
+        "shortDescription": "planSummary",
+        "description"     : "planDescription",
+        "summary"         : "planSummary"
       },
       "pricing_and_availability": {
         "visibility"                 : "private",
@@ -112,6 +113,6 @@
       }
     }
   ],
-  "co-sell"                : {},
-  "resell"                 : {}
+  "co-sell"                    : {},
+  "resell"                     : {}
 }

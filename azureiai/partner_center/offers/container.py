@@ -13,7 +13,7 @@ class Container(Offer):
     """Azure Partner Center Managed Application Submission"""
 
     def __init__(
-        self, name=None, config_yaml=CONFIG_YML, app_path: str = "sample_app", json_listing_config="ma_config.json"
+        self, name=None, config_yaml=CONFIG_YML, app_path: str = "sample_app", json_listing_config="sample_app_listing_config.json"
     ):
         super().__init__(
             name=name,

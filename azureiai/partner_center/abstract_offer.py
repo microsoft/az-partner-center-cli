@@ -13,7 +13,8 @@ from azureiai.managed_apps.confs import ResellerConfiguration
 from azureiai.managed_apps.confs.variant import FeatureAvailability
 from azureiai.managed_apps.utils import (
     get_draft_instance_id,
-    get_variant_draft_instance_id, CONFIG_YML,
+    get_variant_draft_instance_id,
+    CONFIG_YML,
 )
 from swagger_client import (
     BranchesApi,
@@ -63,7 +64,7 @@ class AbstractOffer:
                 from azure.mgmt.resource import SubscriptionClient
 
                 credential = AzureCliCredential()
-                token = credential.get_token('https://api.partner.microsoft.com').token
+                token = credential.get_token("https://api.partner.microsoft.com").token
                 self._authorization = f"Bearer {token}"
             except (CredentialUnavailableError, ClientAuthenticationError):
 

@@ -2,7 +2,7 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """CLI Wrapper for Creating, Updating, or Deleting Azure Managed Applications"""
-from azureiai.managed_apps.utils import CONFIG_YML
+from azureiai.managed_apps.utils import CONFIG_YML, APP_NAME
 from azureiai.partner_center import OfferParser
 from azureiai.partner_center.offer import Offer
 
@@ -13,7 +13,7 @@ class ManagedApp(Offer):
     """Azure Partner Center Managed Application Submission"""
 
     def __init__(
-        self, name=None, config_yaml=CONFIG_YML, app_path: str = APP_NAME, json_listing_config="ma_config.json"
+        self, name=None, config_yaml=CONFIG_YML, app_path: str = APP_NAME, json_listing_config="sample_ma_listing_config.json"
     ):
         super().__init__(
             name=name,

@@ -1,11 +1,11 @@
 import argparse
 from abc import ABCMeta, abstractmethod
 
-from azureiai.partner_center.offer import Offer
+from azureiai.partner_center.abstract_offer import AbstractOffer
 
 
 class AbstractParser(metaclass=ABCMeta):
-    def __init__(self, submission_type=Offer):
+    def __init__(self, submission_type=AbstractOffer):
         self.parser = argparse.ArgumentParser("azpc")
         self.parser.add_argument("subgroup", type=str, help="Which subgroup to run")
         self.parser.add_argument("command", type=str, help="Which command to run")
