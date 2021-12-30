@@ -12,4 +12,4 @@ wget~=3.2
 
 pytest~=6.0.1
 typing~=3.7.4.3
-setuptools~=49.2.1
+setuptools~=60.2.0
