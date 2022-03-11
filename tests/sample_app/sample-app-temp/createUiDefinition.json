@@ -1,0 +1,182 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Azure.CreateUIDef",
+    "version": "0.1.2-preview",
+    "parameters": {
+        "basics": [ ],
+        "steps": [
+            {
+                "name": "appAuthorizationConfig",
+                "label": "Deployment Authorization",
+                "elements": [
+                    {
+                        "name": "servicePrincipalText",
+                        "type": "Microsoft.Common.TextBlock",
+                        "visible": true,
+                        "options": {
+                            "text": "Please provide the service principal credentials for deploying the managed application."
+                        }
+                    },
+                  {
+                    "name": "servicePrincipalClientID",
+                    "type": "Microsoft.Common.PasswordBox",
+                    "label": {
+                      "password": "Service Principal Client ID",
+                      "confirmPassword": "Confirm Service Principal Client ID"
+                    },
+                    "toolTip": "Service principal client/application ID.",
+                    "constraints": {
+                      "required": true
+                    },
+                    "options": {
+                      "hideConfirmation": true
+                    },
+                    "visible": true
+                  },
+                  {
+                    "name": "servicePrincipalSecret",
+                    "type": "Microsoft.Common.PasswordBox",
+                    "label": {
+                      "password": "Service Princiapl Client Password",
+                      "confirmPassword": "Confirm Service Princiapl Client Password"
+                    },
+                    "toolTip": "Service principal password/secret.",
+                    "constraints": {
+                      "required": true
+                    },
+                    "options": {
+                      "hideConfirmation": true
+                    },
+                    "visible": true
+                  }
+                ]
+            },
+            {
+                "name": "appDataModelConfig",
+                "label": "Data and Model",
+              "elements": [
+                {
+                  "name": "modelSelectionText",
+                  "type": "Microsoft.Common.TextBlock",
+                  "visible": true,
+                  "options": {
+                    "text": "Please provide the model used for the recommendation solution. NOTE currently only the product recommendation model is supported."
+                  }
+                },
+                {
+                  "name": "machineLearningModelSelection",
+                  "type": "Microsoft.Common.DropDown",
+                  "label": "Machine Learning Model Selection",
+                  "defaultValue": "ProductRecommendation",
+                  "toolTip": "The type of algorithm for pipeline setup.",
+                  "constraints": {
+                    "allowedValues": [
+                      {
+                        "label": "ProductRecommendation",
+                        "value": "ProductRecommendation"
+                      }
+                    ],
+                    "required": true
+                  },
+                  "visible": true
+                },
+                {
+                  "name": "dataSelectionText",
+                  "type": "Microsoft.Common.TextBlock",
+                  "visible": true,
+                  "options": {
+                    "text": "Please provide the data used for the recommendation solution. Depending on the needs, user can choose either the built-in data generated along with the deployment or the self-defined data generated from the IDW pipeline. The built-in data offers choices of BaseData produced by a data simulation tool and TPC data that from the TPC benchmark tool."
+                  }
+                },
+                {
+                  "name": "dataName",
+                  "type": "Microsoft.Common.DropDown",
+                  "label": "Data Selection",
+                  "defaultValue": "Built-in Base Data",
+                  "toolTip": "Select data used for the solution. Both built-in synthetic data and IDW-generated are supported.",
+                  "constraints": {
+                    "allowedValues": [
+                      {
+                        "label": "Industry Data Workbench Data",
+                        "value": "IDWData"
+                      },
+                      {
+                        "label": "Built-in Base Data",
+                        "value": "BaseData"
+                      },
+                      {
+                        "label": "Built-in TPC Data",
+                        "value": "TPC"
+                      }
+                    ],
+                    "required": true
+                  },
+                  "visible": true
+                },
+                {
+                  "name": "azureDataLakeStorageAccount",
+                  "type": "Microsoft.Common.TextBox",
+                  "label": "Azure Storage Account",
+                  "toolTip": "The existing Azure Storage Account used for preserving the IDM data.",
+                  "visible": true,
+                  "constraints": {
+                    "required": true
+                  }
+                },
+                {
+                  "name": "azureDataLakeStorageContainer",
+                  "type": "Microsoft.Common.TextBox",
+                  "label": "Azure Storage Container",
+                  "toolTip": "The Container used for preserving the IDM data in the Azure Storage Account.",
+                  "visible": true,
+                  "constraints": {
+                    "required": true
+                  }
+                },
+                {
+                  "name": "industryDataModelName",
+                  "type": "Microsoft.Common.TextBox",
+                  "label": "Industry Data Model Name",
+                  "toolTip": "The data model name used for the IDM data.",
+                  "visible": "[equals(steps('appDataModelConfig').dataName, 'IDWData')]",
+                  "constraints": {
+                    "required": "[equals(steps('appDataModelConfig').dataName, 'IDWData')]"
+                  }
+                },
+                {
+                  "name": "logicalDataModelDirectory",
+                  "type": "Microsoft.Common.TextBox",
+                  "label": "Logical Model Directory",
+                  "toolTip": "The root directory for the logical model for the IDM data",
+                  "visible": "[equals(steps('appDataModelConfig').dataName, 'IDWData')]",
+                  "constraints": {
+                    "required": "[equals(steps('appDataModelConfig').dataName, 'IDWData')]"
+                  }
+                },
+                {
+                  "name": "physicalDataModelDirectory",
+                  "type": "Microsoft.Common.TextBox",
+                  "label": "Physical Model Directory",
+                  "toolTip": "The root directory for the physical model for the IDM data",
+                  "visible": "[equals(steps('appDataModelConfig').dataName, 'IDWData')]",
+                  "constraints": {
+                    "required": "[equals(steps('appDataModelConfig').dataName, 'IDWData')]"
+                  }
+                }
+              ]
+            }
+        ],
+      "outputs": {
+        "servicePrincipalClientID": "[steps('appAuthorizationConfig').servicePrincipalClientID]",
+        "servicePrincipalSecret": "[steps('appAuthorizationConfig').servicePrincipalSecret]",
+        "machineLearningModel": "[steps('appDataModelConfig').machineLearningModelSelection]",
+        "dataName": "[steps('appDataModelConfig').dataName]",
+        "azureDataLakeStorageAccount": "[steps('appDataModelConfig').azureDataLakeStorageAccount]",
+        "azureDataLakeStorageContainer": "[steps('appDataModelConfig').azureDataLakeStorageContainer]",
+        "industryDataModelName": "[steps('appDataModelConfig').industryDataModelName]",
+        "logicalDataModelDirectory": "[steps('appDataModelConfig').logicalDataModelDirectory]",
+        "physicalDataModelDirectory": "[steps('appDataModelConfig').physicalDataModelDirectory]",
+        "location": "[location()]"
+      }
+    }
+}

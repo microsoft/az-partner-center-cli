@@ -5,11 +5,11 @@
 import json
 import sys
 
-from azureiai.partner_center.offer import OfferParser
-from azureiai.partner_center.plan import PlanCLIParser, Plan
+from azureiai.partner_center.cli_parser import CLIParser
+from azureiai.partner_center.plan import PlanCLIParser
 
 
-def run(submission: OfferParser):
+def run(submission: CLIParser):
     """CLI Application"""
     subgroup = sys.argv[1]
     command = sys.argv[2]
@@ -20,12 +20,12 @@ def run(submission: OfferParser):
     Subgroups:
         plan    : Application Plan
 
-    Commands:    
+    Commands:
         list    : list Applications
         create  : create Application
         show    : show Application
         update  : update Application
-        delete  : delete Application        
+        delete  : delete Application
         publish : publish Application"""
     if command in ["--help", "-h"]:
         return help_text
@@ -51,13 +51,13 @@ def run_plan():
     help_text = f"""
     Group:
         azpc {subgroup} {command}: Manage Partner Center Plan submissions.
- 
-    Commands:    
+
+    Commands:
         list    : list Application Plans
         create  : create Application Plan
         show    : show Application Plan
         update  : update Application Plan
-        delete  : delete Application Plan   
+        delete  : delete Application Plan
         publish : publish Application Plan
 """
     if plan_command in ["--help", "-h"]:

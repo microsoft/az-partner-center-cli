@@ -1,6 +1,6 @@
 {
   "offer_setup"                : {
-    "alias"    : "test_vm",
+    "alias"    : "industrial-ai-ama",
     "testDrive": false,
     "crm"      : ""
   },
@@ -17,10 +17,10 @@
     "category"  : "analytics"
   },
   "offer_listing"              : {
-    "title"               : "test_vm",
+    "title"               : "MMLSpark on Databricks",
     "publisher_name"      : "Microsoft Corp.",
-    "summary"            : "Search results Summary",
-    "short_description"  : "Short description",
+    "summary"            : "<Search results Summary*>",
+    "short_description"  : "<Short description*>",
     "description"        : "<p>This is a description that uses html tags </p>",
     "keywords"           : [
       "design",
@@ -76,10 +76,9 @@
   "plan_overview"              : [
     {
       "plan_listing"            : {
-        "title"           : "test_vm_plan",
-        "shortDescription": "planSummary",
-        "description"     : "planDescription",
-        "summary"         : "planSummary"
+        "title"           : "<planName*>",
+        "shortDescription": "<planSummary*>",
+        "description"     : "<planDescription*>"
       },
       "pricing_and_availability": {
         "visibility"                 : "private",

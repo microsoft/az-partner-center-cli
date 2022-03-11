@@ -4,7 +4,7 @@
 import pytest
 
 from swagger_client.rest import ApiException
-from tests.cli_2_tests import (
+from tests.cli_groups_tests import (
     st_list_command,
     st_create_command,
     st_show_command,
@@ -25,7 +25,7 @@ def test_st_create(config_yml, monkeypatch):
     try:
         st_show_command(config_yml, monkeypatch)
 
-        print("Managed App Found")
+        print("Solution Template Found")
         with pytest.raises(ApiException):
             st_create_command(config_yml, monkeypatch)
     except:

@@ -1,202 +1,131 @@
 #  ---------------------------------------------------------
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
-"""CLI Wrapper for Creating, Updating, or Deleting Azure Managed Applications"""
-import json
+"""Offer Interface"""
 import os
-from pathlib import Path
+from abc import abstractmethod
 
-import requests
 import yaml
+from adal import AuthenticationContext
 
-from azureiai.managed_apps.confs import Properties, ProductAvailability, Listing, ListingImage
-from azureiai.managed_apps.utils import CONFIG_YML, APP_NAME, JSON_LISTING_CONFIG
-from azureiai.partner_center.abstract_offer import AbstractOffer
-from azureiai.partner_center.abstract_parser import AbstractParser
+from azureiai.managed_apps.confs import ResellerConfiguration
+from azureiai.managed_apps.confs.variant import FeatureAvailability
+from azureiai.managed_apps.utils import (
+    AAD_CRED,
+    AAD_ID,
+    TENANT_ID,
+    get_draft_instance_id,
+    get_variant_draft_instance_id,
+)
+from swagger_client import (
+    BranchesApi,
+    ProductApi,
+    ProductAvailabilityApi,
+    PropertyApi,
+    SubmissionApi,
+    VariantApi,
+)
 
 
-class Offer(AbstractOffer):
-    """New Version of Offer used for v2 CLI"""
+class Offer:
+    """Azure Partner Portal - Offer"""
 
-    def __init__(
-        self,
-        name=None,
-        config_yaml=CONFIG_YML,
-        resource_type="",
-        app_path: str = APP_NAME,
-        json_listing_config: str = JSON_LISTING_CONFIG,
-    ):
-        super().__init__(name, config_yaml)
-        self.resource_type = resource_type
-        self.app_path = app_path
-        self.json_listing_config = json_listing_config
+    def __init__(self, name=None, config_yaml=r"config.yml"):
+        self.name = name
+        self.config_yaml = config_yaml
+        self._authorization = None
 
-    def list_contents(self):
-        """List Azure Submissions."""
-        api_response = self._apis["product"].products_get(
-            authorization=self.get_auth(), filter=f"ResourceType eq '{self.resource_type}'"
-        )
-        return api_response.to_dict()
-
-    def create(self):
-        """Create new Azure Submission and set product id."""
-        body = {
-            "resourceType": self.resource_type,
-            "name": self.name,
-            "externalIDs": [{"type": "AzureOfferId", "value": self.name}],
-            "isModularPublishing": True,
+        self._apis = {
+            "product": ProductApi(),
+            "variant": VariantApi(),
+            "property": PropertyApi(),
+            "branches": BranchesApi(),
+            "product_availability": ProductAvailabilityApi(),
+            "submission": SubmissionApi(),
         }
-        api_response = self._apis["product"].products_post(authorization=self.get_auth(), body=body)
-        self._ids["product_id"] = api_response.id
-        self.update()
-        return api_response.to_dict()
 
-    def update(self):
-        """Update Existing Application"""
-        if not self._ids["product_id"]:
-            self.show()
+        self._ids = {
+            "product_id": "",
+            "plan_id": None,
+            "submission_id": None,
+            "availability_draft_instance_id": None,
+            "availability_id": None,
+            "offer_id": "",
+        }
 
-        self._update_properties()
-        self._update_offer_listing()
-        self._update_preview_audience()
-        self._set_resell_through_csps()
+    def get_auth(self) -> str:
+        """
+        Create Authentication Header
 
+        :return: Authorization Header contents
+        """
+        if self._authorization is None:
+            with open(self.config_yaml, encoding="utf8") as file:
+                settings = yaml.safe_load(file)
+
+            client_id = os.getenv(AAD_ID, settings["aad_id"])
+            client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
+            tenant_id = os.getenv(TENANT_ID, settings["tenant_id"])
+
+            auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
+            token_response = auth_context.acquire_token_with_client_credentials(
+                resource="https://api.partner.microsoft.com",
+                client_id=client_id,
+                client_secret=client_secret,
+            )
+            self._authorization = f"Bearer {token_response['accessToken']}"
+        return self._authorization
+
+    def get_product_id(self) -> str:
+        """
+        Get or Set Product ID
+
+        Will call create method if AMA has not yet been created.
+        :return: Product ID of new Managed Application
+        """
+
+        if self._ids["product_id"] == "":
+            self.create()
         return self._ids["product_id"]
 
-    def show(self):
-        """Show details of an Azure Submission"""
-        filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
-        api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
-        submissions = api_response.to_dict()
-        for submission in submissions["value"]:
-            if submission["name"] == self.name:
-                self._ids["product_id"] = submission["id"]
-                return submission
-        raise LookupError(f"{self.resource_type} with this name not found: {self.name}")
+    def get_offer_id(self) -> str:
+        """
+        Get Offer ID
 
-    def delete(self):
-        """List Azure Submissions."""
-        if not self._ids["product_id"]:
-            self.show()
-        api_response = self._apis["product"].products_product_id_delete(
-            product_id=self._ids["product_id"], authorization=self.get_auth()
-        )
-        return api_response
+        Return Offer ID generated at creation time.
+        :return: Offer ID of new Managed Application
+        """
+        if self._ids["offer_id"] == "":
+            self.create()
+        return self._ids["offer_id"]
 
-    def publish(self):
-        """Publish Submission by submitting Instance IDs"""
-        body = {
-            "resourceType": "SubmissionCreationRequest",
-            "targets": [{"type": "Scope", "value": "preview"}],
-            "resources": [
-                {"type": "Availability", "value": self._get_draft_instance_id("Availability")},
-                {"type": "Property", "value": self._get_draft_instance_id("Property")},
-                {"type": "Package", "value": self._get_draft_instance_id("Package")},
-                {"type": "Listing", "value": self._get_draft_instance_id("Listing")},
-                {"type": "Cosell", "value": self._get_draft_instance_id("Cosell")},
-                {"type": "ResellerConfiguration", "value": self.get_product_id() + "-ResellerInstance"},
-            ],
-            "variantResources": [
-                {
-                    "variantID": self._ids["plan_id"],
-                    "resources": [
-                        {"type": "Availability", "value": self._get_variant_draft_instance_id("Availability")},
-                        {"type": "Package", "value": self._get_variant_draft_instance_id("Package")},
-                        {"type": "Listing", "value": self._get_variant_draft_instance_id("Listing")},
-                    ],
-                }
-            ],
-        }
+    def get_plan_id(self) -> str:
+        """
+        Get or Set Product ID
 
-        response = self._apis["submission"].products_product_id_submissions_post(
-            authorization=self.get_auth(),
-            product_id=self.get_product_id(),
-            body=body,
-        )
+        Will call create method if AMA has not yet been created.
+        :return: Product ID of new Managed Application
+        """
 
-        self._ids["submission_id"] = response.id
-        return response
+        if self._ids["plan_id"] == "":
+            self.create()
+        return self._ids["plan_id"]
 
-    def _update_properties(self):
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
+    @abstractmethod
+    def create(self) -> str:
+        """Create new Azure Managed Application and set product id."""
 
-        categories = json_config["property_settings"]["category"]
-        version = json_config["plan_overview"][0]["technical_configuration"]["version"]
+    def _get_draft_instance_id(self, module: str, retry: int = 0):
+        """Call Branch API to get Configuration ID"""
+        return get_draft_instance_id(self.get_product_id(), self.get_auth(), module, retry)
 
-        offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
-        offer_listing_properties.set(categories=categories, version=version)
+    def _get_variant_draft_instance_id(self, module: str, retry: int = 0) -> str:
+        return get_variant_draft_instance_id(self.get_product_id(), self.get_auth(), module, retry)
 
-    def _update_preview_audience(self):
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
+    def _set_resell_through_csps(self):
+        reseller = ResellerConfiguration(product_id=self.get_product_id(), authorization=self.get_auth())
+        reseller.set()
 
-        azure_subscription = json_config["preview_audience"]["subscriptions"]
-        availability = ProductAvailability(product_id=self.get_product_id(), authorization=self.get_auth())
-        availability.set(azure_subscription=azure_subscription)
-
-    def _update_offer_listing(self, update_image=True):
-        listing = Listing(product_id=self.get_product_id(), authorization=self.get_auth())
-        listing.set(properties=Path(self.app_path).joinpath(self.json_listing_config))
-
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
-
-        if update_image:
-            logo_large = json_config["offer_listing"]["listing_logos"]["logo_large"]
-            logo_medium = json_config["offer_listing"]["listing_logos"]["logo_medium"]
-            logo_small = json_config["offer_listing"]["listing_logos"]["logo_small"]
-            logo_wide = json_config["offer_listing"]["listing_logos"]["logo_wide"]
-
-            if not os.path.isfile(os.path.join(self.app_path, logo_large)):
-                raise FileNotFoundError("Logo Large - Not Found")
-            if not os.path.isfile(os.path.join(self.app_path, logo_small)):
-                raise FileNotFoundError("Logo Small - Not Found")
-            if not os.path.isfile(os.path.join(self.app_path, logo_medium)):
-                raise FileNotFoundError("Logo Medium - Not Found")
-            if not os.path.isfile(os.path.join(self.app_path, logo_wide)):
-                raise FileNotFoundError("Logo Wide - Not Found")
-
-            listing_image = ListingImage(product_id=self.get_product_id(), authorization=self.get_auth())
-            listing_image.set(file_name=logo_large, file_path=self.app_path, logo_type="AzureLogoLarge")
-            listing_image.set(file_name=logo_small, file_path=self.app_path, logo_type="AzureLogoSmall")
-            listing_image.set(file_name=logo_medium, file_path=self.app_path, logo_type="AzureLogoMedium")
-            listing_image.set(file_name=logo_wide, file_path=self.app_path, logo_type="AzureLogoWide")
-
-
-class OfferParser(AbstractParser):
-    """Interface for Submission Types"""
-
-    def create(self) -> {}:
-        """Create a new Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.name).create()
-
-    def delete(self) -> {}:
-        """Delete a Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.name).delete()
-
-    def list_command(self) -> {}:
-        """List Managed Applications"""
-        return self.submission_type().list_contents()
-
-    def publish(self) -> {}:
-        """Publish a Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.name).publish()
-
-    def show(self) -> {}:
-        """Show a Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.name).show()
-
-    def update(self) -> {}:
-        """Update a Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.name).update()
-
-    def _add_name_argument(self):
-        self.parser.add_argument(self._name, type=str, help="Managed App Name")
-        args = self.parser.parse_args()
-        return args
+    def _set_pricing_and_availability(self, azure_subscription):
+        feature_availability = FeatureAvailability(product_id=self.get_product_id(), authorization=self.get_auth())
+        feature_availability.set(azure_subscription=azure_subscription)
