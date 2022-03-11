@@ -2,6 +2,7 @@
 #  Copyright (c) 2020 Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 import pytest
+from pathlib import Path
 
 from tests.cli_groups_tests import (
     vm_list_command,

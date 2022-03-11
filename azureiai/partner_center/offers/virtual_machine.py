@@ -16,13 +16,13 @@ from azureiai.partner_center.cli_parser import CLIParser
 from azureiai.partner_center.submission import Submission
 
 AZURE_VIRTUAL_MACHINE = "AzureThirdPartyVirtualMachine"
-
+URL_BASE = "https://cloudpartner.azure.com/api/publishers"
 
 class VirtualMachine(Submission):
     """Azure Partner Center Virtual Machine offer."""
 
     def __init__(
-        self, name=None, config_yaml=r"config.yml", app_path: str = "sample_app", json_listing_config="vm_config.json"
+        self, name=None, notification_emails=None, config_yaml=r"config.yml", app_path: str = "sample_app", json_listing_config="vm_config.json"
     ):
         super().__init__(
             name=name,
@@ -31,20 +31,55 @@ class VirtualMachine(Submission):
             app_path=app_path,
             json_listing_config=json_listing_config,
         )
+        self.notification_emails = notification_emails
 
     def update(self):
         """Update Existing Application"""
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
-        publisher_id = json_config["publisherId"]
-        offer_id = json_config["id"]
+        publisher_id = json_config['publisherId']
+        offer_id = json_config['id']
 
-        url = f"https://cloudpartner.azure.com/api/publishers/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
+        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
 
         response = requests.put(url, json=json_config, headers=headers)
         if response.status_code != 200:
+            raise ConnectionError(str(response))
+
+        return response
+
+    def status(self):
+        """Get the Status of an Existing Application"""
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+
+        publisher_id = json_config['publisherId']
+        offer_id = json_config['id']
+
+        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/status?api-version=2017-10-31"
+        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+
+        response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            raise ConnectionError(str(response))
+
+        return response.json()
+
+    def publish(self):
+        """Publsih Existing Application"""
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+
+        publisher_id = json_config['publisherId']
+        offer_id = json_config['id']
+
+        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/publish?api-version=2017-10-31"
+        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+
+        response = requests.post(url, json={'metadata': {'notification-emails': self.notification_emails}}, headers=headers)
+        if response.status_code != 202:
             raise ConnectionError(str(response))
 
         return response
@@ -69,7 +104,7 @@ class VirtualMachine(Submission):
                 client_id=client_id,
                 client_secret=client_secret,
             )
-            self._authorization = token_response["accessToken"]
+            self._authorization = token_response['accessToken']
         return self._authorization
 
 
