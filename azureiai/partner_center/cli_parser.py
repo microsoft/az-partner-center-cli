@@ -25,6 +25,7 @@ class CLIParser:
         self.submission_type = submission_type
 
         self._name = "--name"
+        self._notification_emails = "--notification-emails"
 
     def create(self) -> {}:
         """Create a new Managed Application"""
@@ -42,8 +43,12 @@ class CLIParser:
 
     def publish(self) -> {}:
         """Publish a Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.name).publish()
+        if( "VirtualMachine" not in str(self.submission_type)):
+            args = self._add_name_argument()
+            return self.submission_type(args.name).publish()
+        else:
+            args = self._add_name_notification_emails_argument()
+            return self.submission_type(args.name, args.notification_emails).publish()
 
     def show(self) -> {}:
         """Show a Managed Application"""
@@ -55,7 +60,18 @@ class CLIParser:
         args = self._add_name_argument()
         return self.submission_type(args.name).update()
 
+    def status(self) -> {}:
+        """Get the Status of an offer"""
+        args = self._add_name_argument()
+        return self.submission_type(args.name).status()
+
     def _add_name_argument(self):
         self.parser.add_argument(self._name, type=str, help="Managed App Name")
+        args = self.parser.parse_args()
+        return args
+
+    def _add_name_notification_emails_argument(self):
+        self.parser.add_argument(self._name, type=str, required=True, help="Managed App Name")
+        self.parser.add_argument(self._notification_emails, type=str, required=True, help="Notification e-mails to use when publishing")
         args = self.parser.parse_args()
         return args
