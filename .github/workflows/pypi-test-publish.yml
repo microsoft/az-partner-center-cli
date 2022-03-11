@@ -27,4 +27,4 @@ jobs:
       run: |
         python3.7 -m pip install --upgrade pip
         python3.7 -m pip install virtualenv pip-tools
-        pip install --extra-index-url https://test.pypi.org/simple azure-gamedev-spark
+        pip install --extra-index-url https://test.pypi.org/simple az-partner-center-cli
