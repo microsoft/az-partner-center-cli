@@ -2,6 +2,10 @@
 
 name: MyPy
 
+concurrency: 
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -14,7 +18,7 @@ on:
   workflow_dispatch:
 jobs:
   linter_name:
-    name: runner / black formatter
+    name: type checking / mypy 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
