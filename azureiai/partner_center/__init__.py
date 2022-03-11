@@ -26,7 +26,8 @@ def run(submission: CLIParser):
         show    : show Application
         update  : update Application
         delete  : delete Application
-        publish : publish Application"""
+        publish : publish Application
+        status  : status Application"""
     if command in ["--help", "-h"]:
         return help_text
 
@@ -35,6 +36,7 @@ def run(submission: CLIParser):
         "delete": submission.delete,
         "list": submission.list_command,
         "publish": submission.publish,
+        "status": submission.status,
         "show": submission.show,
         "update": submission.update,
         "plan": run_plan,
