@@ -320,11 +320,11 @@ def _assert_offer_listing(offer, json_listing_config):
     assert offer_listing["listing_uris"]  # == json_listing_config['listing_uris'] random things aren't matching
     assert offer_listing["listing_contacts"]  # == json_listing_config['listing_contacts']
     assert offer_listing["language_code"] == "en-us"
-    assert offer_listing["title"] == json_listing_config["offer_listing"]['title']
-    assert offer_listing["description"] == json_listing_config['offer_listing']['description']
-    assert offer_listing["short_description"] == json_listing_config["offer_listing"]['short_description']
-    assert offer_listing["publisher_name"] == json_listing_config["offer_listing"]['publisher_name']
-    assert offer_listing['keywords'] == json_listing_config["offer_listing"]['keywords']
+    assert offer_listing["title"] == json_listing_config["offer_listing"]["title"]
+    assert offer_listing["description"] == json_listing_config["offer_listing"]["description"]
+    assert offer_listing["short_description"] == json_listing_config["offer_listing"]["short_description"]
+    assert offer_listing["publisher_name"] == json_listing_config["offer_listing"]["publisher_name"]
+    assert offer_listing["keywords"] == json_listing_config["offer_listing"]["keywords"]
     assert not offer_listing["allow_only_managed_disk_deployments"]
     assert not offer_listing["compatible_products"]
 

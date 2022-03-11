@@ -11,7 +11,7 @@ from azureiai import generate_swagger
 SWAGGER_JSON = "Partner_Ingestion_SwaggerDocument.json"
 generate_swagger(SWAGGER_JSON)
 
-NAME = "azureiai-managed-apps"
+NAME = "az-partner-center-cli"
 VERSION = environ.get("VERSION", "0.0.0")
 
 REQUIRES = [
@@ -30,10 +30,7 @@ REQUIRES = [
     "cryptography>=3.3.1",
 ]
 
-ENTRY_POINTS = {"console_scripts": [
-    "ama=azureiai.ama_app:main",
-    "azpc=azureiai.azpc_app:main"
-]}
+ENTRY_POINTS = {"console_scripts": ["ama=azureiai.ama_app:main", "azpc=azureiai.azpc_app:main"]}
 
 setup(
     name=NAME,

@@ -31,8 +31,8 @@ def test_vm_get(config_yml, monkeypatch, app_path_fix):
     with open(Path(app_path_fix).joinpath("vm_listing_config.json"), "r", encoding="utf8") as read_file:
         json_config = json.load(read_file)
 
-        publisher_id = json_config['publisherId']
-        offer_id = json_config['id']
+        publisher_id = json_config["publisherId"]
+        offer_id = json_config["id"]
 
         url = f"https://cloudpartner.azure.com/api/publishers/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
         headers = {"Authorization": "Bearer " + management_access_key(), "Content-Type": "application/json"}
@@ -46,26 +46,30 @@ def test_vm_get(config_yml, monkeypatch, app_path_fix):
 def test_vm_update(config_yml, monkeypatch, app_path_fix):
     with open(Path(app_path_fix).joinpath("vm_listing_config.json"), "r", encoding="utf8") as read_file:
         json_config = json.load(read_file)
-        json_config['publisherId'] = 'microsoftcorporation1590077852919'
+        json_config["publisherId"] = "microsoftcorporation1590077852919"
 
-        json_config['definition']['plans'][0]['microsoft-azure-virtualmachines.vmImages']['0.0.0'][
-            'osVhdUrl'] = os.getenv("win10UnrealVHD")
-        json_config['definition']['plans'][1]['microsoft-azure-virtualmachines.vmImages']['0.0.0'][
-            'osVhdUrl'] = os.getenv("win10UnityVHD")
-        json_config['definition']['plans'][2]['microsoft-azure-virtualmachines.vmImages']['0.0.0'][
-            'osVhdUrl'] = os.getenv("ws2019UnrealVHD")
-        json_config['definition']['plans'][3]['microsoft-azure-virtualmachines.vmImages']['0.0.0'][
-            'osVhdUrl'] = os.getenv("ws2019UnityVHD")
+        json_config["definition"]["plans"][0]["microsoft-azure-virtualmachines.vmImages"]["0.0.0"][
+            "osVhdUrl"
+        ] = os.getenv("win10UnrealVHD")
+        json_config["definition"]["plans"][1]["microsoft-azure-virtualmachines.vmImages"]["0.0.0"][
+            "osVhdUrl"
+        ] = os.getenv("win10UnityVHD")
+        json_config["definition"]["plans"][2]["microsoft-azure-virtualmachines.vmImages"]["0.0.0"][
+            "osVhdUrl"
+        ] = os.getenv("ws2019UnrealVHD")
+        json_config["definition"]["plans"][3]["microsoft-azure-virtualmachines.vmImages"]["0.0.0"][
+            "osVhdUrl"
+        ] = os.getenv("ws2019UnityVHD")
 
-        json_config['definition']['offer']['microsoft-azure-marketplace.smallLogo'] = os.getenv("smallLogo")
-        json_config['definition']['offer']['microsoft-azure-marketplace.mediumLogo'] = os.getenv("mediumLogo")
-        json_config['definition']['offer']['microsoft-azure-marketplace.largeLogo'] = os.getenv("largeLogo")
-        json_config['definition']['offer']['microsoft-azure-marketplace.wideLogo'] = os.getenv("wideLogo")
-        json_config['definition']['offer']['microsoft-azure-marketplace.heroLogo'] = os.getenv("heroLogo")
+        json_config["definition"]["offer"]["microsoft-azure-marketplace.smallLogo"] = os.getenv("smallLogo")
+        json_config["definition"]["offer"]["microsoft-azure-marketplace.mediumLogo"] = os.getenv("mediumLogo")
+        json_config["definition"]["offer"]["microsoft-azure-marketplace.largeLogo"] = os.getenv("largeLogo")
+        json_config["definition"]["offer"]["microsoft-azure-marketplace.wideLogo"] = os.getenv("wideLogo")
+        json_config["definition"]["offer"]["microsoft-azure-marketplace.heroLogo"] = os.getenv("heroLogo")
 
         print(json.dumps(json_config, indent=4))
-        publisher_id = json_config['publisherId']
-        offer_id = json_config['id']
+        publisher_id = json_config["publisherId"]
+        offer_id = json_config["id"]
 
         url = f"https://cloudpartner.azure.com/api/publishers/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
         headers = {"Authorization": "Bearer " + management_access_key(), "Content-Type": "application/json"}
@@ -80,10 +84,10 @@ def management_access_key():
     auth_context = AuthenticationContext("https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47")
     token_response = auth_context.acquire_token_with_client_credentials(
         resource="https://cloudpartner.azure.com",
-        client_id=credential()['aad_id'],
-        client_secret=credential()['aad_secret'],
+        client_id=credential()["aad_id"],
+        client_secret=credential()["aad_secret"],
     )
-    return token_response['accessToken']
+    return token_response["accessToken"]
 
 
 def _get_access_key(resource):
@@ -200,6 +204,7 @@ def test_vm_plan_delete(config_yml, monkeypatch):
 @pytest.mark.integration
 def test_vm_delete(config_yml, monkeypatch):
     vm_delete_command(config_yml, monkeypatch)
+
 
 @pytest.mark.integration
 def test_vm_publish(config_yml, monkeypatch):

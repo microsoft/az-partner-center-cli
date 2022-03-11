@@ -37,8 +37,8 @@ class VirtualMachine(Submission):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
-        publisher_id = json_config['publisherId']
-        offer_id = json_config['id']
+        publisher_id = json_config["publisherId"]
+        offer_id = json_config["id"]
 
         url = f"https://cloudpartner.azure.com/api/publishers/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
@@ -69,7 +69,7 @@ class VirtualMachine(Submission):
                 client_id=client_id,
                 client_secret=client_secret,
             )
-            self._authorization = token_response['accessToken']
+            self._authorization = token_response["accessToken"]
         return self._authorization
 
 
