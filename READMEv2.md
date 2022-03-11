@@ -108,6 +108,7 @@ azpc st publish --name $name
 ```shell script
 vm_name='dciborow-vm'
 plan_name='test-plan'
+notificationEmails='default@microsoft.com'
 
 cat manifest.yml
 
@@ -123,7 +124,8 @@ azpc vm plan show   --name $name --plan_name $plan_name
 azpc vm plan update --name $name --plan_name $plan_name
 # azpc vm plan delete --name $name --plan_name $plan_name
 
-azpc vm publish --name $name
+azpc vm publish --name $name --notification-emails $notificationEmails
+azpc vm status --name $name
 ```
 
 #### Container Image
