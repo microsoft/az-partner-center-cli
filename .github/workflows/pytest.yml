@@ -5,38 +5,34 @@ concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: 3.7
-      - name: Set Configurations
-        run: |
-          echo "tenant_id: \"${{ secrets.TENANT_ID }}\"" >> config.yml
-          echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
-          echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
-          echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
-          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
-
-      - name: TOX Run Unit Tests
-        uses: ymyzk/run-tox-gh-actions@v0.1
-        with: 
-          tox-args: -e py37-unit
-
-      - name: TOX Run Integration Tests
-        uses: ymyzk/run-tox-gh-actions@v0.1
-        with: 
-          tox-args: -e py37-integration
+    - uses: actions/checkout@v2
+    - name: Set Configurations
+      run: |
+        echo "tenant_id: \"${{ secrets.TENANT_ID }}\"" >> config.yml
+        echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
+        echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
+        echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
+        echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml        
+    - name: Tox Env Unit
+      uses: paolorechia/pox@v1.0.1
+      with:
+        tox_env: py37-unit
+    - name: Tox Env Integration
+      uses: paolorechia/pox@v1.0.1
+      with:
+        tox_env: py37-integration        
