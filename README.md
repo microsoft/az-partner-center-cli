@@ -1,4 +1,4 @@
-# azureiai-managed-apps
+# az-partner-center-cli
 This application wraps the swagger generate client of the partner ingestion apis. 
 The documentation can be found [here](https://apidocs.microsoft.com/services/partneringestion/#/)
 
@@ -29,19 +29,19 @@ Python 3.7+ (Expected to work with Python 3.6+)
 # Must not use -e when doing pip install
 
 # From Production Release PyPi
-pip install azure-ai-managed-app-utils
+pip install az-partner-center-cli
 
 # From Release Candidate PyPi
-pip install --extra-index-url=https://test.pypi.com/simple/ azure-ai-managed-app-utils
+pip install --extra-index-url=https://test.pypi.com/simple/ az-partner-center-cli
 
 # From Source
-git clone https://github.com/microsoft/ai-managed-app-utils
-pip install src/ai-managed-app-utils
+git clone https://github.com/microsoft/az-partner-center-cli
+pip install az-partner-center-cli
 ```
 
 #### Usage
 ```shell script
-ama_name='dciborow-test'
+ama_name='sample-test'
 product_id=$(ama create --ama-name $ama_name 2>&1 | jq '.product_id' -r)
 ama publish --ama-name $ama_name --product-id $product_id
 
@@ -96,7 +96,7 @@ ama.create()
 from azureiai.managed_apps import ManagedApplication 
 
 ama_name="Sample-App"
-config_yaml="src/azureiai-managed-apps/config.yml"
+config_yaml="az-partner-center-cli/config.yml"
 product_id = "3d00b4ab-50e5-49af-a2e6-5d800b8979cf"
 
 ama = ManagedApplication(
@@ -113,7 +113,7 @@ ama.set_product_id(product_id)
 from azureiai.managed_apps import ManagedApplication 
 
 ama_name="Sample-App"
-config_yaml="src/azureiai-managed-apps/config.yml"
+config_yaml="az-partner-center-cli/config.yml"
 
 ama = ManagedApplication(
     ama_name,
@@ -130,8 +130,8 @@ for offer in offers.values:
 from azureiai.managed_apps import ManagedApplication 
 
 ama_name="Sample-App"
-config_yaml="src/azureiai-managed-apps/config.yml"
-manifest_yml="src/azureiai-managed-apps/manifest.yml"
+config_yaml="az-partner-center-cli/config.yml"
+manifest_yml="az-partner-center-cli/manifest.yml"
 
 ama = ManagedApplication(
     ama_name,
@@ -152,10 +152,10 @@ ama.promote()
 from azureiai.managed_apps import ManagedApplication 
 
 ama_name="Sample-App"
-config_yaml="src/azureiai-managed-apps/config.yml"
+config_yaml="az-partner-center-cli/config.yml"
 plan_name="FirstOffer"
 
-app_path = "src/azureiai-managed-apps/"
+app_path = "az-partner-center-cli"
 app = "App.zip"
 logo_small = "r_48_48.png"
 logo_medium = "r_90_90.png"
