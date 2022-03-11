@@ -1,7 +1,7 @@
 #  ---------------------------------------------------------
 #  Copyright (c) 2020 Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
-import pytests
+import pytest
 
 from tests.cli_groups_tests import (
     vm_list_command,
