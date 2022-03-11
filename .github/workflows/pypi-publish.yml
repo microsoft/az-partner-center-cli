@@ -25,6 +25,6 @@ jobs:
         password: ${{ secrets.PYPI_PASSWORD }}
     - name: Install dependencies
       run: |
-        python3.8 -m pip install --upgrade pip
-        python3.8 -m pip install virtualenv pip-tools
+        python3.7 -m pip install --upgrade pip
+        python3.7 -m pip install virtualenv pip-tools
         pip install az-partner-center-cli
