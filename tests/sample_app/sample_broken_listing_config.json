@@ -1,0 +1,73 @@
+{
+  "product_id": "411968ab-9f17-40dd-8378-f22d8e39acbb",
+  "description": "<p>This is a description that uses html tags </p>",
+  "short_description": "Description",
+  "keywords": [
+    "design",
+    "simulation",
+    "engineer"
+  ],
+  "title": "website.Design",
+  "listing_contacts": [
+    {
+      "type": "CustomerSupport",
+      "email": "name@email.com",
+      "name": "FirstName LastName",
+      "phone": "+5555555555",
+      "uri": "https://website.design/moreinfo/contactus"
+    },
+    {
+      "type": "Engineering",
+      "email": "name@company.com",
+      "name": "Name Name",
+      "phone": "+5555555555"
+    }
+  ],
+  "listing_uris": [
+    {
+      "type": "PrivacyUri",
+      "displayText": "Privacy Url",
+      "uri": "https://website.design/eula"
+    },
+    {
+      "type": "PublicCloudSupport",
+      "displayText": "Privacy PublicCloudSupport",
+      "uri": "https://website.design/PublicCloudSupport"
+    }
+  ],
+  "summary": "Summary for Test",
+  "version": "0.0.0",
+  "allow_jit_access": true,
+  "policies": [],
+  "azure_subscription": "2eedf122-c960-4ddc-9146-ac93dbf8b2b0",
+  "azure_preview_subscriptions": [
+    {"ID": "2eedf122-c960-4ddc-9146-ac93dbf8b2b0"},
+    {"ID": "9086b59a-02d7-4687-b3fd-e39fa5e0fd9b"}
+  ],
+  "industries": "",
+  "categories": "analytics",
+  "offer-listing-properties": {
+    "resourceType": "AzureListing",
+    "description": "Description for Test",
+    "summary": "Summary for Test",
+    "languageCode": "en-us",
+    "title": "website.Design",
+    "shortDescription": "Description of plan",
+    "publisherName": "name",
+    "keywords": [
+      "design",
+      "simulation",
+      "engineer"
+    ]
+  },
+  "logo_large": "216_216.png",
+  "logo_small": "r_48_48.png",
+  "logo_medium": "r_90_90.png",
+  "logo_wide": "r_255_115.png",
+  "allowedCustomerActions": [
+      "Microsoft.Storage/*;Microsoft.MachineLearningServices/*;Microsoft.DocumentDB/*;Microsoft.Kubernetes/*;Microsoft.Insights/*;Microsoft.KeyVault/*;Microsoft.Databricks/*;Microsoft.ManagedIdentity/*;Microsoft.ContainerService/*;Microsoft.MachineLearning/*;Microsoft.Synapse/*;Microsoft.Network/*"
+  ],
+  "allowedDataActions": [
+      "Microsoft.Storage/*;Microsoft.MachineLearningServices/*;Microsoft.DocumentDB/*;Microsoft.Kubernetes/*;Microsoft.Insights/*;Microsoft.KeyVault/*;Microsoft.Databricks/*;Microsoft.ManagedIdentity/*;Microsoft.ContainerService/*;Microsoft.MachineLearning/*;Microsoft.Synapse/*;Microsoft.Network/*"
+  ]
+}
