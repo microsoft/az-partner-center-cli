@@ -24,11 +24,11 @@ from azureiai.managed_apps.confs.variant import (
     Package,
 )
 from azureiai.managed_apps.counter import inc_counter
-from azureiai.partner_center.abstract_offer import AbstractOffer
+from azureiai.partner_center.offer import Offer
 from swagger_client.rest import ApiException
 
 
-class ManagedApplication(AbstractOffer):
+class ManagedApplication(Offer):
     """
     Azure Managed Application
 
@@ -94,12 +94,12 @@ class ManagedApplication(AbstractOffer):
         )
 
     def prepare_plan(
-        self,
-        plan_name: str,
-        app_path: str,
-        app: str,
-        json_listing_config: str = "json_config.json",
-        config_yml: str = "config.yml",
+            self,
+            plan_name: str,
+            app_path: str,
+            app: str,
+            json_listing_config: str = "json_config.json",
+            config_yml: str = "config.yml",
     ) -> bool:
         """
         Create new AMA and complete all fields for publication.
@@ -125,12 +125,12 @@ class ManagedApplication(AbstractOffer):
         return True
 
     def prepare_publish(
-        self,
-        plan_name: str,
-        app_path: str,
-        app: str,
-        json_listing_config: str = "json_config.json",
-        config_yml: str = "config.yml",
+            self,
+            plan_name: str,
+            app_path: str,
+            app: str,
+            json_listing_config: str = "json_config.json",
+            config_yml: str = "config.yml",
     ) -> bool:
         """
         Create new AMA and complete all fields for publication.
@@ -218,7 +218,8 @@ class ManagedApplication(AbstractOffer):
         )
 
     def update(
-        self, app_path: str, app: str, json_listing_config, config_yml: str = "config.yml", update_image: bool = True
+            self, app_path: str, app: str, json_listing_config, config_yml: str = "config.yml",
+            update_image: bool = True
     ):
         """
         Update existing AMA and complete all fields for publication.
@@ -342,11 +343,11 @@ class ManagedApplication(AbstractOffer):
         feature_availability.set(azure_subscription=azure_subscription)
 
     def _set_technical_configuration(
-        self,
-        json_config,
-        app,
-        app_path,
-        config_yml,
+            self,
+            json_config,
+            app,
+            app_path,
+            config_yml,
     ):
 
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
@@ -372,8 +373,7 @@ class ManagedApplication(AbstractOffer):
         allowed_customer_actions = None
         if "allowedCustomerActions" in json_config:
             allowed_customer_actions = json_config["plan_overview"][0]["technical_configuration"][
-                "allowedCustomerActions"
-            ]
+                "allowedCustomerActions"]
         allowed_data_actions = None
         if "allowedDataActions" in json_config:
             allowed_data_actions = json_config["plan_overview"][0]["technical_configuration"]["allowedDataActions"]

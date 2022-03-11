@@ -15,7 +15,7 @@ from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from azureiai.managed_apps.confs.variant import Package
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import VariantPlanConfiguration
 from azureiai.managed_apps.managed_app import ManagedApplication
-from azureiai.partner_center.abstract_offer import AbstractOffer
+from azureiai.partner_center.offer import Offer
 from azureiai.managed_apps.swagger import download_swagger_jar
 from azureiai.managed_apps.utils import get_draft_instance_id
 from swagger_client import BranchesApi, PackageConfigurationApi, ResellerConfigurationApi
@@ -258,7 +258,7 @@ def test_offer_get_auth_mock(template_config, monkeypatch):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", request_post_mock)
 
-    offer = AbstractOffer("test", template_config)
+    offer = Offer("test", template_config)
     offer.get_auth()
 
 
@@ -337,8 +337,8 @@ def test_offer_get_product_id(monkeypatch, template_config):
         self._ids["product_id"] = "sample-product-id"
         return namedtuple("response", ["id", "odata_etag"])(*["sample-product-id", ""])
 
-    monkeypatch.setattr(AbstractOffer, "create", mock_create)
-    offer = AbstractOffer(name="test-offer", config_yaml=template_config)
+    monkeypatch.setattr(Offer, "create", mock_create)
+    offer = Offer(name="test-offer", config_yaml=template_config)
     product_id = offer.get_product_id()
     assert product_id == "sample-product-id"
 

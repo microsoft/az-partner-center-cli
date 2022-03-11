@@ -2,21 +2,22 @@ import json
 from pathlib import Path
 
 from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
-from azureiai.managed_apps.utils import CONFIG_YML, AZURE_APPLICATION, APP_NAME, JSON_LISTING_CONFIG
-from azureiai.partner_center import OfferParser
-from azureiai.partner_center.offer import Offer
+from azureiai.partner_center import CLIParser
+from azureiai.partner_center.submission import Submission
+
+AZURE_APPLICATION = "AzureApplication"
 
 
-class Plan(Offer):
+class Plan(Submission):
     """Azure Partner Center Managed Application Submission"""
 
     def __init__(
         self,
         plan_name=None,
         name=None,
-        config_yaml=CONFIG_YML,
-        app_path: str = APP_NAME,
-        json_listing_config=JSON_LISTING_CONFIG,
+        config_yaml=r"config.yml",
+        app_path: str = "sample_app",
+        json_listing_config="ma_config.json",
         subtype="",
     ):
         super().__init__(
@@ -83,7 +84,6 @@ class Plan(Offer):
         return api_response.to_dict()
 
     def show(self):
-        """Get the Details about a Application Plan"""
         if not self._ids["product_id"]:
             self._set_product_id()
 
@@ -98,7 +98,6 @@ class Plan(Offer):
         raise LookupError(f"Plan with this name not found: {self.plan_name}")
 
     def delete(self) -> {}:
-        """Delete an Application Plan"""
         if not self._ids["plan_id"]:
             self.show()
 
@@ -174,7 +173,6 @@ class Plan(Offer):
                 resource_type="AzureSolutionTemplatePackageConfiguration",
                 config_yaml=self.config_yaml,
             )
-        return {}
 
     @staticmethod
     def _get_allowed_actions(json_config):
@@ -187,7 +185,7 @@ class Plan(Offer):
         return allowed_customer_actions, allowed_data_actions
 
 
-class PlanCLIParser(OfferParser):
+class PlanCLIParser(CLIParser):
     """CLI Parser for Marketplace Plans"""
 
     def __init__(self):

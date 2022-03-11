@@ -1,0 +1,555 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located including a trailing '/'"
+      },
+      "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+      },
+      "defaultValue": ""
+    },
+    "servicePrincipalClientID": {
+      "type": "string",
+      "metadata": {
+        "description": "Service principal client/application ID."
+      }
+    },
+    "servicePrincipalSecret": {
+      "type": "string",
+      "metadata": {
+        "description": "Service principal Password."
+      }
+    },
+    "machineLearningModel": {
+      "type": "string",
+      "defaultValue": "ProductRecommendation",
+      "allowedValues": [
+        "ProductRecommendation"
+      ],
+      "metadata": {
+        "description": "The type of algorithm for pipeline setup."
+      }
+    },
+    "azureDataLakeStorageAccount": {
+      "type": "string",
+      "metadata": {
+        "description": "Account of the existing ADLS in the IDW pipeline"
+      }
+    },
+    "azureDataLakeStorageContainer": {
+      "type": "string",
+      "metadata": {
+        "description": "Container of the existing ADLS in the IDW pipeline where the IDM data is stored"
+      }
+    },
+    "dataName": {
+      "type": "string",
+      "defaultValue": "BaseData",
+      "allowedValues": [
+        "BaseData",
+        "TPC",
+        "IDWData"
+      ],
+      "metadata": {
+        "description": "Name of the data to be used."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location where the resources will be deployed."
+      }
+    },
+    "industryDataModelName": {
+      "type": "string",
+      "defaultValue": "retailrecodatamodel"
+    },
+    "logicalDataModelDirectory": {
+      "type": "string",
+      "defaultValue": "synthcorpus"
+    },
+    "physicalDataModelDirectory": {
+      "type": "string",
+      "defaultValue": "synthdata"
+    }
+  },
+  "variables": {
+    "roleDefIDPrefix": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/')]",
+    "contributor": "[concat(variables('roleDefIDPrefix'), 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "identityName": "[reco.prefixedUniqueName('umi')]",
+    "identityResourceID": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]",
+    "identityRoleAssignDeployment": "[guid(resourceGroup().id, variables('identityName'))]",
+    "cosmosdbAccount": "[reco.prefixedUniqueName('cosmos')]",
+    "cosmosdbDatabase": "[concat(variables('cosmosdbAccount'), '-database')]",
+    "cosmosdbContainer": "[concat(variables('cosmosdbAccount'), '-container')]",
+    "cosmosdbPartitionKey": "/CustomerId",
+    "databricksWorkspace": "[reco.prefixedUniqueName('databrick')]",
+    "amlWorkspace": "[reco.prefixedUniqueName('aml')]",
+    "aksCluster": "[reco.prefixedUniqueName('aks')]",
+    "utilsFileUri": "[uri(parameters('_artifactsLocation'), concat('script/utils.sh', parameters('_artifactsLocationSasToken')))]",
+    "variablesFileUri": "[uri(parameters('_artifactsLocation'), concat('script/variables.sh', parameters('_artifactsLocationSasToken')))]",
+    "setupenvFileUri": "[uri(parameters('_artifactsLocation'), concat('script/setupenv.sh', parameters('_artifactsLocationSasToken')))]",
+    "deployscriptFileUri": "[uri(parameters('_artifactsLocation'), concat('script/deployscript.sh', parameters('_artifactsLocationSasToken')))]",
+    "deploymodelFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/DeployModel.py', parameters('_artifactsLocationSasToken')))]",
+    "consumeapiFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/ConsumeApi.py', parameters('_artifactsLocationSasToken')))]",
+    "extractfeatureFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/ExtractFeature.py', parameters('_artifactsLocationSasToken')))]",
+    "loadandregistermodelFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/LoadAndRegisterModel.py', parameters('_artifactsLocationSasToken')))]",
+    "maindeployFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/MainDeploy.py', parameters('_artifactsLocationSasToken')))]",
+    "maintrainpredictFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/MainTrainPredict.py', parameters('_artifactsLocationSasToken')))]",
+    "predictandsaveoutputFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/PredictAndSaveOutput.py', parameters('_artifactsLocationSasToken')))]",
+    "runprereqFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/RunPrereq.py', parameters('_artifactsLocationSasToken')))]",
+    "preparedataFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/PrepareData.py', parameters('_artifactsLocationSasToken')))]",
+    "trainmodelFileUri": "[uri(parameters('_artifactsLocation'), concat('notebook/TrainModel.py', parameters('_artifactsLocationSasToken')))]",
+    "sarplusTemplateFileUri": "[uri(parameters('_artifactsLocation'), concat('template/templateSarplus.json', parameters('_artifactsLocationSasToken')))]",
+    "artifactsUri": "[uri(parameters('_artifactsLocation'), concat('artifacts.zip', parameters('_artifactsLocationSasToken')))]"
+  },
+  "functions": [
+    {
+      "namespace": "reco",
+      "members": {
+        "prefixedUniqueName": {
+          "parameters": [
+            {
+              "name": "prefix",
+              "type": "string"
+            }
+          ],
+          "output": {
+            "type": "string",
+            "value": "[concat(parameters('prefix'), uniqueString(resourceGroup().id, parameters('prefix'), deployment().name))]"
+          }
+        }
+      }
+    }
+  ],
+  "resources": [
+    {
+        "apiVersion": "2020-06-01",
+        "name": "pid-mock-test-partnercenter",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+            "mode": "Incremental",
+            "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "resources": []
+            }
+        }
+    },
+    {
+      "metadata": {
+        "comments": "User-assigned managed identity used by DeploymentScript."
+      },
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "name": "[variables('identityName')]",
+      "apiVersion": "2018-11-30",
+      "location": "[parameters('location')]"
+    },
+    {
+      "metadata": {
+        "comments": "Grant user-assigned managed identity permission on the scope of resource group."
+      },
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-04-01-preview",
+      "name": "[variables('identityRoleAssignDeployment')]",
+      "dependsOn": [
+        "[variables('identityName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('contributor')]",
+        "principalId": "[reference(variables('identityName')).principalId]",
+        "principalType": "ServicePrincipal",
+        "delegatedManagedIdentityResourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]"
+      }
+    },
+    {
+      "metadata": {
+        "comments": "Deploy resources according to the machine learning model."
+      },
+      "type": "Microsoft.Resources/deployments",
+      "name": "pipelineDeployment",
+      "apiVersion": "2020-06-01",
+      "dependsOn": [
+        "[variables('identityRoleAssignDeployment')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "parameters": {
+          "identityResourceID": {
+            "value": "[variables('identityResourceID')]"
+          },
+          "servicePrincipalApplicationID": {
+            "value": "[parameters('servicePrincipalClientID')]"
+          },
+          "servicePrincipalSecret": {
+            "value": "[parameters('servicePrincipalSecret')]"
+          },
+          "adlsAccount": {
+            "value": "[parameters('azureDataLakeStorageAccount')]"
+          },
+          "adlsContainer": {
+            "value": "[parameters('azureDataLakeStorageContainer')]"
+          },
+          "cosmosdbAccount": {
+            "value": "[variables('cosmosdbAccount')]"
+          },
+          "cosmosdbDatabase": {
+            "value": "[variables('cosmosdbDatabase')]"
+          },
+          "cosmosdbContainer": {
+            "value": "[variables('cosmosdbContainer')]"
+          },
+          "cosmosdbPartitionKey": {
+            "value": "[variables('cosmosdbPartitionKey')]"
+          },
+          "databricksWorkspace": {
+            "value": "[variables('databricksWorkspace')]"
+          },
+          "amlWorkspace": {
+            "value": "[variables('amlWorkspace')]"
+          },
+          "aksCluster": {
+            "value": "[variables('aksCluster')]"
+          },
+          "machineLearningModel": {
+            "value": "[parameters('machineLearningModel')]"
+          },
+          "dataName": {
+            "value": "[parameters('dataName')]"
+          },
+          "industryDataModelName": {
+            "value": "[parameters('industryDataModelName')]"
+          },
+          "logicalDataModelDirectory": {
+            "value": "[parameters('logicalDataModelDirectory')]"
+          },
+          "physicalDataModelDirectory": {
+            "value": "[parameters('physicalDataModelDirectory')]"
+          },
+          "utilsFileUri": {
+            "value": "[variables('utilsFileUri')]"
+          },
+          "variablesFileUri": {
+            "value": "[variables('variablesFileUri')]"
+          },
+          "setupenvFileUri": {
+            "value": "[variables('setupenvFileUri')]"
+          },
+          "deployscriptFileUri": {
+            "value": "[variables('deployscriptFileUri')]"
+          },
+          "deploymodelFileUri": {
+            "value": "[variables('deploymodelFileUri')]"
+          },
+          "consumeapiFileUri": {
+            "value": "[variables('consumeapiFileUri')]"
+          },
+          "extractfeatureFileUri": {
+            "value": "[variables('extractfeatureFileUri')]"
+          },
+          "loadandregistermodelFileUri": {
+            "value": "[variables('loadandregistermodelFileUri')]"
+          },
+          "maindeployFileUri": {
+            "value": "[variables('maindeployFileUri')]"
+          },
+          "maintrainpredictFileUri": {
+            "value": "[variables('maintrainpredictFileUri')]"
+          },
+          "predictandsaveoutputFileUri": {
+            "value": "[variables('predictandsaveoutputFileUri')]"
+          },
+          "runprereqFileUri": {
+            "value": "[variables('runprereqFileUri')]"
+          },
+          "preparedataFileUri": {
+            "value": "[variables('preparedataFileUri')]"
+          },
+          "trainmodelFileUri": {
+            "value": "[variables('trainmodelFileUri')]"
+          },
+          "sarplusTemplateFileUri": {
+            "value": "[variables('sarplusTemplateFileUri')]"
+          },
+          "artifactsUri": {
+            "value": "[variables('artifactsUri')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "identityResourceID": {
+              "type": "string"
+            },
+            "servicePrincipalApplicationID": {
+              "type": "securestring"
+            },
+            "servicePrincipalSecret": {
+              "type": "securestring"
+            },
+            "adlsAccount": {
+              "type": "string"
+            },
+            "adlsContainer": {
+              "type": "string"
+            },
+            "cosmosdbAccount": {
+              "type": "string"
+            },
+            "cosmosdbDatabase": {
+              "type": "string"
+            },
+            "cosmosdbContainer": {
+              "type": "string"
+            },
+            "cosmosdbPartitionKey": {
+              "type": "string"
+            },
+            "databricksWorkspace": {
+              "type": "string"
+            },
+            "amlWorkspace": {
+              "type": "string"
+            },
+            "aksCluster": {
+              "type": "string"
+            },
+            "machineLearningModel": {
+              "type": "string"
+            },
+            "dataName": {
+              "type": "string"
+            },
+            "industryDataModelName": {
+              "type": "string"
+            },
+            "logicalDataModelDirectory": {
+              "type": "string"
+            },
+            "physicalDataModelDirectory": {
+              "type": "string"
+            },
+            "utilsFileUri": {
+              "type": "string"
+            },
+            "variablesFileUri": {
+              "type": "string"
+            },
+            "setupenvFileUri": {
+              "type": "string"
+            },
+            "deployscriptFileUri": {
+              "type": "string"
+            },
+            "deploymodelFileUri": {
+              "type": "string"
+            },
+            "consumeapiFileUri": {
+              "type": "string"
+            },
+            "extractfeatureFileUri": {
+              "type": "string"
+            },
+            "loadandregistermodelFileUri": {
+              "type": "string"
+            },
+            "maindeployFileUri": {
+              "type": "string"
+            },
+            "maintrainpredictFileUri": {
+              "type": "string"
+            },
+            "predictandsaveoutputFileUri": {
+              "type": "string"
+            },
+            "runprereqFileUri": {
+              "type": "string"
+            },
+            "preparedataFileUri": {
+              "type": "string"
+            },
+            "trainmodelFileUri": {
+              "type": "string"
+            },
+            "sarplusTemplateFileUri": {
+              "type": "string"
+            },
+            "artifactsUri": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            }
+          },
+          "variables": {
+            "productRecoName": "ProductRecommendation",
+            "resourceGroupArgs": "[concat(resourceGroup().name, ' ', parameters('location'), ' ', subscription().subscriptionId, ' ', subscription().tenantId)]",
+            "spnArgs": "[concat(parameters('servicePrincipalApplicationID'), ' ', parameters('servicePrincipalSecret'))]",
+            "adlsArgs": "[concat(parameters('adlsAccount'), ' ', parameters('adlsContainer'))]",
+            "cosmosdbArgs": "[concat(parameters('cosmosdbAccount'), ' ', parameters('cosmosdbDatabase'), ' ', parameters('cosmosdbContainer'))]",
+            "otherArgs": "[concat(parameters('databricksWorkspace'), ' ', parameters('amlWorkspace'), ' ', parameters('aksCluster'), ' ', parameters('dataName'), ' ', parameters('industryDataModelName'), ' ', parameters('logicalDataModelDirectory'), ' ', parameters('physicalDataModelDirectory'))]"
+          },
+          "functions": [
+            {
+              "namespace": "reco",
+              "members": {
+                "resourceDeployName": {
+                  "parameters": [
+                    {
+                      "name": "model",
+                      "type": "string"
+                    }
+                  ],
+                  "output": {
+                    "type": "string",
+                    "value": "[concat(parameters('model'), 'ResourceDeployment')]"
+                  }
+                },
+                "scriptDeployName": {
+                  "parameters": [
+                    {
+                      "name": "model",
+                      "type": "string"
+                    }
+                  ],
+                  "output": {
+                    "type": "string",
+                    "value": "[concat(parameters('model'), 'DeploymentScript')]"
+                  }
+                }
+              }
+            }
+          ],
+          "resources": [
+            {
+              "condition": "[equals(parameters('machineLearningModel'), variables('productRecoName'))]",
+              "type": "Microsoft.Resources/deployments",
+              "name": "[reco.resourceDeployName(parameters('machineLearningModel'))]",
+              "apiVersion": "2020-06-01",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('sarplusTemplateFileUri')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "servicePrincipalApplicationID": {
+                    "value": "[parameters('servicePrincipalApplicationID')]"
+                  },
+                  "servicePrincipalSecret": {
+                    "value": "[parameters('servicePrincipalSecret')]"
+                  },
+                  "cosmosdbAccount": {
+                    "value": "[parameters('cosmosdbAccount')]"
+                  },
+                  "cosmosdbDatabase": {
+                    "value": "[parameters('cosmosdbDatabase')]"
+                  },
+                  "cosmosdbContainer": {
+                    "value": "[parameters('cosmosdbContainer')]"
+                  },
+                  "cosmosdbPartitionKey": {
+                    "value": "[parameters('cosmosdbPartitionKey')]"
+                  },
+                  "databricksWorkspace": {
+                    "value": "[parameters('databricksWorkspace')]"
+                  },
+                  "amlWorkspace": {
+                    "value": "[parameters('amlWorkspace')]"
+                  },
+                  "aksCluster": {
+                    "value": "[parameters('aksCluster')]"
+                  },
+                  "AKSsshRSAPublicKey": {
+                    "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3hvqt6cyFZGG060SSfRkYYPfcsdKNUCl4QJEjt27YnjXXInhONhbnLcW976bP81QLognggvMuf8zOtG5ycySf0iVR/QO2l3RB3/tHYdDi9iNH8ZDuX4qRqvE0KAPBWh/eqKWamT0cazLp6qBagM9Qz6ZzpLFyCUizgP0KA9S7VcOnYISbwnPUnF1G+JGR0HD8nfT2sFCIqA8U/IX2CP8zxV4HRomUQ7+EjAYVv0P5uVoVPmINWviokKCBR+jnRChK91qYXkdMJe8YzKSbtqptSwpCxa1pIB4mRu6kjd8a4sdbBy+ZtUdex+x1ZRf/EqCnWqqQzWZBmTSlgL/PKgM9 rajendra@cc-18115781-7c7dcbcb55-vfztc"
+                  },
+                  "location":{
+                    "value": "[parameters('location')]"
+                  }
+                }
+              }
+            },
+            {
+              "metadata": {
+                "comments": "Make sure arguments match variables.sh."
+              },
+              "condition": "[equals(parameters('machineLearningModel'), variables('productRecoName'))]",
+              "type": "Microsoft.Resources/deploymentScripts",
+              "name": "[reco.scriptDeployName(parameters('machineLearningModel'))]",
+              "apiVersion": "2019-10-01-preview",
+              "dependsOn": [
+                "[reco.resourceDeployName(variables('productRecoName'))]"
+              ],
+              "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                  "[parameters('identityResourceID')]": {}
+                }
+              },
+              "location": "[parameters('location')]",
+              "kind": "AzureCLI",
+              "properties": {
+                "azCliVersion": "2.0.80",
+                "retentionInterval": "P1D",
+                "primaryScriptUri": "[parameters('deployscriptFileUri')]",
+                "supportingScriptUris": [
+                  "[parameters('utilsFileUri')]",
+                  "[parameters('variablesFileUri')]",
+                  "[parameters('setupenvFileUri')]",
+                  "[parameters('deploymodelFileUri')]",
+                  "[parameters('consumeapiFileUri')]",
+                  "[parameters('extractfeatureFileUri')]",
+                  "[parameters('loadandregistermodelFileUri')]",
+                  "[parameters('maindeployFileUri')]",
+                  "[parameters('maintrainpredictFileUri')]",
+                  "[parameters('predictandsaveoutputFileUri')]",
+                  "[parameters('runprereqFileUri')]",
+                  "[parameters('preparedataFileUri')]",
+                  "[parameters('trainmodelFileUri')]",
+                  "[parameters('artifactsUri')]"
+                ],
+                "arguments": "[concat(variables('resourceGroupArgs'), ' ', variables('spnArgs'), ' ', variables('adlsArgs'), ' ', variables('cosmosdbArgs'), ' ', variables('otherArgs'))]"
+              }
+            }
+          ],
+          "outputs": {
+            "resourceDeploy": {
+              "type": "object",
+              "value": "[reference(reco.resourceDeployName(parameters('machineLearningModel'))).outputs]"
+            },
+            "scriptDeploy": {
+              "type": "object",
+              "value": "[reference(reco.scriptDeployName(parameters('machineLearningModel'))).outputs]"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "resourceDeploy": {
+      "type": "object",
+      "value": "[reference('pipelineDeployment').outputs.resourceDeploy.value]"
+    },
+    "scriptDeploy": {
+      "type": "object",
+      "value": "[reference('pipelineDeployment').outputs.scriptDeploy.value]"
+    }
+  }
+}

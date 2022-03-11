@@ -6,10 +6,10 @@
 import sys
 
 from azureiai.partner_center import run
-from azureiai.partner_center.offers.container import ContainerParser
-from azureiai.partner_center.offers.managed_app import ManagedAppParser
-from azureiai.partner_center.offers.solution_template import SolutionTemplateParser
-from azureiai.partner_center.offers.virtual_machine import VirtualMachineOffer
+from azureiai.partner_center.offers.container import ContainerCLI
+from azureiai.partner_center.offers.managed_app import ManagedAppCLI
+from azureiai.partner_center.offers.solution_template import SolutionTemplateCLI
+from azureiai.partner_center.offers.virtual_machine import VirtualMachineCLI
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
     help_text = """
     Group:
         azpc : Manage Partner Center submissions.
-    
+
     Subgroups:
         ma       : Managed Applications
         st       : Solution Templates
@@ -29,10 +29,10 @@ def main():
         return help_text
 
     commands = {
-        "ma": ManagedAppParser,
-        "vm": VirtualMachineOffer,
-        "st": SolutionTemplateParser,
-        "co": ContainerParser,
+        "ma": ManagedAppCLI,
+        "vm": VirtualMachineCLI,
+        "st": SolutionTemplateCLI,
+        "co": ContainerCLI,
     }
     return run(commands[subgroup]())
 

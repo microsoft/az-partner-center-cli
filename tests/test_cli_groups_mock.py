@@ -1,6 +1,7 @@
 #  ---------------------------------------------------------
 #  Copyright (c) 2020 Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
+import pytests
 
 from tests.cli_groups_tests import (
     vm_list_command,
@@ -16,6 +17,13 @@ from tests.cli_groups_tests import (
     vm_update_command,
     ma_update_command,
 )
+
+
+@pytest.fixture
+def config_yml():
+    test_path = Path(__file__).parents[1]
+    config_path = test_path.joinpath("config.yml")
+    return config_path if config_path.is_file() else test_path.joinpath("template.config.yml")
 
 
 def test_vm_list_mock(config_yml, monkeypatch, ama_mock):

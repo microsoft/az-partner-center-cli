@@ -1,6 +1,5 @@
 {
   "$schema"                : "https://raw.githubusercontent.com/microsoft/AI/master/.ci/listing_config_schema.json",
-  "publisher": "Microsoft",
   "offer_setup"            : {
     "alias"    : "industrail-ai-ama",
     "testDrive": false,
