@@ -99,11 +99,11 @@ def test_ama_update_plan(ama, plan_name, app_path_fix, app_zip, json_listing_con
 @pytest.mark.integration
 def test_ama_update_existing(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
     ama._create_new_plan(plan_name)
-    
+
     with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
         json_config = json.load(read_file)
     json_config["version"] = "0.0.3"
-    
+
     ama.update(json_listing_config=json_listing_config, app=app_zip, app_path=app_path_fix, config_yml=config_yml)
 
 
