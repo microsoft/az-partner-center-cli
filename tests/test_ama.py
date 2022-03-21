@@ -98,10 +98,12 @@ def test_ama_update_plan(ama, plan_name, app_path_fix, app_zip, json_listing_con
 
 @pytest.mark.integration
 def test_ama_update_existing(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+    ama._create_new_plan(plan_name)
+    
     with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
         json_config = json.load(read_file)
     json_config["version"] = "0.0.3"
-    ama.set_product_id("411968ab-9f17-40dd-8378-f22d8e39acbb")
+    
     ama.update(json_listing_config=json_listing_config, app=app_zip, app_path=app_path_fix, config_yml=config_yml)
 
 
@@ -164,9 +166,17 @@ def test_ama_publish_prepare_error(
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
             plan_name=plan_name,
-            app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=broken_json_listing_config,
+            app_path="not-found",
+            json_listing_config=json_listing_config,
+            config_yml=template_config,
+        )
+    with pytest.raises(FileNotFoundError):
+        assert ama.prepare_publish(
+            plan_name=plan_name,
+            app=app_zip,
+            app_path=app_path_fix,
+            json_listing_config="not-found.json",
             config_yml=template_config,
         )
     with pytest.raises(FileNotFoundError):
@@ -174,18 +184,9 @@ def test_ama_publish_prepare_error(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            json_listing_config=broken_json_listing_config,
             config_yml=template_config,
         )
-    with pytest.raises(FileNotFoundError):
-        assert ama.prepare_publish(
-            plan_name=plan_name,
-            app_path=app_path_fix,
-            app=app_zip,
-            json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
-        )
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(KeyError):
         assert ama.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
@@ -351,3 +352,5 @@ def test_ama_retry(monkeypatch, ama_name, config_yml):
     monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
 
     ama._get_variant_draft_instance_id(module="")
+
+    ama.delete()

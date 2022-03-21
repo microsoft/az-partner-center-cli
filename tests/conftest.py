@@ -109,7 +109,7 @@ def ama_mock(ama_name, monkeypatch):
         variant = namedtuple("variant", ["name", "variant_id", "current_draft_instance_id"])(
             *["test_vm", "variant-id", "draft-instance-id"]
         )
-        response_json = namedtuple("response", ["value", "odata_etag", "id"])(
+        return namedtuple("response", ["value", "odata_etag", "id"])(
             *[
                 [
                     {"name": "test_vm", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
@@ -125,15 +125,6 @@ def ama_mock(ama_name, monkeypatch):
                 "",
             ]
         )
-
-        class ResponeJson:
-            def __init__(self, response_json):
-                self.response_json = response_json
-
-            def to_dict(self):
-                return self.response_json._asdict()
-
-        return ResponeJson(response_json)
 
     def mock_delete(self, product_id, authorization):
         return ""

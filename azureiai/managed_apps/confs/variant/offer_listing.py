@@ -22,4 +22,5 @@ class OfferListing(ListingOfferConfigurations, VariantPlanConfiguration):
         settings_id = settings.id
         properties["@odata.etag"] = odata_etag
         properties["id"] = settings_id
+        properties["resourceType"] = "AzureListing"
         return odata_etag, properties, settings_id
