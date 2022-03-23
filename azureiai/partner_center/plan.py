@@ -112,10 +112,10 @@ class Plan(Submission):
         """Set Azure Partner Center Product ID"""
         filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
         api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
-        submissions = api_response.to_dict()
-        for submission in submissions["value"]:
-            if submission["name"] == self.name:
-                self._ids["product_id"] = submission["id"]
+        submissions = api_response.value
+        for submission in submissions:
+            if submission.name == self.name:
+                self._ids["product_id"] = submission.id
                 return submission
         raise LookupError(f"{self.resource_type} with this name not found: {self.name}")
 
