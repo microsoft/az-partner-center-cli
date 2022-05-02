@@ -4,6 +4,7 @@ The documentation can be found [here](https://apidocs.microsoft.com/services/par
 
 ## Requirements.
 
+
 Python 3.7+ (Expected to work with Python 3.6+)
 
 # Command Line
