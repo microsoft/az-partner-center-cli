@@ -22,6 +22,7 @@ from tests.cli_groups_tests import (
 
 @pytest.fixture
 def config_yml():
+    """Fixuture used to configure deployment for testing"""
     test_path = Path(__file__).parents[1]
     config_path = test_path.joinpath("config.yml")
     return config_path if config_path.is_file() else test_path.joinpath("template.config.yml")
