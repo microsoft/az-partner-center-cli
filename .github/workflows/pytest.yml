@@ -31,7 +31,13 @@ jobs:
           echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
           echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
           echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
-          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml        
+          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
+
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest-github-actions-annotate-failures
+          pytest
+
       - name: Tox Env Unit
         uses: paolorechia/pox@v1.0.1
         with:
