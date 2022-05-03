@@ -28,7 +28,8 @@ jobs:
           echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
           echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
           echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
-
+          echo "publisherId: \"${{ secrets.PUBLISHER_ID }}\"" >> config.yml
+          
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest-github-actions-annotate-failures
