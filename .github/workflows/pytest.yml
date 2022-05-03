@@ -35,11 +35,26 @@ jobs:
           pip install pytest-github-actions-annotate-failures
           pytest -m "not integration and not gpu" -c tox.ini tests
 
-      - name: Tox Env Unit
-        uses: paolorechia/pox@v1.0.1
+      - name: Output coverage report
+        run: |
+          python -m pip install --upgrade coverage
+          echo "---------- coverage: platform -----------" > pytest-coverage.txt
+          coverage report -m --skip-covered >> pytest-coverage.txt
+          cat pytest-coverage.txt
+      # Show unit test code coverage in a pull request comment.
+      - name: Show coverage comment
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: MishaKav/pytest-coverage-comment@v1.1.24
+        continue-on-error: true
         with:
-          tox_env: py37-unit
-      - name: Tox Env Integration
-        uses: paolorechia/pox@v1.0.1
-        with:
-          tox_env: py37-integration        
+          pytest-coverage-path: pytest-coverage.txt
+          junitxml-path: pytest-results.xml
+        
+#       - name: Tox Env Unit
+#         uses: paolorechia/pox@v1.0.1
+#         with:
+#           tox_env: py37-unit
+#       - name: Tox Env Integration
+#         uses: paolorechia/pox@v1.0.1
+#         with:
+#           tox_env: py37-integration        
