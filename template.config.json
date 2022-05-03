@@ -4,5 +4,6 @@
   "azure_preview_subscription": "insert-id",
   "aad_id"                    : "insert-id",
   "aad_secret"                : "insert-id",
-  "access_id"                 : "aad-id-for-app-access"
+  "access_id"                 : "aad-id-for-app-access",
+  "publisherId"               : "insert-publisher-id"
 }
