@@ -2,6 +2,7 @@ from swagger_client import ApiClient
 
 import requests
 
+
 class OffersApi(object):
     """Virtual Machine Offer API"""
 
