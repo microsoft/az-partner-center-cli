@@ -2,6 +2,10 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """CLI v2 Test Suite"""
+from collections import namedtuple
+
+import requests
+
 from azureiai import azpc_app
 from azureiai.managed_apps.confs import Properties, Listing, ProductAvailability
 from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
@@ -103,10 +107,18 @@ def vm_list_command(config_yml, monkeypatch):
 
 
 def vm_create_command(config_yml, monkeypatch):
+    def mock_put_request(url, data="", headers="", params="", json=""):
+        return namedtuple("response", ["status_code"])(*[200])
+    monkeypatch.setattr(requests, "put", mock_put_request)
+
     args_test(monkeypatch, _create_command_args(config_yml, subgroup="vm"))
 
 
 def vm_update_command(config_yml, monkeypatch):
+    def mock_put_request(url, data="", headers="", params="", json=""):
+        return namedtuple("response", ["status_code"])(*[200])
+    monkeypatch.setattr(requests, "put", mock_put_request)
+
     args_test(monkeypatch, _update_command_args(config_yml, "vm"))
 
 
@@ -131,12 +143,20 @@ def vm_delete_plan_command(config_yml, monkeypatch):
 
 
 def vm_show_command(config_yml, monkeypatch):
+    def mock_put_request(url, data="", headers="", params="", json=""):
+        return namedtuple("response", ["status_code"])(*[202])
+    monkeypatch.setattr(requests, "put", mock_put_request)
+
     subgroup = "vm"
     input_args = _show_command_args(config_yml, subgroup)
     args_test(monkeypatch, input_args)
 
 
 def vm_publish_command(config_yml, monkeypatch):
+    def mock_post_request(url, data="", headers="", params="", json=""):
+        return namedtuple("response", ["status_code"])(*[202])
+    monkeypatch.setattr(requests, "post", mock_post_request)
+
     subgroup = "vm"
     input_args = _publish_command_args(config_yml, subgroup)
     args_test(monkeypatch, input_args)
