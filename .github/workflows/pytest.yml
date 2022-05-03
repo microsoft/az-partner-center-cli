@@ -43,6 +43,7 @@ jobs:
              --cov-append \
              --cov-config ".coveragerc" \
              --cov azureiai \
+             --junitxml=pytest-results.xml \
              "tests"
 
           coverage report -m --skip-covered >> pytest-coverage.txt
