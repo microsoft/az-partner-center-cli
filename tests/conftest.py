@@ -129,6 +129,7 @@ def ama_mock(ama_name, monkeypatch):
         class ResponeJson:
             def __init__(self, response_json):
                 self.response_json = response_json
+                self.value = "mock_value"
 
             def to_dict(self):
                 return self.response_json._asdict()
@@ -145,6 +146,7 @@ def ama_mock(ama_name, monkeypatch):
             def __init__(self, response_json):
                 self.response_json = response_json
                 self.id = response_json.id
+                self.value = "mock-value"
 
             def to_dict(self):
                 return self.response_json
