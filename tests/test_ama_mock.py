@@ -65,7 +65,7 @@ def test_ama_publish_prepare_error_mock(
             config_yml=template_config,
         )
 
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(KeyError):
         assert ama_mock.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
@@ -73,7 +73,7 @@ def test_ama_publish_prepare_error_mock(
             json_listing_config=broken_json_listing_config,
             config_yml=template_config,
         )
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(KeyError):
         assert ama_mock.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
@@ -81,7 +81,7 @@ def test_ama_publish_prepare_error_mock(
             json_listing_config=broken_json_listing_config,
             config_yml=template_config,
         )
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(KeyError):
         assert ama_mock.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
@@ -89,7 +89,7 @@ def test_ama_publish_prepare_error_mock(
             json_listing_config=broken_json_listing_config,
             config_yml=template_config,
         )
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(KeyError):
         assert ama_mock.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
