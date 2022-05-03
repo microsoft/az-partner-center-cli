@@ -46,9 +46,8 @@ class CLIParser:
         if "VirtualMachine" not in str(self.submission_type):
             args = self._add_name_argument()
             return self.submission_type(args.name).publish()
-        else:
-            args = self._add_name_notification_emails_argument()
-            return self.submission_type(args.name, args.notification_emails).publish()
+        args = self._add_name_notification_emails_argument()
+        return self.submission_type(args.name, args.notification_emails).publish()
 
     def show(self) -> {}:
         """Show a Managed Application"""
