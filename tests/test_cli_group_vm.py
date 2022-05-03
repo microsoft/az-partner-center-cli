@@ -21,8 +21,12 @@ from tests.cli_groups_tests import (
     vm_create_plan_command,
     vm_show_plan_command,
     vm_update_plan_command,
-    vm_delete_plan_command, _assert_properties, _assert_offer_listing, _assert_plan_listing,
-    _assert_pricing_and_availability, _assert_technical_configuration,
+    vm_delete_plan_command,
+    _assert_properties,
+    _assert_offer_listing,
+    _assert_plan_listing,
+    _assert_pricing_and_availability,
+    _assert_technical_configuration,
 )
 
 

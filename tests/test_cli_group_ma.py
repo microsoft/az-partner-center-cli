@@ -21,8 +21,13 @@ from tests.cli_groups_tests import (
     ma_create_plan_command,
     ma_show_plan_command,
     ma_update_plan_command,
-    ma_delete_plan_command, _assert_properties, _assert_offer_listing, _assert_preview_audience, _assert_plan_listing,
-    _assert_pricing_and_availability, _assert_technical_configuration,
+    ma_delete_plan_command,
+    _assert_properties,
+    _assert_offer_listing,
+    _assert_preview_audience,
+    _assert_plan_listing,
+    _assert_pricing_and_availability,
+    _assert_technical_configuration,
 )
 
 

@@ -229,20 +229,20 @@ def ama_mock(ama_name, monkeypatch):
     def mock_listing_package_sas_upload(self, sas_url, file_name_full_path):
         return 201
 
-    def mock_put_request(url, data, headers, params):
+    def mock_put_request(url, data="", headers="", params="", json=""):
         return namedtuple("response", ["status_code"])(*[201])
 
     def mock_acquire_token_with_client_credentials(self, resource, client_id, client_secret):
-        return {
-            'accessToken': "mock-token"
-        }
+        return {"accessToken": "mock-token"}
 
     def mock_image_listing(self, authorization, product_id, listing_id):
         return namedtuple("response", ["value"])(
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
 
-    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_acquire_token_with_client_credentials)
+    monkeypatch.setattr(
+        AuthenticationContext, "acquire_token_with_client_credentials", mock_acquire_token_with_client_credentials
+    )
     monkeypatch.setattr(ManagedApplication, "get_auth", mock_auth)
     monkeypatch.setattr(VariantApi, "products_product_id_variants_post", mock_variant_post)
     monkeypatch.setattr(ProductApi, "products_product_id_delete", mock_delete)

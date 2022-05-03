@@ -293,20 +293,20 @@ def _assert_properties(offer, json_listing_config):
     print("Properties" + str(properties))
     assert properties
 
-    assert properties['app_version'] == json_listing_config['plan_overview'][0]['technical_configuration']['version']
-    assert properties['terms_of_use'] == ''
-    assert properties['submission_version']
-    assert properties['product_tags']
-    assert properties['use_enterprise_contract']
-    assert properties['odata_etag']
-    assert properties['id']
-    assert not properties['industries']
-    assert not properties['categories']
-    assert not properties['additional_categories']
-    assert not properties['hide_keys']
-    assert not properties['marketing_only_change']
-    assert not properties['global_amendment_terms']
-    assert not properties['custom_amendments']
+    assert properties["app_version"] == json_listing_config["plan_overview"][0]["technical_configuration"]["version"]
+    assert properties["terms_of_use"] == ""
+    assert properties["submission_version"]
+    assert properties["product_tags"]
+    assert properties["use_enterprise_contract"]
+    assert properties["odata_etag"]
+    assert properties["id"]
+    assert not properties["industries"]
+    assert not properties["categories"]
+    assert not properties["additional_categories"]
+    assert not properties["hide_keys"]
+    assert not properties["marketing_only_change"]
+    assert not properties["global_amendment_terms"]
+    assert not properties["custom_amendments"]
     return properties
 
 
@@ -315,9 +315,9 @@ def _assert_offer_listing(offer, json_listing_config):
     offer_listing = Listing(offer.get_product_id(), offer.get_auth()).get().to_dict()
     print("Offer Listing: " + str(offer_listing))
     assert offer_listing
-    assert offer_listing['odata_etag']
-    assert offer_listing['id']
-    assert offer_listing["summary"] == json_listing_config["offer_listing"]['summary']
+    assert offer_listing["odata_etag"]
+    assert offer_listing["id"]
+    assert offer_listing["summary"] == json_listing_config["offer_listing"]["summary"]
     assert offer_listing["listing_uris"]  # == json_listing_config['listing_uris'] random things aren't matching
     assert offer_listing["listing_contacts"]  # == json_listing_config['listing_contacts']
     assert offer_listing["language_code"] == "en-us"
@@ -335,14 +335,14 @@ def _assert_preview_audience(offer, json_listing_config):
     availability = ProductAvailability(offer.get_product_id(), offer.get_auth()).get().to_dict()
     print("Availability: " + str(availability))
     assert availability
-    assert availability['odata_etag']
-    assert availability['id']
-    assert availability['visibility'] == 'Public'
-    assert availability['enterprise_licensing'] == 'Online'
-    assert availability['audiences'][0]['values'] == json_listing_config['preview_audience']['subscriptions']
-    assert not availability['email_audiences']
-    assert not availability['subscription_audiences']
-    assert not availability['hide_key_audience']
+    assert availability["odata_etag"]
+    assert availability["id"]
+    assert availability["visibility"] == "Public"
+    assert availability["enterprise_licensing"] == "Online"
+    assert availability["audiences"][0]["values"] == json_listing_config["preview_audience"]["subscriptions"]
+    assert not availability["email_audiences"]
+    assert not availability["subscription_audiences"]
+    assert not availability["hide_key_audience"]
 
 
 def _assert_plan_listing(offer, json_listing_config):
@@ -350,12 +350,12 @@ def _assert_plan_listing(offer, json_listing_config):
     offer_listing = OfferListing(offer.get_product_id(), offer.get_auth()).get().to_dict()
     print("Offer Listing: " + str(offer_listing))
     assert offer_listing
-    assert offer_listing['short_description'] == json_listing_config['plan_overview'][0]['plan_listing'][
-        'shortDescription']
-    assert offer_listing['description'] == json_listing_config['plan_overview'][0]['plan_listing'][
-        'description']
-    assert offer_listing['title'] == json_listing_config['plan_overview'][0]['plan_listing'][
-        'title']
+    assert (
+        offer_listing["short_description"]
+        == json_listing_config["plan_overview"][0]["plan_listing"]["shortDescription"]
+    )
+    assert offer_listing["description"] == json_listing_config["plan_overview"][0]["plan_listing"]["description"]
+    assert offer_listing["title"] == json_listing_config["plan_overview"][0]["plan_listing"]["title"]
 
 
 def _assert_pricing_and_availability(offer, json_listing_config):
