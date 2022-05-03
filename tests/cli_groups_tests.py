@@ -110,6 +110,7 @@ def vm_create_command(config_yml, monkeypatch):
     def mock_put_request(url, data="", headers="", params="", json=""):
         return namedtuple("response", ["status_code"])(*[200])
 
+
     monkeypatch.setattr(requests, "put", mock_put_request)
 
     args_test(monkeypatch, _create_command_args(config_yml, subgroup="vm"))
@@ -118,6 +119,7 @@ def vm_create_command(config_yml, monkeypatch):
 def vm_update_command(config_yml, monkeypatch):
     def mock_put_request(url, data="", headers="", params="", json=""):
         return namedtuple("response", ["status_code"])(*[200])
+
 
     monkeypatch.setattr(requests, "put", mock_put_request)
 
@@ -148,6 +150,7 @@ def vm_show_command(config_yml, monkeypatch):
     def mock_put_request(url, data="", headers="", params="", json=""):
         return namedtuple("response", ["status_code"])(*[202])
 
+
     monkeypatch.setattr(requests, "put", mock_put_request)
 
     subgroup = "vm"
@@ -158,6 +161,7 @@ def vm_show_command(config_yml, monkeypatch):
 def vm_publish_command(config_yml, monkeypatch):
     def mock_post_request(url, data="", headers="", params="", json=""):
         return namedtuple("response", ["status_code"])(*[202])
+
 
     monkeypatch.setattr(requests, "post", mock_post_request)
 
