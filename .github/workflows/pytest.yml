@@ -1,10 +1,6 @@
 
 name: PyTest
 
-concurrency: 
-  group: ${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
-
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -31,12 +27,42 @@ jobs:
           echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
           echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
           echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
-          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml        
-      - name: Tox Env Unit
-        uses: paolorechia/pox@v1.0.1
+          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
+          echo "publisherId: \"${{ secrets.PUBLISHER_ID }}\"" >> config.yml
+          
+          python -m pip install --upgrade pip
+          pip install -r requirements.test.txt
+          pip install -r requirements.txt 
+          pip install pytest-cov coverage pytest-github-actions-annotate-failures
+          pytest -m "not integration and not gpu" -c tox.ini tests
+
+          coverage erase
+          python3 -m pytest \
+             -c "tox.ini" \
+             -m "not integration and not gpu" \
+             --cov-append \
+             --cov-config ".coveragerc" \
+             --cov azureiai \
+             --junitxml=pytest-results.xml \
+             "tests"
+
+          echo "---------- coverage: platform -----------" > pytest-coverage.txt
+          coverage report -m --skip-covered >> pytest-coverage.txt
+          cat pytest-coverage.txt
+      # Show unit test code coverage in a pull request comment.
+      - name: Show coverage comment
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: MishaKav/pytest-coverage-comment@v1.1.24
+        continue-on-error: true
         with:
-          tox_env: py37-unit
-      - name: Tox Env Integration
-        uses: paolorechia/pox@v1.0.1
-        with:
-          tox_env: py37-integration        
+          pytest-coverage-path: pytest-coverage.txt
+          junitxml-path: pytest-results.xml
+        
+#       - name: Tox Env Unit
+#         uses: paolorechia/pox@v1.0.1
+#         with:
+#           tox_env: py37-unit
+#       - name: Tox Env Integration
+#         uses: paolorechia/pox@v1.0.1
+#         with:
+#           tox_env: py37-integration        

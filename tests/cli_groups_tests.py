@@ -2,6 +2,10 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """CLI v2 Test Suite"""
+from collections import namedtuple
+
+import requests
+
 from azureiai import azpc_app
 from azureiai.managed_apps.confs import Properties, Listing, ProductAvailability
 from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
@@ -9,22 +13,19 @@ from tests.cli_tests import setup_patched_app
 
 
 def _list_command_args(config_yml, subgroup):
-    input_args = {"subgroups": subgroup, "command": "list", "config_yml": config_yml}
-    return input_args
+    return {"subgroups": subgroup, "command": "list", "config_yml": config_yml}
 
 
 def _create_command_args(config_yml, subgroup):
-    input_args = {"subgroups": subgroup, "command": "create", "name": f"test_{subgroup}", "config_yml": config_yml}
-    return input_args
+    return {"subgroups": subgroup, "command": "create", "name": f"test_{subgroup}", "config_yml": config_yml}
 
 
 def _update_command_args(config_yml, subgroup):
-    input_args = {"subgroups": subgroup, "command": "update", "name": f"test_{subgroup}", "config_yml": config_yml}
-    return input_args
+    return {"subgroups": subgroup, "command": "update", "name": f"test_{subgroup}", "config_yml": config_yml}
 
 
 def _create_plan_args(config_yml, subgroup):
-    input_args = {
+    return {
         "subgroups": subgroup,
         "command": "plan",
         "sub_command": "create",
@@ -32,11 +33,10 @@ def _create_plan_args(config_yml, subgroup):
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
     }
-    return input_args
 
 
 def _update_plan_args(config_yml, subgroup):
-    input_args = {
+    return {
         "subgroups": subgroup,
         "command": "plan",
         "sub_command": "update",
@@ -44,7 +44,6 @@ def _update_plan_args(config_yml, subgroup):
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
     }
-    return input_args
 
 
 def _show_plan_args(config_yml, subgroup):
@@ -88,7 +87,13 @@ def _show_command_args(config_yml, subgroup):
 
 
 def _publish_command_args(config_yml, subgroup):
-    input_args = {"subgroups": subgroup, "command": "publish", "name": f"test_{subgroup}", "config_yml": config_yml}
+    input_args = {
+        "subgroups": subgroup,
+        "command": "publish",
+        "name": f"test_{subgroup}",
+        "config_yml": config_yml,
+        "notification_emails": "dcibs@microsoft.com",
+    }
     return input_args
 
 
@@ -102,10 +107,20 @@ def vm_list_command(config_yml, monkeypatch):
 
 
 def vm_create_command(config_yml, monkeypatch):
+    def mock_put_request(url, data="", headers="", params="", json=""):
+        return namedtuple("response", ["status_code"])(*[200])
+
+    monkeypatch.setattr(requests, "put", mock_put_request)
+
     args_test(monkeypatch, _create_command_args(config_yml, subgroup="vm"))
 
 
 def vm_update_command(config_yml, monkeypatch):
+    def mock_put_request(url, data="", headers="", params="", json=""):
+        return namedtuple("response", ["status_code"])(*[200])
+
+    monkeypatch.setattr(requests, "put", mock_put_request)
+
     args_test(monkeypatch, _update_command_args(config_yml, "vm"))
 
 
@@ -130,12 +145,22 @@ def vm_delete_plan_command(config_yml, monkeypatch):
 
 
 def vm_show_command(config_yml, monkeypatch):
+    def mock_put_request(url, data="", headers="", params="", json=""):
+        return namedtuple("response", ["status_code"])(*[202])
+
+    monkeypatch.setattr(requests, "put", mock_put_request)
+
     subgroup = "vm"
     input_args = _show_command_args(config_yml, subgroup)
     args_test(monkeypatch, input_args)
 
 
 def vm_publish_command(config_yml, monkeypatch):
+    def mock_post_request(url, data="", headers="", params="", json=""):
+        return namedtuple("response", ["status_code"])(*[202])
+
+    monkeypatch.setattr(requests, "post", mock_post_request)
+
     subgroup = "vm"
     input_args = _publish_command_args(config_yml, subgroup)
     args_test(monkeypatch, input_args)
@@ -292,20 +317,20 @@ def _assert_properties(offer, json_listing_config):
     print("Properties" + str(properties))
     assert properties
 
-    assert properties['app_version'] == json_listing_config['plan_overview'][0]['technical_configuration']['version']
-    assert properties['terms_of_use'] == ''
-    assert properties['submission_version']
-    assert properties['product_tags']
-    assert properties['use_enterprise_contract']
-    assert properties['odata_etag']
-    assert properties['id']
-    assert not properties['industries']
-    assert not properties['categories']
-    assert not properties['additional_categories']
-    assert not properties['hide_keys']
-    assert not properties['marketing_only_change']
-    assert not properties['global_amendment_terms']
-    assert not properties['custom_amendments']
+    assert properties["app_version"] == json_listing_config["plan_overview"][0]["technical_configuration"]["version"]
+    assert properties["terms_of_use"] == ""
+    assert properties["submission_version"]
+    assert properties["product_tags"]
+    assert properties["use_enterprise_contract"]
+    assert properties["odata_etag"]
+    assert properties["id"]
+    assert not properties["industries"]
+    assert not properties["categories"]
+    assert not properties["additional_categories"]
+    assert not properties["hide_keys"]
+    assert not properties["marketing_only_change"]
+    assert not properties["global_amendment_terms"]
+    assert not properties["custom_amendments"]
     return properties
 
 
@@ -314,9 +339,9 @@ def _assert_offer_listing(offer, json_listing_config):
     offer_listing = Listing(offer.get_product_id(), offer.get_auth()).get().to_dict()
     print("Offer Listing: " + str(offer_listing))
     assert offer_listing
-    assert offer_listing['odata_etag']
-    assert offer_listing['id']
-    assert offer_listing["summary"] == json_listing_config["offer_listing"]['summary']
+    assert offer_listing["odata_etag"]
+    assert offer_listing["id"]
+    assert offer_listing["summary"] == json_listing_config["offer_listing"]["summary"]
     assert offer_listing["listing_uris"]  # == json_listing_config['listing_uris'] random things aren't matching
     assert offer_listing["listing_contacts"]  # == json_listing_config['listing_contacts']
     assert offer_listing["language_code"] == "en-us"
@@ -334,14 +359,14 @@ def _assert_preview_audience(offer, json_listing_config):
     availability = ProductAvailability(offer.get_product_id(), offer.get_auth()).get().to_dict()
     print("Availability: " + str(availability))
     assert availability
-    assert availability['odata_etag']
-    assert availability['id']
-    assert availability['visibility'] == 'Public'
-    assert availability['enterprise_licensing'] == 'Online'
-    assert availability['audiences'][0]['values'] == json_listing_config['preview_audience']['subscriptions']
-    assert not availability['email_audiences']
-    assert not availability['subscription_audiences']
-    assert not availability['hide_key_audience']
+    assert availability["odata_etag"]
+    assert availability["id"]
+    assert availability["visibility"] == "Public"
+    assert availability["enterprise_licensing"] == "Online"
+    assert availability["audiences"][0]["values"] == json_listing_config["preview_audience"]["subscriptions"]
+    assert not availability["email_audiences"]
+    assert not availability["subscription_audiences"]
+    assert not availability["hide_key_audience"]
 
 
 def _assert_plan_listing(offer, json_listing_config):
@@ -349,12 +374,12 @@ def _assert_plan_listing(offer, json_listing_config):
     offer_listing = OfferListing(offer.get_product_id(), offer.get_auth()).get().to_dict()
     print("Offer Listing: " + str(offer_listing))
     assert offer_listing
-    assert offer_listing['short_description'] == json_listing_config['plan_overview'][0]['plan_listing'][
-        'shortDescription']
-    assert offer_listing['description'] == json_listing_config['plan_overview'][0]['plan_listing'][
-        'description']
-    assert offer_listing['title'] == json_listing_config['plan_overview'][0]['plan_listing'][
-        'title']
+    assert (
+        offer_listing["short_description"]
+        == json_listing_config["plan_overview"][0]["plan_listing"]["shortDescription"]
+    )
+    assert offer_listing["description"] == json_listing_config["plan_overview"][0]["plan_listing"]["description"]
+    assert offer_listing["title"] == json_listing_config["plan_overview"][0]["plan_listing"]["title"]
 
 
 def _assert_pricing_and_availability(offer, json_listing_config):
