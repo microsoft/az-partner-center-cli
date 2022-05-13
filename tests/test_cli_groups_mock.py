@@ -4,20 +4,7 @@
 import pytest
 from pathlib import Path
 
-from tests.cli_groups_tests import (
-    vm_list_command,
-    ma_list_command,
-    vm_create_command,
-    vm_show_command,
-    ma_create_command,
-    ma_show_command,
-    ma_delete_command,
-    vm_delete_command,
-    vm_publish_command,
-    ma_publish_command,
-    vm_update_command,
-    ma_update_command,
-)
+from tests import cli_groups_tests as cli_tests
 
 
 @pytest.fixture
@@ -29,48 +16,72 @@ def config_yml():
 
 
 def test_vm_list_mock(config_yml, monkeypatch, ama_mock):
-    vm_list_command(config_yml, monkeypatch)
+    cli_tests.vm_list_command(config_yml, monkeypatch)
 
 
 def test_vm_create_mock(config_yml, monkeypatch, ama_mock):
-    vm_create_command(config_yml, monkeypatch)
+    cli_tests.vm_create_command(config_yml, monkeypatch)
 
 
 def test_vm_update_mock(config_yml, monkeypatch, ama_mock):
-    vm_update_command(config_yml, monkeypatch)
+    cli_tests.vm_update_command(config_yml, monkeypatch)
 
 
 def test_vm_show_mock(config_yml, monkeypatch, ama_mock):
-    vm_show_command(config_yml, monkeypatch)
+    cli_tests.vm_show_command(config_yml, monkeypatch)
 
 
 def test_vm_publish_mock(config_yml, monkeypatch, ama_mock):
-    vm_publish_command(config_yml, monkeypatch)
+    cli_tests.vm_publish_command(config_yml, monkeypatch)
 
 
 def test_vm_delete_mock(config_yml, monkeypatch, ama_mock):
-    vm_delete_command(config_yml, monkeypatch)
+    cli_tests.vm_delete_command(config_yml, monkeypatch)
 
 
 def test_ma_list_mock(config_yml, monkeypatch, ama_mock):
-    ma_list_command(config_yml, monkeypatch)
+    cli_tests.ma_list_command(config_yml, monkeypatch)
 
 
 def test_ma_create_mock(config_yml, monkeypatch, ama_mock):
-    ma_create_command(config_yml, monkeypatch)
+    cli_tests.ma_create_command(config_yml, monkeypatch)
 
 
 def test_ma_update_mock(config_yml, monkeypatch, ama_mock):
-    ma_update_command(config_yml, monkeypatch)
+    cli_tests.ma_update_command(config_yml, monkeypatch)
 
 
 def test_ma_show_mock(config_yml, monkeypatch, ama_mock):
-    ma_show_command(config_yml, monkeypatch)
+    cli_tests.ma_show_command(config_yml, monkeypatch)
 
 
 def test_ma_publish_mock(config_yml, monkeypatch, ama_mock):
-    ma_publish_command(config_yml, monkeypatch)
+    cli_tests.ma_publish_command(config_yml, monkeypatch)
 
 
 def test_ma_delete_mock(config_yml, monkeypatch, ama_mock):
-    ma_delete_command(config_yml, monkeypatch)
+    cli_tests.ma_delete_command(config_yml, monkeypatch)
+
+
+def test_st_list_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.st_list_command(config_yml, monkeypatch)
+
+
+def test_st_create_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.st_create_command(config_yml, monkeypatch)
+
+
+def test_st_update_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.st_update_command(config_yml, monkeypatch)
+
+
+def test_st_show_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.st_show_command(config_yml, monkeypatch)
+
+
+def test_st_publish_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.st_publish_command(config_yml, monkeypatch)
+
+
+def test_st_delete_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.st_delete_command(config_yml, monkeypatch)    
