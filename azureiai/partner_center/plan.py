@@ -198,7 +198,7 @@ class PlanCLIParser(CLIParser):
     def create(self) -> {}:
         """Create a new Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.plan_name, args.name, subtype=args.subgroups).create()
+        return self.submission_type(args.plan_name, args.name, subtype=args.subgroup).create()
 
     def list_command(self) -> {}:
         """Create a new Managed Application"""
