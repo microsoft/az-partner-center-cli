@@ -84,4 +84,4 @@ def test_st_publish_mock(config_yml, monkeypatch, ama_mock):
 
 
 def test_st_delete_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.st_delete_command(config_yml, monkeypatch)    
+    cli_tests.st_delete_command(config_yml, monkeypatch)
