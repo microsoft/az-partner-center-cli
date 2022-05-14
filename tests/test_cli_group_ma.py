@@ -43,9 +43,9 @@ def test_ma_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
 
         print("Managed App Found")
         with pytest.raises(ApiException):
-            ma_create_command(config_yml, monkeypatch)
+            ma_create_command(config_yml, json_listing_config, monkeypatch)
     except:
-        ma_create_command(config_yml, monkeypatch)
+        ma_create_command(config_yml, json_listing_config, monkeypatch)
 
     # Load Managed App
     offer = ManagedApp(name="test_ma")
@@ -59,8 +59,8 @@ def test_ma_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
 
 
 @pytest.mark.integration
-def test_ma_update(config_yml, monkeypatch):
-    ma_update_command(config_yml, monkeypatch)
+def test_ma_update(config_yml, json_listing_config, monkeypatch):
+    ma_update_command(config_yml, json_listing_config, monkeypatch)
 
 
 @pytest.mark.integration
@@ -70,7 +70,7 @@ def test_ma_show(config_yml, monkeypatch):
 
 @pytest.mark.integration
 def test_ma_plan_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
-    ma_create_plan_command(config_yml, monkeypatch)
+    ma_create_plan_command(config_yml, json_listing_config, monkeypatch)
 
     offer = Plan(name="test_ma", plan_name="test_ma_plan")
     offer.show()
@@ -89,7 +89,7 @@ def test_ma_plan_show(config_yml, monkeypatch):
 
 @pytest.mark.integration
 def test_ma_plan_update(config_yml, monkeypatch, app_path_fix, json_listing_config):
-    ma_update_plan_command(config_yml, monkeypatch)
+    ma_update_plan_command(config_yml, json_listing_config, monkeypatch)
 
     offer = Plan(name="test_ma", plan_name="test_ma_plan")
     offer.show()
