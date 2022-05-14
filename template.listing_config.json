@@ -6,6 +6,7 @@
     "crm"      : ""
   },
   "property_settings"      : {
+    "category"   : "analytics",
     "categories": [
       {
         "category"   : "analytics",
