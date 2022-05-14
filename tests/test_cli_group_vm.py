@@ -137,9 +137,9 @@ def test_vm_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
 
         print("Managed App Found")
         with pytest.raises(ApiException):
-            vm_create_command(config_yml, monkeypatch)
+            vm_create_command(config_yml, json_listing_config, monkeypatch)
     except:
-        vm_create_command(config_yml, monkeypatch)
+        vm_create_command(config_yml, json_listing_config, monkeypatch)
 
     offer = VirtualMachine(name="test_vm")
     offer.show()
@@ -162,9 +162,9 @@ def test_vm_plan_create(config_yml, monkeypatch, app_path_fix, json_listing_conf
         vm_show_plan_command(config_yml, monkeypatch)
 
         with pytest.raises(ApiException):
-            vm_create_plan_command(config_yml, monkeypatch)
+            vm_create_plan_command(config_yml, json_listing_config, monkeypatch)
     except:
-        vm_create_plan_command(config_yml, monkeypatch)
+        vm_create_plan_command(config_yml, json_listing_config, monkeypatch)
 
     offer = Plan(name="test_vm", plan_name="test_vm_plan")
     offer.show()
@@ -183,7 +183,7 @@ def test_vm_plan_show(config_yml, monkeypatch):
 
 @pytest.mark.integration
 def test_vm_plan_update(config_yml, monkeypatch, app_path_fix, json_listing_config):
-    vm_update_plan_command(config_yml, monkeypatch)
+    vm_update_plan_command(config_yml, json_listing_config, monkeypatch)
 
     offer = Plan(name="test_vm", plan_name="test_vm_plan")
     offer.show()

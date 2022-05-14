@@ -22,20 +22,20 @@ def test_st_list(config_yml, monkeypatch):
 
 
 @pytest.mark.integration
-def test_st_create(config_yml, monkeypatch):
+def test_st_create(config_yml, json_listing_config, monkeypatch):
     try:
         st_show_command(config_yml, monkeypatch)
 
         print("Solution Template Found")
         with pytest.raises(ApiException):
-            st_create_command(config_yml, monkeypatch)
+            st_create_command(config_yml, json_listing_config, monkeypatch)
     except:
-        st_create_command(config_yml, monkeypatch)
+        st_create_command(config_yml, json_listing_config, monkeypatch)
 
 
 @pytest.mark.integration
-def test_st_update(config_yml, monkeypatch):
-    st_update_command(config_yml, monkeypatch)
+def test_st_update(config_yml, json_listing_config, monkeypatch):
+    st_update_command(config_yml, json_listing_config, monkeypatch)
 
 
 @pytest.mark.integration
@@ -44,14 +44,14 @@ def test_st_show(config_yml, monkeypatch):
 
 
 @pytest.mark.integration
-def test_st_plan_create(config_yml, monkeypatch):
+def test_st_plan_create(config_yml, json_listing_config, monkeypatch):
     try:
         st_show_plan_command(config_yml, monkeypatch)
 
         with pytest.raises(ApiException):
-            st_create_plan_command(config_yml, monkeypatch)
+            st_create_plan_command(config_yml, json_listing_config, monkeypatch)
     except:
-        st_create_plan_command(config_yml, monkeypatch)
+        st_create_plan_command(config_yml, json_listing_config, monkeypatch)
 
 
 @pytest.mark.integration
@@ -60,8 +60,8 @@ def test_st_plan_show(config_yml, monkeypatch):
 
 
 @pytest.mark.integration
-def test_st_plan_update(config_yml, monkeypatch):
-    st_update_plan_command(config_yml, monkeypatch)
+def test_st_plan_update(config_yml, json_listing_config, monkeypatch):
+    st_update_plan_command(config_yml, json_listing_config, monkeypatch)
 
 
 @pytest.mark.integration

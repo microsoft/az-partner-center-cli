@@ -112,7 +112,7 @@ class Offer:
         return self._ids["plan_id"]
 
     @abstractmethod
-    def create(self) -> str:
+    def create(self) -> dict:
         """Create new Azure Managed Application and set product id."""
 
     def _get_draft_instance_id(self, module: str, retry: int = 0):

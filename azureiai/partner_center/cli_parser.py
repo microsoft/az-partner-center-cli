@@ -26,46 +26,60 @@ class CLIParser:
 
         self._name = "--name"
         self._notification_emails = "--notification-emails"
+        self._config_json = "--config-json"
 
-    def create(self) -> {}:
+    def create(self) -> dict:
         """Create a new Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.name).create()
+        args = self._add_name_config_json_argument()
+        return self.submission_type(
+            args.name, config_yaml=args.config_yml, json_listing_config=args.config_json
+        ).create()
 
-    def delete(self) -> {}:
+    def delete(self) -> dict:
         """Delete a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name).delete()
+        return self.submission_type(args.name, config_yaml=args.config_yml).delete()
 
-    def list_command(self) -> {}:
+    def list_command(self) -> dict:
         """List Managed Applications"""
-        return self.submission_type().list_contents()
+        args = self.parser.parse_args()
+        return self.submission_type(config_yaml=args.config_yml).list_contents()
 
-    def publish(self) -> {}:
+    def publish(self) -> dict:
         """Publish a Managed Application"""
         if "VirtualMachine" not in str(self.submission_type):
             args = self._add_name_argument()
-            return self.submission_type(args.name).publish()
+            return self.submission_type(args.name, config_yaml=args.config_yml).publish()
         args = self._add_name_notification_emails_argument()
-        return self.submission_type(args.name, args.notification_emails).publish()
+        return self.submission_type(args.name, args.notification_emails, args.config_yml).publish()
 
-    def show(self) -> {}:
+    def show(self) -> dict:
         """Show a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name).show()
+        return self.submission_type(args.name, config_yaml=args.config_yml).show()
 
-    def update(self) -> {}:
+    def update(self) -> dict:
         """Update a Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.name).update()
+        args = self._add_name_config_json_argument()
+        return self.submission_type(
+            args.name, config_yaml=args.config_yml, json_listing_config=args.config_json
+        ).update()
 
-    def status(self) -> {}:
+    def status(self) -> dict:
         """Get the Status of an offer"""
         args = self._add_name_argument()
-        return self.submission_type(args.name).status()
+        return self.submission_type(args.name, config_yaml=args.config_yml).status()
 
     def _add_name_argument(self):
         self.parser.add_argument(self._name, type=str, help="Managed App Name")
+        args = self.parser.parse_args()
+        return args
+
+    def _add_name_config_json_argument(self):
+        self.parser.add_argument(self._name, type=str, help="Managed App Name")
+        self.parser.add_argument(
+            self._config_json, type=str, help="Listing Configuration Json", default="listing_config.json"
+        )
         args = self.parser.parse_args()
         return args
 

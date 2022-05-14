@@ -16,15 +16,27 @@ def _list_command_args(config_yml, subgroup):
     return {"subgroups": subgroup, "command": "list", "config_yml": config_yml}
 
 
-def _create_command_args(config_yml, subgroup):
-    return {"subgroups": subgroup, "command": "create", "name": f"test_{subgroup}", "config_yml": config_yml}
+def _create_command_args(config_yml, config_json, subgroup):
+    return {
+        "subgroups": subgroup,
+        "command": "create",
+        "name": f"test_{subgroup}",
+        "config_yml": config_yml,
+        "config_json": config_json,
+    }
 
 
-def _update_command_args(config_yml, subgroup):
-    return {"subgroups": subgroup, "command": "update", "name": f"test_{subgroup}", "config_yml": config_yml}
+def _update_command_args(config_yml, config_json, subgroup):
+    return {
+        "subgroups": subgroup,
+        "command": "update",
+        "name": f"test_{subgroup}",
+        "config_yml": config_yml,
+        "config_json": config_json,
+    }
 
 
-def _create_plan_args(config_yml, subgroup):
+def _create_plan_args(config_yml, json_config, subgroup):
     return {
         "subgroups": subgroup,
         "command": "plan",
@@ -32,10 +44,11 @@ def _create_plan_args(config_yml, subgroup):
         "name": f"test_{subgroup}",
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
+        "json_config": json_config,
     }
 
 
-def _update_plan_args(config_yml, subgroup):
+def _update_plan_args(config_yml, json_config, subgroup):
     return {
         "subgroups": subgroup,
         "command": "plan",
@@ -43,6 +56,7 @@ def _update_plan_args(config_yml, subgroup):
         "name": f"test_{subgroup}",
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
+        "json_config": json_config,
     }
 
 
@@ -106,30 +120,30 @@ def vm_list_command(config_yml, monkeypatch):
     args_test(monkeypatch, _list_command_args(config_yml, subgroup="vm"))
 
 
-def vm_create_command(config_yml, monkeypatch):
+def vm_create_command(config_yml, json_config, monkeypatch):
     def mock_put_request(url, data="", headers="", params="", json=""):
         return namedtuple("response", ["status_code"])(*[200])
 
     monkeypatch.setattr(requests, "put", mock_put_request)
 
-    args_test(monkeypatch, _create_command_args(config_yml, subgroup="vm"))
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="vm"))
 
 
-def vm_update_command(config_yml, monkeypatch):
+def vm_update_command(config_yml, json_config, monkeypatch):
     def mock_put_request(url, data="", headers="", params="", json=""):
         return namedtuple("response", ["status_code"])(*[200])
 
     monkeypatch.setattr(requests, "put", mock_put_request)
 
-    args_test(monkeypatch, _update_command_args(config_yml, "vm"))
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="vm"))
 
 
-def vm_create_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, "vm"))
+def vm_create_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="vm"))
 
 
-def vm_update_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, "vm"))
+def vm_update_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="vm"))
 
 
 def vm_show_plan_command(config_yml, monkeypatch):
@@ -176,24 +190,24 @@ def co_list_command(config_yml, monkeypatch):
     args_test(monkeypatch, _list_command_args(config_yml, subgroup="co"))
 
 
-def co_create_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_command_args(config_yml, subgroup="co"))
+def co_create_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="co"))
 
 
-def co_update_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, "co"))
+def co_update_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="co"))
 
 
 def co_show_command(config_yml, monkeypatch):
     args_test(monkeypatch, _show_command_args(config_yml, "co"))
 
 
-def co_create_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, "co"))
+def co_create_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="co"))
 
 
-def co_update_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, "co"))
+def co_update_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="co"))
 
 
 def co_list_plan_command(config_yml, monkeypatch):
@@ -220,24 +234,24 @@ def ma_list_command(config_yml, monkeypatch):
     args_test(monkeypatch, _list_command_args(config_yml, subgroup="ma"))
 
 
-def ma_create_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_command_args(config_yml, "ma"))
+def ma_create_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="ma"))
 
 
-def ma_update_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, "ma"))
+def ma_update_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="ma"))
 
 
 def ma_show_command(config_yml, monkeypatch):
     args_test(monkeypatch, _show_command_args(config_yml, "ma"))
 
 
-def ma_create_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, "ma"))
+def ma_create_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="ma"))
 
 
-def ma_update_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, "ma"))
+def ma_update_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="ma"))
 
 
 def ma_list_plan_command(config_yml, monkeypatch):
@@ -264,20 +278,20 @@ def st_list_command(config_yml, monkeypatch):
     args_test(monkeypatch, _list_command_args(config_yml, "st"))
 
 
-def st_create_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_command_args(config_yml, "st"))
+def st_create_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="st"))
 
 
-def st_update_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, "st"))
+def st_update_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="st"))
 
 
-def st_create_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, "st"))
+def st_create_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="st"))
 
 
-def st_update_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, "st"))
+def st_update_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="st"))
 
 
 def st_show_plan_command(config_yml, monkeypatch):

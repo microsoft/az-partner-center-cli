@@ -121,6 +121,8 @@ def ama_mock(ama_name, monkeypatch):
                         "current_draft_instance_id": "123",
                     },
                     {"name": "test_ma", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
+                    {"name": "test_st", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
+                    {"name": "test_co", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
                 ],
                 "",
                 "",

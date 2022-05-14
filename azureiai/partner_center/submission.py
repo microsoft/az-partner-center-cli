@@ -16,8 +16,8 @@ class Submission(Offer):
     def __init__(
         self,
         name=None,
-        config_yaml=r"config.yml",
-        resource_type="",
+        config_yaml: str = "config.yml",
+        resource_type: str = "",
         app_path: str = "sample_app",
         json_listing_config: str = "listing_config.json",
     ):
@@ -33,7 +33,7 @@ class Submission(Offer):
         )
         return api_response.to_dict()
 
-    def create(self):
+    def create(self) -> dict:
         """Create new Azure Submission and set product id."""
         body = {
             "resourceType": self.resource_type,

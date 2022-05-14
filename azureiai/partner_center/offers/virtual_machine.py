@@ -41,14 +41,7 @@ class VirtualMachine(Submission):
 
     def update(self):
         """Update Existing Application"""
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
-
-        publisher_id = json_config["publisherId"]
-        offer_id = json_config["id"]
-
-        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
-        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        headers, json_config, url = self._prepare_request()
 
         response = requests.put(url, json=json_config, headers=headers)
         if response.status_code != 200:
@@ -58,14 +51,7 @@ class VirtualMachine(Submission):
 
     def status(self):
         """Get the Status of an Existing Application"""
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
-
-        publisher_id = json_config["publisherId"]
-        offer_id = json_config["id"]
-
-        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/status?api-version=2017-10-31"
-        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        headers, _, url = self._prepare_request()
 
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
@@ -74,15 +60,8 @@ class VirtualMachine(Submission):
         return response.json()
 
     def publish(self):
-        """Publsih Existing Application"""
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
-
-        publisher_id = json_config["publisherId"]
-        offer_id = json_config["id"]
-
-        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/publish?api-version=2017-10-31"
-        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        """Publish Existing Application"""
+        headers, _, url = self._prepare_request()
 
         response = requests.post(
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
@@ -114,6 +93,15 @@ class VirtualMachine(Submission):
             )
             self._authorization = token_response["accessToken"]
         return self._authorization
+
+    def _prepare_request(self):
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+        publisher_id = json_config["publisherId"]
+        offer_id = json_config["id"]
+        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
+        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        return headers, json_config, url
 
 
 class VirtualMachineCLI(CLIParser):
