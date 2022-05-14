@@ -31,39 +31,39 @@ class CLIParser:
     def create(self) -> {}:
         """Create a new Managed Application"""
         args = self._add_name_config_json_argument()
-        return self.submission_type(args.name).create()
+        return self.submission_type(args.name, config_yaml=args.config_yml, json_listing_config=args.config_json).create()
 
     def delete(self) -> {}:
         """Delete a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name).delete()
+        return self.submission_type(args.name, config_yaml=args.config_yml).delete()
 
     def list_command(self) -> {}:
         """List Managed Applications"""
-        return self.submission_type().list_contents()
+        return self.submission_type(config_yaml=args.config_yml).list_contents()
 
     def publish(self) -> {}:
         """Publish a Managed Application"""
         if "VirtualMachine" not in str(self.submission_type):
             args = self._add_name_argument()
-            return self.submission_type(args.name).publish()
+            return self.submission_type(args.name, config_yaml=args.config_yml).publish()
         args = self._add_name_notification_emails_argument()
-        return self.submission_type(args.name, args.notification_emails).publish()
+        return self.submission_type(args.name, args.notification_emails, config_yaml=args.config_yml).publish()
 
     def show(self) -> {}:
         """Show a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name).show()
+        return self.submission_type(args.name, config_yaml=args.config_yml).show()
 
     def update(self) -> {}:
         """Update a Managed Application"""
         args = self._add_name_config_json_argument()
-        return self.submission_type(args.name).update()
+        return self.submission_type(args.name, config_yaml=args.config_yml, json_listing_config=args.config_json).update()
 
     def status(self) -> {}:
         """Get the Status of an offer"""
         args = self._add_name_argument()
-        return self.submission_type(args.name).status()
+        return self.submission_type(args.name,  config_yaml=args.config_yml).status()
 
     def _add_name_argument(self):
         self.parser.add_argument(self._name, type=str, help="Managed App Name")
