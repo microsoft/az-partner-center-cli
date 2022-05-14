@@ -26,7 +26,7 @@ jobs:
         git config --global user.email "auto-black@noreply.github.com"
         git config --global user.name "Auto Black"
 
-        git add azureiai
+        git add azureiai tests
 
         if ! git diff-index --quiet HEAD --; then
           git commit -m "Autoformat with Black" --no-edit
