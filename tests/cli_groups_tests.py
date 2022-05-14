@@ -21,7 +21,13 @@ def _create_command_args(config_yml, json_config, subgroup):
 
 
 def _update_command_args(config_yml, json_config, subgroup):
-    return {"subgroups": subgroup, "command": "update", "name": f"test_{subgroup}", "config_yml": config_yml, "json_config": json_config}
+    return {
+        "subgroups": subgroup,
+        "command": "update",
+        "name": f"test_{subgroup}",
+        "config_yml": config_yml,
+        "json_config": json_config,
+    }
 
 
 def _create_plan_args(config_yml, json_config, subgroup):
