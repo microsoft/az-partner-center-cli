@@ -31,7 +31,9 @@ class CLIParser:
     def create(self) -> {}:
         """Create a new Managed Application"""
         args = self._add_name_config_json_argument()
-        return self.submission_type(args.name, config_yaml=args.config_yml, json_listing_config=args.config_json).create()
+        return self.submission_type(
+            args.name, config_yaml=args.config_yml, json_listing_config=args.config_json
+        ).create()
 
     def delete(self) -> {}:
         """Delete a Managed Application"""
@@ -58,12 +60,14 @@ class CLIParser:
     def update(self) -> {}:
         """Update a Managed Application"""
         args = self._add_name_config_json_argument()
-        return self.submission_type(args.name, config_yaml=args.config_yml, json_listing_config=args.config_json).update()
+        return self.submission_type(
+            args.name, config_yaml=args.config_yml, json_listing_config=args.config_json
+        ).update()
 
     def status(self) -> {}:
         """Get the Status of an offer"""
         args = self._add_name_argument()
-        return self.submission_type(args.name,  config_yaml=args.config_yml).status()
+        return self.submission_type(args.name, config_yaml=args.config_yml).status()
 
     def _add_name_argument(self):
         self.parser.add_argument(self._name, type=str, help="Managed App Name")
