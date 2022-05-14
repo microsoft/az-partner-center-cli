@@ -11,6 +11,7 @@ from adal import AuthenticationContext
 from azureiai.managed_apps import ManagedApplication
 from azureiai.managed_apps.confs import ListingImage
 from azureiai.managed_apps.confs.variant import Package
+from azureiai.partner_center import offers
 from swagger_client import (
     BranchesApi,
     FeatureAvailabilityApi,
@@ -241,6 +242,15 @@ def ama_mock(ama_name, monkeypatch):
         return namedtuple("response", ["value"])(
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
+
+    def mock_app_path(self, authorization, product_id, listing_id):
+        return namedtuple("response", ["value"])(
+            *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
+        )
+
+    monkeypatch.setattr(
+        offers, "APP_PATH", "sample_app"
+    )
 
     monkeypatch.setattr(
         AuthenticationContext, "acquire_token_with_client_credentials", mock_acquire_token_with_client_credentials
