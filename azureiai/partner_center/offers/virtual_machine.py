@@ -10,8 +10,7 @@ import requests
 import yaml
 from adal import AuthenticationContext
 
-from azureiai.managed_apps.utils import AAD_ID, AAD_CRED, TENANT_ID
-
+from azureiai.managed_apps.utils import AAD_CRED, AAD_ID, TENANT_ID
 from azureiai.partner_center.cli_parser import CLIParser
 from azureiai.partner_center.submission import Submission
 
@@ -27,7 +26,7 @@ class VirtualMachine(Submission):
         name=None,
         notification_emails=None,
         config_yaml=r"config.yml",
-        app_path: str = "sample_app",
+        app_path: str = ".",
         json_listing_config="vm_config.json",
     ):
         super().__init__(
@@ -49,7 +48,7 @@ class VirtualMachine(Submission):
 
         return response
 
-    def status(self):
+    def status(self) -> dict:
         """Get the Status of an Existing Application"""
         headers, _, url = self._prepare_request()
 
@@ -109,3 +108,10 @@ class VirtualMachineCLI(CLIParser):
 
     def __init__(self):
         super().__init__(submission_type=VirtualMachine)
+
+    def publish(self):
+        """Publish a Managed Application"""
+        args = self._add_name_notification_emails_argument()
+        return VirtualMachine(
+            args.name, notification_emails=args.notification_emails, app_path=args.app_path, config_yaml=args.config_yml
+        ).publish()
