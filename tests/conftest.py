@@ -248,9 +248,7 @@ def ama_mock(ama_name, monkeypatch):
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
 
-    monkeypatch.setattr(
-        offers, "APP_PATH", "sample_app"
-    )
+    monkeypatch.setattr(offers, "APP_PATH", "sample_app")
 
     monkeypatch.setattr(
         AuthenticationContext, "acquire_token_with_client_credentials", mock_acquire_token_with_client_credentials
