@@ -33,7 +33,7 @@ class Submission(Offer):
         )
         return api_response.to_dict()
 
-    def create(self):
+    def create(self) -> dict:
         """Create new Azure Submission and set product id."""
         body = {
             "resourceType": self.resource_type,

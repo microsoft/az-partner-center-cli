@@ -28,14 +28,14 @@ class CLIParser:
         self._notification_emails = "--notification-emails"
         self._config_json = "--config-json"
 
-    def create(self) -> {}:
+    def create(self) -> dict:
         """Create a new Managed Application"""
         args = self._add_name_config_json_argument()
         return self.submission_type(
             args.name, config_yaml=args.config_yml, json_listing_config=args.config_json
         ).create()
 
-    def delete(self) -> {}:
+    def delete(self) -> dict:
         """Delete a Managed Application"""
         args = self._add_name_argument()
         return self.submission_type(args.name, config_yaml=args.config_yml).delete()
@@ -51,7 +51,7 @@ class CLIParser:
             args = self._add_name_argument()
             return self.submission_type(args.name, config_yaml=args.config_yml).publish()
         args = self._add_name_notification_emails_argument()
-        return self.submission_type(args.name, args.notification_emails, config_yaml=args.config_yml).publish()
+        return self.submission_type(args.name, args.notification_emails, args.config_yml).publish()
 
     def show(self) -> {}:
         """Show a Managed Application"""
