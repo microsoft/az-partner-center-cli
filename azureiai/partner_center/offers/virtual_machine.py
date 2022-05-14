@@ -27,7 +27,7 @@ class VirtualMachine(Submission):
         name=None,
         notification_emails=None,
         config_yaml=r"config.yml",
-        app_path: str = "sample_app",
+        app_path: str = ".",
         json_listing_config="vm_config.json",
     ):
         super().__init__(
