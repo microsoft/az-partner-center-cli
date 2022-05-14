@@ -40,12 +40,12 @@ class CLIParser:
         args = self._add_name_argument()
         return self.submission_type(args.name, config_yaml=args.config_yml).delete()
 
-    def list_command(self) -> {}:
+    def list_command(self) -> dict:
         """List Managed Applications"""
         args = self.parser.parse_args()
         return self.submission_type(config_yaml=args.config_yml).list_contents()
 
-    def publish(self) -> {}:
+    def publish(self) -> dict:
         """Publish a Managed Application"""
         if "VirtualMachine" not in str(self.submission_type):
             args = self._add_name_argument()
@@ -53,19 +53,19 @@ class CLIParser:
         args = self._add_name_notification_emails_argument()
         return self.submission_type(args.name, args.notification_emails, args.config_yml).publish()
 
-    def show(self) -> {}:
+    def show(self) -> dict:
         """Show a Managed Application"""
         args = self._add_name_argument()
         return self.submission_type(args.name, config_yaml=args.config_yml).show()
 
-    def update(self) -> {}:
+    def update(self) -> dict:
         """Update a Managed Application"""
         args = self._add_name_config_json_argument()
         return self.submission_type(
             args.name, config_yaml=args.config_yml, json_listing_config=args.config_json
         ).update()
 
-    def status(self) -> {}:
+    def status(self) -> dict:
         """Get the Status of an offer"""
         args = self._add_name_argument()
         return self.submission_type(args.name, config_yaml=args.config_yml).status()
