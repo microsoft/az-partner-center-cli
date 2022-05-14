@@ -16,23 +16,23 @@ def _list_command_args(config_yml, subgroup):
     return {"subgroups": subgroup, "command": "list", "config_yml": config_yml}
 
 
-def _create_command_args(config_yml, json_config, subgroup):
+def _create_command_args(config_yml, config_json, subgroup):
     return {
         "subgroups": subgroup,
         "command": "create",
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
-        "json_config": json_config,
+        "config_json": config_json,
     }
 
 
-def _update_command_args(config_yml, json_config, subgroup):
+def _update_command_args(config_yml, config_json, subgroup):
     return {
         "subgroups": subgroup,
         "command": "update",
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
-        "json_config": json_config,
+        "config_json": config_json,
     }
 
 
