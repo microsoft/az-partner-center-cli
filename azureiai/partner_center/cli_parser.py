@@ -48,11 +48,8 @@ class CLIParser:
 
     def publish(self) -> dict:
         """Publish a Managed Application"""
-        if "VirtualMachine" not in str(self.submission_type):
-            args = self._add_name_argument()
-            return self.submission_type(args.name, app_path=args.app_path, config_yaml=args.config_yml).publish()
-        args = self._add_name_notification_emails_argument()
-        return self.submission_type(args.name, args.notification_emails, args.config_yml).publish()
+        args = self._add_name_argument()
+        return self.submission_type(args.name, app_path=args.app_path, config_yaml=args.config_yml).publish()
 
     def show(self) -> dict:
         """Show a Managed Application"""

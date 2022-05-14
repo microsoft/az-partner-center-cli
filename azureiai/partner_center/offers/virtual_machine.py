@@ -38,7 +38,7 @@ class VirtualMachine(Submission):
         )
         self.notification_emails = notification_emails
 
-    def update(self):
+    def update(self) -> dict:
         """Update Existing Application"""
         headers, json_config, url = self._prepare_request()
 
@@ -46,9 +46,9 @@ class VirtualMachine(Submission):
         if response.status_code != 200:
             raise ConnectionError(str(response))
 
-        return response
+        return response.json()
 
-    def status(self):
+    def status(self) -> dict:
         """Get the Status of an Existing Application"""
         headers, _, url = self._prepare_request()
 
@@ -58,7 +58,7 @@ class VirtualMachine(Submission):
 
         return response.json()
 
-    def publish(self):
+    def publish(self) -> dict:
         """Publish Existing Application"""
         headers, _, url = self._prepare_request()
 
@@ -68,7 +68,7 @@ class VirtualMachine(Submission):
         if response.status_code != 202:
             raise ConnectionError(str(response))
 
-        return response
+        return response.json()
 
     def get_auth(self) -> str:
         """
@@ -108,3 +108,8 @@ class VirtualMachineCLI(CLIParser):
 
     def __init__(self):
         super().__init__(submission_type=VirtualMachine)
+
+    def publish(self) -> dict:
+        """Publish a Managed Application"""
+        args = self._add_name_notification_emails_argument()
+        return VirtualMachine(args.name, args.notification_emails, args.app_path, args.config_yml).publish()
