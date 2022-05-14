@@ -26,10 +26,11 @@ class CLIParser:
 
         self._name = "--name"
         self._notification_emails = "--notification-emails"
+        self._config_json = "--config-json"
 
     def create(self) -> {}:
         """Create a new Managed Application"""
-        args = self._add_name_argument()
+        args = self._add_name_config_json_argument()
         return self.submission_type(args.name).create()
 
     def delete(self) -> {}:
@@ -56,7 +57,7 @@ class CLIParser:
 
     def update(self) -> {}:
         """Update a Managed Application"""
-        args = self._add_name_argument()
+        args = self._add_name_config_json_argument()
         return self.submission_type(args.name).update()
 
     def status(self) -> {}:
@@ -66,6 +67,12 @@ class CLIParser:
 
     def _add_name_argument(self):
         self.parser.add_argument(self._name, type=str, help="Managed App Name")
+        args = self.parser.parse_args()
+        return args
+
+    def _add_name_config_json_argument(self):
+        self.parser.add_argument(self._name, type=str, help="Managed App Name")
+        self.parser.add_argument(self._config_json, type=str, help="Listing Configuration Json")
         args = self.parser.parse_args()
         return args
 
