@@ -22,6 +22,7 @@ def vm_config_json():
     config_path = test_path.joinpath("vm_listing_config.json")
     return config_path if config_path.is_file() else test_path.joinpath("template.listing_config.json")
 
+
 @pytest.fixture
 def ma_config_json():
     """Fixuture used to configure deployment for testing"""
