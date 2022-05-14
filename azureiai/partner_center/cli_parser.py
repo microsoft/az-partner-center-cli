@@ -42,6 +42,7 @@ class CLIParser:
 
     def list_command(self) -> {}:
         """List Managed Applications"""
+        args = self.parser.parse_args()
         return self.submission_type(config_yaml=args.config_yml).list_contents()
 
     def publish(self) -> {}:
