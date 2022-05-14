@@ -24,7 +24,7 @@ def _update_command_args(config_yml, json_config, subgroup):
     return {"subgroups": subgroup, "command": "update", "name": f"test_{subgroup}", "config_yml": config_yml, "json_config": json_config}
 
 
-def _create_plan_args(config_yml, json_config="listing_config.json", subgroup):
+def _create_plan_args(config_yml, json_config, subgroup):
     return {
         "subgroups": subgroup,
         "command": "plan",
@@ -36,7 +36,7 @@ def _create_plan_args(config_yml, json_config="listing_config.json", subgroup):
     }
 
 
-def _update_plan_args(config_yml, json_config="listing_config.json", subgroup):
+def _update_plan_args(config_yml, json_config, subgroup):
     return {
         "subgroups": subgroup,
         "command": "plan",
@@ -242,8 +242,8 @@ def ma_update_plan_command(config_yml, json_config, monkeypatch):
     args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="ma"))
 
 
-def ma_list_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _list_plan_args(config_yml, json_config, "ma"))
+def ma_list_plan_command(config_yml, monkeypatch):
+    args_test(monkeypatch, _list_plan_args(config_yml, "ma"))
 
 
 def ma_show_plan_command(config_yml, monkeypatch):
