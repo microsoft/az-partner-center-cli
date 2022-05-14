@@ -11,7 +11,9 @@ AZURE_APPLICATION = "AzureApplication"
 class SolutionTemplate(Submission):
     """Azure Partner Center Managed Application Submission"""
 
-    def __init__(self, name=None, config_yaml=r"config.yml", app_path: str = "sample_app", json_listing_config="st_config.json"):
+    def __init__(
+        self, name=None, config_yaml=r"config.yml", app_path: str = "sample_app", json_listing_config="st_config.json"
+    ):
         super().__init__(
             name=name,
             config_yaml=config_yaml,
