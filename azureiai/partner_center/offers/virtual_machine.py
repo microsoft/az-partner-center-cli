@@ -51,7 +51,7 @@ class VirtualMachine(Submission):
 
     def status(self):
         """Get the Status of an Existing Application"""
-        headers, json_config, url = self._prepare_request()
+        headers, _, url = self._prepare_request()
 
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
@@ -61,7 +61,7 @@ class VirtualMachine(Submission):
 
     def publish(self):
         """Publish Existing Application"""
-        headers, json_config, url = self._prepare_request()
+        headers, _, url = self._prepare_request()
 
         response = requests.post(
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
