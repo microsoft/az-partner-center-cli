@@ -18,6 +18,7 @@
     ]
   },
   "offer_listing"          : {
+    "title"              : "MMLSpark on Databricks",    
     "name"               : "MMLSpark on Databricks",
     "summary"            : "<Search results Summary*>",
     "short_description"  : "<Short description*>",
