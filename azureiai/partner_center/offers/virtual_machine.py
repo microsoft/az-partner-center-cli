@@ -13,7 +13,7 @@ from adal import AuthenticationContext
 from azureiai.managed_apps.utils import AAD_ID, AAD_CRED, TENANT_ID
 
 from azureiai.partner_center.cli_parser import CLIParser
-from azureiai.partner_center.offers import APP_PATH
+from azureiai.partner_center.offers import _get_app_path
 from azureiai.partner_center.submission import Submission
 
 AZURE_VIRTUAL_MACHINE = "AzureThirdPartyVirtualMachine"
@@ -28,7 +28,7 @@ class VirtualMachine(Submission):
         name=None,
         notification_emails=None,
         config_yaml=r"config.yml",
-        app_path: str = APP_PATH,
+        app_path: str = _get_app_path(),
         json_listing_config="vm_config.json",
     ):
         super().__init__(

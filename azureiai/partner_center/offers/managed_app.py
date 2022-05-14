@@ -3,7 +3,7 @@
 #  ---------------------------------------------------------
 """CLI Wrapper for Creating, Updating, or Deleting Azure Managed Applications"""
 from azureiai.partner_center.cli_parser import CLIParser
-from azureiai.partner_center.offers import APP_PATH
+from azureiai.partner_center.offers import _get_app_path
 from azureiai.partner_center.submission import Submission
 
 AZURE_APPLICATION = "AzureApplication"
@@ -13,7 +13,7 @@ class ManagedApp(Submission):
     """Azure Partner Center Managed Application Submission"""
 
     def __init__(
-        self, name=None, config_yaml=r"config.yml", app_path: str = APP_PATH, json_listing_config="ma_config.json"
+        self, name=None, config_yaml=r"config.yml", app_path: str = _get_app_path(), json_listing_config="ma_config.json"
     ):
         super().__init__(
             name=name,
