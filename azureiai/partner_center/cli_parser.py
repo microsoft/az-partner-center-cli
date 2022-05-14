@@ -76,7 +76,7 @@ class CLIParser:
 
     def _add_name_config_json_argument(self):
         self.parser.add_argument(self._name, type=str, help="Managed App Name")
-        self.parser.add_argument(self._config_json, type=str, help="Listing Configuration Json")
+        self.parser.add_argument(self._config_json, type=str, help="Listing Configuration Json", default="listing_config.json")
         args = self.parser.parse_args()
         return args
 
