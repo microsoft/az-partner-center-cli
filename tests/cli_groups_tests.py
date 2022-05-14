@@ -123,15 +123,15 @@ def vm_update_command(config_yml, json_config, monkeypatch):
 
     monkeypatch.setattr(requests, "put", mock_put_request)
 
-    args_test(monkeypatch, _update_command_args(config_yml, "vm"))
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="vm"))
 
 
-def vm_create_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, "vm"))
+def vm_create_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="vm"))
 
 
-def vm_update_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, "vm"))
+def vm_update_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="vm"))
 
 
 def vm_show_plan_command(config_yml, monkeypatch):
@@ -183,7 +183,7 @@ def co_create_command(config_yml, json_config, monkeypatch):
 
 
 def co_update_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, json_config, "co"))
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="co"))
 
 
 def co_show_command(config_yml, monkeypatch):
@@ -191,11 +191,11 @@ def co_show_command(config_yml, monkeypatch):
 
 
 def co_create_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, json_config, "co"))
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="co"))
 
 
 def co_update_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, json_config, "co"))
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="co"))
 
 
 def co_list_plan_command(config_yml, monkeypatch):
@@ -223,23 +223,23 @@ def ma_list_command(config_yml, monkeypatch):
 
 
 def ma_create_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_command_args(config_yml, json_config, "ma"))
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="ma"))
 
 
 def ma_update_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, json_config, "ma"))
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="ma"))
 
 
 def ma_show_command(config_yml, monkeypatch):
     args_test(monkeypatch, _show_command_args(config_yml, "ma"))
 
 
-def ma_create_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, "ma"))
+def ma_create_plan_command(config_yml, json_config, monkeypatch):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="ma"))
 
 
 def ma_update_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, json_config, "ma"))
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="ma"))
 
 
 def ma_list_plan_command(config_yml, json_config, monkeypatch):
@@ -267,19 +267,19 @@ def st_list_command(config_yml, monkeypatch):
 
 
 def st_create_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_command_args(config_yml, json_config, "st"))
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="st"))
 
 
 def st_update_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, json_config, "st"))
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="st"))
 
 
 def st_create_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, json_config, "st"))
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="st"))
 
 
 def st_update_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, json_config, "st"))
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="st"))
 
 
 def st_show_plan_command(config_yml, monkeypatch):
