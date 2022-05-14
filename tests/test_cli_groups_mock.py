@@ -19,27 +19,23 @@ def config_yml():
 def vm_config_json():
     """Fixuture used to configure deployment for testing"""
     test_path = Path(__file__).parents[1]
-    #     config_path = test_path.joinpath("vm_config.json")
-    #     return config_path if config_path.is_file() else test_path.joinpath("template.config.json")
-    return test_path.joinpath("template.config.json")
-
+    config_path = test_path.joinpath("vm_listing_config.json")
+    return config_path if config_path.is_file() else test_path.joinpath("template.listing_config.json")
 
 @pytest.fixture
 def ma_config_json():
     """Fixuture used to configure deployment for testing"""
     test_path = Path(__file__).parents[1]
-    #     config_path = test_path.joinpath("ma_config.json")
-    #     return config_path if config_path.is_file() else test_path.joinpath("template.config.json")
-    return test_path.joinpath("template.config.json")
+    config_path = test_path.joinpath("ma_config.json")
+    return config_path if config_path.is_file() else test_path.joinpath("template.listing_config.json")
 
 
 @pytest.fixture
 def st_config_json():
     """Fixuture used to configure deployment for testing"""
     test_path = Path(__file__).parents[1]
-    #     config_path = test_path.joinpath("st_config.json")
-    #     return config_path if config_path.is_file() else test_path.joinpath("template.config.json")
-    return test_path.joinpath("template.config.json")
+    config_path = test_path.joinpath("st_config.json")
+    return config_path if config_path.is_file() else test_path.joinpath("template.listing_config.json")
 
 
 def test_vm_list_mock(config_yml, monkeypatch, ama_mock):
