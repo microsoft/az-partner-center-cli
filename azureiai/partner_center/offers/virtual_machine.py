@@ -58,7 +58,7 @@ class VirtualMachine(Submission):
 
         return response.json()
 
-    def publish(self) -> dict:
+    def publish(self):
         """Publish Existing Application"""
         headers, _, url = self._prepare_request()
 
@@ -68,7 +68,7 @@ class VirtualMachine(Submission):
         if response.status_code != 202:
             raise ConnectionError(str(response))
 
-        return response.json()
+        return response
 
     def get_auth(self) -> str:
         """
@@ -109,7 +109,7 @@ class VirtualMachineCLI(CLIParser):
     def __init__(self):
         super().__init__(submission_type=VirtualMachine)
 
-    def publish(self) -> dict:
+    def publish(self):
         """Publish a Managed Application"""
         args = self._add_name_notification_emails_argument()
         return VirtualMachine(
