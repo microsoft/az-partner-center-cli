@@ -194,11 +194,14 @@ class PlanCLIParser(CLIParser):
         self.parser.add_argument("--name", type=str, help="Which command to run")
 
         self._name = "--plan_name"
+        self._config_json = "--config-json"
 
     def create(self) -> {}:
         """Create a new Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.plan_name, args.name, subtype=args.subgroup).create()
+        args = self._add_name_config_json_argument()
+        return self.submission_type(
+            args.plan_name, args.name, json_listing_config=args.config_json, subtype=args.subgroup
+        ).create()
 
     def list_command(self) -> {}:
         """Create a new Managed Application"""
@@ -217,5 +220,5 @@ class PlanCLIParser(CLIParser):
 
     def update(self) -> {}:
         """Create a new Managed Application"""
-        args = self._add_name_argument()
-        return self.submission_type(args.plan_name, args.name).update()
+        args = self._add_name_config_json_argument()
+        return self.submission_type(args.plan_name, args.name, json_listing_config=args.config_json).update()
