@@ -1,4 +1,5 @@
 import json
+import yaml
 from pathlib import Path
 
 from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
@@ -143,7 +144,7 @@ class Plan(Submission):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
-        with open(manifest_yml, encoding="utf8") as file:
+        with open("manifest.yml", encoding="utf8") as file:
             manifest = yaml.safe_load(file)
             file_name = manifest["app"]
 
