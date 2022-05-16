@@ -16,7 +16,7 @@ class Plan(Submission):
         plan_name=None,
         name=None,
         config_yaml=r"config.yml",
-        app_path: str = "sample_app",
+        app_path: str = ".",
         json_listing_config="ma_config.json",
         subtype="",
     ):
@@ -167,7 +167,7 @@ class Plan(Submission):
             package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
             return package.set(
                 app_zip_dir=self.app_path,
-                file_name="sample_app",
+                file_name=".",
                 version=version,
                 allow_jit_access=allow_jit_access,
                 resource_type="AzureSolutionTemplatePackageConfiguration",

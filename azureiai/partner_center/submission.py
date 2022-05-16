@@ -18,7 +18,7 @@ class Submission(Offer):
         name=None,
         config_yaml: str = "config.yml",
         resource_type: str = "",
-        app_path: str = "sample_app",
+        app_path: str = ".",
         json_listing_config: str = "listing_config.json",
     ):
         super().__init__(name, config_yaml)
