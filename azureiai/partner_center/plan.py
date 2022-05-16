@@ -145,7 +145,7 @@ class Plan(Submission):
 
         with open(manifest_yml, encoding="utf8") as file:
             manifest = yaml.safe_load(file)
-            file_name = manifest['app']
+            file_name = manifest["app"]
 
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
         allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
