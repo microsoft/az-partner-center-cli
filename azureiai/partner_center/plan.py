@@ -143,6 +143,10 @@ class Plan(Submission):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
+        with open(manifest_yml, encoding="utf8") as file:
+            manifest = yaml.safe_load(file)
+            file_name = manifest['app']
+
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
         allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
 
@@ -153,7 +157,7 @@ class Plan(Submission):
             package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
             return package.set(
                 app_zip_dir=self.app_path,
-                file_name="sample-app.zip",
+                file_name=file_name,
                 version=version,
                 allow_jit_access=allow_jit_access,
                 resource_type="AzureManagedApplicationPackageConfiguration",
@@ -163,11 +167,10 @@ class Plan(Submission):
                 allowed_data_actions=allowed_data_actions,
             )
         if self.subtype == "st":
-
             package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
             return package.set(
                 app_zip_dir=self.app_path,
-                file_name=".",
+                file_name=file_name,
                 version=version,
                 allow_jit_access=allow_jit_access,
                 resource_type="AzureSolutionTemplatePackageConfiguration",
