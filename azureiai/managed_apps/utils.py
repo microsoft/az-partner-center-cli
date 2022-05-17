@@ -4,7 +4,6 @@
 """Common Utilities and Constants"""
 from time import sleep
 
-from azureiai.managed_apps.counter import inc_counter
 from swagger_client import BranchesApi
 
 BRANCHES_API = BranchesApi()

@@ -2,9 +2,8 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """Reseller Settings for Plan configurations"""
-from swagger_client import ResellerConfigurationApi
-
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
+from swagger_client import ResellerConfigurationApi
 
 
 class ResellerConfiguration(OfferConfigurations):

@@ -10,13 +10,12 @@ from pathlib import Path
 
 import yaml
 
-from swagger_client import PackageApi, PackageConfigurationApi
-
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import (
     VariantPlanConfiguration,
 )
 from azureiai.managed_apps.utils import ACCESS_ID, TENANT_ID
+from swagger_client import PackageApi, PackageConfigurationApi
 from swagger_client.rest import ApiException
 
 

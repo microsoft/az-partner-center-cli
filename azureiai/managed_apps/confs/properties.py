@@ -4,9 +4,8 @@
 """Properties settings for Plan configuration"""
 import uuid
 
-from swagger_client import PropertyApi
-
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
+from swagger_client import PropertyApi
 
 
 class Properties(OfferConfigurations):

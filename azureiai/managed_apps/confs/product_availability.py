@@ -2,9 +2,8 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """Product Availability settings for Offer Configuration"""
-from swagger_client import ProductAvailabilityApi
-
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
+from swagger_client import ProductAvailabilityApi
 
 
 class ProductAvailability(OfferConfigurations):

@@ -7,6 +7,13 @@ from abc import abstractmethod
 
 import yaml
 from adal import AuthenticationContext
+
+from azureiai.managed_apps.utils import (
+    AAD_CRED,
+    AAD_ID,
+    TENANT_ID,
+    get_draft_instance_id,
+)
 from swagger_client import (
     BranchesApi,
     ProductApi,
@@ -14,13 +21,6 @@ from swagger_client import (
     PropertyApi,
     SubmissionApi,
     VariantApi,
-)
-
-from azureiai.managed_apps.utils import (
-    AAD_CRED,
-    AAD_ID,
-    TENANT_ID,
-    get_draft_instance_id,
 )
 
 

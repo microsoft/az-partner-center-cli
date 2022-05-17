@@ -1,6 +1,6 @@
-from swagger_client import ApiClient
-
 import requests
+
+from swagger_client import ApiClient
 
 
 class OffersApi(object):

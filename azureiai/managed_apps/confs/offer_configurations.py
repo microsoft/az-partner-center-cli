@@ -9,9 +9,9 @@ from collections import namedtuple
 
 import requests
 from azure.storage.blob import ContentSettings  # noqa
-from swagger_client import BranchesApi, ListingApi
 
 from azureiai.managed_apps.utils import get_draft_instance_id
+from swagger_client import BranchesApi, ListingApi
 from swagger_client.rest import ApiException
 
 

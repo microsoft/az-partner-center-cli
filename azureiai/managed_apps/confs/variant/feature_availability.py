@@ -3,11 +3,8 @@
 #  ---------------------------------------------------------
 """The feature availability configuration sets the visibility of the Azure Marketplace offer"""
 import json
-import time
 from pathlib import Path
 
-from azureiai import RetryException
-from azureiai.managed_apps.confs.offer_configurations import ListingOfferConfigurations
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import (
     VariantPlanConfiguration,
 )
