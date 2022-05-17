@@ -46,7 +46,8 @@ def _create_plan_args(config_yml, json_config, subgroup):
         "name": f"test_{subgroup}",
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
-        "config_json": json_config,
+        "config_json": json_config,        
+        "app_path": "sample_app",
     }
 
 
@@ -59,6 +60,7 @@ def _update_plan_args(config_yml, json_config, subgroup):
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
         "config_json": json_config,
+        "app_path": "sample_app",
     }
 
 
