@@ -3,7 +3,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "az"
+name = "az-partner-center-cli"
 authors = [{name = "Dan Ciborowski", email = "dciborow@microsoft.com"}]
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -14,7 +14,7 @@ dynamic = ["version", "description"]
 Home = "https://github.com/microsoft/az-partner-center-cli"
 
 [tool.flit.module]
-name = "az-partner-center-cli"
+name = "azureiai"
 
 [tool.black]
 line-length = 120
