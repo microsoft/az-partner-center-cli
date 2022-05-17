@@ -1,10 +1,15 @@
 import json
-import yaml
 from pathlib import Path
+
+import yaml
+from pygments import highlight
+from pygments.formatters import TerminalFormatter
+from pygments.lexers import JsonLexer
 
 from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
 from azureiai.partner_center import CLIParser
 from azureiai.partner_center.submission import Submission
+from swagger_client.rest import ApiException
 
 AZURE_APPLICATION = "AzureApplication"
 
@@ -35,8 +40,6 @@ class Plan(Submission):
         """
         Create new AMA Plan and retry up to 5 times.
 
-        :param plan_name: Display Name of Plan
-        :param retry: number of times to retry
         return: variant post api response
         """
         body = {
@@ -70,7 +73,7 @@ class Plan(Submission):
             self.show()
 
         self._update_plan_listing()
-        # self._update_pricing_and_availability()
+        # self._update_pricing_and_availability() # 401 error
         self._update_technical_configuration()
         return self._ids["product_id"]
 
@@ -138,7 +141,12 @@ class Plan(Submission):
         feature_availability = FeatureAvailability(
             product_id=self.get_product_id(), authorization=self.get_auth(), subtype=self.subtype
         )
-        feature_availability.set(azure_subscription=azure_subscription)
+        try:
+            feature_availability.set(azure_subscription=azure_subscription)
+        except ApiException as error:
+            error_message = bytes.decode(error.body).replace("\\", "").split(". ")
+            error_json = json.loads(error_message[1].removesuffix("\""))
+            raise PermissionError(error_message[0].removeprefix("\"") + "\n" + highlight(json.dumps(error_json, indent=4), JsonLexer(), TerminalFormatter())) from error
 
     def _update_technical_configuration(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
@@ -151,32 +159,35 @@ class Plan(Submission):
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
         allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
 
-        if self.subtype == "ma":
-            policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
+        try:
+            if self.subtype == "ma":
+                policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
 
-            allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(json_config)
-            package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
-            return package.set(
-                app_zip_dir=self.app_path,
-                file_name=file_name,
-                version=version,
-                allow_jit_access=allow_jit_access,
-                resource_type="AzureManagedApplicationPackageConfiguration",
-                policies=policies,
-                config_yaml=self.config_yaml,
-                allowed_customer_actions=allowed_customer_actions,
-                allowed_data_actions=allowed_data_actions,
-            )
-        if self.subtype == "st":
-            package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
-            return package.set(
-                app_zip_dir=self.app_path,
-                file_name=file_name,
-                version=version,
-                allow_jit_access=allow_jit_access,
-                resource_type="AzureSolutionTemplatePackageConfiguration",
-                config_yaml=self.config_yaml,
-            )
+                allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(json_config["plan_overview"][0]["technical_configuration"])
+                package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
+                return package.set(
+                    app_zip_dir=self.app_path,
+                    file_name=file_name,
+                    version=version,
+                    allow_jit_access=allow_jit_access,
+                    resource_type="AzureManagedApplicationPackageConfiguration",
+                    policies=policies,
+                    config_yaml=self.config_yaml,
+                    allowed_customer_actions=allowed_customer_actions,
+                    allowed_data_actions=allowed_data_actions,
+                )
+            if self.subtype == "st":
+                package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
+                return package.set(
+                    app_zip_dir=self.app_path,
+                    file_name=file_name,
+                    version=version,
+                    allow_jit_access=allow_jit_access,
+                    resource_type="AzureSolutionTemplatePackageConfiguration",
+                    config_yaml=self.config_yaml,
+                )
+        except ApiException as error:
+            raise ValueError(bytes.decode(error.body).replace("\\", "")) from error
 
     @staticmethod
     def _get_allowed_actions(json_config):
@@ -204,7 +215,7 @@ class PlanCLIParser(CLIParser):
         """Create a new Managed Application"""
         args = self._add_name_config_json_argument()
         return self.submission_type(
-            args.plan_name, args.name, json_listing_config=args.config_json, subtype=args.subgroup
+            args.plan_name, args.name, json_listing_config=args.config_json, app_path=args.app_path, subtype=args.subgroup
         ).create()
 
     def list_command(self) -> {}:
@@ -225,4 +236,4 @@ class PlanCLIParser(CLIParser):
     def update(self) -> {}:
         """Create a new Managed Application"""
         args = self._add_name_config_json_argument()
-        return self.submission_type(args.plan_name, args.name, json_listing_config=args.config_json).update()
+        return self.submission_type(args.plan_name, args.name, json_listing_config=args.config_json, app_path=args.app_path, subtype=args.subgroup).update()

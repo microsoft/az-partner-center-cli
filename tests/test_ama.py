@@ -2,6 +2,7 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 import json
+import os
 import shutil
 from collections import namedtuple
 from pathlib import Path
@@ -54,13 +55,16 @@ def test_ama_delete_no_create(ama_name, config_yml):
 
 @pytest.mark.integration
 def test_ama_publish(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
-    prepared = ama.prepare_publish(
-        plan_name=plan_name,
-        app_path=app_path_fix,
-        app=app_zip,
-        json_listing_config=json_listing_config,
-        config_yml=config_yml,
-    )
+    try:
+        prepared = ama.prepare_publish(
+            plan_name=plan_name,
+            app_path=app_path_fix,
+            app=app_zip,
+            json_listing_config=json_listing_config,
+            config_yml=config_yml,
+        )
+    except ValueError as error:
+        raise ValueError(f"{app_path_fix}{os.path.sep}{json_listing_config}") from error
     assert prepared
 
     submission = ama.submission_status()

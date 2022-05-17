@@ -8,6 +8,7 @@ from pathlib import Path
 
 from azureiai.managed_apps.confs import Properties, ProductAvailability, Listing, ListingImage
 from azureiai.partner_center.offer import Offer
+from swagger_client.rest import ApiException
 
 
 class Submission(Offer):
@@ -41,7 +42,11 @@ class Submission(Offer):
             "externalIDs": [{"type": "AzureOfferId", "value": self.name}],
             "isModularPublishing": True,
         }
-        api_response = self._apis["product"].products_post(authorization=self.get_auth(), body=body)
+        try:
+            api_response = self._apis["product"].products_post(authorization=self.get_auth(), body=body)
+        except ApiException as error:
+            raise NameError("Application already exists. Try using 'update'?") from error
+
         self._ids["product_id"] = api_response.id
         self.update()
         return api_response.to_dict()
@@ -144,13 +149,13 @@ class Submission(Offer):
             logo_wide = json_config["offer_listing"]["listing_logos"]["logo_wide"]
 
             if not os.path.isfile(os.path.join(self.app_path, logo_large)):
-                raise FileNotFoundError("Logo Large - Not Found")
+                raise FileNotFoundError(f"Logo Large not Found at location: {self.app_path}/{logo_large}")
             if not os.path.isfile(os.path.join(self.app_path, logo_small)):
-                raise FileNotFoundError("Logo Small - Not Found")
+                raise FileNotFoundError(f"Logo Small not Found at location: {self.app_path}/{logo_small}")
             if not os.path.isfile(os.path.join(self.app_path, logo_medium)):
-                raise FileNotFoundError("Logo Medium - Not Found")
+                raise FileNotFoundError(f"Logo Medium not Found at location: {self.app_path}/{logo_medium}")
             if not os.path.isfile(os.path.join(self.app_path, logo_wide)):
-                raise FileNotFoundError("Logo Wide - Not Found")
+                raise FileNotFoundError(f"Logo Wide not Found at location: {self.app_path}/{logo_wide}")
 
             listing_image = ListingImage(product_id=self.get_product_id(), authorization=self.get_auth())
             listing_image.set(file_name=logo_large, file_path=self.app_path, logo_type="AzureLogoLarge")

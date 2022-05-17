@@ -19,6 +19,8 @@
   },
   "offer_listing"          : {
     "title"              : "MMLSpark on Databricks",
+    "resourceType"       : "AzureSkuVariant",
+    "SubType"            : "managed-application",
     "publisher_name"     : "Microsoft Corporation",
     "name"               : "MMLSpark on Databricks",
     "summary"            : "<Search results Summary*>",

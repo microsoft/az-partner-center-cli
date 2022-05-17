@@ -12,6 +12,7 @@ from azure.storage.blob import ContentSettings  # noqa
 from swagger_client import BranchesApi, ListingApi
 
 from azureiai.managed_apps.utils import get_draft_instance_id
+from swagger_client.rest import ApiException
 
 
 class OfferConfigurations:
@@ -84,13 +85,18 @@ class ListingOfferConfigurations(OfferConfigurations):
     def set(self, properties):
         """Set Availability for Application"""
         odata_etag, properties, settings_id = self._get_properties(properties)
-        self.api.products_product_id_listings_listing_id_put(
-            authorization=self.authorization,
-            if_match=odata_etag,
-            product_id=self.product_id,
-            listing_id=settings_id,
-            body=properties,
-        )
+        try:
+            self.api.products_product_id_listings_listing_id_put(
+                authorization=self.authorization,
+                if_match=odata_etag,
+                product_id=self.product_id,
+                listing_id=settings_id,
+                body=properties,
+            )
+        except ApiException as error:
+            if "Missing" in bytes.decode(error.body):
+                raise ValueError(f"{bytes.decode(error.body)} missing from {properties}") from error
+            raise error
 
     @abstractmethod
     def _get_properties(self, properties):

@@ -6,6 +6,8 @@ Interface for Plan Configuration Settings
 
 Plan configurations must use the variant draft instance to retrieve settings.
 """
+import time
+
 from azureiai import RetryException
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from azureiai.managed_apps.counter import inc_counter
@@ -24,6 +26,7 @@ class VariantPlanConfiguration(OfferConfigurations):
         )
         if not api_response.value:
             if retry < 3:
+                time.sleep(2)
                 return self._get_draft_instance_id(module=module, retry=retry + 1)
             raise RetryException("Retry Failed")
         i = inc_counter(api_response)

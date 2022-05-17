@@ -149,7 +149,7 @@ class ManagedApplication(Offer):
         """
 
         if not os.path.isfile(os.path.join(app_path, app)):
-            raise FileNotFoundError("Managed Application Zip - Not Found", os.path.join(app_path, app))
+            raise FileNotFoundError(f"Managed Application Zip - Not Found - {app_path}{os.path.sep}{app}")
         if not os.path.isfile(os.path.join(app_path, json_listing_config)):
             raise FileNotFoundError("JSON Config - Not Found")
         with open(Path(app_path).joinpath(json_listing_config), "r", encoding="utf8") as read_file:

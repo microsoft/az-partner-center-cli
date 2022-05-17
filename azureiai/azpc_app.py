@@ -6,6 +6,7 @@
 import sys
 
 from azureiai.partner_center import run
+from azureiai.partner_center.offers.application import ApplicationCLI
 from azureiai.partner_center.offers.container import ContainerCLI
 from azureiai.partner_center.offers.managed_app import ManagedAppCLI
 from azureiai.partner_center.offers.solution_template import SolutionTemplateCLI
@@ -19,6 +20,7 @@ def main():
         azpc : Manage Partner Center submissions.
 
     Subgroups:
+        app      : Application
         ma       : Managed Applications
         st       : Solution Templates
         vm       : Virtual Machine Images
@@ -29,6 +31,7 @@ def main():
         return help_text
 
     commands = {
+        "app": ApplicationCLI,
         "ma": ManagedAppCLI,
         "vm": VirtualMachineCLI,
         "st": SolutionTemplateCLI,

@@ -125,19 +125,18 @@ def test_get_properties(properties):
 
 @pytest.mark.integration
 def test_set_use_enterprise_contract(properties):
-    industries = ""
     categories = ""
     version = "0.0.0"
 
-    properties.set(industries=industries, categories=categories, version=version)
+    properties.set(categories=categories, version=version)
     settings = properties.get()
     assert settings.use_enterprise_contract, "Set Action Failed."
 
-    properties.set(use_enterprise_contract=False, industries=industries, categories=categories, version=version)
+    properties.set(use_enterprise_contract=False, categories=categories, version=version)
     settings = properties.get()
     assert not settings.use_enterprise_contract, "Set Action Failed."
 
-    properties.set(industries=industries, categories=categories, version=version)
+    properties.set(categories=categories, version=version)
     settings = properties.get()
     assert settings.use_enterprise_contract, "Set Action Failed."
 
