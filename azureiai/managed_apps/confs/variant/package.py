@@ -48,8 +48,8 @@ def _inject_pid(file_name_full_path, pid):
 class Package(VariantPlanConfiguration):
     """Managed Application Offer - Package Configuration"""
 
-    def __init__(self, product_id, authorization):
-        super().__init__(product_id, authorization)
+    def __init__(self, product_id, plan_id, authorization, subtype="ma"):
+        super().__init__(product_id, plan_id, authorization, subtype)
         self.package_api = PackageApi()
         self.api = PackageConfigurationApi()
         self.module = "Package"

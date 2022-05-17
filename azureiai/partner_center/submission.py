@@ -5,6 +5,7 @@
 import json
 import os
 from pathlib import Path
+from time import sleep
 
 from azureiai.managed_apps.confs import Properties, ProductAvailability, Listing, ListingImage
 from azureiai.partner_center.offer import Offer
@@ -84,6 +85,9 @@ class Submission(Offer):
         return api_response
 
     def publish(self):
+        if not self._ids["product_id"]:
+            self.show()
+
         """Publish Submission by submitting Instance IDs"""
         body = {
             "resourceType": "SubmissionCreationRequest",
@@ -93,12 +97,11 @@ class Submission(Offer):
                 {"type": "Property", "value": self._get_draft_instance_id("Property")},
                 {"type": "Package", "value": self._get_draft_instance_id("Package")},
                 {"type": "Listing", "value": self._get_draft_instance_id("Listing")},
-                {"type": "Cosell", "value": self._get_draft_instance_id("Cosell")},
                 {"type": "ResellerConfiguration", "value": self.get_product_id() + "-ResellerInstance"},
             ],
             "variantResources": [
                 {
-                    "variantID": self._ids["plan_id"],
+                    "variantID": "f91e19d2-2600-4d91-b20e-696e6c924ad5",
                     "resources": [
                         {"type": "Availability", "value": self._get_variant_draft_instance_id("Availability")},
                         {"type": "Package", "value": self._get_variant_draft_instance_id("Package")},
@@ -108,12 +111,14 @@ class Submission(Offer):
             ],
         }
 
-        response = self._apis["submission"].products_product_id_submissions_post(
-            authorization=self.get_auth(),
-            product_id=self.get_product_id(),
-            body=body,
-        )
-
+        try:
+            response = self._apis["submission"].products_product_id_submissions_post(
+                authorization=self.get_auth(),
+                product_id=self.get_product_id(),
+                body=body,
+            )
+        except ApiException as error:
+            raise SystemError(f"Publish Failed! An internal error occurred when trying to publish the package with body {body}") from error
         self._ids["submission_id"] = response.id
         return response
 

@@ -83,6 +83,12 @@ class Offer:
         Will call create method if AMA has not yet been created.
         :return: Product ID of new Managed Application
         """
+        filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
+        api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
+        submissions = api_response.to_dict()
+        for submission in submissions["value"]:
+            if submission["name"] == self.name:
+                self._ids["product_id"] = submission["id"]
 
         if self._ids["product_id"] == "":
             self.create()

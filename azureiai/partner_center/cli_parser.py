@@ -49,7 +49,7 @@ class CLIParser:
     def publish(self) -> dict:
         """Publish a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name, app_path=args.app_path, config_yaml=args.config_yml).publish()
+        return self.submission_type(args.name, config_yaml=args.config_yml).publish()
 
     def show(self) -> dict:
         """Show a Managed Application"""

@@ -79,7 +79,7 @@ class ListingOfferConfigurations(OfferConfigurations):
     """Interface for Listing Offer Configurations"""
 
     def __init__(self, product_id, authorization):
-        super().__init__(product_id, authorization)
+        super().__init__(product_id=product_id, authorization=authorization)
         self.api = ListingApi()
 
     def set(self, properties):
