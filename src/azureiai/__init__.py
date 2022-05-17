@@ -9,7 +9,7 @@ from pathlib import Path
 from tempfile import mkdtemp
 
 __all__ = ["RetryException"]
-
+__version__ = "0.0.7"
 
 def generate_swagger(swagger_json, swagger_module_dir="./", output=True, swagger_dir="swagger_client"):
     """
