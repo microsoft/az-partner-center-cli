@@ -33,4 +33,4 @@ class VariantPlanConfiguration(OfferConfigurations):
     def _find_plan(self, api_response, i=0):
         if api_response.value[i].variant_id == self.plan_id:
             return api_response.value[i].current_draft_instance_id
-        return self._find_plan(api_response, i+1)
+        return self._find_plan(api_response, i + 1)

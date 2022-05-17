@@ -85,10 +85,9 @@ class Submission(Offer):
         return api_response
 
     def publish(self):
+        """Publish Submission by submitting Instance IDs"""
         if not self._ids["product_id"]:
             self.show()
-
-        """Publish Submission by submitting Instance IDs"""
         body = {
             "resourceType": "SubmissionCreationRequest",
             "targets": [{"type": "Scope", "value": "preview"}],
@@ -99,17 +98,28 @@ class Submission(Offer):
                 {"type": "Listing", "value": self._get_draft_instance_id("Listing")},
                 {"type": "ResellerConfiguration", "value": self.get_product_id() + "-ResellerInstance"},
             ],
-            "variantResources": [
-                {
-                    "variantID": "f91e19d2-2600-4d91-b20e-696e6c924ad5",
-                    "resources": [
-                        {"type": "Availability", "value": self._get_variant_draft_instance_id("Availability")},
-                        {"type": "Package", "value": self._get_variant_draft_instance_id("Package")},
-                        {"type": "Listing", "value": self._get_variant_draft_instance_id("Listing")},
-                    ],
-                }
-            ],
+            "variantResources": [],
         }
+
+        response = self._apis["variant"].products_product_id_variants_get(
+            product_id=self._ids["product_id"], authorization=self.get_auth()
+        )
+
+        for variant in response.to_dict()["value"]:
+            if variant["id"] != "testdrive":
+                body["variantResources"] += [
+                    {
+                        "variantID": variant["id"],
+                        "resources": [
+                            {
+                                "type": "Availability",
+                                "value": self._get_variant_draft_instance_id(variant["id"], "Availability"),
+                            },
+                            {"type": "Package", "value": self._get_variant_draft_instance_id(variant["id"], "Package")},
+                            {"type": "Listing", "value": self._get_variant_draft_instance_id(variant["id"], "Listing")},
+                        ],
+                    }
+                ]
 
         try:
             response = self._apis["submission"].products_product_id_submissions_post(
@@ -118,9 +128,16 @@ class Submission(Offer):
                 body=body,
             )
         except ApiException as error:
-            raise SystemError(f"Publish Failed! An internal error occurred when trying to publish the package with body {body}") from error
+            raise SystemError(
+                f"Publish Failed! An internal error occurred when trying to publish the package"
+            ) from error
         self._ids["submission_id"] = response.id
-        return response
+
+        return self._apis["submission"].products_product_id_submissions_submission_id_get(
+            authorization=self.get_auth(),
+            product_id=self.get_product_id(),
+            submission_id=response.id,
+        )
 
     def _update_properties(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:

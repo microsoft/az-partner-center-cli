@@ -54,22 +54,28 @@ class FeatureAvailability(VariantPlanConfiguration):
             market_states = self.get_markets()
             market_states[130]["state"] = "Enabled"
 
-            body = {"resourceType": "FeatureAvailability", "visibility": visibility, "marketStates": market_states,
-                    "subscriptionAudiences": azure_subscription, "@odata.etag": odata_etag, "id": settings_id,
-                    "priceSchedules": [
-                        {
-                            "isBaseSchedule": False,
-                            "marketCodes": ["US"],
-                            "friendlyName": "free_priceOverrideSchedule_US",
-                            "schedules": [
-                                {
-                                    "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
-                                    "priceCadence": {"type": "Month", "value": 1},
-                                    "pricingModel": "Recurring",
-                                }
-                            ],
-                        }
-                    ]}
+            body = {
+                "resourceType": "FeatureAvailability",
+                "visibility": visibility,
+                "marketStates": market_states,
+                "subscriptionAudiences": azure_subscription,
+                "@odata.etag": odata_etag,
+                "id": settings_id,
+                "priceSchedules": [
+                    {
+                        "isBaseSchedule": False,
+                        "marketCodes": ["US"],
+                        "friendlyName": "free_priceOverrideSchedule_US",
+                        "schedules": [
+                            {
+                                "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
+                                "priceCadence": {"type": "Month", "value": 1},
+                                "pricingModel": "Recurring",
+                            }
+                        ],
+                    }
+                ],
+            }
         else:
             body = {
                 "resourceType": "FeatureAvailability",
