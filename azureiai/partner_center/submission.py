@@ -118,7 +118,9 @@ class Submission(Offer):
                 body=body,
             )
         except ApiException as error:
-            raise SystemError(f"Publish Failed! An internal error occurred when trying to publish the package with body {body}") from error
+            raise SystemError(
+                f"Publish Failed! An internal error occurred when trying to publish the package with body {body}"
+            ) from error
         self._ids["submission_id"] = response.id
         return response
 

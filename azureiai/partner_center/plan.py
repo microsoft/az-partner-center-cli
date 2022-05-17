@@ -129,7 +129,9 @@ class Plan(Submission):
 
         offer_listing_properties = json_config["plan_overview"][0]["plan_listing"]
         offer_listing_properties["resourceType"] = "AzureListing"
-        offer_listing = OfferListing(product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth())
+        offer_listing = OfferListing(
+            product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth()
+        )
         offer_listing.set(properties=offer_listing_properties)
 
     def _update_pricing_and_availability(self):
@@ -139,14 +141,21 @@ class Plan(Submission):
         azure_subscription = json_config["plan_overview"][0]["pricing_and_availability"]["azure_private_subscriptions"]
 
         feature_availability = FeatureAvailability(
-            product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth(), subtype=self.subtype
+            product_id=self.get_product_id(),
+            plan_id=self._ids["plan_id"],
+            authorization=self.get_auth(),
+            subtype=self.subtype,
         )
         try:
             feature_availability.set(azure_subscription=azure_subscription)
         except ApiException as error:
             error_message = bytes.decode(error.body).replace("\\", "").split(". ")
-            error_json = json.loads(error_message[1].removesuffix("\""))
-            raise PermissionError(error_message[0].removeprefix("\"") + "\n" + highlight(json.dumps(error_json, indent=4), JsonLexer(), TerminalFormatter())) from error
+            error_json = json.loads(error_message[1].removesuffix('"'))
+            raise PermissionError(
+                error_message[0].removeprefix('"')
+                + "\n"
+                + highlight(json.dumps(error_json, indent=4), JsonLexer(), TerminalFormatter())
+            ) from error
 
     def _update_technical_configuration(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
@@ -163,8 +172,12 @@ class Plan(Submission):
             if self.subtype == "ma":
                 policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
 
-                allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(json_config["plan_overview"][0]["technical_configuration"])
-                package = Package(product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth())
+                allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(
+                    json_config["plan_overview"][0]["technical_configuration"]
+                )
+                package = Package(
+                    product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth()
+                )
                 return package.set(
                     app_zip_dir=self.app_path,
                     file_name=file_name,
@@ -177,7 +190,9 @@ class Plan(Submission):
                     allowed_data_actions=allowed_data_actions,
                 )
             if self.subtype == "st":
-                package = Package(product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth())
+                package = Package(
+                    product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth()
+                )
                 return package.set(
                     app_zip_dir=self.app_path,
                     file_name=file_name,
@@ -215,7 +230,11 @@ class PlanCLIParser(CLIParser):
         """Create a new Managed Application"""
         args = self._add_name_config_json_argument()
         return self.submission_type(
-            args.plan_name, args.name, json_listing_config=args.config_json, app_path=args.app_path, subtype=args.subgroup
+            args.plan_name,
+            args.name,
+            json_listing_config=args.config_json,
+            app_path=args.app_path,
+            subtype=args.subgroup,
         ).create()
 
     def list_command(self) -> {}:
@@ -236,7 +255,13 @@ class PlanCLIParser(CLIParser):
     def update(self) -> {}:
         """Create a new Managed Application"""
         args = self._add_name_config_json_argument()
-        return self.submission_type(args.plan_name, args.name, json_listing_config=args.config_json, app_path=args.app_path, subtype=args.subgroup).update()
+        return self.submission_type(
+            args.plan_name,
+            args.name,
+            json_listing_config=args.config_json,
+            app_path=args.app_path,
+            subtype=args.subgroup,
+        ).update()
 
     def publish(self) -> dict:
         """Publish a Managed Application"""
