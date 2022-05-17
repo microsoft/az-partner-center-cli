@@ -78,7 +78,9 @@
       "plan_listing"            : {
         "title"           : "<planName*>",
         "shortDescription": "<planSummary*>",
-        "description"     : "<planDescription*>"
+        "description"     : "<planDescription*>",
+        "resourceType"    : "AzureSkuVariant",
+        "SubType"         : "managed-application"
       },
       "pricing_and_availability": {
         "visibility"                 : "private",
