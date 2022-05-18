@@ -83,9 +83,14 @@ class Offer:
         Will call create method if AMA has not yet been created.
         :return: Product ID of new Managed Application
         """
-
         if self._ids["product_id"] == "":
-            self.create()
+            filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
+            api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
+            submissions = api_response.to_dict()
+            for submission in submissions["value"]:
+                if submission["name"] == self.name:
+                    self._ids["product_id"] = submission["id"]
+
         return self._ids["product_id"]
 
     def get_offer_id(self) -> str:
@@ -119,8 +124,8 @@ class Offer:
         """Call Branch API to get Configuration ID"""
         return get_draft_instance_id(self.get_product_id(), self.get_auth(), module, retry)
 
-    def _get_variant_draft_instance_id(self, module: str, retry: int = 0) -> str:
-        return get_variant_draft_instance_id(self.get_product_id(), self.get_auth(), module, retry)
+    def _get_variant_draft_instance_id(self, plan_id, module: str) -> str:
+        return get_variant_draft_instance_id(plan_id, self.get_product_id(), self.get_auth(), module)
 
     def _set_resell_through_csps(self):
         reseller = ResellerConfiguration(product_id=self.get_product_id(), authorization=self.get_auth())

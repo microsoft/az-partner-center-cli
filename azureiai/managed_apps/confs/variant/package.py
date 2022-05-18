@@ -10,13 +10,13 @@ from pathlib import Path
 
 import yaml
 
-from swagger_client import PackageApi, PackageConfigurationApi
-
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import (
     VariantPlanConfiguration,
 )
 from azureiai.managed_apps.utils import ACCESS_ID, TENANT_ID
+from swagger_client import PackageApi, PackageConfigurationApi
+from swagger_client.rest import ApiException
 
 
 def _inject_pid(file_name_full_path, pid):
@@ -47,8 +47,8 @@ def _inject_pid(file_name_full_path, pid):
 class Package(VariantPlanConfiguration):
     """Managed Application Offer - Package Configuration"""
 
-    def __init__(self, product_id, authorization):
-        super().__init__(product_id, authorization)
+    def __init__(self, product_id, plan_id, authorization, subtype="ma"):
+        super().__init__(product_id, plan_id, authorization, subtype)
         self.package_api = PackageApi()
         self.api = PackageConfigurationApi()
         self.module = "Package"
@@ -139,9 +139,17 @@ class Package(VariantPlanConfiguration):
         with open(config_yaml, encoding="utf8") as file:
             config_settings = yaml.safe_load(file)
 
-            tenant_id = os.getenv(TENANT_ID, config_settings["tenant_id"])
-            access_id = os.getenv(ACCESS_ID, config_settings["access_id"])
+        tenant_id = os.getenv(TENANT_ID, config_settings["tenant_id"])
+        access_id = os.getenv(ACCESS_ID, config_settings["access_id"])
 
+        if resource_type == "AzureSolutionTemplatePackageConfiguration":
+            settings = {
+                "resourceType": resource_type,
+                "version": version,
+                "packageReferences": [{"type": "AzureApplicationPackage", "value": post_response.id}],
+                "ID": settings_id,
+            }
+        else:
             settings = {
                 "resourceType": resource_type,
                 "version": version,
@@ -156,16 +164,22 @@ class Package(VariantPlanConfiguration):
                 "azureGovernmentAuthorizations": [],
                 "policies": policies,
                 "packageReferences": [{"type": "AzureApplicationPackage", "value": post_response.id}],
-                "id": settings_id,
+                "ID": settings_id,
             }
 
-            return self.api.products_product_id_packageconfigurations_package_configuration_id_put(
+        try:
+            response = self.api.products_product_id_packageconfigurations_package_configuration_id_put(
                 authorization=self.authorization,
                 if_match=odata_etag,
                 product_id=self.product_id,
                 package_configuration_id=settings_id,
                 body=settings,
             )
+        except ApiException as error:
+            if "Enter a valid GUID" in bytes.decode(error.body):
+                raise ValueError(f"GUID value not valid. Check {config_yaml}") from error
+            raise error
+        return response
 
     def _check_upload(self, post_response):
         state = None

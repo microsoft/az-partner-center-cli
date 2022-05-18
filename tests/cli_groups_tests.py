@@ -13,12 +13,12 @@ from tests.cli_tests import setup_patched_app
 
 
 def _list_command_args(config_yml, subgroup):
-    return {"subgroups": subgroup, "command": "list", "config_yml": config_yml}
+    return {"subgroup": subgroup, "command": "list", "config_yml": config_yml}
 
 
 def _create_command_args(config_yml, config_json, subgroup):
     return {
-        "subgroups": subgroup,
+        "subgroup": subgroup,
         "command": "create",
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
@@ -29,7 +29,7 @@ def _create_command_args(config_yml, config_json, subgroup):
 
 def _update_command_args(config_yml, config_json, subgroup):
     return {
-        "subgroups": subgroup,
+        "subgroup": subgroup,
         "command": "update",
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
@@ -38,33 +38,35 @@ def _update_command_args(config_yml, config_json, subgroup):
     }
 
 
-def _create_plan_args(config_yml, json_config, subgroup):
+def _create_plan_args(config_yml, config_json, subgroup):
     return {
-        "subgroups": subgroup,
+        "subgroup": subgroup,
         "command": "plan",
         "sub_command": "create",
         "name": f"test_{subgroup}",
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
-        "json_config": json_config,
+        "config_json": config_json,
+        "app_path": "sample_app",
     }
 
 
-def _update_plan_args(config_yml, json_config, subgroup):
+def _update_plan_args(config_yml, config_json, subgroup):
     return {
-        "subgroups": subgroup,
+        "subgroup": subgroup,
         "command": "plan",
         "sub_command": "update",
         "name": f"test_{subgroup}",
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
-        "json_config": json_config,
+        "config_json": config_json,
+        "app_path": "sample_app",
     }
 
 
 def _show_plan_args(config_yml, subgroup):
     input_args = {
-        "subgroups": subgroup,
+        "subgroup": subgroup,
         "command": "plan",
         "plan_command": "show",
         "name": f"test_{subgroup}",
@@ -76,7 +78,7 @@ def _show_plan_args(config_yml, subgroup):
 
 def _list_plan_args(config_yml, subgroup):
     input_args = {
-        "subgroups": subgroup,
+        "subgroup": subgroup,
         "command": "plan",
         "plan_command": "list",
         "name": f"test_{subgroup}",
@@ -87,7 +89,7 @@ def _list_plan_args(config_yml, subgroup):
 
 def _delete_plan_args(config_yml, subgroup):
     input_args = {
-        "subgroups": subgroup,
+        "subgroup": subgroup,
         "command": "plan",
         "plan_command": "delete",
         "name": f"test_{subgroup}",
@@ -98,13 +100,13 @@ def _delete_plan_args(config_yml, subgroup):
 
 
 def _show_command_args(config_yml, subgroup):
-    input_args = {"subgroups": subgroup, "command": "show", "name": f"test_{subgroup}", "config_yml": config_yml}
+    input_args = {"subgroup": subgroup, "command": "show", "name": f"test_{subgroup}", "config_yml": config_yml}
     return input_args
 
 
 def _publish_command_args(config_yml, subgroup):
     input_args = {
-        "subgroups": subgroup,
+        "subgroup": subgroup,
         "command": "publish",
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
@@ -115,7 +117,7 @@ def _publish_command_args(config_yml, subgroup):
 
 
 def _delete_command_args(config_yml, subgroup):
-    input_args = {"subgroups": subgroup, "command": "delete", "name": f"test_{subgroup}", "config_yml": config_yml}
+    input_args = {"subgroup": subgroup, "command": "delete", "name": f"test_{subgroup}", "config_yml": config_yml}
     return input_args
 
 

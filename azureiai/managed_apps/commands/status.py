@@ -15,13 +15,12 @@ Example Response
 """
 import argparse
 
+from azureiai.managed_apps import ManagedApplication
+from azureiai.managed_apps.commands.common import add_config_yml, add_ama_name, add_command, add_product_id
 from swagger_client.models.microsoft_ingestion_api_models_submissions_submission import (
     MicrosoftIngestionApiModelsSubmissionsSubmission,
 )
 from swagger_client.rest import ApiException
-
-from azureiai.managed_apps import ManagedApplication
-from azureiai.managed_apps.commands.common import add_config_yml, add_ama_name, add_command, add_product_id
 
 
 def run():
