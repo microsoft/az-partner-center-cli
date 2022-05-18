@@ -142,7 +142,7 @@ class Package(VariantPlanConfiguration):
         tenant_id = os.getenv(TENANT_ID, config_settings["tenant_id"])
         access_id = os.getenv(ACCESS_ID, config_settings["access_id"])
 
-        if resource_type is "AzureSolutionTemplatePackageConfiguration":
+        if resource_type == "AzureSolutionTemplatePackageConfiguration":
             settings = {
                 "resourceType": resource_type,
                 "version": version,
