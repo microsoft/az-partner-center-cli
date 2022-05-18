@@ -29,7 +29,7 @@ def get_draft_instance_id(product_id, authorization, module: str, retry: int = 0
     return api_response.value[0].current_draft_instance_id
 
 
-def get_variant_draft_instance_id(plan_id, product_id, authorization, module: str, retry: int = 0):
+def get_variant_draft_instance_id(plan_id, product_id, authorization, module: str):
     """
     Common Static Method for Retrieving Variant Draft Instance ID for applications or properties
 
