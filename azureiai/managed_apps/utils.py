@@ -33,13 +33,13 @@ def get_variant_draft_instance_id(plan_id, product_id, authorization, module: st
     """
     Common Static Method for Retrieving Variant Draft Instance ID for applications or properties
 
-    :param product_id: Managed Application Product ID
+    :param plan_id: Application Plan ID
+    :param product_id: Application Product ID
     :param authorization: Authorization object
     :param module: name of draft instance to look up
-    :param retry: retry attempt number, will retry 3 times before failing
     :return: response
     """
-    sleep(0.03)
+    sleep(3)
     api_response = BRANCHES_API.products_product_id_branches_get_by_module_modulemodule_get(
         product_id=product_id,
         module=module,

@@ -24,7 +24,7 @@ class VariantPlanConfiguration(OfferConfigurations):
         Args:
             module:
         """
-        time.sleep(0.03)
+        time.sleep(3)
         api_response = self.branches_api.products_product_id_branches_get_by_module_modulemodule_get(
             product_id=self.product_id, module=module, authorization=self.authorization
         )
