@@ -128,7 +128,7 @@ class Submission(Offer):
             )
         except ApiException as error:
             raise SystemError(
-                f"Publish Failed! An internal error occurred when trying to publish the package"
+                "Publish Failed! An internal error occurred when trying to publish the package"
             ) from error
         self._ids["submission_id"] = response.id
 
