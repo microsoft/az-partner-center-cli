@@ -264,9 +264,7 @@ def test_offer_get_auth_mock(template_config, monkeypatch):
 
 def test_package_get_mock(monkeypatch):
     def mock_branches_get(self, product_id, module, authorization):
-        variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(
-            *["abc-123", "draft-instance-id"]
-        )
+        variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc-123", "draft-instance-id"])
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
 
     def mock_package_config_get(self, product_id, instance_id, authorization):
@@ -341,16 +339,16 @@ def test_offer_get_product_id(monkeypatch, template_config):
 
     def mock_auth(self):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
+
     monkeypatch.setattr(Offer, "get_auth", mock_auth)
 
     def mock_products_get(self, authorization, filter):
-
-        class mock_response():
+        class mock_response:
             def to_dict(self):
-                return {
-                    "value": []
-                }
+                return {"value": []}
+
         return mock_response()
+
     monkeypatch.setattr(ProductApi, "products_get", mock_products_get)
 
     offer = Offer(name="test-offer", config_yaml=template_config)

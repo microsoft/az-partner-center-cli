@@ -161,9 +161,7 @@ def ama_mock(ama_name, monkeypatch):
         return namedtuple("response", "value")(*[[variant]])
 
     def mock_branches_get(self, product_id, module, authorization):
-        variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(
-            *["abc-123", "draft-instance-id"]
-        )
+        variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc-123", "draft-instance-id"])
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
 
     def mock_package_config_get(self, product_id, instance_id, authorization):
@@ -246,8 +244,6 @@ def ama_mock(ama_name, monkeypatch):
         return namedtuple("response", ["value"])(
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
-
-
 
     monkeypatch.setattr(SubmissionApi, "products_product_id_submissions_submission_id_get", mock_products_get)
     monkeypatch.setattr(VariantApi, "products_product_id_variants_get", mock_products_get)

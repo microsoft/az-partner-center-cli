@@ -39,7 +39,7 @@ def get_variant_draft_instance_id(plan_id, product_id, authorization, module: st
     :param retry: retry attempt number, will retry 3 times before failing
     :return: response
     """
-    sleep(.03)
+    sleep(0.03)
     api_response = BRANCHES_API.products_product_id_branches_get_by_module_modulemodule_get(
         product_id=product_id,
         module=module,
