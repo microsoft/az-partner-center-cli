@@ -2,7 +2,8 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """Common Utilities and Constants"""
-from azureiai.managed_apps.counter import inc_counter
+from time import sleep
+
 from swagger_client import BranchesApi
 
 BRANCHES_API = BranchesApi()
@@ -28,7 +29,7 @@ def get_draft_instance_id(product_id, authorization, module: str, retry: int = 0
     return api_response.value[0].current_draft_instance_id
 
 
-def get_variant_draft_instance_id(product_id, authorization, module: str, retry: int = 0):
+def get_variant_draft_instance_id(plan_id, product_id, authorization, module: str):
     """
     Common Static Method for Retrieving Variant Draft Instance ID for applications or properties
 
@@ -38,17 +39,19 @@ def get_variant_draft_instance_id(product_id, authorization, module: str, retry:
     :param retry: retry attempt number, will retry 3 times before failing
     :return: response
     """
+    sleep(0.03)
     api_response = BRANCHES_API.products_product_id_branches_get_by_module_modulemodule_get(
         product_id=product_id,
         module=module,
         authorization=authorization,
     )
-    if not api_response.value:
-        if retry < 3:
-            return get_variant_draft_instance_id(product_id, authorization, module=module, retry=retry + 1)
-        raise ConnectionError("Retry Failed")
-    i = inc_counter(api_response)
-    return api_response.value[i].current_draft_instance_id
+    return _find_plan(plan_id, api_response)
+
+
+def _find_plan(plan_id, api_response, i=0):
+    if api_response.value[i].variant_id == plan_id:
+        return api_response.value[i].current_draft_instance_id
+    return _find_plan(plan_id, api_response, i + 1)
 
 
 ACCESS_ID = "ACCESS_ID"

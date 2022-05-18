@@ -14,10 +14,12 @@ from swagger_client import FeatureAvailabilityApi
 class FeatureAvailability(VariantPlanConfiguration):
     """Managed Application Offer - Feature Availability Configuration"""
 
-    def __init__(self, product_id, authorization, subtype="ma"):
-        super().__init__(product_id, authorization)
+    def _get_properties(self, properties):
+        pass
+
+    def __init__(self, product_id, plan_id, authorization, subtype="ma"):
+        super().__init__(product_id, plan_id, authorization, subtype)
         self.fa_api = FeatureAvailabilityApi()
-        self.subtype = subtype
 
     def get(self):
         """Get Availability for Application"""
@@ -45,33 +47,40 @@ class FeatureAvailability(VariantPlanConfiguration):
         odata_etag = settings.odata_etag
         settings_id = settings.id
 
-        market_states = self.get_markets()
-        market_states[130]["state"] = "Enabled"
-
-        body = {
-            "resourceType": "FeatureAvailability",
-            "visibility": visibility,
-            "marketStates": market_states,
-            "subscriptionAudiences": azure_subscription,
-            "@odata.etag": odata_etag,
-            "id": settings_id,
-        }
         if self.subtype == "ma":
+            market_states = self.get_markets()
+            market_states[130]["state"] = "Enabled"
 
-            body["priceSchedules"] = [
-                {
-                    "isBaseSchedule": False,
-                    "marketCodes": ["US"],
-                    "friendlyName": "free_priceOverrideSchedule_US",
-                    "schedules": [
-                        {
-                            "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
-                            "priceCadence": {"type": "Month", "value": 1},
-                            "pricingModel": "Recurring",
-                        }
-                    ],
-                }
-            ]
+            body = {
+                "resourceType": "FeatureAvailability",
+                "visibility": visibility,
+                "marketStates": market_states,
+                "subscriptionAudiences": azure_subscription,
+                "@odata.etag": odata_etag,
+                "id": settings_id,
+                "priceSchedules": [
+                    {
+                        "isBaseSchedule": False,
+                        "marketCodes": ["US"],
+                        "friendlyName": "free_priceOverrideSchedule_US",
+                        "schedules": [
+                            {
+                                "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
+                                "priceCadence": {"type": "Month", "value": 1},
+                                "pricingModel": "Recurring",
+                            }
+                        ],
+                    }
+                ],
+            }
+        else:
+            body = {
+                "resourceType": "FeatureAvailability",
+                "visibility": visibility,
+                "subscriptionAudiences": azure_subscription,
+                "@odata.etag": odata_etag,
+                "id": settings_id,
+            }
 
         self.fa_api.products_product_id_featureavailabilities_feature_availability_id_put(
             authorization=self.authorization,

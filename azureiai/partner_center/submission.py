@@ -8,6 +8,7 @@ from pathlib import Path
 
 from azureiai.managed_apps.confs import Properties, ProductAvailability, Listing, ListingImage
 from azureiai.partner_center.offer import Offer
+from swagger_client.rest import ApiException
 
 
 class Submission(Offer):
@@ -41,7 +42,11 @@ class Submission(Offer):
             "externalIDs": [{"type": "AzureOfferId", "value": self.name}],
             "isModularPublishing": True,
         }
-        api_response = self._apis["product"].products_post(authorization=self.get_auth(), body=body)
+        try:
+            api_response = self._apis["product"].products_post(authorization=self.get_auth(), body=body)
+        except ApiException as error:
+            raise NameError("Application already exists. Try using 'update'?") from error
+
         self._ids["product_id"] = api_response.id
         self.update()
         return api_response.to_dict()
@@ -80,6 +85,8 @@ class Submission(Offer):
 
     def publish(self):
         """Publish Submission by submitting Instance IDs"""
+        if not self._ids["product_id"]:
+            self.show()
         body = {
             "resourceType": "SubmissionCreationRequest",
             "targets": [{"type": "Scope", "value": "preview"}],
@@ -88,29 +95,48 @@ class Submission(Offer):
                 {"type": "Property", "value": self._get_draft_instance_id("Property")},
                 {"type": "Package", "value": self._get_draft_instance_id("Package")},
                 {"type": "Listing", "value": self._get_draft_instance_id("Listing")},
-                {"type": "Cosell", "value": self._get_draft_instance_id("Cosell")},
                 {"type": "ResellerConfiguration", "value": self.get_product_id() + "-ResellerInstance"},
             ],
-            "variantResources": [
-                {
-                    "variantID": self._ids["plan_id"],
-                    "resources": [
-                        {"type": "Availability", "value": self._get_variant_draft_instance_id("Availability")},
-                        {"type": "Package", "value": self._get_variant_draft_instance_id("Package")},
-                        {"type": "Listing", "value": self._get_variant_draft_instance_id("Listing")},
-                    ],
-                }
-            ],
+            "variantResources": [],
         }
 
-        response = self._apis["submission"].products_product_id_submissions_post(
-            authorization=self.get_auth(),
-            product_id=self.get_product_id(),
-            body=body,
+        response = self._apis["variant"].products_product_id_variants_get(
+            product_id=self._ids["product_id"], authorization=self.get_auth()
         )
 
+        for variant in response.to_dict()["value"]:
+            if variant["id"] != "testdrive":
+                body["variantResources"] += [
+                    {
+                        "variantID": variant["id"],
+                        "resources": [
+                            {
+                                "type": "Availability",
+                                "value": self._get_variant_draft_instance_id(variant["id"], "Availability"),
+                            },
+                            {"type": "Package", "value": self._get_variant_draft_instance_id(variant["id"], "Package")},
+                            {"type": "Listing", "value": self._get_variant_draft_instance_id(variant["id"], "Listing")},
+                        ],
+                    }
+                ]
+
+        try:
+            response = self._apis["submission"].products_product_id_submissions_post(
+                authorization=self.get_auth(),
+                product_id=self.get_product_id(),
+                body=body,
+            )
+        except ApiException as error:
+            raise SystemError(
+                "Publish Failed! An internal error occurred when trying to publish the package"
+            ) from error
         self._ids["submission_id"] = response.id
-        return response
+
+        return self._apis["submission"].products_product_id_submissions_submission_id_get(
+            authorization=self.get_auth(),
+            product_id=self.get_product_id(),
+            submission_id=response.id,
+        )
 
     def _update_properties(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
@@ -144,13 +170,13 @@ class Submission(Offer):
             logo_wide = json_config["offer_listing"]["listing_logos"]["logo_wide"]
 
             if not os.path.isfile(os.path.join(self.app_path, logo_large)):
-                raise FileNotFoundError("Logo Large - Not Found")
+                raise FileNotFoundError(f"Logo Large not Found at location: {self.app_path}/{logo_large}")
             if not os.path.isfile(os.path.join(self.app_path, logo_small)):
-                raise FileNotFoundError("Logo Small - Not Found")
+                raise FileNotFoundError(f"Logo Small not Found at location: {self.app_path}/{logo_small}")
             if not os.path.isfile(os.path.join(self.app_path, logo_medium)):
-                raise FileNotFoundError("Logo Medium - Not Found")
+                raise FileNotFoundError(f"Logo Medium not Found at location: {self.app_path}/{logo_medium}")
             if not os.path.isfile(os.path.join(self.app_path, logo_wide)):
-                raise FileNotFoundError("Logo Wide - Not Found")
+                raise FileNotFoundError(f"Logo Wide not Found at location: {self.app_path}/{logo_wide}")
 
             listing_image = ListingImage(product_id=self.get_product_id(), authorization=self.get_auth())
             listing_image.set(file_name=logo_large, file_path=self.app_path, logo_type="AzureLogoLarge")

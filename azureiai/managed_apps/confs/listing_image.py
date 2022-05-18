@@ -5,10 +5,9 @@
 import uuid
 from pathlib import Path
 
-from swagger_client import ListingImageApi
-
 from azureiai.managed_apps.confs.listing import Listing
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
+from swagger_client import ListingImageApi
 
 
 class ListingImage(OfferConfigurations):

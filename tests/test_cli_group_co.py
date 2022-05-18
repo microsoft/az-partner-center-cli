@@ -55,7 +55,7 @@ def test_co_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
 
 @pytest.mark.integration
 def test_co_update(config_yml, json_listing_config, monkeypatch):
-    co_update_command(config_yml, json_listing_config, onkeypatch)
+    co_update_command(config_yml, json_listing_config, monkeypatch)
 
 
 @pytest.mark.integration

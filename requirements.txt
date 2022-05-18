@@ -2,14 +2,14 @@ adal~=1.2.4
 azure-storage-blob
 certifi >= 14.05.14
 databricks-cli
-msrest~=0.6.19
+msrest~=0.6.21
 python_dateutil >= 2.5.3
 pyyaml==5.4.1
 requests==2.26.0
 six >= 1.10
 urllib3 >= 1.15.1
 wget~=3.2
-
+pygments
 pytest~=7.1.2
 typing~=3.7.4.3
 setuptools~=62.3.1

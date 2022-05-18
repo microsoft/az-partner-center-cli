@@ -96,7 +96,9 @@ class VirtualMachine(Submission):
     def _prepare_request(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
-        publisher_id = json_config["publisherId"]
+            if "publisherId" not in json_config:
+                raise ValueError(f"Key: publisherId is missing from {self.app_path}/{self.json_listing_config}")
+            publisher_id = json_config["publisherId"]
         offer_id = json_config["id"]
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
