@@ -108,21 +108,21 @@ def ama_mock(ama_name, monkeypatch):
 
     def mock_products_get(self, authorization, **kwargs):
         variant = namedtuple("variant", ["name", "variant_id", "current_draft_instance_id"])(
-            *["test_vm", "variant-id", "draft-instance-id"]
+            *["test_vm", "abc-123", "draft-instance-id"]
         )
         response_json = namedtuple("response", ["value", "odata_etag", "id"])(
             *[
                 [
-                    {"name": "test_vm", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
+                    {"name": "test_vm", "id": "abc-123", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
                     {
                         "name": "cicd-test",
-                        "id": "1234abcd",
+                        "id": "abc-123",
                         "variant_id": "abcd1324",
                         "current_draft_instance_id": "123",
                     },
-                    {"name": "test_ma", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
-                    {"name": "test_st", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
-                    {"name": "test_co", "id": "1234abcd", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
+                    {"name": "test_ma", "id": "abc-123", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
+                    {"name": "test_st", "id": "abc-123", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
+                    {"name": "test_co", "id": "abc-123", "variant_id": "abcd1234", "current_draft_instance_id": "123"},
                 ],
                 "",
                 "",
@@ -162,7 +162,7 @@ def ama_mock(ama_name, monkeypatch):
 
     def mock_branches_get(self, product_id, module, authorization):
         variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(
-            *["variant-id", "draft-instance-id"]
+            *["abc-123", "draft-instance-id"]
         )
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
 
@@ -246,6 +246,11 @@ def ama_mock(ama_name, monkeypatch):
         return namedtuple("response", ["value"])(
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
+
+
+
+    monkeypatch.setattr(SubmissionApi, "products_product_id_submissions_submission_id_get", mock_products_get)
+    monkeypatch.setattr(VariantApi, "products_product_id_variants_get", mock_products_get)
 
     monkeypatch.setattr(
         AuthenticationContext, "acquire_token_with_client_credentials", mock_acquire_token_with_client_credentials

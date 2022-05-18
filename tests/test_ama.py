@@ -314,7 +314,7 @@ def test_variant_plan_error(monkeypatch):
         variant_2 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(
             *["testdrive", "draft-instance-id"]
         )
-        variant_3 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["", "draft-instance-id"])
+        variant_3 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc123", "draft-instance-id"])
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant_1, variant_2, variant_3], "", ""])
 
     monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
@@ -349,7 +349,7 @@ def test_ama_retry(monkeypatch, ama_name, config_yml):
         variant_2 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(
             *["testdrive", "draft-instance-id"]
         )
-        variant_3 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["", "draft-instance-id"])
+        variant_3 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc123", "draft-instance-id"])
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant_1, variant_2, variant_3], "", ""])
 
     monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)

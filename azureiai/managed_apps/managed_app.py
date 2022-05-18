@@ -279,7 +279,7 @@ class ManagedApplication(Offer):
 
     def _set_plan_listing(self, json_config):
         offer_listing_properties = json_config["plan_overview"][0]["plan_listing"]
-        offer_listing = OfferListing(product_id=self.get_product_id(), authorization=self.get_auth())
+        offer_listing = OfferListing(product_id=self.get_product_id(), plan_id=self.get_plan_id(), authorization=self.get_auth())
         offer_listing.set(properties=offer_listing_properties)
 
     def _set_offer_listing(self, app_path, json_listing_config, update_image=False):
@@ -338,7 +338,7 @@ class ManagedApplication(Offer):
         self._set_pricing_and_availability(azure_subscription)
 
     def _set_pricing_and_availability(self, azure_subscription):
-        feature_availability = FeatureAvailability(product_id=self.get_product_id(), authorization=self.get_auth())
+        feature_availability = FeatureAvailability(product_id=self.get_product_id(), plan_id=self.get_plan_id(), authorization=self.get_auth())
         feature_availability.set(azure_subscription=azure_subscription)
 
     def _set_technical_configuration(
@@ -355,7 +355,7 @@ class ManagedApplication(Offer):
         policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
 
         allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(json_config)
-        package = Package(product_id=self.get_product_id(), authorization=self.get_auth())
+        package = Package(product_id=self.get_product_id(), plan_id=self.get_plan_id(), authorization=self.get_auth())
         return package.set(
             app_zip_dir=app_path,
             file_name=app,

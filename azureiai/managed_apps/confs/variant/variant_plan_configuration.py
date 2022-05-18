@@ -24,13 +24,15 @@ class VariantPlanConfiguration(OfferConfigurations):
         Args:
             module:
         """
-        time.sleep(3)
+        time.sleep(.03)
         api_response = self.branches_api.products_product_id_branches_get_by_module_modulemodule_get(
             product_id=self.product_id, module=module, authorization=self.authorization
         )
         return self._find_plan(api_response)
 
     def _find_plan(self, api_response, i=0):
+        if i >= len(api_response.value):
+            raise ValueError(f"Expected Plan {self.plan_id} not found in {api_response}")
         if api_response.value[i].variant_id == self.plan_id:
             return api_response.value[i].current_draft_instance_id
         return self._find_plan(api_response, i + 1)
