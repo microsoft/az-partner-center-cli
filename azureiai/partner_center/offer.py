@@ -124,7 +124,7 @@ class Offer:
         """Call Branch API to get Configuration ID"""
         return get_draft_instance_id(self.get_product_id(), self.get_auth(), module, retry)
 
-    def _get_variant_draft_instance_id(self, plan_id, module: str, retry: int = 0) -> str:
+    def _get_variant_draft_instance_id(self, plan_id, module: str) -> str:
         return get_variant_draft_instance_id(plan_id, self.get_product_id(), self.get_auth(), module)
 
     def _set_resell_through_csps(self):
