@@ -1,4 +1,4 @@
-# azureiai-managed-apps
+# az-partner-center-cli
 This application wraps the swagger generate client of the partner ingestion apis. 
 The documentation can be found [here](https://apidocs.microsoft.com/services/partneringestion/#/)
 
