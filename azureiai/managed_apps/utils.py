@@ -54,7 +54,7 @@ def _find_plan(plan_id, api_response, i=0):
     return _find_plan(plan_id, api_response, i + 1)
 
 
-ACCESS_ID = "ACCESS_ID"
-TENANT_ID = "TENANT_ID"
-AAD_ID = "AAD_ID"
-AAD_CRED = "AAD_SECRET"
+ACCESS_ID = "AZURE_CLIENT_ID"
+TENANT_ID = "AZURE_TENANT_ID"
+AAD_ID = "AZURE_CLIENT_ID"
+AAD_CRED = "AZURE_CLIENT_SECRET"
