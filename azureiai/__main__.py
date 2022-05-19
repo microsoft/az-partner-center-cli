@@ -1,4 +1,5 @@
 #  ---------------------------------------------------------
+"""Execute program as module 'azureiai'"""
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 
