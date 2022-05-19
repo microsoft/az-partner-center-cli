@@ -3,6 +3,7 @@
 #  ---------------------------------------------------------
 """CLI Wrapper for Creating, Updating, or Deleting Azure Partner Center Submissions"""
 import argparse
+from distutils.util import strtobool
 
 from azureiai.partner_center.submission import Submission
 
@@ -30,8 +31,24 @@ class CLIParser:
         self._app_path = "--app-path"
 
     def create(self) -> dict:
-        """Create a new Managed Application"""
+        """Create a new Application"""
+        self.parser.add_argument(
+            "--update",
+            help="Update App if it exists.",
+            type=lambda x: bool(strtobool(x)),
+            nargs="?",
+            const=True,
+            default=False,
+        )
         args = self._add_name_config_json_argument()
+        try:
+            return self._create(args)
+        except NameError as error:
+            if args.update:
+                return self.update()
+            raise error
+
+    def _create(self, args):
         return self.submission_type(
             args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
         ).create()
