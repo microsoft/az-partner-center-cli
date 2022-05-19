@@ -3,5 +3,6 @@
 #  ---------------------------------------------------------
 
 from azureiai import azpc_app
+
 if __name__ == "__main__":
     azpc_app.main()
