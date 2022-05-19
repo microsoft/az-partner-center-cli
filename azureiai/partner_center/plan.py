@@ -226,9 +226,7 @@ class PlanCLIParser(CLIParser):
         self._name = "--plan_name"
         self._config_json = "--config-json"
 
-    def create(self) -> {}:
-        """Create a new Managed Application"""
-        args = self._add_name_config_json_argument()
+    def _create(self, args):
         return self.submission_type(
             args.plan_name,
             args.name,
