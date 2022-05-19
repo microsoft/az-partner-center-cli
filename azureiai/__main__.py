@@ -3,5 +3,5 @@
 #  ---------------------------------------------------------
 
 from azureiai import azpc_app
-
-azpc_app.main()
+if __name__ == "__main__":
+    azpc_app.main()
