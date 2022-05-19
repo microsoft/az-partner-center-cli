@@ -19,13 +19,13 @@ class Plan(Submission):
     """Azure Partner Center Managed Application Submission"""
 
     def __init__(
-            self,
-            plan_name=None,
-            name=None,
-            config_yaml=r"config.yml",
-            app_path: str = ".",
-            json_listing_config="ma_config.json",
-            subtype="",
+        self,
+        plan_name=None,
+        name=None,
+        config_yaml=r"config.yml",
+        app_path: str = ".",
+        json_listing_config="ma_config.json",
+        subtype="",
     ):
         super().__init__(
             name=name,
