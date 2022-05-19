@@ -31,10 +31,16 @@ class CLIParser:
 
     def create(self) -> dict:
         """Create a new Managed Application"""
+        self.parser.add_argument("--update", type=bool, help="Update Managed App if it exists.", default=False)
         args = self._add_name_config_json_argument()
-        return self.submission_type(
-            args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
-        ).create()
+        try:
+            return self.submission_type(
+                args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
+            ).create()
+        except NameError as error:
+            if args.update:
+                return self.update()
+            raise error
 
     def delete(self) -> dict:
         """Delete a Managed Application"""
