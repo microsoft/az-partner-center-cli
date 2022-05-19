@@ -1,4 +1,5 @@
 import json
+from distutils.util import strtobool
 from pathlib import Path
 
 import yaml
@@ -18,13 +19,13 @@ class Plan(Submission):
     """Azure Partner Center Managed Application Submission"""
 
     def __init__(
-        self,
-        plan_name=None,
-        name=None,
-        config_yaml=r"config.yml",
-        app_path: str = ".",
-        json_listing_config="ma_config.json",
-        subtype="",
+            self,
+            plan_name=None,
+            name=None,
+            config_yaml=r"config.yml",
+            app_path: str = ".",
+            json_listing_config="ma_config.json",
+            subtype="",
     ):
         super().__init__(
             name=name,
@@ -227,13 +228,31 @@ class PlanCLIParser(CLIParser):
         self._config_json = "--config-json"
 
     def _create(self, args):
-        return self.submission_type(
-            args.plan_name,
-            args.name,
-            json_listing_config=args.config_json,
-            app_path=args.app_path,
-            subtype=args.subgroup,
-        ).create()
+        return
+
+    def create(self) -> dict:
+        """Create a new Application"""
+        self.parser.add_argument(
+            "--update",
+            help="Update App if it exists.",
+            type=lambda x: bool(strtobool(x)),
+            nargs="?",
+            const=True,
+            default=False,
+        )
+        args = self._add_name_config_json_argument()
+        try:
+            return self.submission_type(
+                args.plan_name,
+                args.name,
+                json_listing_config=args.config_json,
+                app_path=args.app_path,
+                subtype=args.subgroup,
+            ).create()
+        except ApiException as error:
+            if args.update:
+                return self._update(args)
+            raise error
 
     def list_command(self) -> {}:
         """Create a new Managed Application"""
@@ -253,6 +272,9 @@ class PlanCLIParser(CLIParser):
     def update(self) -> {}:
         """Create a new Managed Application"""
         args = self._add_name_config_json_argument()
+        return self._update(args)
+
+    def _update(self, args):
         return self.submission_type(
             args.plan_name,
             args.name,

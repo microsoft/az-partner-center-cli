@@ -42,16 +42,13 @@ class CLIParser:
         )
         args = self._add_name_config_json_argument()
         try:
-            return self._create(args)
+            return self.submission_type(
+                args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
+            ).create()
         except NameError as error:
             if args.update:
-                return self.update()
+                return self._update(args)
             raise error
-
-    def _create(self, args):
-        return self.submission_type(
-            args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
-        ).create()
 
     def delete(self) -> dict:
         """Delete a Managed Application"""
@@ -76,6 +73,9 @@ class CLIParser:
     def update(self) -> dict:
         """Update a Managed Application"""
         args = self._add_name_config_json_argument()
+        return self._update(args)
+
+    def _update(self, args):
         return self.submission_type(
             args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
         ).update()
