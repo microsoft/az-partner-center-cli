@@ -52,8 +52,8 @@ class VirtualMachine(Submission):
 
         return response
 
-    def status(self) -> dict:
-        """Get the Status of an Existing Application"""
+    def show(self) -> dict:
+        """Show the specified existing Virtual Machine offer"""
         headers, _, url = self._prepare_request()
 
         response = requests.get(url, headers=headers)
@@ -63,7 +63,7 @@ class VirtualMachine(Submission):
         return response.json()
 
     def publish(self):
-        """Publish Existing Application"""
+        """Publish Existing Virtual Machine offer"""
         headers, _, url = self._prepare_request()
 
         response = requests.post(
@@ -115,8 +115,15 @@ class VirtualMachineCLI(CLIParser):
     def __init__(self):
         super().__init__(submission_type=VirtualMachine)
 
+    def show(self):
+        """Show a Virtual Machine Offer"""
+        args = self._add_name_config_json_argument()
+        return VirtualMachine(
+            args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
+        ).show()
+
     def publish(self):
-        """Publish a Managed Application"""
+        """Publish a Virtual Machine Offer"""
         args = self._add_name_notification_emails_argument()
         return VirtualMachine(
             args.name, notification_emails=args.notification_emails, app_path=args.app_path, config_yaml=args.config_yml
