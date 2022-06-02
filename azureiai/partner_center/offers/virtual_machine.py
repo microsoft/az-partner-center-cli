@@ -38,8 +38,12 @@ class VirtualMachine(Submission):
         )
         self.notification_emails = notification_emails
 
+    def create(self):
+        """Create Virtual Machine offer"""
+        self.update()
+
     def update(self):
-        """Update Existing Application"""
+        """Update Existing Virtual Machine offer"""
         headers, json_config, url = self._prepare_request()
 
         response = requests.put(url, json=json_config, headers=headers)
