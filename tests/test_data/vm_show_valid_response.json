@@ -1,0 +1,146 @@
+{
+    "offerTypeId": "microsoft-azure-virtualmachines",
+    "publisherId": "test-publisher",
+    "status": "waitingForPublisherReview",
+    "pcMigrationStatus": "migrated",
+    "pcRedirectUri": "",
+    "isvUpgradeRequest": false,
+    "version": 1252868275,
+    "id": "test-vm",
+    "definition": {
+        "displayText": "Test Virtual Machine Offer",
+        "offer": {
+            "microsoft-azure-marketplace.leadDestination": "None",
+            "microsoft-azure-marketplace.blobLeadConfiguration": {},
+            "microsoft-azure-marketplace.crmLeadConfiguration": {},
+            "microsoft-azure-marketplace.httpsEndpointLeadConfiguration": {},
+            "microsoft-azure-marketplace.marketoLeadConfiguration": {},
+            "microsoft-azure-marketplace.salesForceLeadConfiguration": {},
+            "microsoft-azure-marketplace.tableLeadConfiguration": {},
+            "microsoft-azure-marketplace.leadNotificationEmails": "",
+            "microsoft-azure-marketplace-testdrive.enabled": false,
+            "microsoft-azure-marketplace.useEnterpriseContract": false,
+            "microsoft-azure-marketplace.termsOfUse": "Terms of use",
+            "microsoft-azure-marketplace.universalAmendmentTerms": "",
+            "microsoft-azure-marketplace.customAmendments": null,
+            "microsoft-azure-marketplace.categories": [],
+            "microsoft-azure-marketplace.categoryMap": [
+                {
+                    "categoryL1": "analytics",
+                    "categoryL2-analytics": [
+                        "visualization-and-reporting"
+                    ]
+                },
+                {
+                    "categoryL1": "ai-plus-machine-learning",
+                    "categoryL2-ai-plus-machine-learning": [
+                        "bot-services",
+                        "cognitive-services"
+                    ]
+                }
+            ],
+            "microsoft-azure-marketplace.allowedSubscriptions": [
+                "d2b43582-c056-4b5a-a992-7230ffa51e8d"
+            ],
+            "microsoft-azure-marketplace.title": "Contoso App",
+            "microsoft-azure-marketplace.offerMarketingUrlIdentifier": "contosoapp",
+            "microsoft-azure-marketplace.summary": "Contoso App makes dev ops a breeze",
+            "microsoft-azure-marketplace.longSummary": "Contoso App makes dev ops a breeze",
+            "microsoft-azure-marketplace.description": "Contoso App makes dev ops a breeze",
+            "microsoft-azure-marketplace.privacyURL": "https://azuremarketplace.microsoft.com",
+            "microsoft-azure-marketplace.fairfaxSupportUrl": "",
+            "microsoft-azure-marketplace.publicAzureSupportUrl": "",
+            "microsoft-azure-marketplace.engineeringContactName": "Jon Doe",
+            "microsoft-azure-marketplace.engineeringContactEmail": "jondoe@outlook.com",
+            "microsoft-azure-marketplace.engineeringContactPhone": "555-555-5555",
+            "microsoft-azure-marketplace.supportContactName": "Jon Doe",
+            "microsoft-azure-marketplace.supportContactEmail": "jondoe@outlook.com",
+            "microsoft-azure-marketplace.supportContactPhone": "555-555-5555",
+            "microsoft-azure-marketplace.usefulLinks": [
+                {
+                    "linkTitle": "Contoso App for Azure",
+                    "linkUrl": "https://azuremarketplace.microsoft.com"
+                }
+            ],
+            "microsoft-azure-marketplace.smallLogo": null,
+            "microsoft-azure-marketplace.mediumLogo": null,
+            "microsoft-azure-marketplace.largeLogo": null,
+            "microsoft-azure-marketplace.screenshots": [],
+            "microsoft-azure-marketplace.videos": [],
+            "microsoft-azure-marketplace-testdrive.description": null,
+            "microsoft-azure-marketplace-testdrive.accessInformation": null,
+            "microsoft-azure-marketplace-testdrive.videos": [],
+            "microsoft-azure-marketplace-testdrive.userManual": "",
+            "microsoft-azure-virtualmachines.managerContactName": "",
+            "microsoft-azure-virtualmachines.managerContactEmail": "",
+            "microsoft-azure-virtualmachines.managerContactPhone": "",
+            "microsoft-azure-virtualmachines.gtmMaterials": ""
+        },
+        "plans": [
+            {
+                "planId": "contososkuidentifier",
+                "microsoft-azure-virtualmachines.cloudAvailability": [
+                    "PublicAzure"
+                ],
+                "microsoft-azure-virtualmachines.certificationsFairfax": [],
+                "microsoft-azure-virtualmachines.legacyPlanId": "contososkuidentifier",
+                "microsoft-azure-virtualmachines.hideSKUForSolutionTemplate": false,
+                "virtualMachinePricingV2": {
+                    "isByol": false,
+                    "coreMultiplier": {
+                        "currency": "USD",
+                        "single": 0
+                    },
+                    "freeTrialDurationInMonths": 0
+                },
+                "regions": [
+                    "AZ"
+                ],
+                "virtualMachinePricing": {
+                    "isByol": false,
+                    "coreMultiplier": {
+                        "currency": "USD",
+                        "single": 0
+                    },
+                    "freeTrialDurationInMonths": 0
+                },
+                "microsoft-azure-virtualmachines.openPorts": [],
+                "microsoft-azure-virtualmachines.operatingSystemFamily": "Windows",
+                "microsoft-azure-virtualmachines.operationSystem": "Contoso App",
+                "microsoft-azure-virtualmachines.osType": "Other",
+                "microsoft-azure-virtualmachines.recommendedVMSizes": [
+                    "a0-basic",
+                    "a0-standard",
+                    "a1-basic",
+                    "a1-standard",
+                    "a2-basic",
+                    "a2-standard"
+                ],
+                "microsoft-azure-virtualmachines.supportsAcceleratedNetworking": false,
+                "microsoft-azure-virtualmachines.supportsCloudInit": false,
+                "microsoft-azure-virtualmachines.supportsBackup": false,
+                "microsoft-azure-virtualmachines.isNetworkVirtualAppliance": false,
+                "microsoft-azure-virtualmachines.isLockedDown": false,
+                "microsoft-azure-virtualmachines.isCustomArmTemplateRequired": false,
+                "microsoft-azure-virtualmachines.supportsExtensions": true,
+                "microsoft-azure-virtualmachines.supportsHibernation": false,
+                "microsoft-azure-virtualmachines.supportsNVMe": false,
+                "microsoft-azure-virtualmachines.generation": "1",
+                "microsoft-azure-virtualmachines.allowOnlyManagedDiskDeployments": true,
+                "microsoft-azure-virtualmachines.patchOptions": {
+                    "supportsHotpatch": false
+                },
+                "microsoft-azure-virtualmachines.vmImages": {
+                    "1.0.1": {
+                        "osVhdUrl": "",
+                        "lunVhdDetails": []
+                    }
+                },
+                "microsoft-azure-virtualmachines.skuTitle": "Contoso App",
+                "microsoft-azure-virtualmachines.skuSummary": "Contoso App makes dev ops a breeze.",
+                "microsoft-azure-virtualmachines.skuDescription": "This is a description for the Contoso App that makes dev ops a breeze."
+            }
+        ]
+    },
+    "changedTime": "2022-06-01T05:41:25.9695742Z"
+}

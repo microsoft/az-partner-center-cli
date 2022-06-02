@@ -2,10 +2,13 @@
 #  Copyright (c) 2020 Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 import pytest
+import json
 from pathlib import Path
+from adal import AuthenticationContext
 
 from tests import cli_groups_tests as cli_tests
 
+import requests
 
 @pytest.fixture
 def config_yml():
@@ -43,7 +46,28 @@ def test_vm_list_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.vm_list_command(config_yml, monkeypatch)
 
 
-def test_vm_create_mock(config_yml, vm_config_json, monkeypatch, ama_mock):
+def test_vm_create_mock(config_yml, vm_config_json, monkeypatch):
+
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock creation VM offer API endpoint
+
+    # Set up Requests mock class
+    class MockResponse:
+        def __init__(self):
+            self.status_code = 200
+            with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
+                self.text = read_file
+
+    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers/test-vm?api-version=2017-10-31"
+    def mock_create_offer(self, headers, json={}, url=mock_url):
+       return MockResponse()
+
+    monkeypatch.setattr(requests, "put", mock_create_offer)
     cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch)
 
 
@@ -51,8 +75,34 @@ def test_vm_update_mock(config_yml, vm_config_json, monkeypatch, ama_mock):
     cli_tests.vm_update_command(config_yml, vm_config_json, monkeypatch)
 
 
-def test_vm_show_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.vm_show_command(config_yml, monkeypatch)
+def test_vm_show_mock(config_yml, vm_config_json, monkeypatch):
+    vm_config_json = "vm_config.json"
+
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock VM offer API endpoint
+
+    # Set up Requests mock class
+    class MockResponse:
+        def __init__(self):
+            self.status_code = 200
+
+        @staticmethod
+        def json():
+            with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
+    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers/test-vm?api-version=2017-10-31"
+    def mock_show_offer(self, headers, url=mock_url):
+       return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_show_offer)
+
+    cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch)
 
 
 def test_vm_publish_mock(config_yml, monkeypatch, ama_mock):
