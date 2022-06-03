@@ -40,7 +40,7 @@ class VirtualMachine(Submission):
 
     def create(self):
         """Create Virtual Machine offer"""
-        self.update()
+        return self.update()
 
     def update(self):
         """Update Existing Virtual Machine offer"""
@@ -50,7 +50,7 @@ class VirtualMachine(Submission):
         if response.status_code != 200:
             raise ConnectionError(str(response))
 
-        return response
+        return response.json()
 
     def show(self) -> dict:
         """Show the specified existing Virtual Machine offer"""

@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 import requests
-from adal import AuthenticationContext
+from adal import AuthenticationContext, adal_error
 
 from azureiai.partner_center.offers.virtual_machine import VirtualMachine
 from azureiai.partner_center.plan import Plan
@@ -24,9 +24,14 @@ from tests.cli_groups_tests import (
     vm_delete_plan_command,
     _assert_properties,
     _assert_offer_listing,
-    _assert_plan_listing,
+    _assert_preview_audience,
     _assert_pricing_and_availability,
     _assert_technical_configuration,
+    _assert_plan_listing,
+    _assert_vm_properties,
+    _assert_vm_offer_listing,
+    _assert_vm_preview_audience,
+    _assert_vm_plan_listing,
 )
 
 
@@ -131,35 +136,93 @@ def test_vm_list(config_yml, monkeypatch):
 
 
 @pytest.mark.integration
-def test_vm_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
+def test_vm_create_success(config_yml, monkeypatch, app_path_fix, json_listing_config):
     json_listing_config = "vm_config.json"
-    app_path_fix = "sample_app"
+    app_path_fix = "tests/sample_app"
     try:
-        vm_show_command(config_yml, monkeypatch)
+        vm_show_command(config_yml, json_listing_config, monkeypatch)
 
         print("VM Offer Found")
         with pytest.raises(ApiException):
-            vm_create_command(config_yml, json_listing_config, monkeypatch)
+            offer_response = vm_create_command(config_yml, json_listing_config, monkeypatch)
     except:
-        vm_create_command(config_yml, json_listing_config, monkeypatch)
+        offer_response = vm_create_command(config_yml, json_listing_config, monkeypatch)
 
-    offer = VirtualMachine(name="test-vm", config_yaml=config_yml, app_path=app_path_fix, json_listing_config=json_listing_config)
-    offer.show()
-    with open(Path(app_path_fix).joinpath(json_listing_config), "r", encoding="utf8") as read_file:
-        json_config = json.load(read_file)
+    if offer_response:
+        offer = json.loads(offer_response)
+        with open(Path(app_path_fix).joinpath(json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
 
-    #_assert_properties(offer, json_config)
-    #_assert_offer_listing(offer, json_config)
+        _assert_vm_properties(offer, json_config)
+        _assert_vm_offer_listing(offer, json_config)
+        _assert_vm_preview_audience(offer, json_config)
+        _assert_vm_plan_listing(offer, json_config)
 
-    # _assert_preview_audience(offer, json_config)  # todo: Preview Audience for VM not working
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ConnectionError)
+def test_vm_create_invalid_offer(config_yml, monkeypatch):
+    # Invalid configuration that creates an offer in a publisher
+    # that the user does not have access to
+    json_listing_config = "vm_config_unauth_publisher.json"
+
+    # Expecting a failure as the offer is unable to be created
+    vm_create_command(config_yml, json_listing_config, monkeypatch)
 
 
 @pytest.mark.integration
 # This test depends on 'test_vm_create'
-def test_vm_show(config_yml, monkeypatch):
+def test_vm_show_success(config_yml, monkeypatch):
     json_listing_config = "vm_config.json"
-    app_path_fix = "sample_app"
+    app_path_fix = "tests/sample_app"
     offer_response = vm_show_command(config_yml, json_listing_config, monkeypatch)
+
+    # Load API JSON response
+    offer_listing = json.loads(offer_response)
+
+    # Load JSON config file for assertions
+    with open(Path(app_path_fix).joinpath(json_listing_config), "r", encoding="utf8") as read_file:
+        json_config = json.load(read_file)
+
+    _assert_vm_properties(offer_listing, json_config, 1)
+    _assert_vm_offer_listing(offer_listing, json_config)
+    _assert_vm_preview_audience(offer_listing, json_config)
+    _assert_vm_plan_listing(offer_listing, json_config)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ValueError)
+def test_vm_show_missing_publisher_id(config_yml, monkeypatch):
+    # Invalid JSON config with missing publisher ID
+    json_listing_config = "vm_config_missing_publisher_id.json"
+
+    # Expecting a Value error when unable to access Publisher ID
+    vm_show_command(config_yml, json_listing_config, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=adal_error.AdalError)
+def test_vm_show_invalid_auth_details(config_yml, monkeypatch):
+    # Invalid config yaml file using incorrect client ID & secret
+    config_yml = "tests/sample_app/config_invalid.yml"
+
+    # Valid JSON configuration file
+    json_listing_config = "vm_config.json"
+
+    # Expecting a failure from the Authentication Context package as the
+    # auth token is unable to be retreived
+    vm_show_command(config_yml, json_listing_config, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ConnectionError)
+def test_vm_show_invalid_offer(config_yml, monkeypatch):
+    # Invalid configuration to show an offer that doesnt exist
+    json_listing_config = "vm_config_uncreated_offer.json"
+
+    # Expecting a failure as the offer does not exist
+    vm_show_command(config_yml, json_listing_config, monkeypatch)
+
 
 @pytest.mark.integration
 def test_vm_plan_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
