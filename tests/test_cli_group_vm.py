@@ -139,14 +139,8 @@ def test_vm_list(config_yml, monkeypatch):
 def test_vm_create_success(config_yml, monkeypatch, app_path_fix, json_listing_config):
     json_listing_config = "vm_config.json"
     app_path_fix = "tests/sample_app"
-    try:
-        vm_show_command(config_yml, json_listing_config, monkeypatch)
 
-        print("VM Offer Found")
-        with pytest.raises(ApiException):
-            offer_response = vm_create_command(config_yml, json_listing_config, monkeypatch)
-    except:
-        offer_response = vm_create_command(config_yml, json_listing_config, monkeypatch)
+    offer_response = vm_create_command(config_yml, json_listing_config, monkeypatch)
 
     if offer_response:
         offer = json.loads(offer_response)
@@ -157,6 +151,19 @@ def test_vm_create_success(config_yml, monkeypatch, app_path_fix, json_listing_c
         _assert_vm_offer_listing(offer, json_config)
         _assert_vm_preview_audience(offer, json_config)
         _assert_vm_plan_listing(offer, json_config)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=NameError)
+def test_vm_create_offer_exists(config_yml, monkeypatch, app_path_fix, json_listing_config):
+    json_listing_config = "vm_config.json"
+    app_path_fix = "tests/sample_app"
+
+    # Create offer first time
+    vm_create_command(config_yml, json_listing_config, monkeypatch)
+
+    # Create the same offer as second time
+    vm_create_command(config_yml, json_listing_config, monkeypatch)
 
 
 @pytest.mark.integration

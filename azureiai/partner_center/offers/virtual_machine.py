@@ -40,7 +40,16 @@ class VirtualMachine(Submission):
 
     def create(self):
         """Create Virtual Machine offer"""
-        return self.update()
+        # Verify that the offer does not already exist
+        try:
+            existing_offer = self.show()
+
+            if existing_offer["id"]:
+                raise NameError("Virtual Machine offer already exists. Try using 'update'?")
+
+        except ConnectionError:
+            # Create the offer because the it does not already exist
+            return self.update()
 
     def update(self):
         """Update Existing Virtual Machine offer"""

@@ -62,9 +62,10 @@
                     "linkUrl": "https://azuremarketplace.microsoft.com"
                 }
             ],
-            "microsoft-azure-marketplace.smallLogo": null,
-            "microsoft-azure-marketplace.mediumLogo": null,
-            "microsoft-azure-marketplace.largeLogo": null,
+            "microsoft-azure-marketplace.smallLogo": "testURI.com",
+            "microsoft-azure-marketplace.mediumLogo": "testURI.com",
+            "microsoft-azure-marketplace.largeLogo": "testURI.com",
+            "microsoft-azure-marketplace.wideLogo": "testURI.com",
             "microsoft-azure-marketplace.screenshots": [],
             "microsoft-azure-marketplace.videos": [],
             "microsoft-azure-marketplace-testdrive.description": null,
