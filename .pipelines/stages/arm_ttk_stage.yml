@@ -1,0 +1,53 @@
+parameters:
+  TemplatePath: "azure"
+
+stages:
+- stage: armttk
+  dependsOn: []
+  jobs:
+    - job: armtkk
+      pool:
+        type: windows
+      continueOnError: false
+      variables:
+        ob_outputDirectory: '$(Build.SourcesDirectory)/out'
+      steps:     
+        - task: PowerShell@2
+          env:
+            TemplatePath: ${{ parameters.TemplatePath }}
+          inputs:
+            targetType: 'inline'
+            failOnStandardError: true
+            script: |
+
+              $bicepFiles = Get-ChildItem azure\$env:managed_app\app_contents -include "*.bicep" -Recurse
+
+              if($bicepFiles.count -gt 0){
+                  if ((Get-Command "bicep.exe" -ErrorAction SilentlyContinue) -eq $null -and (Get-Command "$PSScriptRoot\bicep.exe" -ErrorAction SilentlyContinue) -eq $null) {
+                  write-Host "Bicep Not Found, Downloading..."
+                  (New-Object Net.WebClient).DownloadFile("https://github.com/Azure/bicep/releases/latest/download/bicep-win-x64.exe", "$PSScriptRoot\bicep.exe")
+                  }
+                  foreach($bicepFile in $bicepFiles){
+                      & "$PSScriptRoot\bicep.exe" build $bicepFile
+                  }
+              }
+
+              Invoke-WebRequest -Uri aka.ms/arm-ttk-marketplace -OutFile arm-template-toolkit.zip
+              Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
+              
+              Invoke-WebRequest -URI "https://raw.githubusercontent.com/bmoore-msft/arm-ttk/81d88f1a1ddf3be5747633302efa989786c90839/arm-ttk/testcases/deploymentTemplate/IDs-Should-Be-Derived-From-ResourceIDs.test.ps1" -OutFile .\IDs-Should-Be-Derived-From-ResourceIDs.test.ps1
+              mv .\IDs-Should-Be-Derived-From-ResourceIDs.test.ps1 .\arm-ttk\arm-ttk\testcases\deploymentTemplate\ -Force
+
+
+              Import-Module .\arm-ttk\arm-ttk\arm-ttk.psd1
+
+              echo "Test-AzTemplate -TemplatePath azure\$env:managed_app\app_contents -File createUiDefinition.json -Pester -Skip Secure-Params-In-Nested-Deployments`nTest-AzTemplate -TemplatePath azure\$env:managed_app\app_contents -File mainTemplate.json -Pester -Skip Secure-Params-In-Nested-Deployments" | Out-File -FilePath .\armttk.ps1
+              Invoke-Pester -Script .\armttk.ps1 -OutputFormat NUnitXml -OutputFile .\armttk.xml
+
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat     : 'NUnit'
+            testResultsFiles      : '$(System.DefaultWorkingDirectory)\**\armttk.xml'
+            failTaskOnFailedTests : true
+            testRunTitle          : "ARM TTK"
+          condition: always()
