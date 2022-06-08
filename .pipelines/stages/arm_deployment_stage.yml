@@ -1,0 +1,38 @@
+parameters:
+  managed_app         : "ama"
+  region              : eastus2
+  azureSubscription   : ''
+  arm_params          : [mainTemplate.parameters.json]
+  includePython       : true
+  continueOnErrorARM  : true
+  cleanup             : true
+  dependsOn           : []
+  PACKAGE_VERSION     : $(Build.BuildNumber)
+  AMA_TEST_APP        : $(managed_app)
+
+stages:
+- ${{ each value in parameters.arm_params}}:
+  - stage: ${{ replace(value,'.','_')}}_FunctionalTestingARM
+    ${{ if eq(parameters.includePython, true) }}:
+      dependsOn: [BuildArtifacts]
+    ${{ else }}:
+      dependsOn: ${{ parameters.dependsOn }}
+    jobs:
+    - job: ${{ replace(value,'.','_')}}_e2e_arm_template
+      continueOnError   : ${{ parameters.continueOnErrorARM }}
+      timeoutInMinutes  : 60
+      pool:
+        type: linux
+      variables:
+        ob_outputDirectory  : '$(Build.SourcesDirectory)/${{ value }}/out'
+        LinuxContainerImage : onebranch.azurecr.io/linux/ubuntu-1804:latest
+      steps:
+      - template: ../steps/arm_validation.yml
+        parameters:
+          managed_app       : ${{ parameters.managed_app}}
+          region            : ${{ parameters.region }}
+          azureSubscription : ${{ parameters.azureSubscription }}
+          cleanup           : ${{ parameters.cleanup }}
+          PACKAGE_VERSION   : ${{ parameters.PACKAGE_VERSION }}
+          AMA_TEST_APP      : ${{ parameters.AMA_TEST_APP }}
+          arm_params        : ${{ value }}
