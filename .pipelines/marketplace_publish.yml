@@ -1,0 +1,63 @@
+parameters:
+  region                  : EastUS2    
+  module                  : azureiai
+  continueOnErrorARM      : true
+  continueOnErrorPublish  : true
+  continueOnErrorCreate   : true
+  includeAMA              : true
+  includePython           : true
+  cleanup                 : true
+  includeARMTTK           : true
+  publishAMA              : true
+  publishAST              : false
+  functionTesting         : false
+  arm_params              : []
+  function_params         : []
+  managed_app             : ''
+  dependsOn               : []
+  PACKAGE_VERSION         : $(Build.BuildNumber)
+  AMA_TEST_APP            : ''
+  PLAN_PUBLISHER          : ''
+
+stages:
+- ${{ if eq(parameters.includeARMTTK, true) }}:
+  - template: ../stage/arm_ttk_stage.yml
+
+- template: ../stage/arm_deployment_stage.yml
+  parameters:
+    azureSubscription   : $(AZURE_CONNECTION)
+    managed_app         : $(managed_app)
+    arm_params          : ${{ parameters.arm_params }}
+    includePython       : ${{ parameters.includePython }}
+    continueOnErrorARM  : ${{ parameters.continueOnErrorARM }}
+    region              : ${{ parameters.region }}
+    cleanup             : ${{ parameters.cleanup }}
+    dependsOn           : ${{ parameters.dependsOn }}
+    PACKAGE_VERSION     : ${{ parameters.PACKAGE_VERSION }}
+    AMA_TEST_APP        : ${{ parameters.AMA_TEST_APP }}
+
+- ${{ if eq(parameters.publishAMA, true) }}:
+  - template: ../stage/marketplace_publish.yml
+    parameters:
+      eap                     : $(CDP_USER_MODULE)
+      managed_app             : ${{ parameters.managed_app}}
+      continueOnErrorPublish  : ${{ parameters.continueOnErrorPublish}}
+      continueOnErrorCreate   : ${{ parameters.continueOnErrorCreate}}
+      includePython           : ${{ parameters.includePython }}
+      arm_params              : ${{ parameters.arm_params }}
+      functionTesting         : ${{ parameters.functionTesting }}
+      PLAN_PUBLISHER          : ${{ parameters.PLAN_PUBLISHER }}
+      application             : ma
+
+- ${{ if eq(parameters.publishAST, true) }}:
+  - template: ../stage/marketplace_publish.yml
+    parameters:
+      eap                     : $(CDP_USER_MODULE)
+      managed_app             : ${{ parameters.managed_app}}
+      continueOnErrorPublish  : ${{ parameters.continueOnErrorPublish}}
+      continueOnErrorCreate   : ${{ parameters.continueOnErrorCreate}}
+      includePython           : ${{ parameters.includePython }}
+      arm_params              : ${{ parameters.arm_params }}
+      functionTesting         : ${{ parameters.functionTesting }}
+      PLAN_PUBLISHER          : ${{ parameters.PLAN_PUBLISHER }}
+      application             : st

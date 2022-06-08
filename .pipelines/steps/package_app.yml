@@ -1,0 +1,32 @@
+parameters:
+  azureSubscription: $(AZURE_CONNECTION)
+  managed_app: $(managed_app)
+
+steps:
+- task: AzureCLI@1
+  inputs:
+    azureSubscription   : ${{ parameters.azureSubscription }}
+    scriptType          : bash
+    scriptLocation      : inlineScript
+    addSpnToEnvironment : true
+    inlineScript: |
+      apt install jq unzip --yes
+      
+      wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64.tar.gz -O - |  tar xz && mv yq_linux_amd64 /usr/bin/yq
+
+      cd azure/${{ parameters.managed_app }}
+
+      BICEP="./app_contents/mainTemplate.bicep"
+      if [[ -f $BICEP ]];then
+        echo "Found Bicep File! Converting to ARM."
+        rm -f "./app_contents/mainTemplate.json"
+        az bicep build -f $BICEP --outfile "./app_contents/mainTemplate.json"
+      fi
+
+      bash ./script-dev/package_managed_app_zip.sh ${{ parameters.managed_app }}.zip
+  env:
+      {
+        AZURE_STORAGE_ACCOUNT : $(AZURE_STORAGE_ACCOUNT),
+        AZURE_STORAGE_KEY     : $(AZURE_STORAGE_KEY)
+      }
+  displayName: 'Create Artifacts'

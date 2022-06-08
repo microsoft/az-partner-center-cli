@@ -1,0 +1,46 @@
+parameters:
+  project           : one
+  artifactFeed      : agai-development-pypi
+  managed_app       : recommender
+  region            : EastUS2
+  arm_params        : mainTemplate.parameters.json
+  azureSubscription : AG-CI-AI-FE-RETAIL(2eedf122-c960-4ddc-9146-ac93dbf8b2b0)
+  cleanup           : true
+  PACKAGE_VERSION   : $(Build.BuildNumber)
+  AMA_TEST_APP      : $(managed_app)
+
+steps:
+- task: PipAuthenticate@1
+  inputs:
+    artifactFeeds     : ${{parameters.project}}/${{parameters.artifactFeed}}
+    onlyAddExtraIndex : true
+
+- template: pip_install.yml
+
+- template: install_dependancies.yml
+
+- template: package_app.yml
+  parameters:
+    azureSubscription : ${{ parameters.azureSubscription }}
+    managed_app       : ${{ parameters.managed_app }}
+
+- template: arm_upload.yml
+  parameters:
+    managed_app       : ${{ parameters.managed_app }}
+
+- template: arm_deploy.yml
+  parameters:
+    azureSubscription : ${{ parameters.azureSubscription }}
+    managed_app       : ${{ parameters.managed_app }}
+    arm_params        : ${{ parameters.arm_params }}
+    region            : ${{ parameters.region }}
+    PACKAGE_VERSION   : ${{ parameters.PACKAGE_VERSION }}
+
+- template: arm_testing.yml
+  parameters:
+    managed_app       : ${{ parameters.AMA_TEST_APP }}
+
+- template: arm_cleanup.yml
+  parameters:
+    azureSubscription : ${{ parameters.azureSubscription }}
+    cleanup           : ${{ parameters.cleanup }}

@@ -1,0 +1,20 @@
+parameters:
+    azureSubscription   : ""
+    cleanup             : true
+    resourceGroup       : devops-test-$(Suffix)
+
+steps:
+- task: AzureCLI@2
+  condition: and(succeededOrFailed(), eq(${{ parameters.cleanup }}, 'true'))
+  displayName: 'ARM Cleanup'
+  env:
+    rg: ${{ parameters.resourceGroup }}
+  inputs:
+    azureSubscription: ${{parameters.azureSubscription}}
+    scriptType: bash
+    scriptLocation: inlineScript
+    failOnStandardError: false
+    addSpnToEnvironment: true
+    displayName: 'ARM Cleanup'
+    inlineScript: |
+      az group delete -n $rg --no-wait --yes

@@ -1,0 +1,16 @@
+steps:
+- script: |
+    python3 -m pip install \
+        wheel \
+        twine \
+        keyring \
+        artifacts-keyring \
+        pyyaml \
+        wget \
+        pytest \
+        pytest-azurepipelines \
+        pytest-nunit \
+        pytest-cov \
+        setuptools \
+        pypandoc || exit 1
+  displayName: 'Install Python Dependancies'
