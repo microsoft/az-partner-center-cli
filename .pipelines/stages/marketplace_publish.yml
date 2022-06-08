@@ -1,0 +1,96 @@
+parameters:
+  candidate_env           : agai-candidate-dev
+  release_env             : agai-template-test
+  eap                     : agai-template
+  PLAN_ID                 : recommender-ama
+  PLAN_PUBLISHER          : microsoftcorporation1590077852919
+  PROD_PLAN_PUBLISHER     : microsoftcorporation1602274591143
+  PLAN_VERSION            : 0.0.0
+  managed_app             : recommender
+  project                 : one
+  artifactFeed            : agai-development-pypi
+  dependsOn               : [BuildArtifacts]
+  arm_params              : []
+  continueOnErrorPublish  : true
+  continueOnErrorCreate   : true
+  includePython           : true
+  functionTesting         : false
+  arm_fail_on_error       : false
+  listing_config          : listing_config.json
+  application             : ma # or st
+
+stages:
+- stage: Publish${{ parameters.application }}
+  ${{ if eq(parameters.includePython, true) }}:
+    dependsOn: ${{parameters.dependsOn}}
+  jobs:
+  - job: e2e_solution_template
+    continueOnError: ${{parameters.continueOnErrorPublish}}
+    timeoutInMinutes: 60
+    pool:
+      type: linux
+    variables:
+      ob_outputDirectory: '$(Build.SourcesDirectory)/out'
+      LinuxContainerImage: onebranch.azurecr.io/linux/ubuntu-1804:latest
+    steps:
+    - task: PipAuthenticate@1
+      inputs:
+        artifactFeeds: ${{parameters.project}}/${{parameters.artifactFeed}}
+        onlyAddExtraIndex: true
+    - template: ../steps/pip_install.yml
+    - template: ../steps/install_dependancies.yml
+    - task: AzureCLI@1
+      displayName: '${{ parameters.application }}_Publish'
+      name: '${{ parameters.application }}_Publish'
+      timeoutInMinutes: 30
+      env:
+        {
+          AAD_ID                : $(AAD_ID),
+          AAD_SECRET            : $(AAD_SECRET),
+          ACCESS_ID             : $(ACCESS_ID),
+          SUBSCRIPTION_ID       : $(SUBSCRIPTION_ID),
+          TENANT_ID             : $(TENANT_ID),
+          AZURE_STORAGE_ACCOUNT : $(AZURE_STORAGE_ACCOUNT),
+          AZURE_STORAGE_KEY     : $(AZURE_STORAGE_KEY)
+        } 
+      inputs:
+        azureSubscription: 'AG-CI-AI-Canary_Enabled'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          apt install jq --yes
+          
+          cd "$(System.DefaultWorkingDirectory)/azure/"
+          cd ${{parameters.managed_app}}
+
+          echo "tenant_id: \"${TENANT_ID}\"" >> config.yml
+          echo "azure_preview_subscription: \"${SUBSCRIPTION_ID}\"" >> config.yml
+          echo "aad_id: \"${AAD_ID}\"" >> config.yml
+          echo "aad_secret: \"${AAD_SECRET}\"" >> config.yml
+          echo "access_id: \"${ACCESS_ID}\"" >> config.yml
+
+          sed -ri "s/<AAD_Tenant_Id>/${TENANT_ID}" ${{ parameters.listing_config }}
+          sed -ri "s/<AAD_Application_ID>/${ACCESS_ID}" ${{ parameters.listing_config }}
+
+          BICEP="./app_contents/mainTemplate.bicep"
+          if [[ -f $BICEP ]];then
+            echo "Bicep File Found! Building ARM."
+            rm -f "./app_contents/mainTemplate.json"
+            az bicep build -f $BICEP --outfile "./app_contents/mainTemplate.json"
+          fi
+
+          bash ./script-dev/package_managed_app_zip.sh ${{parameters.managed_app}}.zip
+
+          mkdir $(Build.SourcesDirectory)/out
+          cp ${{parameters.managed_app}}.zip $(Build.SourcesDirectory)/out/
+
+          python3.7 -m pip install "az-partner-center-cli"
+
+          azpc ${{ parameters.application }} create \
+              --update \
+              --name ${{parameters.managed_app}} \
+          && azpc ${{ parameters.application }} plan create \
+              --update  \
+              --name ${{parameters.managed_app}} \
+              --plan_name "template"
+          exit 0
