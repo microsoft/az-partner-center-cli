@@ -1,0 +1,31 @@
+parameters:
+  managed_app: ""
+
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription   : 'AG-CI-AI-DEVOPS(0ca618d2-22a8-413a-96d0-0f1b531129c3)'
+    scriptType          : bash
+    scriptLocation      : inlineScript
+    addSpnToEnvironment : true
+    inlineScript: |
+      az storage blob upload-batch \
+        -s azure/${{ parameters.managed_app }}/app_contents \
+        -d mmlspark  \
+        --account-name ${AZURE_STORAGE_ACCOUNT} \
+        --account-key ${AZURE_STORAGE_KEY} \
+        --overwrite
+
+      az storage blob upload-batch \
+        -s azure/arm-templates \
+        -d mmlspark/arm-templates  \
+        --account-name ${AZURE_STORAGE_ACCOUNT} \
+        --account-key ${AZURE_STORAGE_KEY} \
+        --overwrite
+
+  displayName: 'Blob Upload'
+  env:
+      {
+        AZURE_STORAGE_ACCOUNT   : $(AZURE_STORAGE_ACCOUNT),
+        AZURE_STORAGE_KEY       : $(AZURE_STORAGE_KEY)
+      }
