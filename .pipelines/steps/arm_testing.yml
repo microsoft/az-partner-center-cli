@@ -1,0 +1,56 @@
+parameters:
+    managed_app: ""
+    after: #
+ 
+steps:
+- script: |
+    if [ "$ARM_TESTING" == "true" ]; then
+      echo "Run ARM Testing"
+
+      apt install python3-gi python3-gi-cairo gir1.2-secret-1 --yes
+
+      echo "RG: $RG"
+      python3.7 -m pip install pytest
+
+      cd "$(System.DefaultWorkingDirectory)/src/microsoft-industrialai"
+      python3.7 -m pip install .
+
+      cd "$(System.DefaultWorkingDirectory)/azure/${{ parameters.managed_app }}"
+
+      python3.7 -m pytest --junitxml="junit-test-arm.xml" tests
+    elif [ "$AMA_TESTING" == "true" ]; then
+      echo "Run ARM Testing"
+
+      apt install python3-gi python3-gi-cairo gir1.2-secret-1 --yes
+      RG=$MRG
+      echo "RG: $RG"
+      python3.7 -m pip install pytest
+
+      cd "$(System.DefaultWorkingDirectory)/src/microsoft-industrialai"
+      python3.7 -m pip install .
+
+      cd "$(System.DefaultWorkingDirectory)/azure/$(AMA_TEST_APP)"
+      python3.7 -m pytest --junitxml="junit-test-arm.xml" tests
+    fi
+  displayName: 'ARM Testing'
+  env:
+    AAD_ID              : $(AAD_ID)
+    AAD_SECRET          : $(AAD_SECRET)
+    SUBSCRIPTION_ID     : $(SUBSCRIPTION_ID)
+    TENANT_ID           : $(TENANT_ID)
+    ARM_TESTING         : $(ARM_TESTING)
+    RG                  : "devops-test-$(Suffix)"
+    MRG                 : "devops-test-$(Suffix)-mrg"
+    AZURE_CLIENT_ID     : $(AAD_ID)
+    AZURE_CLIENT_SECRET : $(AAD_SECRET)
+    AZURE_TENANT_ID     : $(TENANT_ID)
+
+- task: PublishTestResults@2
+  displayName: 'Publish PyTest Results'
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: '**/*-test-*.xml'
+    failTaskOnFailedTests: true
+
+- ${{ if parameters.after }}:
+  - ${{ parameters.after }}
