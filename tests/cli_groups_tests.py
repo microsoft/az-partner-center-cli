@@ -14,9 +14,6 @@ from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailabilit
 from tests.cli_tests import setup_patched_app
 
 
-def _list_command_args(config_yml, subgroup):
-    return {"subgroup": subgroup, "command": "list", "config_yml": config_yml}
-
 
 def _create_command_args(config_yml, config_json, subgroup):
     return {
@@ -105,6 +102,14 @@ def _show_command_args(config_yml, subgroup):
     input_args = {"subgroup": subgroup, "command": "show", "name": f"test_{subgroup}", "config_yml": config_yml}
     return input_args
 
+def _list_command_args(config_yml, subgroup):
+    input_args = {
+        "subgroup": subgroup,
+        "command": "list",
+        "name": f"test_{subgroup}",
+        "config_yml": config_yml
+         }
+    return input_args
 
 def _publish_command_args(config_yml, subgroup):
     input_args = {
@@ -122,9 +127,6 @@ def _delete_command_args(config_yml, subgroup):
     input_args = {"subgroup": subgroup, "command": "delete", "name": f"test_{subgroup}", "config_yml": config_yml}
     return input_args
 
-
-def vm_list_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_command_args(config_yml, subgroup="vm"))
 
 
 def vm_create_command(config_yml, json_config, monkeypatch):
@@ -173,6 +175,10 @@ def vm_show_command(config_yml, json_config, monkeypatch):
     args = _show_command_args(config_yml, subgroup="vm")
     args["config_json"] = json_config
     args["app_path"] = "tests/sample_app"
+    return args_test(monkeypatch, args)
+
+def vm_list_command(config_yml, monkeypatch):
+    args = _list_command_args(config_yml, subgroup="vm")
     return args_test(monkeypatch, args)
 
 
@@ -375,7 +381,23 @@ def _assert_offer_listing(offer, json_listing_config):
     assert not offer_listing["allow_only_managed_disk_deployments"]
     assert not offer_listing["compatible_products"]
 
+def _assert_vm_list_all_offers(vm_list, json_listing_config):
+    assert len(vm_list) >= 1
+    assert vm_list[0]["offerTypeId"] == json_listing_config["offerTypeId"]
+    assert vm_list[0]["publisherId"] == json_listing_config["publisherId"]
+    assert vm_list[0]["id"] == json_listing_config["id"]
+    assert vm_list[0]["definition"]["displayText"] == json_listing_config["definition"]["displayText"]
+    assert vm_list[1]["offerTypeId"] == json_listing_config["offerTypeId"]
+    assert vm_list[1]["publisherId"] == json_listing_config["publisherId"]
 
+def _assert_vm_offer_listing_integration(vm_list):
+    assert len(vm_list) >= 1
+    for item in vm_list:
+        assert item["offerTypeId"] == 'microsoft-azure-virtualmachines'
+
+def _assert_vm_empty_listing(vm_list):
+    assert len(vm_list) == 0  
+  
 def _assert_preview_audience(offer, json_listing_config):
     """Assert Preview Audience"""
     availability = ProductAvailability(offer.get_product_id(), offer.get_auth()).get().to_dict()
