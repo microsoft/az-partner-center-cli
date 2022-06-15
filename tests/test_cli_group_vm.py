@@ -22,6 +22,7 @@ from tests.cli_groups_tests import (
     vm_show_plan_command,
     vm_update_plan_command,
     vm_delete_plan_command,
+    vm_publish_command,
     _assert_properties,
     _assert_offer_listing,
     _assert_preview_audience,
@@ -270,6 +271,67 @@ def test_vm_list_invalid_auth_details(config_yml, monkeypatch):
     # auth token is unable to be retreived
     vm_list_command(config_yml, monkeypatch)
 
+@pytest.mark.integration
+@pytest.mark.skip(reason="Need to determine how to clean up test safely")
+def test_vm_publish_success(config_yml, monkeypatch):
+    # TODO: determine how to clean up tests so that it cancels the publish operation
+    # and can then delete the offer
+    json_listing_config = "vm_config.json"
+
+    try:
+        with pytest.raises(ApiException):
+            vm_create_command(config_yml, json_listing_config, monkeypatch)
+    except:
+        print("VM Offer already has been created")
+
+    offer_response = vm_publish_command(config_yml, json_listing_config, monkeypatch)
+
+    print(offer_response)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ValueError)
+def test_vm_publish_missing_publisher_id(config_yml, monkeypatch):
+    # Invalid JSON config with missing publisher ID
+    json_listing_config = "vm_config_missing_publisher_id.json"
+
+    # Expecting a Value error when unable to access Publisher ID
+    vm_publish_command(config_yml, json_listing_config, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=adal_error.AdalError)
+def test_vm_publish_invalid_auth_details(config_yml, monkeypatch):
+    # Invalid config yaml file using incorrect client ID & secret
+    config_yml = "tests/sample_app/config_invalid.yml"
+
+    # Valid JSON configuration file
+    json_listing_config = "vm_config.json"
+
+    # Expecting a failure from the Authentication Context package as the
+    # auth token is unable to be retreived
+    vm_publish_command(config_yml, json_listing_config, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ConnectionError)
+def test_vm_publish_offer_doesnot_exist(config_yml, monkeypatch):
+    # Invalid configuration to show an offer that doesnt exist
+    json_listing_config = "vm_config_uncreated_offer.json"
+
+    # Expecting a failure as the offer does not exist
+    vm_publish_command(config_yml, json_listing_config, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ConnectionError)
+def test_vm_publish_invalid_offer(config_yml, monkeypatch):
+    # All of the required config is not set, so unable to publish offer
+    json_listing_config = "vm_config.json"
+
+    # Expecting a failure as the offer isnt fully configured
+    vm_publish_command(config_yml, json_listing_config, monkeypatch)
+
 
 @pytest.mark.integration
 def test_vm_plan_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
@@ -323,8 +385,3 @@ def test_vm_plan_delete(config_yml, monkeypatch):
 @pytest.mark.integration
 def test_vm_delete(config_yml, monkeypatch):
     vm_delete_command(config_yml, monkeypatch)
-
-
-@pytest.mark.integration
-def test_vm_publish(config_yml, monkeypatch):
-    vm_publish_command(config_yml, monkeypatch)

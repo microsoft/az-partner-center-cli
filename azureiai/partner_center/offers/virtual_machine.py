@@ -89,7 +89,16 @@ class VirtualMachine(Submission):
 
     def publish(self):
         """Publish Existing Virtual Machine offer"""
-        headers, _, url = self._prepare_request()
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+        if "publisherId" not in json_config:
+            raise ValueError(f"Key: publisherId is missing from {self.app_path}/{self.json_listing_config}")
+        publisher_id = json_config["publisherId"]
+        offer_id = json_config["id"]
+
+        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/publish?api-version=2017-10-31"
+
+        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
 
         response = requests.post(
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
@@ -151,5 +160,5 @@ class VirtualMachineCLI(CLIParser):
         """Publish a Virtual Machine Offer"""
         args = self._add_name_notification_emails_argument()
         return VirtualMachine(
-            args.name, notification_emails=args.notification_emails, app_path=args.app_path, config_yaml=args.config_yml
+            args.name, notification_emails=args.notification_emails, app_path=args.app_path, json_listing_config=args.config_json, config_yaml=args.config_yml
         ).publish()
