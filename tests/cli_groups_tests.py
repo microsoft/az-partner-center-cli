@@ -406,6 +406,7 @@ def _assert_technical_configuration(offer, json_listing_config):
     print("Technical Configuration: " + str(tech_configuration))
     assert tech_configuration
 
+
 def _assert_vm_offer_listing(offer, json_listing_config):
     assert offer["offerTypeId"] == json_listing_config["offerTypeId"]
     assert offer["id"] == json_listing_config["id"]
@@ -413,21 +414,54 @@ def _assert_vm_offer_listing(offer, json_listing_config):
 
     offer_listing = offer["definition"]["offer"]
     config_offer = json_listing_config["definition"]["offer"]
-    
-    assert offer_listing["microsoft-azure-marketplace.title"] == config_offer["microsoft-azure-marketplace.title"]
-    assert offer_listing["microsoft-azure-marketplace.offerMarketingUrlIdentifier"] == config_offer["microsoft-azure-marketplace.offerMarketingUrlIdentifier"]
-    assert offer_listing["microsoft-azure-marketplace.summary"] == config_offer["microsoft-azure-marketplace.summary"]
-    assert offer_listing["microsoft-azure-marketplace.longSummary"] == config_offer["microsoft-azure-marketplace.longSummary"]
-    assert offer_listing["microsoft-azure-marketplace.description"] == config_offer["microsoft-azure-marketplace.description"]
-    assert offer_listing["microsoft-azure-marketplace.privacyURL"] == config_offer["microsoft-azure-marketplace.privacyURL"]
-    assert offer_listing["microsoft-azure-marketplace.usefulLinks"][0] == config_offer["microsoft-azure-marketplace.usefulLinks"][0]
 
-    assert offer_listing["microsoft-azure-marketplace.engineeringContactName"] == config_offer["microsoft-azure-marketplace.engineeringContactName"]
-    assert offer_listing["microsoft-azure-marketplace.engineeringContactEmail"] == config_offer["microsoft-azure-marketplace.engineeringContactEmail"]
-    assert offer_listing["microsoft-azure-marketplace.engineeringContactPhone"] == config_offer["microsoft-azure-marketplace.engineeringContactPhone"]
-    assert offer_listing["microsoft-azure-marketplace.supportContactName"] == config_offer["microsoft-azure-marketplace.supportContactName"]
-    assert offer_listing["microsoft-azure-marketplace.supportContactEmail"] == config_offer["microsoft-azure-marketplace.supportContactEmail"]
-    assert offer_listing["microsoft-azure-marketplace.supportContactPhone"] == config_offer["microsoft-azure-marketplace.supportContactPhone"]
+    assert offer_listing["microsoft-azure-marketplace.title"] == config_offer["microsoft-azure-marketplace.title"]
+    assert (
+        offer_listing["microsoft-azure-marketplace.offerMarketingUrlIdentifier"]
+        == config_offer["microsoft-azure-marketplace.offerMarketingUrlIdentifier"]
+    )
+    assert offer_listing["microsoft-azure-marketplace.summary"] == config_offer["microsoft-azure-marketplace.summary"]
+    assert (
+        offer_listing["microsoft-azure-marketplace.longSummary"]
+        == config_offer["microsoft-azure-marketplace.longSummary"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.description"]
+        == config_offer["microsoft-azure-marketplace.description"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.privacyURL"]
+        == config_offer["microsoft-azure-marketplace.privacyURL"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.usefulLinks"][0]
+        == config_offer["microsoft-azure-marketplace.usefulLinks"][0]
+    )
+
+    assert (
+        offer_listing["microsoft-azure-marketplace.engineeringContactName"]
+        == config_offer["microsoft-azure-marketplace.engineeringContactName"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.engineeringContactEmail"]
+        == config_offer["microsoft-azure-marketplace.engineeringContactEmail"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.engineeringContactPhone"]
+        == config_offer["microsoft-azure-marketplace.engineeringContactPhone"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.supportContactName"]
+        == config_offer["microsoft-azure-marketplace.supportContactName"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.supportContactEmail"]
+        == config_offer["microsoft-azure-marketplace.supportContactEmail"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.supportContactPhone"]
+        == config_offer["microsoft-azure-marketplace.supportContactPhone"]
+    )
 
     # The CPP API creates a copy and stores the uploaded offer listing image elsewhere.
     # This means, the URI of these images will not match the JSON config
@@ -438,38 +472,66 @@ def _assert_vm_offer_listing(offer, json_listing_config):
     assert len(offer_listing["microsoft-azure-marketplace.screenshots"]) == 0
     assert len(offer_listing["microsoft-azure-marketplace.videos"]) == 0
 
+
 def _assert_vm_properties(offer, json_listing_config, detailed=0):
     offer = offer["definition"]["offer"]
     config_offer = json_listing_config["definition"]["offer"]
-    
+
     assert offer["microsoft-azure-marketplace.termsOfUse"] == config_offer["microsoft-azure-marketplace.termsOfUse"]
-    assert config_offer["microsoft-azure-marketplace.categoryMap"][0] in offer["microsoft-azure-marketplace.categoryMap"]
-    assert config_offer["microsoft-azure-marketplace.categoryMap"][1] in offer["microsoft-azure-marketplace.categoryMap"]
+    assert (
+        config_offer["microsoft-azure-marketplace.categoryMap"][0] in offer["microsoft-azure-marketplace.categoryMap"]
+    )
+    assert (
+        config_offer["microsoft-azure-marketplace.categoryMap"][1] in offer["microsoft-azure-marketplace.categoryMap"]
+    )
 
     # The "show" command returns more details in offer properties
-    if(detailed):
+    if detailed:
         assert offer["microsoft-azure-marketplace.universalAmendmentTerms"] == ""
         assert offer["microsoft-azure-marketplace.customAmendments"] == None
         assert offer["microsoft-azure-marketplace.useEnterpriseContract"] == False
 
-def  _assert_vm_preview_audience(offer, json_listing_config):
+
+def _assert_vm_preview_audience(offer, json_listing_config):
     assert (
-        offer["definition"]["offer"]["microsoft-azure-marketplace.allowedSubscriptions"] ==
-        json_listing_config["definition"]["offer"]["microsoft-azure-marketplace.allowedSubscriptions"]
+        offer["definition"]["offer"]["microsoft-azure-marketplace.allowedSubscriptions"]
+        == json_listing_config["definition"]["offer"]["microsoft-azure-marketplace.allowedSubscriptions"]
     )
+
 
 def _assert_vm_plan_listing(offer, json_listing_config):
     offer_plan = offer["definition"]["plans"][0]
     config_plan = json_listing_config["definition"]["plans"][0]
     assert offer_plan["planId"] == config_plan["planId"]
-    
-    assert offer_plan["microsoft-azure-virtualmachines.skuTitle"] == config_plan["microsoft-azure-virtualmachines.skuTitle"]
-    assert offer_plan["microsoft-azure-virtualmachines.skuSummary"] == config_plan["microsoft-azure-virtualmachines.skuSummary"]
-    assert offer_plan["microsoft-azure-virtualmachines.skuDescription"] == config_plan["microsoft-azure-virtualmachines.skuDescription"]
-    assert offer_plan["microsoft-azure-virtualmachines.hideSKUForSolutionTemplate"] == config_plan["microsoft-azure-virtualmachines.hideSKUForSolutionTemplate"]
-    assert offer_plan["microsoft-azure-virtualmachines.cloudAvailability"] == config_plan["microsoft-azure-virtualmachines.cloudAvailability"]
-    assert offer_plan["microsoft-azure-virtualmachines.operatingSystemFamily"] == config_plan["microsoft-azure-virtualmachines.operatingSystemFamily"]
-    assert offer_plan["microsoft-azure-virtualmachines.openPorts"] == config_plan["microsoft-azure-virtualmachines.openPorts"]
+
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.skuTitle"]
+        == config_plan["microsoft-azure-virtualmachines.skuTitle"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.skuSummary"]
+        == config_plan["microsoft-azure-virtualmachines.skuSummary"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.skuDescription"]
+        == config_plan["microsoft-azure-virtualmachines.skuDescription"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.hideSKUForSolutionTemplate"]
+        == config_plan["microsoft-azure-virtualmachines.hideSKUForSolutionTemplate"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.cloudAvailability"]
+        == config_plan["microsoft-azure-virtualmachines.cloudAvailability"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.operatingSystemFamily"]
+        == config_plan["microsoft-azure-virtualmachines.operatingSystemFamily"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.openPorts"]
+        == config_plan["microsoft-azure-virtualmachines.openPorts"]
+    )
     assert offer_plan["regions"] == config_plan["regions"]
 
     offer_plan_vm_sizes = offer_plan["microsoft-azure-virtualmachines.recommendedVMSizes"]
@@ -482,4 +544,3 @@ def _assert_vm_plan_listing(offer, json_listing_config):
     assert offer_plan_vm_sizes[5] == config_plan_vm_sizes[5]
     assert offer_plan["virtualMachinePricing"] == config_plan["virtualMachinePricing"]
     assert offer_plan["virtualMachinePricingV2"] == config_plan["virtualMachinePricingV2"]
-    
