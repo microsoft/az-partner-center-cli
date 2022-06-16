@@ -319,6 +319,10 @@ def test_vm_publish_offer_doesnot_exist(config_yml, monkeypatch):
     # Invalid configuration to show an offer that doesnt exist
     json_listing_config = "vm_config_uncreated_offer.json"
 
+    # Confirm that the offer does not exist
+    with pytest.raises(ApiException):
+        vm_show_command(config_yml, json_listing_config, monkeypatch)
+
     # Expecting a failure as the offer does not exist
     vm_publish_command(config_yml, json_listing_config, monkeypatch)
 
@@ -327,7 +331,7 @@ def test_vm_publish_offer_doesnot_exist(config_yml, monkeypatch):
 @pytest.mark.xfail(raises=ConnectionError)
 def test_vm_publish_invalid_offer(config_yml, monkeypatch):
     # All of the required config is not set, so unable to publish offer
-    json_listing_config = "vm_config.json"
+    json_listing_config = "vm_invalid_config.json"
 
     # Expecting a failure as the offer isnt fully configured
     vm_publish_command(config_yml, json_listing_config, monkeypatch)
