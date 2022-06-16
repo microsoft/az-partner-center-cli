@@ -234,7 +234,9 @@ def test_vm_show_invalid_auth_details_mock(config_yml, monkeypatch):
 
     # Mock authorization token retreival to return an error
     def mock_get_auth(self, resource, client_id, client_secret):
-        raise adal_error.AdalError('Get Token request returned http error: 401 and server response: {"error":"invalid_client","error_description":"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app')
+        raise adal_error.AdalError(
+            'Get Token request returned http error: 401 and server response: {"error":"invalid_client","error_description":"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app'
+        )
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
