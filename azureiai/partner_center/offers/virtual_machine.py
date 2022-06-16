@@ -48,8 +48,10 @@ class VirtualMachine(Submission):
                 raise NameError("Virtual Machine offer already exists. Try using 'update'?")
 
         except ConnectionError:
-            # Create the offer because the it does not already exist
-            return self.update()
+            pass
+
+        # Create the offer because the it does not already exist
+        return self.update()
 
     def update(self):
         """Update Existing Virtual Machine offer"""
