@@ -5,6 +5,8 @@
 from collections import namedtuple
 
 import requests
+import json
+from pathlib import Path
 
 from azureiai import azpc_app
 from azureiai.managed_apps.confs import Properties, Listing, ProductAvailability
@@ -130,8 +132,17 @@ def vm_create_command(config_yml, json_config, monkeypatch):
 
 
 def vm_update_command(config_yml, json_config, monkeypatch):
+    class MockResponse:
+        def __init__(self):
+            self.status_code = 200
+
+        @staticmethod
+        def json():
+            with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
     def mock_put_request(url, data="", headers="", params="", json=""):
-        return namedtuple("response", ["status_code"])(*[200])
+        return MockResponse()
 
     monkeypatch.setattr(requests, "put", mock_put_request)
 
@@ -465,10 +476,10 @@ def _assert_vm_offer_listing(offer, json_listing_config):
 
     # The CPP API creates a copy and stores the uploaded offer listing image elsewhere.
     # This means, the URI of these images will not match the JSON config
-    assert offer_listing["microsoft-azure-marketplace.smallLogo"] != None
-    assert offer_listing["microsoft-azure-marketplace.mediumLogo"] != None
-    assert offer_listing["microsoft-azure-marketplace.largeLogo"] != None
-    assert offer_listing["microsoft-azure-marketplace.wideLogo"] != None
+    assert offer_listing["microsoft-azure-marketplace.smallLogo"]
+    assert offer_listing["microsoft-azure-marketplace.mediumLogo"]
+    assert offer_listing["microsoft-azure-marketplace.largeLogo"]
+    assert offer_listing["microsoft-azure-marketplace.wideLogo"]
     assert len(offer_listing["microsoft-azure-marketplace.screenshots"]) == 0
     assert len(offer_listing["microsoft-azure-marketplace.videos"]) == 0
 

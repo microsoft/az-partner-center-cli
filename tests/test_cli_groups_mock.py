@@ -137,6 +137,7 @@ def test_vm_publish_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.vm_publish_command(config_yml, monkeypatch)
 
 
+@pytest.mark.skip(reason="Delete functionality not yet implemented.")
 def test_vm_delete_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.vm_delete_command(config_yml, monkeypatch)
 
