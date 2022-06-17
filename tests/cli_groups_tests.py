@@ -103,8 +103,7 @@ def _show_command_args(config_yml, subgroup):
 
 
 def _list_command_args(config_yml, subgroup):
-    input_args = {"subgroup": subgroup, "command": "list", "name": f"test_{subgroup}", "config_yml": config_yml}
-    return input_args
+    return {"subgroup": subgroup, "command": "list", "name": f"test_{subgroup}", "config_yml": config_yml}
 
 
 def _publish_command_args(config_yml, subgroup):
