@@ -108,13 +108,16 @@ azpc st publish --name $name
 ```shell script
 vm_name='dciborow-vm'
 plan_name='test-plan'
+config_yml='config.yml'
+config_json='vm_config.json'
+app_path='sample_app'
 notificationEmails='default@microsoft.com'
 
 cat manifest.yml
 
 azpc vm list
-azpc vm create --name $name
-azpc vm show   --name $name
+azpc vm create --name $name --config-yml $config_yml --config-json $config_json --app-path $app_path
+azpc vm show   --name $name --config-yml $config_yml --config-json $config_json --app-path $app_path
 azpc vm update --name $name
 # azpc vm delete --name $name
 

@@ -1,0 +1,6 @@
+{
+    "error": {
+        "code": "BadRequest",
+        "message": "The argument: 'OfferTypeId' cannot be null or empty."
+    }
+}

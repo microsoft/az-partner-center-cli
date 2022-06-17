@@ -38,18 +38,34 @@ class VirtualMachine(Submission):
         )
         self.notification_emails = notification_emails
 
+    def create(self):
+        """
+        Create Virtual Machine offer
+
+        First,  verify that the offer does not already exist by checking the offer name.
+        If the offer is found, this command should fail, and the user should instead try "update".
+
+        The 'Update' command is used to create a new offer when the offer does not exist.
+        """
+        try:
+            if self.show()["id"]:
+                raise NameError("Virtual Machine offer already exists. Try using 'update'?")
+        except ConnectionError:
+            pass  # Passing this error is the only way to determine that an offer does not exist
+        return self.update()
+
     def update(self):
-        """Update Existing Application"""
+        """Update Existing Virtual Machine offer"""
         headers, json_config, url = self._prepare_request()
 
         response = requests.put(url, json=json_config, headers=headers)
         if response.status_code != 200:
             raise ConnectionError(str(response))
 
-        return response
+        return response.json()
 
-    def status(self) -> dict:
-        """Get the Status of an Existing Application"""
+    def show(self) -> dict:
+        """Show the specified existing Virtual Machine offer"""
         headers, _, url = self._prepare_request()
 
         response = requests.get(url, headers=headers)
@@ -59,7 +75,7 @@ class VirtualMachine(Submission):
         return response.json()
 
     def publish(self):
-        """Publish Existing Application"""
+        """Publish Existing Virtual Machine offer"""
         headers, _, url = self._prepare_request()
 
         response = requests.post(
@@ -111,8 +127,15 @@ class VirtualMachineCLI(CLIParser):
     def __init__(self):
         super().__init__(submission_type=VirtualMachine)
 
+    def show(self):
+        """Show a Virtual Machine Offer"""
+        args = self._add_name_config_json_argument()
+        return VirtualMachine(
+            args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
+        ).show()
+
     def publish(self):
-        """Publish a Managed Application"""
+        """Publish a Virtual Machine Offer"""
         args = self._add_name_notification_emails_argument()
         return VirtualMachine(
             args.name, notification_emails=args.notification_emails, app_path=args.app_path, config_yaml=args.config_yml

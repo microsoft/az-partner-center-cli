@@ -1,5 +1,4 @@
 {
-  "publisherId": "industry-isv-eng",
   "offerTypeId": "microsoft-azure-virtualmachines",
   "id": "test-vm",
   "offerTypeVersions": {
@@ -34,10 +33,10 @@
               ]
           }
       ],
-      "microsoft-azure-marketplace.smallLogo": "https://github.com/alexandrakoller/test_logos/blob/main/image_48_48_small.png",
-      "microsoft-azure-marketplace.mediumLogo": "https://github.com/alexandrakoller/test_logos/blob/main/image_90_90_medium.png",
-      "microsoft-azure-marketplace.largeLogo": "https://github.com/alexandrakoller/test_logos/blob/main/image_216_216_large.png",
-      "microsoft-azure-marketplace.wideLogo": "https://github.com/alexandrakoller/test_logos/blob/main/image_255_115_wide.png",
+      "microsoft-azure-marketplace.smallLogo": "https://publishingapistore.blob.core.windows.net/testcontent/D6191_publishers_contoso/contosovirtualmachine/6218c455-9cbc-450c-9920-f2e7a69ee132.png?sv=2014-02-14&sr=b&sig=6O8MM9dgiJ48VK0MwddkyVbprRAnBszyhVkVHGShhkI%3D&se=2019-03-28T19%3A46%3A50Z&sp=r",
+      "microsoft-azure-marketplace.mediumLogo": "https://publishingapistore.blob.core.windows.net/testcontent/D6191_publishers_contoso/contosovirtualmachine/557e714b-2f31-4e12-b0cc-e48dd840edf4.png?sv=2014-02-14&sr=b&sig=NwL67NTQf9Gc9VScmZehtbHXpYmxhwZc2foy3o4xavs%3D&se=2019-03-28T19%3A46%3A49Z&sp=r",
+      "microsoft-azure-marketplace.largeLogo": "https://publishingapistore.blob.core.windows.net/testcontent/D6191_publishers_contoso/contosovirtualmachine/142485da-784c-44cb-9523-d4f396446258.png?sv=2014-02-14&sr=b&sig=xaMxhwx%2FlKYfz33mJGIg8UBdVpsOwVvqhjTJ883o0iY%3D&se=2019-03-28T19%3A46%3A49Z&sp=r",
+      "microsoft-azure-marketplace.wideLogo": "https://publishingapistore.blob.core.windows.net/testcontent/D6191_publishers_contoso/contosovirtualmachine/48af9013-1df7-4c94-8da8-4626e5039ce0.png?sv=2014-02-14&sr=b&sig=%2BnN7f2tprkrqb45ID6JlT01zXcy1PMTkWXtLKD6nfoE%3D&se=2019-03-28T19%3A46%3A49Z&sp=r",
       "microsoft-azure-marketplace.screenshots": [],
       "microsoft-azure-marketplace.videos": [],
       "microsoft-azure-marketplace.leadDestination": "None",

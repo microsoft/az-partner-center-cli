@@ -1,0 +1,8 @@
+{
+    "Product": {
+        "serviceName": "Product",
+        "error": "Microsoft.Ingestion.Api.Common.Exceptions.Http404Exception: CPP product test-offer not found in current PC environment.\r\n   at Microsoft.Ingestion.Api.Controllers.CppOperationController.<>c__DisplayClass22_0.<<GetDraftOfferJsonAsync>b__0>d.MoveNext() in D:\\a\\_work\\1\\b\\2\\_work\\1\\s\\src\\v2\\Ingestion.Api\\Controllers\\CppShimming\\CppOperationController.Product.cs:line 310",
+        "exceptionCode": "Http404Exception",
+        "httpStatusCode": "NotFound"
+    }
+}

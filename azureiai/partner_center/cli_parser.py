@@ -46,7 +46,7 @@ class CLIParser:
                 args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
             ).create()
         except NameError as error:
-            if args.update:
+            if hasattr(args, "update"):
                 return self._update(args)
             raise error
 
