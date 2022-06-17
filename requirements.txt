@@ -1,4 +1,4 @@
-adal~=1.2.4
+adal~=1.2.7
 azure-storage-blob
 certifi >= 14.05.14
 databricks-cli
