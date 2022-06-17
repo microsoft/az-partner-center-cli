@@ -81,7 +81,8 @@ class VirtualMachine(Submission):
             if "publisherId" not in settings:
                 raise ValueError(f"Key: publisherId is missing from {self.config_yaml}")
             publisher_id = settings["publisherId"]
-        url = f"{URL_BASE}/{publisher_id}/offers?api-version=2017-10-31&$filter=offerTypeId eq 'microsoft-azure-virtualmachines'"
+        filter="offerTypeId eq 'microsoft-azure-virtualmachines'"
+        url = f"{URL_BASE}/{publisher_id}/offers?api-version=2017-10-31&$filter={filter}"
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
         response = requests.get(url, headers=headers)
         return response.json()
