@@ -74,6 +74,19 @@ class VirtualMachine(Submission):
 
         return response.json()
 
+    def list_contents(self) -> dict:
+        """list only the Virtual Machine offers"""
+        with open(self.config_yaml, encoding="utf8") as file:
+            settings = yaml.safe_load(file)
+            if "publisherId" not in settings:
+                raise ValueError(f"Key: publisherId is missing from {self.config_yaml}")
+            publisher_id = settings["publisherId"]
+        offer_type_filter = "offerTypeId eq 'microsoft-azure-virtualmachines'"
+        url = f"{URL_BASE}/{publisher_id}/offers?api-version=2017-10-31&$filter={offer_type_filter}"
+        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        response = requests.get(url, headers=headers)
+        return response.json()
+
     def publish(self):
         """Publish Existing Virtual Machine offer"""
         headers, _, url = self._prepare_request()

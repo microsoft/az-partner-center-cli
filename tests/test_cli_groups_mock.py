@@ -276,6 +276,108 @@ def test_vm_show_invalid_offer_mock(config_yml, monkeypatch):
     cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch)
 
 
+def test_vm_list_success_mock(config_yml, vm_config_json, monkeypatch):
+    """only must return the VM offers"""
+    vm_config_json = "vm_config.json"
+    app_path_fix = "tests/sample_app"
+
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock VM offer API endpoint
+    # Set up Requests mock class
+    class MockResponse:
+        def __init__(self):
+            self.status_code = 200
+
+        @staticmethod
+        def json():
+            with open(Path("tests/test_data/vm_list_valid_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
+    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers?api-version=2017-10-31&$filter=offerTypeId"
+
+    def mock_list_offer(self, headers, url=mock_url):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_list_offer)
+
+    response = cli_tests.vm_list_command(config_yml, monkeypatch)
+
+    # Load mocked API JSON response
+    vm_list = json.loads(response)
+
+    # Load JSON config file for assertions
+    with open(Path(app_path_fix).joinpath(vm_config_json), "r", encoding="utf8") as read_file:
+        json_config = json.load(read_file)
+
+    cli_tests._assert_vm_list_all_offers(vm_list, json_config)
+
+
+def test_vm_list_empty_success_mock(config_yml, vm_config_json, monkeypatch):
+    """only must return the VM offers"""
+    vm_config_json = "vm_config.json"
+    app_path_fix = "tests/sample_app"
+
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock VM offer API endpoint
+    # Set up Requests mock class
+    class MockResponse:
+        def __init__(self):
+            self.status_code = 200
+
+        @staticmethod
+        def json():
+            with open(Path("tests/test_data/vm_list_empty_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
+    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers?api-version=2017-10-31&$filter=offerTypeId"
+
+    def mock_list_offer(self, headers, url=mock_url):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_list_offer)
+
+    response = cli_tests.vm_list_command(config_yml, monkeypatch)
+
+    # Load mocked API JSON response
+    vm_list = json.loads(response)
+
+    cli_tests._assert_vm_empty_listing(vm_list)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ValueError)
+def test_vm_list_missing_publisher_id_mock(config_yml, monkeypatch):
+    # No mocks required because it does not hit any APIs
+    cli_tests.vm_list_command(config_yml, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=adal_error.AdalError)
+def test_vm_list_invalid_auth_details_mock(config_yml, monkeypatch):
+    # Invalid config yaml file using incorrect client ID & secret
+    config_yml = "tests/sample_app/config_invalid.yml"
+
+    # Mock authorization token retreival to return an error
+    def mock_get_auth(self, resource, client_id, client_secret):
+        raise adal_error.AdalError(
+            'Get Token request returned http error: 401 and server response: {"error":"invalid_client","error_description":"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app'
+        )
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    cli_tests.vm_list_command(config_yml, monkeypatch)
+
+
 def test_vm_publish_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.vm_publish_command(config_yml, monkeypatch)
 
