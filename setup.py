@@ -25,6 +25,7 @@ REQUIRES = [
     "python-dateutil",
     "requests",
     "pyyaml",
+    "pygments",
     "wget",
     "adal",
     "cryptography>=3.3.1",
