@@ -104,7 +104,7 @@ class CLIParser:
         self.parser.add_argument(
             self._notification_emails, type=str, required=True, help="Notification e-mails to use when publishing"
         )
-        # TODO: remove arguments when manifest is used to read listing config file
+
         self.parser.add_argument(
             self._config_json, type=str, help="Listing Configuration Json", default="listing_config.json"
         )

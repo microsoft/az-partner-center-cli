@@ -275,8 +275,8 @@ def test_vm_list_invalid_auth_details(config_yml, monkeypatch):
 @pytest.mark.integration
 @pytest.mark.skip(reason="Need to determine how to clean up test safely")
 def test_vm_publish_success(config_yml, monkeypatch):
-    # TODO: determine how to clean up tests so that it cancels the publish operation
-    # and can then delete the offer
+    # Need to determine how to clean up tests so that it cancels the publish
+    # operation and can then delete the offer
     json_listing_config = "vm_config.json"
 
     try:
