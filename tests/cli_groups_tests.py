@@ -177,15 +177,11 @@ def vm_list_command(config_yml, monkeypatch):
     return args_test(monkeypatch, args)
 
 
-def vm_publish_command(config_yml, monkeypatch):
-    def mock_post_request(url, data="", headers="", params="", json=""):
-        return namedtuple("response", ["status_code"])(*[202])
-
-    monkeypatch.setattr(requests, "post", mock_post_request)
-
-    subgroup = "vm"
-    input_args = _publish_command_args(config_yml, subgroup)
-    args_test(monkeypatch, input_args)
+def vm_publish_command(config_yml, json_config, monkeypatch):
+    args = _publish_command_args(config_yml, subgroup="vm")
+    args["config_json"] = json_config
+    args["app_path"] = "tests/sample_app"
+    return args_test(monkeypatch, args)
 
 
 def vm_delete_command(config_yml, monkeypatch):

@@ -378,8 +378,123 @@ def test_vm_list_invalid_auth_details_mock(config_yml, monkeypatch):
     cli_tests.vm_list_command(config_yml, monkeypatch)
 
 
-def test_vm_publish_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.vm_publish_command(config_yml, monkeypatch)
+def test_vm_publish_success_mock(config_yml, monkeypatch):
+    vm_config_json = "vm_config.json"
+
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock VM offer publish API endpoint
+    # Set up Requests mock class
+    class MockResponse:
+        def __init__(self):
+            self.status_code = 202
+
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm/publish?api-version=2017-10-31"
+
+    def mock_publish_offer(self, headers, url=mock_url, json={}):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "post", mock_publish_offer)
+
+    response = cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
+
+    assert json.loads(response) == True
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ValueError)
+def test_vm_publish_missing_publisher_id_mock(config_yml, monkeypatch):
+    # Invalid JSON config with missing publisher ID
+    vm_config_json = "vm_config_missing_publisher_id.json"
+
+    # No mocks required because it does not hit any APIs
+    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=adal_error.AdalError)
+def test_vm_publish_invalid_auth_details_mock(config_yml, monkeypatch):
+    # Invalid config yaml file using incorrect client ID & secret
+    config_yml = "tests/sample_app/config_invalid.yml"
+
+    # Valid JSON configuration file
+    json_listing_config = "vm_config.json"
+
+    # Mock authorization token retreival to return an error
+    def mock_get_auth(self, resource, client_id, client_secret):
+        raise adal_error.AdalError("Get Token request returned http error: 401 and server response: ...")
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    cli_tests.vm_publish_command(config_yml, json_listing_config, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ConnectionError)
+def test_vm_publish_offer_does_not_exist_mock(config_yml, monkeypatch):
+    # Invalid configuration to show an offer that doesnt exist
+    vm_config_json = "vm_config_uncreated_offer.json"
+
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm/publish?api-version=2017-10-31"
+
+    # Mock the show VM offer API method
+    class ShowMockResponse:
+        def __init__(self):
+            self.status_code = 404
+
+        @staticmethod
+        def json():
+            return "Microsoft.Ingestion.Api.Common.Exceptions.Http404Exception..."
+
+    def mock_publish_offer(self, headers, url=mock_url, json={}):
+        return ShowMockResponse()
+
+    monkeypatch.setattr(requests, "post", mock_publish_offer)
+
+    # Expecting a failure as the offer does not exist
+    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=ConnectionError)
+def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch):
+    # Invalid configuration to show an offer that doesnt exist
+    vm_config_json = "vm_config.json"
+
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm/publish?api-version=2017-10-31"
+
+    # Mock the show VM offer API method
+    class ShowMockResponse:
+        def __init__(self):
+            self.status_code = 422
+
+        @staticmethod
+        def json():
+            return "Microsoft.Ingestion.Api.Common.Exceptions.Http422Exception..."
+
+    def mock_publish_offer(self, headers, url=mock_url, json={}):
+        return ShowMockResponse()
+
+    monkeypatch.setattr(requests, "post", mock_publish_offer)
+
+    # Expecting a failure as the offer does not exist
+    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
 
 
 @pytest.mark.skip(reason="Delete functionality not yet implemented.")
