@@ -271,6 +271,7 @@ def test_vm_list_invalid_auth_details(config_yml, monkeypatch):
     # auth token is unable to be retreived
     vm_list_command(config_yml, monkeypatch)
 
+
 @pytest.mark.integration
 @pytest.mark.skip(reason="Need to determine how to clean up test safely")
 def test_vm_publish_success(config_yml, monkeypatch):

@@ -160,5 +160,9 @@ class VirtualMachineCLI(CLIParser):
         """Publish a Virtual Machine Offer"""
         args = self._add_name_notification_emails_argument()
         return VirtualMachine(
-            args.name, notification_emails=args.notification_emails, app_path=args.app_path, json_listing_config=args.config_json, config_yaml=args.config_yml
+            args.name,
+            notification_emails=args.notification_emails,
+            app_path=args.app_path,
+            json_listing_config=args.config_json,
+            config_yaml=args.config_yml,
         ).publish()

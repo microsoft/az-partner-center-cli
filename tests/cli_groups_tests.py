@@ -178,7 +178,7 @@ def vm_list_command(config_yml, monkeypatch):
 
 
 def vm_publish_command(config_yml, json_config, monkeypatch):
-    args = _publish_command_args(config_yml, subgroup = "vm")
+    args = _publish_command_args(config_yml, subgroup="vm")
     args["config_json"] = json_config
     args["app_path"] = "tests/sample_app"
     return args_test(monkeypatch, args)

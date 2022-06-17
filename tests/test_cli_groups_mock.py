@@ -377,7 +377,7 @@ def test_vm_list_invalid_auth_details_mock(config_yml, monkeypatch):
 
     cli_tests.vm_list_command(config_yml, monkeypatch)
 
-    
+
 def test_vm_publish_success_mock(config_yml, monkeypatch):
     vm_config_json = "vm_config.json"
 
@@ -394,7 +394,7 @@ def test_vm_publish_success_mock(config_yml, monkeypatch):
             self.status_code = 202
 
     mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm/publish?api-version=2017-10-31"
-    
+
     def mock_publish_offer(self, headers, url=mock_url, json={}):
         return MockResponse()
 
@@ -403,6 +403,7 @@ def test_vm_publish_success_mock(config_yml, monkeypatch):
     response = cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
 
     assert json.loads(response) == True
+
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ValueError)
@@ -425,7 +426,7 @@ def test_vm_publish_invalid_auth_details_mock(config_yml, monkeypatch):
 
     # Mock authorization token retreival to return an error
     def mock_get_auth(self, resource, client_id, client_secret):
-        raise adal_error.AdalError('Get Token request returned http error: 401 and server response: ...')
+        raise adal_error.AdalError("Get Token request returned http error: 401 and server response: ...")
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
