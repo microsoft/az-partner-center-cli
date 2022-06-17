@@ -4,7 +4,8 @@ The documentation can be found [here](https://apidocs.microsoft.com/services/par
 
 ## Requirements.
 
-Python 3.7+ (Expected to work with Python 3.6+)
+- Python 3.7+ (Expected to work with Python 3.6+)
+- Java JDK 8
 
 ## Command Line
 ### Install
@@ -19,7 +20,8 @@ pip install --pre az-partner-center-cli
 
 # From Source
 git clone https://github.com/microsoft/az-partner-center-cli
-pip install azureiai
+cd az-partner-center-cli
+pip install .
 ```
 
 ## Azure Partner Center (azpc) CLI Usage
