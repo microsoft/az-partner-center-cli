@@ -41,17 +41,17 @@ class VirtualMachine(Submission):
     def create(self):
         """
         Create Virtual Machine offer
-        
+
         First,  verify that the offer does not already exist by checking the offer name.
         If the offer is found, this command should fail, and the user should instead try "update".
-        
+
         The 'Update' command is used to create a new offer when the offer does not exist.
         """
         try:
             if self.show()["id"]:
                 raise NameError("Virtual Machine offer already exists. Try using 'update'?")
         except ConnectionError:
-            pass # Passing this error is the only way to determine that an offer does not exist
+            pass  # Passing this error is the only way to determine that an offer does not exist
         return self.update()
 
     def update(self):
