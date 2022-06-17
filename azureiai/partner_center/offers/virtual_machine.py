@@ -17,6 +17,7 @@ from azureiai.partner_center.submission import Submission
 AZURE_VIRTUAL_MACHINE = "AzureThirdPartyVirtualMachine"
 URL_BASE = "https://cloudpartner.azure.com/api/publishers"
 
+
 class VirtualMachine(Submission):
     """Azure Partner Center Virtual Machine offer."""
 
@@ -74,7 +75,7 @@ class VirtualMachine(Submission):
         return response.json()
 
     def list_contents(self) -> dict:
-        """list only the Virtual Machine offers"""   
+        """list only the Virtual Machine offers"""
         with open(self.config_yaml, encoding="utf8") as file:
             settings = yaml.safe_load(file)
             if "publisherId" not in settings:
@@ -83,7 +84,7 @@ class VirtualMachine(Submission):
         url = f"{URL_BASE}/{publisher_id}/offers?api-version=2017-10-31&$filter=offerTypeId eq 'microsoft-azure-virtualmachines'"
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
         response = requests.get(url, headers=headers)
-        return response.json()  
+        return response.json()
 
     def publish(self):
         """Publish Existing Virtual Machine offer"""
@@ -151,4 +152,3 @@ class VirtualMachineCLI(CLIParser):
         return VirtualMachine(
             args.name, notification_emails=args.notification_emails, app_path=args.app_path, config_yaml=args.config_yml
         ).publish()
-  

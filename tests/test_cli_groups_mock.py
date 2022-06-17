@@ -275,6 +275,7 @@ def test_vm_show_invalid_offer_mock(config_yml, monkeypatch):
     # Expecting a failure as the offer does not exist
     cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch)
 
+
 def test_vm_list_success_mock(config_yml, vm_config_json, monkeypatch):
     """only must return the VM offers"""
     vm_config_json = "vm_config.json"
@@ -352,7 +353,7 @@ def test_vm_list_empty_success_mock(config_yml, vm_config_json, monkeypatch):
 
     cli_tests._assert_vm_empty_listing(vm_list)
 
-    
+
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ValueError)
 def test_vm_list_missing_publisher_id_mock(config_yml, monkeypatch):
@@ -368,13 +369,15 @@ def test_vm_list_invalid_auth_details_mock(config_yml, monkeypatch):
 
     # Mock authorization token retreival to return an error
     def mock_get_auth(self, resource, client_id, client_secret):
-        raise adal_error.AdalError('Get Token request returned http error: 401 and server response: {"error":"invalid_client","error_description":"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app')
+        raise adal_error.AdalError(
+            'Get Token request returned http error: 401 and server response: {"error":"invalid_client","error_description":"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app'
+        )
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
     cli_tests.vm_list_command(config_yml, monkeypatch)
 
-    
+
 def test_vm_publish_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.vm_publish_command(config_yml, monkeypatch)
 

@@ -34,7 +34,7 @@ from tests.cli_groups_tests import (
     _assert_vm_plan_listing,
     _assert_vm_list_all_offers,
     _assert_vm_offer_listing_integration,
-    _assert_vm_empty_listing
+    _assert_vm_empty_listing,
 )
 
 
@@ -238,7 +238,8 @@ def test_vm_show_invalid_offer(config_yml, monkeypatch):
     # Expecting a failure as the offer does not exist
     vm_show_command(config_yml, json_listing_config, monkeypatch)
 
-@pytest.mark.integration   
+
+@pytest.mark.integration
 def test_vm_list_success(config_yml, monkeypatch):
     json_listing_config = "vm_config.json"
     try:
@@ -246,18 +247,18 @@ def test_vm_list_success(config_yml, monkeypatch):
             vm_create_command(config_yml, json_listing_config, monkeypatch)
     except:
         print("VM Offer already has been created")
-    
+
     offer_response = vm_list_command(config_yml, monkeypatch)
     # Load API JSON response
     vm_offer_listing = json.loads(offer_response)
-    _assert_vm_offer_listing_integration(vm_offer_listing)  
+    _assert_vm_offer_listing_integration(vm_offer_listing)
 
 
-@pytest.mark.integration   
+@pytest.mark.integration
 @pytest.mark.xfail(raises=ValueError)
 def test_vm_list_missing_publisher_id(config_yml, monkeypatch):
     # Expecting a Value error when unable to access Publisher ID
-    vm_list_command(config_yml, monkeypatch)  
+    vm_list_command(config_yml, monkeypatch)
 
 
 @pytest.mark.integration
@@ -267,8 +268,7 @@ def test_vm_list_invalid_auth_details(config_yml, monkeypatch):
     config_yml = "tests/sample_app/config_invalid.yml"
     # Expecting a failure from the Authentication Context package as the
     # auth token is unable to be retreived
-    vm_list_command(config_yml, monkeypatch)  
-
+    vm_list_command(config_yml, monkeypatch)
 
 
 @pytest.mark.integration
