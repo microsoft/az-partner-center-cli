@@ -63,6 +63,7 @@ def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch):
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 404
+            self.text = "Mock Response"
 
         @staticmethod
         def json():
