@@ -60,7 +60,7 @@ class VirtualMachine(Submission):
 
         response = requests.put(url, json=json_config, headers=headers)
         if response.status_code != 200:
-            raise ConnectionError(str(response))
+            raise ConnectionError(response.text)
 
         return response.json()
 
@@ -70,7 +70,7 @@ class VirtualMachine(Submission):
 
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
-            raise ConnectionError(str(response))
+            raise ConnectionError(response.text)
 
         return response.json()
 
@@ -104,7 +104,7 @@ class VirtualMachine(Submission):
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
         )
         if response.status_code != 202:
-            raise ConnectionError(str(response))
+            raise ConnectionError(response.text)
 
         return response
 
