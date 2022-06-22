@@ -1,0 +1,25 @@
+name: Auto Version
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: actions/checkout
+      uses: actions/checkout@v2
+      with:
+          persist-credentials: false
+    - name: current_version
+      run: echo "current_version=$(grep 'VERSION =' version.md | cut -d ' ' -f3)" >> $GITHUB_ENV
+    - name: FragileTech/bump-version
+      uses: FragileTech/bump-version@main
+      with:
+        current_version: "${{ env.current_version }}"
+        files: setup.py
+        commit_name: auto-version
+        commit_email: auto-version@noreply.github.com
+        login: auto-version
+        token: "${{ secrets.GITHUB_TOKEN  }}"
