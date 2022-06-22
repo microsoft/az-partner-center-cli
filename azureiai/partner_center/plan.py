@@ -224,7 +224,7 @@ class PlanCLIParser(CLIParser):
         self.parser.add_argument("plan_command", type=str, help="Which plan command to run")
         self.parser.add_argument("--name", type=str, help="Which command to run")
 
-        self._name = "--plan_name"
+        self._name = "--plan-name"
         self._config_json = "--config-json"
 
     def _create(self, args):
@@ -252,7 +252,7 @@ class PlanCLIParser(CLIParser):
         except ApiException as error:
             if args.update:
                 return self._update(args)
-            raise error
+            raise NameError("Plan already exists, try using update instead?") from error
 
     def list_command(self) -> {}:
         """Create a new Managed Application"""
