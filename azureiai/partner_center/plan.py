@@ -167,10 +167,10 @@ class Plan(Submission):
             file_name = manifest["app"]
 
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
-        allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
 
         try:
             if self.subtype == "ma":
+                allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
                 policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
 
                 allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(
@@ -198,7 +198,6 @@ class Plan(Submission):
                     app_zip_dir=self.app_path,
                     file_name=file_name,
                     version=version,
-                    allow_jit_access=allow_jit_access,
                     resource_type="AzureSolutionTemplatePackageConfiguration",
                     config_yaml=self.config_yaml,
                 )
