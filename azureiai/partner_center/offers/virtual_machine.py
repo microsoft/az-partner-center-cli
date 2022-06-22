@@ -60,8 +60,7 @@ class VirtualMachine(Submission):
 
         response = requests.put(url, json=json_config, headers=headers)
         if response.status_code != 200:
-            raise ConnectionError(response.text)
-
+            raise ConnectionError(json.dumps(response.text, indent=4))
         return response.json()
 
     def show(self) -> dict:
@@ -70,8 +69,7 @@ class VirtualMachine(Submission):
 
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
-            raise ConnectionError(response.text)
-
+            raise ConnectionError(json.dumps(response.text, indent=4))
         return response.json()
 
     def list_contents(self) -> dict:
@@ -104,8 +102,7 @@ class VirtualMachine(Submission):
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
         )
         if response.status_code != 202:
-            raise ConnectionError(response.text)
-
+            raise ConnectionError(json.dumps(response.text, indent=4))
         return response
 
     def get_auth(self) -> str:
