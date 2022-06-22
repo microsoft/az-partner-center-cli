@@ -230,7 +230,7 @@ def ama_mock(ama_name, monkeypatch):
         return 201
 
     def mock_put_request(url, data="", headers="", params="", json=""):
-        return namedtuple("response", ["status_code", "text"])(*[201, "Success"])
+        return namedtuple("response", ["status_code"])(*[201])
 
     def mock_acquire_token_with_client_credentials(self, resource, client_id, client_secret):
         return {"accessToken": "mock-token"}
