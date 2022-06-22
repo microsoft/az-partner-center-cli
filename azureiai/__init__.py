@@ -10,6 +10,8 @@ from tempfile import mkdtemp
 
 __all__ = ["RetryException"]
 
+TEMP = "String"
+
 
 def generate_swagger(swagger_json, swagger_module_dir="./", output=True, swagger_dir="swagger_client"):
     """
