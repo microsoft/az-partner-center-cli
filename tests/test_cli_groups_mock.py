@@ -152,6 +152,7 @@ def test_vm_create_invalid_offer_mock(config_yml, monkeypatch):
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 403
+            self.text = "Mock Response"
 
         @staticmethod
         def json():
@@ -262,6 +263,7 @@ def test_vm_show_invalid_offer_mock(config_yml, monkeypatch):
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 404
+            self.text = "Mock Response"
 
         @staticmethod
         def json():
@@ -452,6 +454,7 @@ def test_vm_publish_offer_does_not_exist_mock(config_yml, monkeypatch):
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 404
+            self.text = "Mock Response"
 
         @staticmethod
         def json():
@@ -484,6 +487,7 @@ def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch):
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 422
+            self.text = "Mock Response"
 
         @staticmethod
         def json():
