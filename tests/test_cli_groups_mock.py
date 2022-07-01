@@ -57,7 +57,7 @@ def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers/test-vm?api-version=2017-10-31"
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
 
     # Mock the show VM offer API method
     class ShowMockResponse:
@@ -123,7 +123,7 @@ def test_vm_create_offer_exists_mock(config_yml, monkeypatch, vm_config_json):
             with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers/test-vm?api-version=2017-10-31"
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
 
     def mock_show_offer(self, headers, url=mock_url):
         return ShowMockResponse()
@@ -146,12 +146,13 @@ def test_vm_create_invalid_offer_mock(config_yml, monkeypatch):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers/test-vm?api-version=2017-10-31"
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
 
     # Mock the show VM offer API method
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 403
+            self.text = "Mock Response"
 
         @staticmethod
         def json():
@@ -192,7 +193,7 @@ def test_vm_show_success_mock(config_yml, vm_config_json, monkeypatch):
             with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers/test-vm?api-version=2017-10-31"
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
 
     def mock_show_offer(self, headers, url=mock_url):
         return MockResponse()
@@ -256,12 +257,13 @@ def test_vm_show_invalid_offer_mock(config_yml, monkeypatch):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers/test-vm?api-version=2017-10-31"
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
 
     # Mock the show VM offer API method
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 404
+            self.text = "Mock Response"
 
         @staticmethod
         def json():
@@ -299,7 +301,7 @@ def test_vm_list_success_mock(config_yml, vm_config_json, monkeypatch):
             with open(Path("tests/test_data/vm_list_valid_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers?api-version=2017-10-31&$filter=offerTypeId"
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers?api-version=2017-10-31&$filter=offerTypeId"
 
     def mock_list_offer(self, headers, url=mock_url):
         return MockResponse()
@@ -340,7 +342,7 @@ def test_vm_list_empty_success_mock(config_yml, vm_config_json, monkeypatch):
             with open(Path("tests/test_data/vm_list_empty_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/industry-isv-eng/offers?api-version=2017-10-31&$filter=offerTypeId"
+    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers?api-version=2017-10-31&$filter=offerTypeId"
 
     def mock_list_offer(self, headers, url=mock_url):
         return MockResponse()
@@ -452,6 +454,7 @@ def test_vm_publish_offer_does_not_exist_mock(config_yml, monkeypatch):
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 404
+            self.text = "Mock Response"
 
         @staticmethod
         def json():
@@ -484,6 +487,7 @@ def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch):
     class ShowMockResponse:
         def __init__(self):
             self.status_code = 422
+            self.text = "Mock Response"
 
         @staticmethod
         def json():

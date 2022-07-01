@@ -1,5 +1,5 @@
 {
-    "publisherId": "industry-isv-eng",
+    "publisherId": "contoso",
     "offerTypeId": "microsoft-azure-virtualmachines",
     "id": "test-nevercreated",
     "offerTypeVersions": {
