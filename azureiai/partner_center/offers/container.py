@@ -2,6 +2,11 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """CLI Wrapper for Creating, Updating, or Deleting Azure Solution Templates"""
+import json
+
+import requests
+from adal import AuthenticationContext
+
 from azureiai.partner_center.cli_parser import CLIParser
 from azureiai.partner_center.submission import Submission
 
