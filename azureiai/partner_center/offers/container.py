@@ -3,6 +3,7 @@
 #  ---------------------------------------------------------
 """CLI Wrapper for Creating, Updating, or Deleting Azure Solution Templates"""
 import json
+import os
 
 import requests
 from adal import AuthenticationContext
