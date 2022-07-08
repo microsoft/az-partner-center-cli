@@ -575,5 +575,5 @@ def test_co_publish_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.co_publish_command(config_yml, monkeypatch)
 
 
-def test_st_delete_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.st_delete_command(config_yml, monkeypatch)
+def test_co_delete_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.co_delete_command(config_yml, monkeypatch)
