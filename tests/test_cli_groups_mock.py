@@ -43,6 +43,14 @@ def st_config_json():
     return config_path if config_path.is_file() else test_path.joinpath("template.listing_config.json")
 
 
+@pytest.fixture
+def co_config_json():
+    """Fixuture used to configure deployment for testing"""
+    test_path = Path(__file__).parents[1]
+    config_path = test_path.joinpath("co_config.json")
+    return config_path if config_path.is_file() else test_path.joinpath("template.listing_config.json")
+
+
 def test_vm_list_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.vm_list_command(config_yml, monkeypatch)
 
@@ -553,3 +561,27 @@ def test_st_publish_mock(config_yml, monkeypatch, ama_mock):
 
 def test_st_delete_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.st_delete_command(config_yml, monkeypatch)
+
+
+def test_co_list_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.co_list_command(config_yml, monkeypatch)
+
+
+def test_co_create_mock(config_yml, co_config_json, monkeypatch, ama_mock):
+    cli_tests.co_create_command(config_yml, st_config_json, monkeypatch)
+
+
+def test_co_update_mock(config_yml, co_config_json, monkeypatch, ama_mock):
+    cli_tests.co_update_command(config_yml, st_config_json, monkeypatch)
+
+
+def test_co_show_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.co_show_command(config_yml, monkeypatch)
+
+
+def test_co_publish_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.co_publish_command(config_yml, monkeypatch)
+
+
+def test_co_delete_mock(config_yml, monkeypatch, ama_mock):
+    cli_tests.co_delete_command(config_yml, monkeypatch)
