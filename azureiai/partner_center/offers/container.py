@@ -6,6 +6,7 @@ import json
 import os
 
 import requests
+import yaml
 from adal import AuthenticationContext
 
 from azureiai.managed_apps.utils import AAD_CRED, AAD_ID, TENANT_ID
