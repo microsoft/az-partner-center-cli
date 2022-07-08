@@ -85,8 +85,8 @@ class Container(Submission):
         with open(self.config_yaml, encoding="utf8") as file:
             settings = yaml.safe_load(file)
 
-        offer_id = os.getenv(OFFER_ID, settings["offerId"])
-        publisher_id = os.getenv(PUBLISHER_ID, settings["publisherId"])
+        offer_id = os.getenv("OFFER_ID", settings["offerId"])
+        publisher_id = os.getenv("PUBLISHER_ID", settings["publisherId"])
 
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/publish?api-version=2017-10-31"
 
@@ -123,8 +123,8 @@ class Container(Submission):
         with open(self.config_yaml, encoding="utf8") as file:
             settings = yaml.safe_load(file)
 
-        offer_id = os.getenv(OFFER_ID, settings["offerId"])
-        publisher_id = os.getenv(PUBLISHER_ID, settings["publisherId"])
+        offer_id = os.getenv("OFFER_ID", settings["offerId"])
+        publisher_id = os.getenv("PUBLISHER_ID", settings["publisherId"])
 
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
