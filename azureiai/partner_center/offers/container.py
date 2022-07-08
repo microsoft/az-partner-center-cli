@@ -48,7 +48,7 @@ class Container(Submission):
         if response.status_code != 200:
             raise ConnectionError(json.dumps(response.text, indent=4))
         return response.json()
-        
+
     def show(self) -> dict:
         """Show the specified existing Container offer"""
         headers, _, url = self._prepare_request()
@@ -70,7 +70,7 @@ class Container(Submission):
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
         response = requests.get(url, headers=headers)
         return response.json()
-    
+
     def publish(self):
         """Publish Existing Virtual Machine offer"""
         with open(self.config_yaml, encoding="utf8") as file:
@@ -122,6 +122,7 @@ class Container(Submission):
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
         return headers, json_config, url
+
 
 class ContainerCLI(CLIParser):
     """Methods for Container"""
