@@ -14,6 +14,7 @@ from azureiai.partner_center.cli_parser import CLIParser
 from azureiai.partner_center.submission import Submission
 
 AZURE_CONTAINER = "AzureContainer"
+URL_BASE = "https://cloudpartner.azure.com/api/publishers"
 
 
 class Container(Submission):
