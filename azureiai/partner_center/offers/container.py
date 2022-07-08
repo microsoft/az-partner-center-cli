@@ -93,7 +93,7 @@ class Container(Submission):
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
 
         response = requests.post(
-            url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
+            url, headers=headers
         )
         if response.status_code != 202:
             raise ConnectionError(json.dumps(response.text, indent=4))
