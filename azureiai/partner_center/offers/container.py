@@ -8,6 +8,7 @@ import os
 import requests
 from adal import AuthenticationContext
 
+from azureiai.managed_apps.utils import AAD_CRED, AAD_ID, TENANT_ID
 from azureiai.partner_center.cli_parser import CLIParser
 from azureiai.partner_center.submission import Submission
 
