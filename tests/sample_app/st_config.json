@@ -5,15 +5,6 @@
     "crm"      : ""
   },
   "property_settings"      : {
-    "categories": [
-      {
-        "category"   : "analytics",
-        "subcategory": [
-          "Big Data",
-          "Data Analytics"
-        ]
-      }
-    ],
     "category"  : {
       "developer-tools-azure-apps": [
         "tools-developer-tools"
