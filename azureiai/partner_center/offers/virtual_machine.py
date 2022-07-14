@@ -60,7 +60,7 @@ class VirtualMachine(Submission):
 
         response = requests.put(url, json=json_config, headers=headers)
         if response.status_code != 200:
-            raise ConnectionError(json.dumps(response.text, indent=4))
+            self._raise_connection_error(response)
         return response.json()
 
     def show(self) -> dict:
@@ -69,7 +69,7 @@ class VirtualMachine(Submission):
 
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
-            raise ConnectionError(json.dumps(response.text, indent=4))
+            self._raise_connection_error(response)
         return response.json()
 
     def list_contents(self) -> dict:
@@ -102,7 +102,7 @@ class VirtualMachine(Submission):
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
         )
         if response.status_code != 202:
-            raise ConnectionError(json.dumps(response.text, indent=4))
+            self._raise_connection_error(response)
         return response
 
     def get_auth(self) -> str:
@@ -138,6 +138,9 @@ class VirtualMachine(Submission):
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
         headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
         return headers, json_config, url
+
+    def _raise_connection_error(self, response):
+        raise ConnectionError(json.dumps(response.json(), indent=4).replace("\\r", "").replace("\\n", os.linesep))
 
 
 class VirtualMachineCLI(CLIParser):
