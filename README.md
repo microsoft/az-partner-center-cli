@@ -4,7 +4,8 @@ The documentation can be found [here](https://ingestionapi-swagger.azureedge.net
 
 ## Requirements.
 
-Python 3.7+ (Expected to work with Python 3.6+)
+- Python 3.7+ (Expected to work with Python 3.6+)
+- Java JDK 8
 
 ## Command Line
 ### Install
@@ -19,7 +20,8 @@ pip install --pre az-partner-center-cli
 
 # From Source
 git clone https://github.com/microsoft/az-partner-center-cli
-pip install azureiai
+cd az-partner-center-cli
+pip install .
 ```
 
 ## Azure Partner Center (azpc) CLI Usage
@@ -108,14 +110,18 @@ azpc st publish --name $name
 ```shell script
 vm_name='dciborow-vm'
 plan_name='test-plan'
+config_yml='config.yml'
+config_json='vm_config.json'
+app_path='sample_app'
 notificationEmails='default@microsoft.com'
 
 cat manifest.yml
 
 azpc vm list
-azpc vm create --name $name
-azpc vm show   --name $name
+azpc vm create --name $name --config-yml $config_yml --config-json $config_json --app-path $app_path
+azpc vm show --name $name --config-yml $config_yml --config-json $config_json --app-path $app_path
 azpc vm update --name $name
+azpc vm publish --name $name --config-yml $config_yml --config-json $config_json --app-path $app_path
 # azpc vm delete --name $name
 
 azpc vm plan list   --name $name

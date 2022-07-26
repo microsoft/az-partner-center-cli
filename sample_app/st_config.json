@@ -5,16 +5,11 @@
     "crm"      : ""
   },
   "property_settings"      : {
-    "categories": [
-      {
-        "category"   : "analytics",
-        "subcategory": [
-          "Big Data",
-          "Data Analytics"
-        ]
-      }
-    ],
-    "category"  : "analytics"
+    "category"  : {
+      "developer-tools-azure-apps": [
+        "tools-developer-tools"
+      ]
+    }
   },
   "offer_listing"          : {
     "title"              : "MMLSpark on Databricks",

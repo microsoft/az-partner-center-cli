@@ -38,36 +38,71 @@ class VirtualMachine(Submission):
         )
         self.notification_emails = notification_emails
 
+    def create(self):
+        """
+        Create Virtual Machine offer
+
+        First,  verify that the offer does not already exist by checking the offer name.
+        If the offer is found, this command should fail, and the user should instead try "update".
+
+        The 'Update' command is used to create a new offer when the offer does not exist.
+        """
+        try:
+            if self.show()["id"]:
+                raise NameError("Virtual Machine offer already exists. Try using 'update'?")
+        except ConnectionError:
+            pass  # Passing this error is the only way to determine that an offer does not exist
+        return self.update()
+
     def update(self):
-        """Update Existing Application"""
+        """Update Existing Virtual Machine offer"""
         headers, json_config, url = self._prepare_request()
 
         response = requests.put(url, json=json_config, headers=headers)
         if response.status_code != 200:
-            raise ConnectionError(str(response))
+            raise ConnectionError(json.dumps(response.text, indent=4))
+        return response.json()
 
-        return response
-
-    def status(self) -> dict:
-        """Get the Status of an Existing Application"""
+    def show(self) -> dict:
+        """Show the specified existing Virtual Machine offer"""
         headers, _, url = self._prepare_request()
 
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
-            raise ConnectionError(str(response))
+            raise ConnectionError(json.dumps(response.text, indent=4))
+        return response.json()
 
+    def list_contents(self) -> dict:
+        """list only the Virtual Machine offers"""
+        with open(self.config_yaml, encoding="utf8") as file:
+            settings = yaml.safe_load(file)
+            if "publisherId" not in settings:
+                raise ValueError(f"Key: publisherId is missing from {self.config_yaml}")
+            publisher_id = settings["publisherId"]
+        offer_type_filter = "offerTypeId eq 'microsoft-azure-virtualmachines'"
+        url = f"{URL_BASE}/{publisher_id}/offers?api-version=2017-10-31&$filter={offer_type_filter}"
+        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        response = requests.get(url, headers=headers)
         return response.json()
 
     def publish(self):
-        """Publish Existing Application"""
-        headers, _, url = self._prepare_request()
+        """Publish Existing Virtual Machine offer"""
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+        if "publisherId" not in json_config:
+            raise ValueError(f"Key: publisherId is missing from {self.app_path}/{self.json_listing_config}")
+        publisher_id = json_config["publisherId"]
+        offer_id = json_config["id"]
+
+        url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/publish?api-version=2017-10-31"
+
+        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
 
         response = requests.post(
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
         )
         if response.status_code != 202:
-            raise ConnectionError(str(response))
-
+            raise ConnectionError(json.dumps(response.text, indent=4))
         return response
 
     def get_auth(self) -> str:
@@ -111,9 +146,20 @@ class VirtualMachineCLI(CLIParser):
     def __init__(self):
         super().__init__(submission_type=VirtualMachine)
 
+    def show(self):
+        """Show a Virtual Machine Offer"""
+        args = self._add_name_config_json_argument()
+        return VirtualMachine(
+            args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
+        ).show()
+
     def publish(self):
-        """Publish a Managed Application"""
+        """Publish a Virtual Machine Offer"""
         args = self._add_name_notification_emails_argument()
         return VirtualMachine(
-            args.name, notification_emails=args.notification_emails, app_path=args.app_path, config_yaml=args.config_yml
+            args.name,
+            notification_emails=args.notification_emails,
+            app_path=args.app_path,
+            json_listing_config=args.config_json,
+            config_yaml=args.config_yml,
         ).publish()

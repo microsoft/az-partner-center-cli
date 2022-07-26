@@ -1,0 +1,38 @@
+[
+    {
+        "offerTypeId": "microsoft-azure-virtualmachines",
+        "publisherId": "contoso",
+        "status": "neverPublished",
+        "lockStatus": "none",
+        "pcMigrationStatus": "migrated",
+        "pcRedirectUri": "",
+        "isvUpgradeRequest": false,
+        "offerTypeChanges": [],
+        "pricingNotRecalculatedRegions": [],
+        "offerTypeVersionsOverride": {},
+        "version": 0,
+        "id": "test-vm",
+        "definition": {
+            "displayText": "Test Virtual Machine Offer"
+        },
+        "changedTime": "2022-06-02T12:25:56.651"
+    },
+    {
+        "offerTypeId": "microsoft-azure-virtualmachines",
+        "publisherId": "contoso",
+        "status": "neverPublished",
+        "lockStatus": "none",
+        "pcMigrationStatus": "migrated",
+        "pcRedirectUri": "",
+        "isvUpgradeRequest": false,
+        "offerTypeChanges": [],
+        "pricingNotRecalculatedRegions": [],
+        "offerTypeVersionsOverride": {},
+        "version": 0,
+        "id": "test-vm2",
+        "definition": {
+            "displayText": "Another Test Virtual Machine Offer"
+        },
+        "changedTime": "2022-05-30T06:43:52.062"
+    }
+] 

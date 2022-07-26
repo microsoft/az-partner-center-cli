@@ -5,15 +5,13 @@
 from collections import namedtuple
 
 import requests
+import json
+from pathlib import Path
 
 from azureiai import azpc_app
 from azureiai.managed_apps.confs import Properties, Listing, ProductAvailability
 from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
 from tests.cli_tests import setup_patched_app
-
-
-def _list_command_args(config_yml, subgroup):
-    return {"subgroup": subgroup, "command": "list", "config_yml": config_yml}
 
 
 def _create_command_args(config_yml, config_json, subgroup):
@@ -23,7 +21,7 @@ def _create_command_args(config_yml, config_json, subgroup):
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
         "config_json": config_json,
-        "app_path": "sample_app",
+        "app_path": "tests/sample_app",
     }
 
 
@@ -104,6 +102,10 @@ def _show_command_args(config_yml, subgroup):
     return input_args
 
 
+def _list_command_args(config_yml, subgroup):
+    return {"subgroup": subgroup, "command": "list", "name": f"test_{subgroup}", "config_yml": config_yml}
+
+
 def _publish_command_args(config_yml, subgroup):
     input_args = {
         "subgroup": subgroup,
@@ -121,22 +123,22 @@ def _delete_command_args(config_yml, subgroup):
     return input_args
 
 
-def vm_list_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_command_args(config_yml, subgroup="vm"))
-
-
 def vm_create_command(config_yml, json_config, monkeypatch):
-    def mock_put_request(url, data="", headers="", params="", json=""):
-        return namedtuple("response", ["status_code"])(*[200])
-
-    monkeypatch.setattr(requests, "put", mock_put_request)
-
-    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="vm"))
+    return args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="vm"))
 
 
 def vm_update_command(config_yml, json_config, monkeypatch):
+    class MockResponse:
+        def __init__(self):
+            self.status_code = 200
+
+        @staticmethod
+        def json():
+            with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
     def mock_put_request(url, data="", headers="", params="", json=""):
-        return namedtuple("response", ["status_code"])(*[200])
+        return MockResponse()
 
     monkeypatch.setattr(requests, "put", mock_put_request)
 
@@ -163,26 +165,23 @@ def vm_delete_plan_command(config_yml, monkeypatch):
     args_test(monkeypatch, _delete_plan_args(config_yml, "vm"))
 
 
-def vm_show_command(config_yml, monkeypatch):
-    def mock_put_request(url, data="", headers="", params="", json=""):
-        return namedtuple("response", ["status_code"])(*[202])
-
-    monkeypatch.setattr(requests, "put", mock_put_request)
-
-    subgroup = "vm"
-    input_args = _show_command_args(config_yml, subgroup)
-    args_test(monkeypatch, input_args)
+def vm_show_command(config_yml, json_config, monkeypatch):
+    args = _show_command_args(config_yml, subgroup="vm")
+    args["config_json"] = json_config
+    args["app_path"] = "tests/sample_app"
+    return args_test(monkeypatch, args)
 
 
-def vm_publish_command(config_yml, monkeypatch):
-    def mock_post_request(url, data="", headers="", params="", json=""):
-        return namedtuple("response", ["status_code"])(*[202])
+def vm_list_command(config_yml, monkeypatch):
+    args = _list_command_args(config_yml, subgroup="vm")
+    return args_test(monkeypatch, args)
 
-    monkeypatch.setattr(requests, "post", mock_post_request)
 
-    subgroup = "vm"
-    input_args = _publish_command_args(config_yml, subgroup)
-    args_test(monkeypatch, input_args)
+def vm_publish_command(config_yml, json_config, monkeypatch):
+    args = _publish_command_args(config_yml, subgroup="vm")
+    args["config_json"] = json_config
+    args["app_path"] = "tests/sample_app"
+    return args_test(monkeypatch, args)
 
 
 def vm_delete_command(config_yml, monkeypatch):
@@ -328,6 +327,7 @@ def args_test(monkeypatch, input_args):
     output = azpc_app.main()
     print(output)
     assert output
+    return output
 
 
 def _assert_properties(offer, json_listing_config):
@@ -373,6 +373,26 @@ def _assert_offer_listing(offer, json_listing_config):
     assert not offer_listing["compatible_products"]
 
 
+def _assert_vm_list_all_offers(vm_list, json_listing_config):
+    assert len(vm_list) >= 1
+    assert vm_list[0]["offerTypeId"] == json_listing_config["offerTypeId"]
+    assert vm_list[0]["publisherId"] == json_listing_config["publisherId"]
+    assert vm_list[0]["id"] == json_listing_config["id"]
+    assert vm_list[0]["definition"]["displayText"] == json_listing_config["definition"]["displayText"]
+    assert vm_list[1]["offerTypeId"] == json_listing_config["offerTypeId"]
+    assert vm_list[1]["publisherId"] == json_listing_config["publisherId"]
+
+
+def _assert_vm_offer_listing_integration(vm_list):
+    assert len(vm_list) >= 1
+    for item in vm_list:
+        assert item["offerTypeId"] == "microsoft-azure-virtualmachines"
+
+
+def _assert_vm_empty_listing(vm_list):
+    assert len(vm_list) == 0
+
+
 def _assert_preview_audience(offer, json_listing_config):
     """Assert Preview Audience"""
     availability = ProductAvailability(offer.get_product_id(), offer.get_auth()).get().to_dict()
@@ -413,3 +433,142 @@ def _assert_technical_configuration(offer, json_listing_config):
     tech_configuration = Package(offer.get_product_id(), offer.get_auth()).get()
     print("Technical Configuration: " + str(tech_configuration))
     assert tech_configuration
+
+
+def _assert_vm_offer_listing(offer, json_listing_config):
+    assert offer["offerTypeId"] == json_listing_config["offerTypeId"]
+    assert offer["id"] == json_listing_config["id"]
+    assert offer["definition"]["displayText"] == json_listing_config["definition"]["displayText"]
+
+    offer_listing = offer["definition"]["offer"]
+    config_offer = json_listing_config["definition"]["offer"]
+
+    assert offer_listing["microsoft-azure-marketplace.title"] == config_offer["microsoft-azure-marketplace.title"]
+    assert (
+        offer_listing["microsoft-azure-marketplace.offerMarketingUrlIdentifier"]
+        == config_offer["microsoft-azure-marketplace.offerMarketingUrlIdentifier"]
+    )
+    assert offer_listing["microsoft-azure-marketplace.summary"] == config_offer["microsoft-azure-marketplace.summary"]
+    assert (
+        offer_listing["microsoft-azure-marketplace.longSummary"]
+        == config_offer["microsoft-azure-marketplace.longSummary"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.description"]
+        == config_offer["microsoft-azure-marketplace.description"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.privacyURL"]
+        == config_offer["microsoft-azure-marketplace.privacyURL"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.usefulLinks"][0]
+        == config_offer["microsoft-azure-marketplace.usefulLinks"][0]
+    )
+
+    assert (
+        offer_listing["microsoft-azure-marketplace.engineeringContactName"]
+        == config_offer["microsoft-azure-marketplace.engineeringContactName"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.engineeringContactEmail"]
+        == config_offer["microsoft-azure-marketplace.engineeringContactEmail"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.engineeringContactPhone"]
+        == config_offer["microsoft-azure-marketplace.engineeringContactPhone"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.supportContactName"]
+        == config_offer["microsoft-azure-marketplace.supportContactName"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.supportContactEmail"]
+        == config_offer["microsoft-azure-marketplace.supportContactEmail"]
+    )
+    assert (
+        offer_listing["microsoft-azure-marketplace.supportContactPhone"]
+        == config_offer["microsoft-azure-marketplace.supportContactPhone"]
+    )
+
+    # The CPP API creates a copy and stores the uploaded offer listing image elsewhere.
+    # This means, the URI of these images will not match the JSON config
+    assert offer_listing["microsoft-azure-marketplace.smallLogo"]
+    assert offer_listing["microsoft-azure-marketplace.mediumLogo"]
+    assert offer_listing["microsoft-azure-marketplace.largeLogo"]
+    assert offer_listing["microsoft-azure-marketplace.wideLogo"]
+    assert len(offer_listing["microsoft-azure-marketplace.screenshots"]) == 0
+    assert len(offer_listing["microsoft-azure-marketplace.videos"]) == 0
+
+
+def _assert_vm_properties(offer, json_listing_config, detailed=0):
+    offer = offer["definition"]["offer"]
+    config_offer = json_listing_config["definition"]["offer"]
+
+    assert offer["microsoft-azure-marketplace.termsOfUse"] == config_offer["microsoft-azure-marketplace.termsOfUse"]
+    assert (
+        config_offer["microsoft-azure-marketplace.categoryMap"][0] in offer["microsoft-azure-marketplace.categoryMap"]
+    )
+    assert (
+        config_offer["microsoft-azure-marketplace.categoryMap"][1] in offer["microsoft-azure-marketplace.categoryMap"]
+    )
+
+    # The "show" command returns more details in offer properties
+    if detailed:
+        assert offer["microsoft-azure-marketplace.universalAmendmentTerms"] == ""
+        assert offer["microsoft-azure-marketplace.customAmendments"] == None
+        assert offer["microsoft-azure-marketplace.useEnterpriseContract"] == False
+
+
+def _assert_vm_preview_audience(offer, json_listing_config):
+    assert (
+        offer["definition"]["offer"]["microsoft-azure-marketplace.allowedSubscriptions"]
+        == json_listing_config["definition"]["offer"]["microsoft-azure-marketplace.allowedSubscriptions"]
+    )
+
+
+def _assert_vm_plan_listing(offer, json_listing_config):
+    offer_plan = offer["definition"]["plans"][0]
+    config_plan = json_listing_config["definition"]["plans"][0]
+    assert offer_plan["planId"] == config_plan["planId"]
+
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.skuTitle"]
+        == config_plan["microsoft-azure-virtualmachines.skuTitle"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.skuSummary"]
+        == config_plan["microsoft-azure-virtualmachines.skuSummary"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.skuDescription"]
+        == config_plan["microsoft-azure-virtualmachines.skuDescription"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.hideSKUForSolutionTemplate"]
+        == config_plan["microsoft-azure-virtualmachines.hideSKUForSolutionTemplate"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.cloudAvailability"]
+        == config_plan["microsoft-azure-virtualmachines.cloudAvailability"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.operatingSystemFamily"]
+        == config_plan["microsoft-azure-virtualmachines.operatingSystemFamily"]
+    )
+    assert (
+        offer_plan["microsoft-azure-virtualmachines.openPorts"]
+        == config_plan["microsoft-azure-virtualmachines.openPorts"]
+    )
+    assert offer_plan["regions"] == config_plan["regions"]
+
+    offer_plan_vm_sizes = offer_plan["microsoft-azure-virtualmachines.recommendedVMSizes"]
+    config_plan_vm_sizes = config_plan["microsoft-azure-virtualmachines.recommendedVMSizes"]
+    assert offer_plan_vm_sizes[0] == config_plan_vm_sizes[0]
+    assert offer_plan_vm_sizes[1] == config_plan_vm_sizes[1]
+    assert offer_plan_vm_sizes[2] == config_plan_vm_sizes[2]
+    assert offer_plan_vm_sizes[3] == config_plan_vm_sizes[3]
+    assert offer_plan_vm_sizes[4] == config_plan_vm_sizes[4]
+    assert offer_plan_vm_sizes[5] == config_plan_vm_sizes[5]
+    assert offer_plan["virtualMachinePricing"] == config_plan["virtualMachinePricing"]
+    assert offer_plan["virtualMachinePricingV2"] == config_plan["virtualMachinePricingV2"]

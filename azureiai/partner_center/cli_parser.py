@@ -46,7 +46,7 @@ class CLIParser:
                 args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
             ).create()
         except NameError as error:
-            if args.update:
+            if hasattr(args, "update"):
                 return self._update(args)
             raise error
 
@@ -104,5 +104,10 @@ class CLIParser:
         self.parser.add_argument(
             self._notification_emails, type=str, required=True, help="Notification e-mails to use when publishing"
         )
+
+        self.parser.add_argument(
+            self._config_json, type=str, help="Listing Configuration Json", default="listing_config.json"
+        )
+        self.parser.add_argument(self._app_path, type=str, help="Application Root Directory", default=".")
         args = self.parser.parse_args()
         return args
