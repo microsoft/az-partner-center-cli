@@ -48,6 +48,7 @@ def co_config_json():
     """Fixuture used to configure deployment for testing"""
     return Path(__file__).parents[1].joinpath("sample_app").joinpath("co_config.json")
 
+
 def test_vm_list_mock(config_yml, monkeypatch, ama_mock):
     cli_tests.vm_list_command(config_yml, monkeypatch)
 
