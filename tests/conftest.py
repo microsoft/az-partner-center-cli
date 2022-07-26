@@ -67,7 +67,7 @@ def config_yml():
 
 
 @pytest.fixture
-def manifest_yml():    
+def manifest_yml():
     return Path(__file__).parents[1].joinpath("sample_app").joinpath("manifest.yml")
 
 
