@@ -5,11 +5,12 @@
     "crm"      : ""
   },
   "property_settings"      : {
-    "category"  : {
+    "leveledCategories"  : {
       "developer-tools-azure-apps": [
         "tools-developer-tools"
       ]
-    }
+    },
+    "category": "developer-tools-azure-apps"
   },
   "offer_listing"          : {
     "title"              : "MMLSpark on Databricks",

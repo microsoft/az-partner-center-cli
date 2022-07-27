@@ -5,15 +5,12 @@
     "crm"      : ""
   },
   "property_settings"      : {
-    "categories": [
-      {
-        "category"   : "analytics",
-        "subcategory": [
-          "Big Data",
-          "Data Analytics"
-        ]
-      }
-    ],
+    "leveledCategories"  : {
+      "analytics": [
+        "Big Data",
+        "Data Analytics"
+      ]
+    },
     "category"  : "analytics"
   },
   "offer_listing"          : {

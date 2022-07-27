@@ -22,6 +22,7 @@ class Properties(OfferConfigurations):
         categories,
         version,
         use_enterprise_contract=True,
+        leveled_categories=None,
     ):
         """
         Set Properties for Application
@@ -30,6 +31,7 @@ class Properties(OfferConfigurations):
         :param version: Default 1.1.1
         :param use_enterprise_contract: Default: True
         """
+        leveled_categories = leveled_categories or {}
         property_settings = self.get()
         odata_etag = property_settings.odata_etag
         property_id = property_settings.id
@@ -47,7 +49,7 @@ class Properties(OfferConfigurations):
             "termsOfUse": "testTermsOfUse",
             "globalAmendmentTerms": None,
             "customAmendments": [],
-            "leveledCategories": categories,
+            "leveledCategories": leveled_categories,
             "@odata.etag": odata_etag,
         }
 
