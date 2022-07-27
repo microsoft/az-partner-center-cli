@@ -322,12 +322,11 @@ def st_delete_command(config_yml, monkeypatch):
     args_test(monkeypatch, _delete_command_args(config_yml, "st"))
 
 
-def args_test(monkeypatch, input_args):
+def args_test(monkeypatch, input_args, capsys):
     setup_patched_app(monkeypatch, input_args)
-    output = azpc_app.main()
-    print(output)
-    assert output
-    return output
+    azpc_app.main()
+    assert captured.out
+    return captured.out
 
 
 def _assert_properties(offer, json_listing_config):
