@@ -7,6 +7,7 @@ from abc import abstractmethod
 
 import yaml
 from adal import AuthenticationContext
+from azure.identity import AzureCliCredential
 
 from azureiai.managed_apps.utils import (
     AAD_CRED,
@@ -57,20 +58,26 @@ class Offer:
         :return: Authorization Header contents
         """
         if self._authorization is None:
-            with open(self.config_yaml, encoding="utf8") as file:
-                settings = yaml.safe_load(file)
+            try:
+                with open(self.config_yaml, encoding="utf8") as file:
+                    settings = yaml.safe_load(file)
 
-            client_id = os.getenv(AAD_ID, settings["aad_id"])
-            client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
-            tenant_id = os.getenv(TENANT_ID, settings["tenant_id"])
+                client_id = os.getenv(AAD_ID, settings["aad_id"])
+                client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
+                tenant_id = os.getenv(TENANT_ID, settings["tenant_id"])
 
-            auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
-            token_response = auth_context.acquire_token_with_client_credentials(
-                resource="https://api.partner.microsoft.com",
-                client_id=client_id,
-                client_secret=client_secret,
-            )
-            self._authorization = f"Bearer {token_response['accessToken']}"
+                auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
+                token_response = auth_context.acquire_token_with_client_credentials(
+                    resource="https://api.partner.microsoft.com",
+                    client_id=client_id,
+                    client_secret=client_secret,
+                )
+                self._authorization = f"Bearer {token_response['accessToken']}"
+            except KeyError:
+                azure_cli = AzureCliCredential()
+                token_response = azure_cli.get_token("https://api.partner.microsoft.com")
+
+                self._authorization = f"Bearer {token_response.token}"
         return self._authorization
 
     def get_product_id(self) -> str:
