@@ -313,11 +313,10 @@ class ManagedApplication(Offer):
             listing_image.set(file_name=logo_wide, file_path=app_path, logo_type="AzureLogoWide")
 
     def _set_properties(self, json_config):
-        categories = json_config["property_settings"]["category"]
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
 
         offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
-        offer_listing_properties.set(categories=categories, version=version)
+        offer_listing_properties.set(version=version)
 
     def _set_preview_audience(self, json_config):
         azure_subscription = json_config["preview_audience"]["subscriptions"]
