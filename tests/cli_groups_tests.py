@@ -323,9 +323,9 @@ def st_delete_command(config_yml, monkeypatch, capsys):
 
 
 def args_test(monkeypatch, input_args, capsys):
-    captured = capsys.readouterr()
     setup_patched_app(monkeypatch, input_args)
     azpc_app.main()
+    captured = capsys.readouterr()
     assert captured.out
     return captured.out
 
