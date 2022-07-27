@@ -49,14 +49,10 @@ class Properties(OfferConfigurations):
             "industries": [""],
             "categories": categories,
 <<<<<<< HEAD
-<<<<<<< HEAD
             "additionalCategories": additional_categories,
 =======
             "additionalC1ategories": additional_categories,
 >>>>>>> 38c6953 (add category fields)
-=======
-            "additionalCategories": additional_categories,
->>>>>>> 4f922aa (update configs)
             "submissionVersion": submission_version,
             "productTags": ["y89royn4xnxbe5e9mfmm6ukufp1hn8gt6d6osyd83sprfgdtib8jqfmikiya5hmf"],
             "appVersion": version,

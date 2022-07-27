@@ -9,13 +9,7 @@
       "developer-tools-azure-apps": [
         "tools-developer-tools"
       ]
-    },
-    "categories": [
-      "developer-tools-azure-apps"
-    ],
-    "additionalCategories": [
-      "tools"
-    ]
+    }
   },
   "offer_listing"          : {
     "title"              : "MMLSpark on Databricks",

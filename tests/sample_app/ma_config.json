@@ -7,17 +7,10 @@
   "property_settings"      : {
     "leveledCategories"  : {
       "analytics": [
-      "Big Data",
-      "Data Analytics"
+        "big-data",
+        "data-analytics"
       ]
-    },
-    "categories": [
-      "analytics"
-    ],
-    "additionalCategories": [
-      "Big Data",
-      "Data Analytics"
-    ]
+    }
   },
   "offer_listing"          : {
     "title"              : "MMLSpark on Databricks",
