@@ -326,8 +326,8 @@ def args_test(monkeypatch, input_args, capsys):
     captured = capsys.readouterr()
     setup_patched_app(monkeypatch, input_args)
     azpc_app.main()
-    assert captured.out
-    return captured.out
+    assert captured.out or captured.err
+    return captured.err
 
 
 def _assert_properties(offer, json_listing_config):
