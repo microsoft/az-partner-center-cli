@@ -39,9 +39,10 @@ def main():
     }
     try:
         run(commands[subgroup]())
-    except: 
+    except:
         sys.exit(1)
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
