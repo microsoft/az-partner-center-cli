@@ -13,6 +13,8 @@ from azureiai.managed_apps.confs import Properties, Listing, ProductAvailability
 from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
 from tests.cli_tests import setup_patched_app
 
+APP_PATH = "tests/sample_app"
+
 
 def _create_command_args(config_yml, config_json, subgroup):
     return {
@@ -21,7 +23,7 @@ def _create_command_args(config_yml, config_json, subgroup):
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
         "config_json": config_json,
-        "app_path": "tests/sample_app",
+        "app_path": APP_PATH,
     }
 
 
@@ -32,7 +34,7 @@ def _update_command_args(config_yml, config_json, subgroup):
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
         "config_json": config_json,
-        "app_path": "tests/sample_app",
+        "app_path": APP_PATH,
     }
 
 
@@ -45,7 +47,7 @@ def _create_plan_args(config_yml, config_json, subgroup):
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
         "config_json": config_json,
-        "app_path": "tests/sample_app",
+        "app_path": APP_PATH,
     }
 
 
@@ -58,7 +60,7 @@ def _update_plan_args(config_yml, config_json, subgroup):
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
         "config_json": config_json,
-        "app_path": "tests/sample_app",
+        "app_path": APP_PATH,
     }
 
 
@@ -113,7 +115,7 @@ def _publish_command_args(config_yml, subgroup):
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
         "notification_emails": "dcibs@microsoft.com",
-        "app_path": "tests/sample_app",
+        "app_path": APP_PATH,
     }
     return input_args
 
@@ -168,7 +170,7 @@ def vm_delete_plan_command(config_yml, monkeypatch):
 def vm_show_command(config_yml, json_config, monkeypatch):
     args = _show_command_args(config_yml, subgroup="vm")
     args["config_json"] = json_config
-    args["app_path"] = "tests/sample_app"
+    args["app_path"] = APP_PATH
     return args_test(monkeypatch, args)
 
 
@@ -180,7 +182,7 @@ def vm_list_command(config_yml, monkeypatch):
 def vm_publish_command(config_yml, json_config, monkeypatch):
     args = _publish_command_args(config_yml, subgroup="vm")
     args["config_json"] = json_config
-    args["app_path"] = "tests/sample_app"
+    args["app_path"] = APP_PATH
     return args_test(monkeypatch, args)
 
 
