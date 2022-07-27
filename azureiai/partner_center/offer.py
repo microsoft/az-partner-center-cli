@@ -7,7 +7,7 @@ from abc import abstractmethod
 
 import yaml
 from adal import AuthenticationContext
-from azure.identity import AzureCliCredential, CredentialUnavailableError
+from azure.identity import AzureCliCredential
 
 from azureiai.managed_apps.confs import ResellerConfiguration
 from azureiai.managed_apps.confs.variant import FeatureAvailability
