@@ -143,16 +143,12 @@ class Submission(Offer):
             json_config = json.load(read_file)
 
         leveled_categories = json_config["property_settings"].get("leveledCategories", {})
-        additional_categories = json_config["property_settings"].get("additionalCategories", [])
-        categories = json_config["property_settings"].get("categories", [])
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
 
         offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
         offer_listing_properties.set(
             version,
-            categories=categories,
             leveled_categories=leveled_categories,
-            additional_categories=additional_categories,
         )
 
     def _update_preview_audience(self):
