@@ -38,7 +38,7 @@ def main():
         "co": ContainerCLI,
     }
     try:
-        print(run(commands[subgroup]()))
+        print(run(commands[subgroup]()), file=sys.stdout)
     except:
         sys.exit(1)
 
