@@ -48,7 +48,11 @@ class Properties(OfferConfigurations):
             "resourceType": "AzureProperty",
             "industries": [""],
             "categories": categories,
+<<<<<<< HEAD
             "additionalCategories": additional_categories,
+=======
+            "additionalC1ategories": additional_categories,
+>>>>>>> 38c6953 (add category fields)
             "submissionVersion": submission_version,
             "productTags": ["y89royn4xnxbe5e9mfmm6ukufp1hn8gt6d6osyd83sprfgdtib8jqfmikiya5hmf"],
             "appVersion": version,
