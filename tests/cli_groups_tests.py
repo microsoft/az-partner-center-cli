@@ -325,6 +325,8 @@ def st_delete_command(config_yml, monkeypatch):
 def args_test(monkeypatch, input_args):
     setup_patched_app(monkeypatch, input_args)
     azpc_app.main()
+
+
 #     assert captured.out
 #     return captured.out
 
