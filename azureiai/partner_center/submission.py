@@ -142,12 +142,18 @@ class Submission(Offer):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
-        categories = json_config["property_settings"]["category"]
         leveled_categories = json_config["property_settings"].get("leveledCategories", {})
+        additional_categories = json_config["property_settings"].get("additionalCategories", [])
+        categories = json_config["property_settings"].get("categories", [])
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
 
         offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
-        offer_listing_properties.set(categories=categories, version=version, leveled_categories=leveled_categories)
+        offer_listing_properties.set(
+            version,
+            categories=categories,
+            leveled_categories=leveled_categories,
+            additional_categories=additional_categories,
+        )
 
     def _update_preview_audience(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
