@@ -32,7 +32,7 @@ def _update_command_args(config_yml, config_json, subgroup):
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
         "config_json": config_json,
-        "app_path": "sample_app",
+        "app_path": "tests/sample_app",
     }
 
 
@@ -45,7 +45,7 @@ def _create_plan_args(config_yml, config_json, subgroup):
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
         "config_json": config_json,
-        "app_path": "sample_app",
+        "app_path": "tests/sample_app",
     }
 
 
@@ -58,7 +58,7 @@ def _update_plan_args(config_yml, config_json, subgroup):
         "plan_name": f"test_{subgroup}_plan",
         "config_yml": config_yml,
         "config_json": config_json,
-        "app_path": "sample_app",
+        "app_path": "tests/sample_app",
     }
 
 
@@ -113,7 +113,7 @@ def _publish_command_args(config_yml, subgroup):
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
         "notification_emails": "dcibs@microsoft.com",
-        "app_path": "sample_app",
+        "app_path": "tests/sample_app",
     }
     return input_args
 

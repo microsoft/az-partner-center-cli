@@ -539,7 +539,7 @@ def test_st_create_mock(config_yml, st_config_json, monkeypatch, ama_mock):
     cli_tests.st_create_command(config_yml, st_config_json, monkeypatch)
 
 
-def test_st_update_mock(config_yml, st_config_json, monkeypatch, ama_mock):
+def  test_st_update_mock(config_yml, st_config_json, monkeypatch, ama_mock):
     cli_tests.st_update_command(config_yml, st_config_json, monkeypatch)
 
 
