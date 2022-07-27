@@ -1,5 +1,6 @@
 adal~=1.2.7
 azure-storage-blob
+azure-identity
 certifi >= 14.05.14
 databricks-cli
 msrest~=0.7.1
