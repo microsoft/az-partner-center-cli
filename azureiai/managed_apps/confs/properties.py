@@ -23,6 +23,7 @@ class Properties(OfferConfigurations):
         version,
         use_enterprise_contract=True,
         leveled_categories=None,
+        additional_categories=None
     ):
         """
         Set Properties for Application
@@ -32,6 +33,7 @@ class Properties(OfferConfigurations):
         :param use_enterprise_contract: Default: True
         """
         leveled_categories = leveled_categories or {}
+        additional_categories = additional_categories or []
         property_settings = self.get()
         odata_etag = property_settings.odata_etag
         property_id = property_settings.id
@@ -42,6 +44,7 @@ class Properties(OfferConfigurations):
             "resourceType": "AzureProperty",
             "industries": [""],
             "categories": [],
+            "additional_categories": additional_categories,
             "submissionVersion": submission_version,
             "productTags": ["y89royn4xnxbe5e9mfmm6ukufp1hn8gt6d6osyd83sprfgdtib8jqfmikiya5hmf"],
             "appVersion": version,
