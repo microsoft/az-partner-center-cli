@@ -39,7 +39,7 @@ class Properties(OfferConfigurations):
         properties = {
             "resourceType": "AzureProperty",
             "industries": [""],
-            "categories": [categories],
+            "categories": [],
             "submissionVersion": submission_version,
             "productTags": ["y89royn4xnxbe5e9mfmm6ukufp1hn8gt6d6osyd83sprfgdtib8jqfmikiya5hmf"],
             "appVersion": version,
@@ -47,7 +47,7 @@ class Properties(OfferConfigurations):
             "termsOfUse": "testTermsOfUse",
             "globalAmendmentTerms": None,
             "customAmendments": [],
-            "leveledCategories": {},
+            "leveledCategories": categories,
             "@odata.etag": odata_etag,
         }
 
