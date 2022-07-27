@@ -123,11 +123,11 @@ def _delete_command_args(config_yml, subgroup):
     return input_args
 
 
-def vm_create_command(config_yml, json_config, monkeypatch):
-    return args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="vm"))
+def vm_create_command(config_yml, json_config, monkeypatch, capsys):
+    return args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="vm"), capsys)
 
 
-def vm_update_command(config_yml, json_config, monkeypatch):
+def vm_update_command(config_yml, json_config, monkeypatch, capsys):
     class MockResponse:
         def __init__(self):
             self.status_code = 200
@@ -142,187 +142,188 @@ def vm_update_command(config_yml, json_config, monkeypatch):
 
     monkeypatch.setattr(requests, "put", mock_put_request)
 
-    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="vm"))
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="vm"), capsys)
 
 
-def vm_create_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="vm"))
+def vm_create_plan_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="vm"), capsys)
 
 
-def vm_update_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="vm"))
+def vm_update_plan_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="vm"), capsys)
 
 
-def vm_show_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _show_plan_args(config_yml, "vm"))
+def vm_show_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _show_plan_args(config_yml, "vm"), capsys)
 
 
-def vm_list_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_plan_args(config_yml, "vm"))
+def vm_list_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _list_plan_args(config_yml, "vm"), capsys)
 
 
-def vm_delete_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _delete_plan_args(config_yml, "vm"))
+def vm_delete_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _delete_plan_args(config_yml, "vm"), capsys)
 
 
-def vm_show_command(config_yml, json_config, monkeypatch):
+def vm_show_command(config_yml, json_config, monkeypatch, capsys):
     args = _show_command_args(config_yml, subgroup="vm")
     args["config_json"] = json_config
     args["app_path"] = "tests/sample_app"
-    return args_test(monkeypatch, args)
+    return args_test(monkeypatch, args, capsys)
 
 
-def vm_list_command(config_yml, monkeypatch):
+def vm_list_command(config_yml, monkeypatch, capsys):
     args = _list_command_args(config_yml, subgroup="vm")
-    return args_test(monkeypatch, args)
+    return args_test(monkeypatch, args, capsys)
 
 
-def vm_publish_command(config_yml, json_config, monkeypatch):
+def vm_publish_command(config_yml, json_config, monkeypatch, capsys):
     args = _publish_command_args(config_yml, subgroup="vm")
     args["config_json"] = json_config
     args["app_path"] = "tests/sample_app"
-    return args_test(monkeypatch, args)
+    return args_test(monkeypatch, args, capsys)
 
 
-def vm_delete_command(config_yml, monkeypatch):
+def vm_delete_command(config_yml, monkeypatch, capsys):
     subgroup = "vm"
     input_args = _delete_command_args(config_yml, subgroup)
-    args_test(monkeypatch, input_args)
+    args_test(monkeypatch, input_args, capsys)
 
 
-def co_list_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_command_args(config_yml, subgroup="co"))
+def co_list_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _list_command_args(config_yml, subgroup="co"), capsys)
 
 
-def co_create_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="co"))
+def co_create_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="co"), capsys)
 
 
-def co_update_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="co"))
+def co_update_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="co"), capsys)
 
 
-def co_show_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _show_command_args(config_yml, "co"))
+def co_show_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _show_command_args(config_yml, "co"), capsys)
 
 
-def co_create_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="co"))
+def co_create_plan_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="co"), capsys)
 
 
-def co_update_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="co"))
+def co_update_plan_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="co"), capsys)
 
 
-def co_list_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_plan_args(config_yml, "ma"))
+def co_list_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _list_plan_args(config_yml, "ma"), capsys)
 
 
-def co_show_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _show_plan_args(config_yml, "co"))
+def co_show_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _show_plan_args(config_yml, "co"), capsys)
 
 
-def co_delete_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _delete_plan_args(config_yml, "co"))
+def co_delete_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _delete_plan_args(config_yml, "co"), capsys)
 
 
-def co_publish_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _publish_command_args(config_yml, "co"))
+def co_publish_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _publish_command_args(config_yml, "co"), capsys)
 
 
-def co_delete_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _delete_command_args(config_yml, "co"))
+def co_delete_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _delete_command_args(config_yml, "co"), capsys)
 
 
-def ma_list_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_command_args(config_yml, subgroup="ma"))
+def ma_list_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _list_command_args(config_yml, subgroup="ma"), capsys)
 
 
-def ma_create_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="ma"))
+def ma_create_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="ma"), capsys)
 
 
-def ma_update_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="ma"))
+def ma_update_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="ma"), capsys)
 
 
-def ma_show_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _show_command_args(config_yml, "ma"))
+def ma_show_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _show_command_args(config_yml, "ma"), capsys)
 
 
-def ma_create_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="ma"))
+def ma_create_plan_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="ma"), capsys)
 
 
-def ma_update_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="ma"))
+def ma_update_plan_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="ma"), capsys)
 
 
-def ma_list_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_plan_args(config_yml, "ma"))
+def ma_list_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _list_plan_args(config_yml, "ma"), capsys)
 
 
-def ma_show_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _show_plan_args(config_yml, "ma"))
+def ma_show_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _show_plan_args(config_yml, "ma"), capsys)
 
 
-def ma_delete_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _delete_plan_args(config_yml, "ma"))
+def ma_delete_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _delete_plan_args(config_yml, "ma"), capsys)
 
 
-def ma_publish_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _publish_command_args(config_yml, "ma"))
+def ma_publish_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _publish_command_args(config_yml, "ma"), capsys)
 
 
-def ma_delete_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _delete_command_args(config_yml, "ma"))
+def ma_delete_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _delete_command_args(config_yml, "ma"), capsys)
 
 
-def st_list_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_command_args(config_yml, "st"))
+def st_list_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _list_command_args(config_yml, "st"), capsys)
 
 
-def st_create_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="st"))
+def st_create_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="st"), capsys)
 
 
-def st_update_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="st"))
+def st_update_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _update_command_args(config_yml, json_config, subgroup="st"), capsys)
 
 
-def st_create_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="st"))
+def st_create_plan_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _create_plan_args(config_yml, json_config, subgroup="st"), capsys)
 
 
-def st_update_plan_command(config_yml, json_config, monkeypatch):
-    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="st"))
+def st_update_plan_command(config_yml, json_config, monkeypatch, capsys):
+    args_test(monkeypatch, _update_plan_args(config_yml, json_config, subgroup="st"), capsys)
 
 
-def st_show_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _show_plan_args(config_yml, "st"))
+def st_show_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _show_plan_args(config_yml, "st"), capsys)
 
 
-def st_list_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _list_plan_args(config_yml, "st"))
+def st_list_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _list_plan_args(config_yml, "st"), capsys)
 
 
-def st_delete_plan_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _delete_plan_args(config_yml, "st"))
+def st_delete_plan_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _delete_plan_args(config_yml, "st"), capsys)
 
 
-def st_show_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _show_command_args(config_yml, "st"))
+def st_show_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _show_command_args(config_yml, "st"), capsys)
 
 
-def st_publish_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _publish_command_args(config_yml, "st"))
+def st_publish_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _publish_command_args(config_yml, "st"), capsys)
 
 
-def st_delete_command(config_yml, monkeypatch):
-    args_test(monkeypatch, _delete_command_args(config_yml, "st"))
+def st_delete_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _delete_command_args(config_yml, "st"), capsys)
 
 
-def args_test(monkeypatch, input_args):
+def args_test(monkeypatch, input_args, capsys):
+    captured = capsys.readouterr()
     setup_patched_app(monkeypatch, input_args)
     azpc_app.main()
 
