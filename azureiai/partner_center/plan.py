@@ -167,10 +167,10 @@ class Plan(Submission):
             file_name = manifest["app"]
 
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
-        allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
 
         try:
             if self.subtype == "ma":
+                allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
                 policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
 
                 allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(
@@ -198,7 +198,6 @@ class Plan(Submission):
                     app_zip_dir=self.app_path,
                     file_name=file_name,
                     version=version,
-                    allow_jit_access=allow_jit_access,
                     resource_type="AzureSolutionTemplatePackageConfiguration",
                     config_yaml=self.config_yaml,
                 )
@@ -224,7 +223,7 @@ class PlanCLIParser(CLIParser):
         self.parser.add_argument("plan_command", type=str, help="Which plan command to run")
         self.parser.add_argument("--name", type=str, help="Which command to run")
 
-        self._name = "--plan_name"
+        self._name = "--plan-name"
         self._config_json = "--config-json"
 
     def _create(self, args):
@@ -253,7 +252,7 @@ class PlanCLIParser(CLIParser):
         except ApiException as error:
             if args.update:
                 return self._update(args)
-            raise error
+            raise NameError("Plan already exists, try using update instead?") from error
 
     def list_command(self) -> {}:
         """Create a new Managed Application"""

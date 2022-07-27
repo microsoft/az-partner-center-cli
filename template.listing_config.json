@@ -6,16 +6,12 @@
     "crm"      : ""
   },
   "property_settings"      : {
-    "category"   : "analytics",
-    "categories": [
-      {
-        "category"   : "analytics",
-        "subcategory": [
-          "Big Data",
-          "Data Analytics"
-        ]
-      }
-    ]
+    "leveledCategories"  : {
+      "analytics": [
+        "big-data",
+        "data-analytics"
+      ]
+    }
   },
   "offer_listing"          : {
     "title"              : "MMLSpark on Databricks",

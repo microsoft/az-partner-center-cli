@@ -43,11 +43,11 @@ def st_config_json():
     return config_path if config_path.is_file() else test_path.joinpath("template.listing_config.json")
 
 
-def test_vm_list_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.vm_list_command(config_yml, monkeypatch)
+def test_vm_list_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.vm_list_command(config_yml, monkeypatch, capsys)
 
 
-def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch):
+def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch, capsys):
     vm_config_json = "vm_config.json"
     app_path_fix = "tests/sample_app"
 
@@ -90,7 +90,7 @@ def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch):
         return CreateMockResponse()
 
     monkeypatch.setattr(requests, "put", mock_create_offer)
-    offer_response = cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch)
+    offer_response = cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch, capsys)
 
     offer = json.loads(offer_response)
     with open(Path(app_path_fix).joinpath(vm_config_json), "r", encoding="utf8") as read_file:
@@ -104,7 +104,7 @@ def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch):
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=NameError)
-def test_vm_create_offer_exists_mock(config_yml, monkeypatch, vm_config_json):
+def test_vm_create_offer_exists_mock(config_yml, monkeypatch, vm_config_json, capsys):
     vm_config_json = "vm_config.json"
 
     # Mock authorization token retreival
@@ -130,12 +130,12 @@ def test_vm_create_offer_exists_mock(config_yml, monkeypatch, vm_config_json):
 
     monkeypatch.setattr(requests, "get", mock_show_offer)
     # The create PUT method does not need mocking as the test should fail before that point
-    cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch)
+    cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ConnectionError)
-def test_vm_create_invalid_offer_mock(config_yml, monkeypatch):
+def test_vm_create_invalid_offer_mock(config_yml, monkeypatch, capsys):
     # Invalid configuration that creates an offer in a publisher
     # that the user does not have access to
     vm_config_json = "vm_config_unauth_publisher.json"
@@ -165,14 +165,14 @@ def test_vm_create_invalid_offer_mock(config_yml, monkeypatch):
     monkeypatch.setattr(requests, "get", mock_show_offer)
 
     # Expecting a failure as the offer is unable to be created
-    cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch)
+    cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
-def test_vm_update_mock(config_yml, vm_config_json, monkeypatch, ama_mock):
-    cli_tests.vm_update_command(config_yml, vm_config_json, monkeypatch)
+def test_vm_update_mock(config_yml, vm_config_json, monkeypatch, ama_mock, capsys):
+    cli_tests.vm_update_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
-def test_vm_show_success_mock(config_yml, vm_config_json, monkeypatch):
+def test_vm_show_success_mock(config_yml, vm_config_json, monkeypatch, capsys):
     vm_config_json = "vm_config.json"
     app_path_fix = "tests/sample_app"
 
@@ -200,7 +200,7 @@ def test_vm_show_success_mock(config_yml, vm_config_json, monkeypatch):
 
     monkeypatch.setattr(requests, "get", mock_show_offer)
 
-    offer_response = cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch)
+    offer_response = cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch, capsys)
 
     # Load mocked API JSON response
     offer_listing = json.loads(offer_response)
@@ -217,17 +217,17 @@ def test_vm_show_success_mock(config_yml, vm_config_json, monkeypatch):
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ValueError)
-def test_vm_show_missing_publisher_id_mock(config_yml, monkeypatch):
+def test_vm_show_missing_publisher_id_mock(config_yml, monkeypatch, capsys):
     # Invalid JSON config with missing publisher ID
     vm_config_json = "vm_config_missing_publisher_id.json"
 
     # No mocks required because it does not hit any APIs
-    cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch)
+    cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=adal_error.AdalError)
-def test_vm_show_invalid_auth_details_mock(config_yml, monkeypatch):
+def test_vm_show_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
     # Invalid config yaml file using incorrect client ID & secret
     config_yml = "tests/sample_app/config_invalid.yml"
 
@@ -242,12 +242,12 @@ def test_vm_show_invalid_auth_details_mock(config_yml, monkeypatch):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    cli_tests.vm_show_command(config_yml, json_listing_config, monkeypatch)
+    cli_tests.vm_show_command(config_yml, json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ConnectionError)
-def test_vm_show_invalid_offer_mock(config_yml, monkeypatch):
+def test_vm_show_invalid_offer_mock(config_yml, monkeypatch, capsys):
     # Invalid configuration to show an offer that doesnt exist
     vm_config_json = "vm_config_uncreated_offer.json"
 
@@ -276,10 +276,10 @@ def test_vm_show_invalid_offer_mock(config_yml, monkeypatch):
     monkeypatch.setattr(requests, "get", mock_show_offer)
 
     # Expecting a failure as the offer does not exist
-    cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch)
+    cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
-def test_vm_list_success_mock(config_yml, vm_config_json, monkeypatch):
+def test_vm_list_success_mock(config_yml, vm_config_json, monkeypatch, capsys):
     """only must return the VM offers"""
     vm_config_json = "vm_config.json"
     app_path_fix = "tests/sample_app"
@@ -308,7 +308,7 @@ def test_vm_list_success_mock(config_yml, vm_config_json, monkeypatch):
 
     monkeypatch.setattr(requests, "get", mock_list_offer)
 
-    response = cli_tests.vm_list_command(config_yml, monkeypatch)
+    response = cli_tests.vm_list_command(config_yml, monkeypatch, capsys)
 
     # Load mocked API JSON response
     vm_list = json.loads(response)
@@ -320,7 +320,7 @@ def test_vm_list_success_mock(config_yml, vm_config_json, monkeypatch):
     cli_tests._assert_vm_list_all_offers(vm_list, json_config)
 
 
-def test_vm_list_empty_success_mock(config_yml, vm_config_json, monkeypatch):
+def test_vm_list_empty_success_mock(config_yml, vm_config_json, monkeypatch, capsys):
     """only must return the VM offers"""
     vm_config_json = "vm_config.json"
     app_path_fix = "tests/sample_app"
@@ -349,7 +349,7 @@ def test_vm_list_empty_success_mock(config_yml, vm_config_json, monkeypatch):
 
     monkeypatch.setattr(requests, "get", mock_list_offer)
 
-    response = cli_tests.vm_list_command(config_yml, monkeypatch)
+    response = cli_tests.vm_list_command(config_yml, monkeypatch, capsys)
 
     # Load mocked API JSON response
     vm_list = json.loads(response)
@@ -359,14 +359,14 @@ def test_vm_list_empty_success_mock(config_yml, vm_config_json, monkeypatch):
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ValueError)
-def test_vm_list_missing_publisher_id_mock(config_yml, monkeypatch):
+def test_vm_list_missing_publisher_id_mock(config_yml, monkeypatch, capsys):
     # No mocks required because it does not hit any APIs
-    cli_tests.vm_list_command(config_yml, monkeypatch)
+    cli_tests.vm_list_command(config_yml, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=adal_error.AdalError)
-def test_vm_list_invalid_auth_details_mock(config_yml, monkeypatch):
+def test_vm_list_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
     # Invalid config yaml file using incorrect client ID & secret
     config_yml = "tests/sample_app/config_invalid.yml"
 
@@ -378,10 +378,10 @@ def test_vm_list_invalid_auth_details_mock(config_yml, monkeypatch):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    cli_tests.vm_list_command(config_yml, monkeypatch)
+    cli_tests.vm_list_command(config_yml, monkeypatch, capsys)
 
 
-def test_vm_publish_success_mock(config_yml, monkeypatch):
+def test_vm_publish_success_mock(config_yml, monkeypatch, capsys):
     vm_config_json = "vm_config.json"
 
     # Mock authorization token retreival
@@ -403,24 +403,24 @@ def test_vm_publish_success_mock(config_yml, monkeypatch):
 
     monkeypatch.setattr(requests, "post", mock_publish_offer)
 
-    response = cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
+    response = cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
 
     assert json.loads(response) == True
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ValueError)
-def test_vm_publish_missing_publisher_id_mock(config_yml, monkeypatch):
+def test_vm_publish_missing_publisher_id_mock(config_yml, monkeypatch, capsys):
     # Invalid JSON config with missing publisher ID
     vm_config_json = "vm_config_missing_publisher_id.json"
 
     # No mocks required because it does not hit any APIs
-    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
+    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=adal_error.AdalError)
-def test_vm_publish_invalid_auth_details_mock(config_yml, monkeypatch):
+def test_vm_publish_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
     # Invalid config yaml file using incorrect client ID & secret
     config_yml = "tests/sample_app/config_invalid.yml"
 
@@ -433,12 +433,12 @@ def test_vm_publish_invalid_auth_details_mock(config_yml, monkeypatch):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    cli_tests.vm_publish_command(config_yml, json_listing_config, monkeypatch)
+    cli_tests.vm_publish_command(config_yml, json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ConnectionError)
-def test_vm_publish_offer_does_not_exist_mock(config_yml, monkeypatch):
+def test_vm_publish_offer_does_not_exist_mock(config_yml, monkeypatch, capsys):
     # Invalid configuration to show an offer that doesnt exist
     vm_config_json = "vm_config_uncreated_offer.json"
 
@@ -466,12 +466,12 @@ def test_vm_publish_offer_does_not_exist_mock(config_yml, monkeypatch):
     monkeypatch.setattr(requests, "post", mock_publish_offer)
 
     # Expecting a failure as the offer does not exist
-    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
+    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ConnectionError)
-def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch):
+def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch, capsys):
     # Invalid configuration to show an offer that doesnt exist
     vm_config_json = "vm_config.json"
 
@@ -499,57 +499,57 @@ def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch):
     monkeypatch.setattr(requests, "post", mock_publish_offer)
 
     # Expecting a failure as the offer does not exist
-    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch)
+    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
 @pytest.mark.skip(reason="Delete functionality not yet implemented.")
-def test_vm_delete_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.vm_delete_command(config_yml, monkeypatch)
+def test_vm_delete_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)
 
 
-def test_ma_list_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.ma_list_command(config_yml, monkeypatch)
+def test_ma_list_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.ma_list_command(config_yml, monkeypatch, capsys)
 
 
-def test_ma_create_mock(config_yml, ma_config_json, monkeypatch, ama_mock):
-    cli_tests.ma_create_command(config_yml, ma_config_json, monkeypatch)
+def test_ma_create_mock(config_yml, ma_config_json, monkeypatch, ama_mock, capsys):
+    cli_tests.ma_create_command(config_yml, ma_config_json, monkeypatch, capsys)
 
 
-def test_ma_update_mock(config_yml, ma_config_json, monkeypatch, ama_mock):
-    cli_tests.ma_update_command(config_yml, ma_config_json, monkeypatch)
+def test_ma_update_mock(config_yml, ma_config_json, monkeypatch, ama_mock, capsys):
+    cli_tests.ma_update_command(config_yml, ma_config_json, monkeypatch, capsys)
 
 
-def test_ma_show_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.ma_show_command(config_yml, monkeypatch)
+def test_ma_show_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.ma_show_command(config_yml, monkeypatch, capsys)
 
 
-def test_ma_publish_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.ma_publish_command(config_yml, monkeypatch)
+def test_ma_publish_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.ma_publish_command(config_yml, monkeypatch, capsys)
 
 
-def test_ma_delete_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.ma_delete_command(config_yml, monkeypatch)
+def test_ma_delete_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.ma_delete_command(config_yml, monkeypatch, capsys)
 
 
-def test_st_list_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.st_list_command(config_yml, monkeypatch)
+def test_st_list_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.st_list_command(config_yml, monkeypatch, capsys)
 
 
-def test_st_create_mock(config_yml, st_config_json, monkeypatch, ama_mock):
-    cli_tests.st_create_command(config_yml, st_config_json, monkeypatch)
+def test_st_create_mock(config_yml, st_config_json, monkeypatch, ama_mock, capsys):
+    cli_tests.st_create_command(config_yml, st_config_json, monkeypatch, capsys)
 
 
-def test_st_update_mock(config_yml, st_config_json, monkeypatch, ama_mock):
-    cli_tests.st_update_command(config_yml, st_config_json, monkeypatch)
+def test_st_update_mock(config_yml, st_config_json, monkeypatch, ama_mock, capsys):
+    cli_tests.st_update_command(config_yml, st_config_json, monkeypatch, capsys)
 
 
-def test_st_show_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.st_show_command(config_yml, monkeypatch)
+def test_st_show_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.st_show_command(config_yml, monkeypatch, capsys)
 
 
-def test_st_publish_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.st_publish_command(config_yml, monkeypatch)
+def test_st_publish_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.st_publish_command(config_yml, monkeypatch, capsys)
 
 
-def test_st_delete_mock(config_yml, monkeypatch, ama_mock):
-    cli_tests.st_delete_command(config_yml, monkeypatch)
+def test_st_delete_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.st_delete_command(config_yml, monkeypatch, capsys)

@@ -1,5 +1,6 @@
 adal~=1.2.7
 azure-storage-blob
+azure-identity
 certifi >= 14.05.14
 databricks-cli
 msrest~=0.7.1
@@ -12,4 +13,4 @@ wget~=3.2
 pygments
 pytest~=7.1.2
 typing~=3.7.4.3
-setuptools~=62.6.0
+setuptools~=63.2.0
