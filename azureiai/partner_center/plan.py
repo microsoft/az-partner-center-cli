@@ -47,7 +47,7 @@ class Plan(Submission):
             "resourceType": "AzureSkuVariant",
             "state": "Active",
             "friendlyName": self.plan_name,
-            "leadGenID": "publisher_name." + self.name + self.plan_name,
+            "leadGenID": "publisher_name." + self.plan_name,
             "externalID": self.plan_name,
             "cloudAvailabilities": ["public-azure"],
         }
