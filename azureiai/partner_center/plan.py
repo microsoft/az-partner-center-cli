@@ -46,7 +46,7 @@ class Plan(Submission):
         body = {
             "resourceType": "AzureSkuVariant",
             "state": "Active",
-            "friendlyName": self.plan_name,
+            "friendlyName": self.plan_name.replace("_", " "),
             "leadGenID": "publisher_name." + self.plan_name,
             "externalID": self.plan_name,
             "cloudAvailabilities": ["public-azure"],
@@ -97,7 +97,7 @@ class Plan(Submission):
         )
         submissions = api_response.to_dict()
         for submission in submissions["value"]:
-            if "friendlyName" in submission and submission["friendlyName"] == self.plan_name:
+            if "externalID" in submission and submission["externalID"] == self.plan_name:
                 self._ids["plan_id"] = submission["id"]
                 return submission
         raise LookupError(f"Plan with this name not found: {self.plan_name}")
