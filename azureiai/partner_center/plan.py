@@ -48,7 +48,7 @@ class Plan(Submission):
             "state": "Active",
             "friendlyName": self.plan_name,
             "leadGenID": "publisher_name." + self.name + self.plan_name,
-            "externalID": self.name + self.plan_name,
+            "externalID": self.plan_name,
             "cloudAvailabilities": ["public-azure"],
         }
         if self.subtype == "ma":
