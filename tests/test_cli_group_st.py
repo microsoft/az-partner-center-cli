@@ -12,7 +12,8 @@ from tests.cli_groups_tests import (
     st_create_plan_command,
     st_list_plan_command,
     st_show_plan_command,
-    st_update_plan_command, _show_plan_args,
+    st_update_plan_command,
+    _show_plan_args,
 )
 
 
