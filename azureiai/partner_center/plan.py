@@ -46,7 +46,7 @@ class Plan(Submission):
         body = {
             "resourceType": "AzureSkuVariant",
             "state": "Active",
-            "friendlyName": self.plan_name.replace("_", " "),
+            "friendlyName": self.plan_name.replace("-", " "),
             "leadGenID": "publisher_name." + self.plan_name,
             "externalID": self.plan_name,
             "cloudAvailabilities": ["public-azure"],
