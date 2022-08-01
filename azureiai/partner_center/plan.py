@@ -82,7 +82,6 @@ class Plan(Submission):
         """List Azure Submissions."""
         if not self._ids["product_id"]:
             self._set_product_id()
-        print("Product ID: " + self._ids["product_id"])
         api_response = self._apis["variant"].products_product_id_variants_get(
             product_id=self._ids["product_id"], authorization=self.get_auth()
         )
