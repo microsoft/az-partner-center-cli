@@ -301,7 +301,7 @@ def st_update_plan_command(config_yml, json_config, monkeypatch, capsys):
 
 
 def st_show_plan_command(config_yml, monkeypatch, capsys):
-    args_test(monkeypatch, _show_plan_args(config_yml, "st"), capsys)
+    return args_test(monkeypatch, _show_plan_args(config_yml, "st"), capsys)
 
 
 def st_list_plan_command(config_yml, monkeypatch, capsys):

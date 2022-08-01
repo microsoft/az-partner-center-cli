@@ -13,6 +13,7 @@ from tests.cli_groups_tests import (
     st_list_plan_command,
     st_show_plan_command,
     st_update_plan_command,
+    _show_plan_args,
 )
 
 
@@ -56,7 +57,9 @@ def test_st_plan_create(config_yml, json_listing_config, monkeypatch, capsys):
 
 @pytest.mark.integration
 def test_st_plan_show(config_yml, monkeypatch, capsys):
-    st_show_plan_command(config_yml, monkeypatch, capsys)
+    output = st_show_plan_command(config_yml, monkeypatch, capsys)
+    name = _show_plan_args(config_yml, "st")["plan_name"]
+    assert f'"externalID": "{name}",' in output, f"{name} not found in output"
 
 
 @pytest.mark.integration
