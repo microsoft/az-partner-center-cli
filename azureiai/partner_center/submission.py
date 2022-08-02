@@ -59,13 +59,12 @@ class Submission(Offer):
         properties_response = self._update_properties()
         offer_listing_response = self._update_offer_listing()
         preview_audience_response = self._update_preview_audience()
-        resell_through_csps_response = self._set_resell_through_csps()
+        self._set_resell_through_csps()
 
         return (
             properties_response.to_dict()
             + offer_listing_response.to_dict()
             + preview_audience_response.to_dict()
-            + resell_through_csps_response.to_dict()
         )
 
     def show(self):
