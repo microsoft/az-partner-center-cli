@@ -56,12 +56,15 @@ class Submission(Offer):
         if not self._ids["product_id"]:
             self.show()
 
-        self._update_properties()
-        self._update_offer_listing()
-        self._update_preview_audience()
-        self._set_resell_through_csps()
+        properties_response = self._update_properties()
+        offer_listing_response = self._update_offer_listing()
+        preview_audience_response = self._update_preview_audience()
+        resell_through_csps_response = self._set_resell_through_csps()
 
-        return self._ids["product_id"]
+        return properties_response.to_dict() + 
+            offer_listing_response.to_dict() + 
+            preview_audience_response.to_dict() + 
+            resell_through_csps_response.to_dict()
 
     def show(self):
         """Show details of an Azure Submission"""
