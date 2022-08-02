@@ -132,7 +132,7 @@ class Plan(Submission):
         offer_listing = OfferListing(
             product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth()
         )
-        offer_listing.set(properties=offer_listing_properties)
+        return offer_listing.set(properties=offer_listing_properties)
 
     def _update_pricing_and_availability(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
