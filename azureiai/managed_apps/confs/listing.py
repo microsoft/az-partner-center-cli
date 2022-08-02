@@ -24,7 +24,7 @@ class Listing(ListingOfferConfigurations):
 
         :param properties: path to configuration json
         """
-        super().set(properties=properties)
+        return super().set(properties=properties)
 
     def _get_properties(self, properties):
         if not os.path.isfile(properties):
