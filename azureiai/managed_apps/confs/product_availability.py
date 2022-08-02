@@ -43,7 +43,7 @@ class ProductAvailability(OfferConfigurations):
             "@odata.etag": odata_etag,
             "id": settings_id,
         }
-        self.api.products_product_id_productavailabilities_product_availability_id_put(
+        return self.api.products_product_id_productavailabilities_product_availability_id_put(
             authorization=self.authorization,
             if_match=odata_etag,
             product_id=self.product_id,
