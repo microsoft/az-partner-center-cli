@@ -52,7 +52,7 @@ class Properties(OfferConfigurations):
             "@odata.etag": odata_etag,
         }
 
-        self.api.products_product_id_properties_property_id_put(
+        return self.api.products_product_id_properties_property_id_put(
             authorization=self.authorization,
             if_match=odata_etag,
             product_id=self.product_id,
