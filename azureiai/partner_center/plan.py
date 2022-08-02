@@ -66,17 +66,17 @@ class Plan(Submission):
         )
         self._ids["plan_id"] = api_response["id"]
         self.update()
-        return api_response
+        return api_response.to_dict()
 
     def update(self):
         """Update Existing Application"""
         if not self._ids["product_id"]:
             self.show()
 
-        self._update_plan_listing()
+        plan_listing_response = self._update_plan_listing()
         # self._update_pricing_and_availability() # 401 error
-        self._update_technical_configuration()
-        return self._ids["product_id"]
+        technical_configuration_response = self._update_technical_configuration()
+        return technical_configuration_response.to_dict() + plan_listing_response.to_dict()
 
     def list_contents(self):
         """List Azure Submissions."""
@@ -105,12 +105,12 @@ class Plan(Submission):
         if not self._ids["plan_id"]:
             self.show()
 
-        self._apis["variant"].products_product_id_variants_variant_id_delete(
+        api_response = self._apis["variant"].products_product_id_variants_variant_id_delete(
             product_id=self._ids["product_id"],
             variant_id=self._ids["plan_id"],
             authorization=self.get_auth(),
         )
-        return {}
+        return api_response.to_dict()
 
     def _set_product_id(self):
         """Set Azure Partner Center Product ID"""
