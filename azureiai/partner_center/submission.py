@@ -151,7 +151,7 @@ class Submission(Offer):
         version = json_config["plan_overview"][0]["technical_configuration"]["version"]
 
         offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
-        offer_listing_properties.set(
+        return offer_listing_properties.set(
             version,
             leveled_categories=leveled_categories,
         )
@@ -162,11 +162,11 @@ class Submission(Offer):
 
         azure_subscription = json_config["preview_audience"]["subscriptions"]
         availability = ProductAvailability(product_id=self.get_product_id(), authorization=self.get_auth())
-        availability.set(azure_subscription=azure_subscription)
+        return availability.set(azure_subscription=azure_subscription)
 
     def _update_offer_listing(self, update_image=True):
         listing = Listing(product_id=self.get_product_id(), authorization=self.get_auth())
-        listing.set(properties=Path(self.app_path).joinpath(self.json_listing_config))
+        api_response = listing.set(properties=Path(self.app_path).joinpath(self.json_listing_config))
 
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
@@ -191,3 +191,4 @@ class Submission(Offer):
             listing_image.set(file_name=logo_small, file_path=self.app_path, logo_type="AzureLogoSmall")
             listing_image.set(file_name=logo_medium, file_path=self.app_path, logo_type="AzureLogoMedium")
             listing_image.set(file_name=logo_wide, file_path=self.app_path, logo_type="AzureLogoWide")
+        return api_response
