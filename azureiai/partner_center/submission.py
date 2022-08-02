@@ -61,7 +61,12 @@ class Submission(Offer):
         preview_audience_response = self._update_preview_audience()
         resell_through_csps_response = self._set_resell_through_csps()
 
-        return properties_response.to_dict() + offer_listing_response.to_dict() + preview_audience_response.to_dict() + resell_through_csps_response.to_dict()
+        return (
+            properties_response.to_dict()
+            + offer_listing_response.to_dict()
+            + preview_audience_response.to_dict()
+            + resell_through_csps_response.to_dict()
+        )
 
     def show(self):
         """Show details of an Azure Submission"""
