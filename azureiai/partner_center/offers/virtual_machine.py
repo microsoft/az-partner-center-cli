@@ -140,7 +140,13 @@ class VirtualMachine(Submission):
         return headers, json_config, url
 
     def _raise_connection_error(self, response):
-        raise ConnectionError(json.dumps(response.json(), indent=4).replace("\\r", "").replace("\\n", os.linesep))
+        """if response body is not provided, return with the error code instead"""
+        error_string = (
+            json.dumps(response.json(), indent=4).replace("\\r", "").replace("\\n", os.linesep)
+            if response.json()
+            else response.status_code
+        )
+        raise ConnectionError(error_string)
 
 
 class VirtualMachineCLI(CLIParser):
