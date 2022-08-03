@@ -46,7 +46,7 @@ def st_config_json():
 @pytest.fixture
 def co_config_json():
     """Fixuture used to configure deployment for testing"""
-    return "co_config.json
+    return "co_config.json"
 
 
 def test_vm_list_mock(config_yml, monkeypatch, ama_mock, capsys):
