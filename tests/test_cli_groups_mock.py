@@ -568,11 +568,11 @@ def test_co_list_mock(config_yml, monkeypatch, ama_mock, capsys):
 
 
 def test_co_create_mock(config_yml, co_config_json, monkeypatch, ama_mock, capsys):
-    cli_tests.co_create_command(config_yml, st_config_json, monkeypatch, capsys)
+    cli_tests.co_create_command(config_yml, co_config_json, monkeypatch, capsys)
 
 
 def test_co_update_mock(config_yml, co_config_json, monkeypatch, ama_mock, capsys):
-    cli_tests.co_update_command(config_yml, st_config_json, monkeypatch, capsys)
+    cli_tests.co_update_command(config_yml, co_config_json, monkeypatch, capsys)
 
 
 def test_co_show_mock(config_yml, monkeypatch, ama_mock, capsys):
