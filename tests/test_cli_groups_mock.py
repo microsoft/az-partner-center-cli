@@ -39,7 +39,7 @@ def ma_config_json():
 def st_config_json():
     """Fixuture used to configure deployment for testing"""
     test_path = Path(__file__).parents[1]
-    config_path = test_path.joinpath("st_config.json")
+    config_path = test_path.joinpath("sample_app/st_config.json")
     return config_path if config_path.is_file() else test_path.joinpath("template.listing_config.json")
 
 
