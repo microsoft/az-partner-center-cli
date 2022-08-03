@@ -122,6 +122,8 @@ class Container(Submission):
     def _prepare_request(self):
         with open(self.config_yaml, encoding="utf8") as file:
             settings = yaml.safe_load(file)
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
 
         offer_id = os.getenv("OFFER_ID", settings.get("id", "defaultId"))
         publisher_id = os.getenv("PUBLISHER_ID", settings["publisherId"])
