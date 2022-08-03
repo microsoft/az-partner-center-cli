@@ -103,6 +103,7 @@ class ResponeJson:
         self.response_json = response_json
         self.id = response_json.id
         self.value = "mock-value"
+        self.state = "mock-state"
 
     def to_dict(self):
         return self.response_json
