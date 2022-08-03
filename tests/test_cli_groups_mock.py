@@ -46,7 +46,9 @@ def st_config_json():
 @pytest.fixture
 def co_config_json():
     """Fixuture used to configure deployment for testing"""
-    return Path(__file__).parents[0].joinpath("sample_app").joinpath("co_config.json")
+    test_path = Path(__file__).parents[1]
+    config_path = test_path.joinpath("co_config.json")
+    return config_path if config_path.is_file() else test_path.joinpath("template.vm.listing_config.json")
 
 
 def test_vm_list_mock(config_yml, monkeypatch, ama_mock, capsys):
