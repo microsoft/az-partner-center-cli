@@ -239,23 +239,20 @@ def ama_mock(ama_name, monkeypatch):
         return 201
 
     def mock_put_request(url, data="", headers="", params="", json=""):
-        response_json = namedtuple("response", ["status_code"])(*[201])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["status_code"])(*[201])
 
     def mock_acquire_token_with_client_credentials(self, resource, client_id, client_secret):
         return {"accessToken": "mock-token"}
 
     def mock_image_listing(self, authorization, product_id, listing_id):
-        response_json = namedtuple("response", ["value"])(
+        return namedtuple("response", ["value"])(
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
-        return ResponeJson(response_json)
 
     def mock_app_path(self, authorization, product_id, listing_id):
-        response_json = namedtuple("response", ["value"])(
+        return namedtuple("response", ["value"])(
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
-        return ResponeJson(response_json)
 
     monkeypatch.setattr(SubmissionApi, "products_product_id_submissions_submission_id_get", mock_products_get)
     monkeypatch.setattr(VariantApi, "products_product_id_variants_get", mock_products_get)
