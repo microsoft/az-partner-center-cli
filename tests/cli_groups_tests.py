@@ -205,7 +205,10 @@ def co_update_command(config_yml, json_config, monkeypatch, capsys):
 
 
 def co_show_command(config_yml, monkeypatch, capsys):
-    args_test(monkeypatch, _show_command_args(config_yml, "co"), capsys)
+    args = _show_command_args(config_yml, subgroup="co")
+    args["config_json"] = json_config
+    args["app_path"] = APP_PATH
+    return args_test(monkeypatch, args, capsys)
 
 
 def co_create_plan_command(config_yml, json_config, monkeypatch, capsys):
@@ -229,7 +232,10 @@ def co_delete_plan_command(config_yml, monkeypatch, capsys):
 
 
 def co_publish_command(config_yml, monkeypatch, capsys):
-    args_test(monkeypatch, _publish_command_args(config_yml, "co"), capsys)
+    args = _publish_command_args(config_yml, subgroup="co")
+    args["config_json"] = json_config
+    args["app_path"] = APP_PATH
+    return args_test(monkeypatch, args, capsys)
 
 
 def co_delete_command(config_yml, monkeypatch, capsys):
