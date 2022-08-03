@@ -26,7 +26,7 @@ class Container(Submission):
         name=None,
         config_yaml=r"config.yml",
         app_path: str = ".",
-        json_listing_config="ma_config.json",
+        json_listing_config="co_config.json",
     ):
         super().__init__(
             name=name,
