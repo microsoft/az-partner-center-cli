@@ -163,8 +163,7 @@ def ama_mock(ama_name, monkeypatch):
 
     def mock_branches_get(self, product_id, module, authorization):
         variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc-123", "draft-instance-id"])
-        response_json = namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
 
     def mock_package_config_get(self, product_id, instance_id, authorization):
         return {"value": [{"id": "not_null"}]}
