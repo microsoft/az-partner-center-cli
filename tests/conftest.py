@@ -158,7 +158,7 @@ def ama_mock(ama_name, monkeypatch):
 
     def mock_variant_response_fa_get(self, authorization, product_id, instance_id, expand):
         variant = namedtuple("a_value", ["id", "odata_etag"])(*["id-not-none", "otag-id"])
-        response_json =  namedtuple("response", "value")(*[[variant]])
+        response_json = namedtuple("response", "value")(*[[variant]])
         return ResponeJson(response_json)
 
     def mock_branches_get(self, product_id, module, authorization):
