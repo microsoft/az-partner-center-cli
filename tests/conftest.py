@@ -187,16 +187,13 @@ def ama_mock(ama_name, monkeypatch):
         return ResponeJson(response_json)
 
     def mock_reseller_response(self, authorization, product_id, body):
-        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_response_products_post(self, authorization, product_id, body):
-        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_post_response_listing(self, authorization, product_id, listing_id, body):
-        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_package_put(self, authorization, product_id, package_id, body):
         return {}
@@ -217,28 +214,23 @@ def ama_mock(ama_name, monkeypatch):
         return ResponeJson(response_json)
 
     def mock_response(self, authorization, product_id, body, if_match, listing_id):
-        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_response_submissions_get(self, authorization, product_id):
         response_json = namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
         return ResponeJson(response_json)
 
     def mock_submission_response_post(self, authorization, product_id, body):
-        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_submission_response(self, authorization, product_id, submission_id):
-        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_propery_response(self, authorization, product_id, body, if_match, property_id):
-        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_image_response(self, authorization, product_id, body, if_match, listing_id, image_id):
-        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-        return ResponeJson(response_json)
+        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_package_sas_upload(sas_url, file_name_full_path):
         return 201
