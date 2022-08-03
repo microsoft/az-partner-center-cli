@@ -4,6 +4,7 @@
 """CLI Wrapper for Creating, Updating, or Deleting Azure Solution Templates"""
 import json
 import os
+from pathlib import Path
 
 import requests
 import yaml
