@@ -5,7 +5,7 @@
     "crm"      : ""
   },
   "property_settings"      : {
-    "category"  : {
+    "leveledCategories"  : {
       "developer-tools-azure-apps": [
         "tools-developer-tools"
       ]

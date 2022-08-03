@@ -69,7 +69,7 @@ class Package(VariantPlanConfiguration):
         app_zip_dir: str,
         file_name: str,
         version: str,
-        allow_jit_access: bool,
+        allow_jit_access: bool = False,
         policies=None,
         resource_type: str = "AzureManagedApplicationPackageConfiguration",
         config_yaml: str = "config.yml",

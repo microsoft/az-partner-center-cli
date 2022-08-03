@@ -7210,7 +7210,7 @@
                       "enum": [
                         "developer-service",
                         "scripts",
-                        "tools",
+                        "tools-developer-tools",
                         "other-developer-tools"
                       ]
                     }

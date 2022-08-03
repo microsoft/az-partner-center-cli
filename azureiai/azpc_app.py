@@ -37,7 +37,11 @@ def main():
         "st": SolutionTemplateCLI,
         "co": ContainerCLI,
     }
-    return run(commands[subgroup]())
+    try:
+        print(run(commands[subgroup]()), file=sys.stdout)
+    except NameError as error:
+        print(error, file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

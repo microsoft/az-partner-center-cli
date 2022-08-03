@@ -28,20 +28,20 @@ from tests.cli_groups_tests import (
 
 
 @pytest.mark.integration
-def test_co_list(config_yml, monkeypatch):
-    co_list_command(config_yml, monkeypatch)
+def test_co_list(config_yml, monkeypatch, capsys):
+    co_list_command(config_yml, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
+def test_co_create(config_yml, monkeypatch, app_path_fix, json_listing_config, capsys):
     try:
-        co_show_command(config_yml, monkeypatch)
+        co_show_command(config_yml, monkeypatch, capsys)
 
         print("Managed App Found")
         with pytest.raises(ApiException):
-            co_create_command(config_yml, json_listing_config, monkeypatch)
+            co_create_command(config_yml, json_listing_config, monkeypatch, capsys)
     except:
-        co_create_command(config_yml, json_listing_config, monkeypatch)
+        co_create_command(config_yml, json_listing_config, monkeypatch, capsys)
 
     offer = Container(name="test_co")
     offer.show()
@@ -54,45 +54,45 @@ def test_co_create(config_yml, monkeypatch, app_path_fix, json_listing_config):
 
 
 @pytest.mark.integration
-def test_co_update(config_yml, json_listing_config, monkeypatch):
-    co_update_command(config_yml, json_listing_config, monkeypatch)
+def test_co_update(config_yml, json_listing_config, monkeypatch, capsys):
+    co_update_command(config_yml, json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_show(config_yml, monkeypatch):
-    co_show_command(config_yml, monkeypatch)
+def test_co_show(config_yml, monkeypatch, capsys):
+    co_show_command(config_yml, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_plan_create(config_yml, json_listing_config, monkeypatch):
-    co_create_plan_command(config_yml, json_listing_config, monkeypatch)
+def test_co_plan_create(config_yml, json_listing_config, monkeypatch, capsys):
+    co_create_plan_command(config_yml, json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_plan_show(config_yml, monkeypatch):
-    co_show_plan_command(config_yml, monkeypatch)
+def test_co_plan_show(config_yml, monkeypatch, capsys):
+    co_show_plan_command(config_yml, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_plan_update(config_yml, json_listing_config, monkeypatch):
-    co_update_plan_command(config_yml, json_listing_config, monkeypatch)
+def test_co_plan_update(config_yml, json_listing_config, monkeypatch, capsys):
+    co_update_plan_command(config_yml, json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_plan_list(config_yml, monkeypatch):
-    co_list_plan_command(config_yml, monkeypatch)
+def test_co_plan_list(config_yml, monkeypatch, capsys):
+    co_list_plan_command(config_yml, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_plan_delete(config_yml, monkeypatch):
-    co_delete_plan_command(config_yml, monkeypatch)
+def test_co_plan_delete(config_yml, monkeypatch, capsys):
+    co_delete_plan_command(config_yml, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_publish(config_yml, monkeypatch):
-    co_publish_command(config_yml, monkeypatch)
+def test_co_publish(config_yml, monkeypatch, capsys):
+    co_publish_command(config_yml, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_co_delete(config_yml, monkeypatch):
-    co_delete_command(config_yml, monkeypatch)
+def test_co_delete(config_yml, monkeypatch, capsys):
+    co_delete_command(config_yml, monkeypatch, capsys)

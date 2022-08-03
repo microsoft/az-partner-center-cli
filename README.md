@@ -1,6 +1,6 @@
 # az-partner-center-cli
 This application wraps the swagger generate client of the partner ingestion apis. 
-The documentation can be found [here](https://apidocs.microsoft.com/services/partneringestion/#/)
+The documentation can be found [here](https://ingestionapi-swagger.azureedge.net/#/)
 
 ## Requirements.
 
@@ -76,10 +76,10 @@ azpc ma update --name $name
 # azpc ma delete --name $name
 
 azpc ma plan list   --name $name
-azpc ma plan create --name $name --plan_name $plan_name 
-azpc ma plan show   --name $name --plan_name $plan_name
-azpc ma plan update --name $name --plan_name $plan_name
-# azpc ma plan delete --name $name --plan_name $plan_name
+azpc ma plan create --name $name --plan-name $plan_name 
+azpc ma plan show   --name $name --plan-name $plan_name
+azpc ma plan update --name $name --plan-name $plan_name
+# azpc ma plan delete --name $name --plan-name $plan_name
 
 azpc ma publish --name $name
 ```
@@ -98,10 +98,10 @@ azpc st update --name $name
 # azpc st delete --name $name
 
 azpc st plan list   --name $name
-azpc st plan create --name $name --plan_name $plan_name 
-azpc st plan show   --name $name --plan_name $plan_name
-azpc st plan update --name $name --plan_name $plan_name
-# azpc st plan delete --name $name --plan_name $plan_name
+azpc st plan create --name $name --plan-name $plan_name 
+azpc st plan show   --name $name --plan-name $plan_name
+azpc st plan update --name $name --plan-name $plan_name
+# azpc st plan delete --name $name --plan-name $plan_name
 
 azpc st publish --name $name
 ```
@@ -125,10 +125,10 @@ azpc vm publish --name $name --config-yml $config_yml --config-json $config_json
 # azpc vm delete --name $name
 
 azpc vm plan list   --name $name
-azpc vm plan create --name $name --plan_name $plan_name 
-azpc vm plan show   --name $name --plan_name $plan_name
-azpc vm plan update --name $name --plan_name $plan_name
-# azpc vm plan delete --name $name --plan_name $plan_name
+azpc vm plan create --name $name --plan-name $plan_name 
+azpc vm plan show   --name $name --plan-name $plan_name
+azpc vm plan update --name $name --plan-name $plan_name
+# azpc vm plan delete --name $name --plan-name $plan_name
 
 azpc vm publish --name $name --notification-emails $notificationEmails
 azpc vm status --name $name
@@ -148,10 +148,10 @@ azpc co update --name $name
 # azpc vm delete --name $name
 
 azpc co plan list   --name $name
-azpc co plan create --name $name --plan_name $plan_name 
-azpc co plan show   --name $name --plan_name $plan_name
-azpc co plan update --name $name --plan_name $plan_name
-# azpc co plan delete --name $name --plan_name $plan_name
+azpc co plan create --name $name --plan-name $plan_name 
+azpc co plan show   --name $name --plan-name $plan_name
+azpc co plan update --name $name --plan-name $plan_name
+# azpc co plan delete --name $name --plan-name $plan_name
 
 azpc co publish --name $name
 ```
