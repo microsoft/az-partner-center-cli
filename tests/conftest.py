@@ -98,6 +98,16 @@ def template_config():
     return str(__file__).split("tests")[0] + "template.config.yml"
 
 
+class ResponeJson:
+    def __init__(self, response_json):
+        self.response_json = response_json
+        self.id = response_json.id
+        self.value = "mock-value"
+
+    def to_dict(self):
+        return self.response_json
+
+
 @pytest.fixture
 def ama_mock(ama_name, monkeypatch):
     def mock_auth(self):
@@ -144,25 +154,17 @@ def ama_mock(ama_name, monkeypatch):
 
     def mock_products_post(self, authorization, body):
         response_json = namedtuple("response", ["id"])(*["product-id"])
-
-        class ResponeJson:
-            def __init__(self, response_json):
-                self.response_json = response_json
-                self.id = response_json.id
-                self.value = "mock-value"
-
-            def to_dict(self):
-                return self.response_json
-
         return ResponeJson(response_json)
 
     def mock_variant_response_fa_get(self, authorization, product_id, instance_id, expand):
         variant = namedtuple("a_value", ["id", "odata_etag"])(*["id-not-none", "otag-id"])
-        return namedtuple("response", "value")(*[[variant]])
+        response_json =  namedtuple("response", "value")(*[[variant]])
+        return ResponeJson(response_json)
 
     def mock_branches_get(self, product_id, module, authorization):
         variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc-123", "draft-instance-id"])
-        return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
+        response_json = namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
+        return ResponeJson(response_json)
 
     def mock_package_config_get(self, product_id, instance_id, authorization):
         return {"value": [{"id": "not_null"}]}
@@ -172,56 +174,71 @@ def ama_mock(ama_name, monkeypatch):
 
     def mock_variant_get(self, authorization, product_id, instance_id):
         variant = namedtuple("a_value", ["id", "odata_etag"])(*["id-not-none", "otag-id"])
-        return namedtuple("response", "value")(*[[variant]])
+        response_json = namedtuple("response", "value")(*[[variant]])
+        return ResponeJson(response_json)
 
     def mock_variant_module_get(self, product_id, authorization, instance_id):
         variant = namedtuple("a_value", ["id", "odata_etag"])(*["id-not-none", "otag-id"])
-        return namedtuple("response", "value")(*[[variant]])
+        response_json = namedtuple("response", "value")(*[[variant]])
+        return ResponeJson(response_json)
 
     def mock_package_api_get(self, product_id, package_id, authorization):
-        return namedtuple("response", ["state", "odata_etag", "id"])(*["Processed", "not-nothing", ""])
+        response_json = namedtuple("response", ["state", "odata_etag", "id"])(*["Processed", "not-nothing", ""])
+        return ResponeJson(response_json)
 
     def mock_reseller_response(self, authorization, product_id, body):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_response_products_post(self, authorization, product_id, body):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_post_response_listing(self, authorization, product_id, listing_id, body):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_package_put(self, authorization, product_id, package_id, body):
         return {}
 
     def mock_variant_response_fa_put(self, authorization, product_id, feature_availability_id, if_match, body, expand):
         variant = namedtuple("a_value", ["id", "odata_etag"])(*["id-not-none", "otag-id"])
-        return namedtuple("response", "value")(*[[variant]])
+        response_json = namedtuple("response", "value")(*[[variant]])
+        return ResponeJson(response_json)
 
     def mock_pa_response(self, authorization, product_id, if_match, product_availability_id, body):
         variant = namedtuple("a_value", ["id", "odata_etag"])(*["id-not-none", "otag-id"])
-        return namedtuple("response", "value")(*[[variant]])
+        response_json = namedtuple("response", "value")(*[[variant]])
+        return ResponeJson(response_json)
 
     def mock_variant_response_package(self, authorization, product_id, if_match, package_configuration_id, body):
         variant = namedtuple("a_value", ["id", "odata_etag"])(*["id-not-none", "otag-id"])
-        return namedtuple("response", "value")(*[[variant]])
+        response_json = namedtuple("response", "value")(*[[variant]])
+        return ResponeJson(response_json)
 
     def mock_response(self, authorization, product_id, body, if_match, listing_id):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_response_submissions_get(self, authorization, product_id):
-        return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_submission_response_post(self, authorization, product_id, body):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_submission_response(self, authorization, product_id, submission_id):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_propery_response(self, authorization, product_id, body, if_match, property_id):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_image_response(self, authorization, product_id, body, if_match, listing_id, image_id):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        response_json = namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
+        return ResponeJson(response_json)
 
     def mock_package_sas_upload(sas_url, file_name_full_path):
         return 201
@@ -230,20 +247,23 @@ def ama_mock(ama_name, monkeypatch):
         return 201
 
     def mock_put_request(url, data="", headers="", params="", json=""):
-        return namedtuple("response", ["status_code"])(*[201])
+        response_json = namedtuple("response", ["status_code"])(*[201])
+        return ResponeJson(response_json)
 
     def mock_acquire_token_with_client_credentials(self, resource, client_id, client_secret):
         return {"accessToken": "mock-token"}
 
     def mock_image_listing(self, authorization, product_id, listing_id):
-        return namedtuple("response", ["value"])(
+        response_json = namedtuple("response", ["value"])(
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
+        return ResponeJson(response_json)
 
     def mock_app_path(self, authorization, product_id, listing_id):
-        return namedtuple("response", ["value"])(
+        response_json = namedtuple("response", ["value"])(
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
+        return ResponeJson(response_json)
 
     monkeypatch.setattr(SubmissionApi, "products_product_id_submissions_submission_id_get", mock_products_get)
     monkeypatch.setattr(VariantApi, "products_product_id_variants_get", mock_products_get)
