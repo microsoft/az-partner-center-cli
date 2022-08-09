@@ -15,7 +15,9 @@ from azureiai.partner_center.cli_parser import CLIParser
 from azureiai.partner_center.submission import Submission
 
 AZURE_VIRTUAL_MACHINE = "AzureThirdPartyVirtualMachine"
-URL_BASE = "https://cloudpartner.azure.com/api/publishers"
+RESOURCE_CPP_API = "https://cloudpartner.azure.com"
+RESOURCE_PC_API = "https://api.partner.microsoft.com"
+URL_BASE = RESOURCE_CPP_API + "/api/publishers"
 
 
 class VirtualMachine(Submission):
@@ -37,6 +39,7 @@ class VirtualMachine(Submission):
             json_listing_config=json_listing_config,
         )
         self.notification_emails = notification_emails
+        self._legacy_authorization = None
 
     def create(self):
         """
@@ -50,7 +53,7 @@ class VirtualMachine(Submission):
         try:
             if self.show()["id"]:
                 raise NameError("Virtual Machine offer already exists. Try using 'update'?")
-        except ConnectionError:
+        except LookupError:
             pass  # Passing this error is the only way to determine that an offer does not exist
         return self.update()
 
@@ -59,15 +62,6 @@ class VirtualMachine(Submission):
         headers, json_config, url = self._prepare_request()
 
         response = requests.put(url, json=json_config, headers=headers)
-        if response.status_code != 200:
-            self._raise_connection_error(response)
-        return response.json()
-
-    def show(self) -> dict:
-        """Show the specified existing Virtual Machine offer"""
-        headers, _, url = self._prepare_request()
-
-        response = requests.get(url, headers=headers)
         if response.status_code != 200:
             self._raise_connection_error(response)
         return response.json()
@@ -81,7 +75,7 @@ class VirtualMachine(Submission):
             publisher_id = settings["publisherId"]
         offer_type_filter = "offerTypeId eq 'microsoft-azure-virtualmachines'"
         url = f"{URL_BASE}/{publisher_id}/offers?api-version=2017-10-31&$filter={offer_type_filter}"
-        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        headers = {"Authorization": self.get_auth(RESOURCE_CPP_API), "Content-Type": "application/json"}
         response = requests.get(url, headers=headers)
         return response.json()
 
@@ -96,7 +90,7 @@ class VirtualMachine(Submission):
 
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/publish?api-version=2017-10-31"
 
-        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        headers = {"Authorization": self.get_auth(RESOURCE_CPP_API), "Content-Type": "application/json"}
 
         response = requests.post(
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
@@ -105,28 +99,39 @@ class VirtualMachine(Submission):
             self._raise_connection_error(response)
         return response
 
-    def get_auth(self) -> str:
+    def get_auth(self, resource=RESOURCE_PC_API) -> str:
         """
         Create Authentication Header
 
         :return: Authorization Header contents
         """
-        if self._authorization is None:
-            with open(self.config_yaml, encoding="utf8") as file:
+        if resource == RESOURCE_PC_API:
+            if self._authorization is None:
+                self._authorization = f"Bearer {self._get_auth(resource)}"
+            return self._authorization
+
+        elif resource == RESOURCE_CPP_API:
+            if self._legacy_authorization is None:
+                self._legacy_authorization = f"Bearer {self._get_auth(resource)}"
+            return self._legacy_authorization
+        else:
+            raise Exception("The provided resource is unsupported.")
+
+    def _get_auth(self, resource) -> str:
+        with open(self.config_yaml, encoding="utf8") as file:
                 settings = yaml.safe_load(file)
 
-            client_id = os.getenv(AAD_ID, settings["aad_id"])
-            client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
-            tenant_id = os.getenv(TENANT_ID, settings["tenant_id"])
+        client_id = os.getenv(AAD_ID, settings["aad_id"])
+        client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
+        tenant_id = os.getenv(TENANT_ID, settings["tenant_id"])
 
-            auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
-            token_response = auth_context.acquire_token_with_client_credentials(
-                resource="https://cloudpartner.azure.com",
-                client_id=client_id,
-                client_secret=client_secret,
-            )
-            self._authorization = token_response["accessToken"]
-        return self._authorization
+        auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
+        token_response = auth_context.acquire_token_with_client_credentials(
+            resource=resource,
+            client_id=client_id,
+            client_secret=client_secret,
+        )
+        return token_response["accessToken"]
 
     def _prepare_request(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
@@ -136,7 +141,7 @@ class VirtualMachine(Submission):
             publisher_id = json_config["publisherId"]
         offer_id = json_config["id"]
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
-        headers = {"Authorization": "Bearer " + self.get_auth(), "Content-Type": "application/json"}
+        headers = {"Authorization": self.get_auth(RESOURCE_CPP_API), "Content-Type": "application/json"}
         return headers, json_config, url
 
     def _raise_connection_error(self, response):
@@ -154,13 +159,6 @@ class VirtualMachineCLI(CLIParser):
 
     def __init__(self):
         super().__init__(submission_type=VirtualMachine)
-
-    def show(self):
-        """Show a Virtual Machine Offer"""
-        args = self._add_name_config_json_argument()
-        return VirtualMachine(
-            args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
-        ).show()
 
     def publish(self):
         """Publish a Virtual Machine Offer"""
