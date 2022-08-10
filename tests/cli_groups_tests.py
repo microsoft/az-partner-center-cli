@@ -438,9 +438,11 @@ def _assert_technical_configuration(offer, json_listing_config):
     print("Technical Configuration: " + str(tech_configuration))
     assert tech_configuration
 
+
 def _assert_vm_show(offer, json_listing_config):
     assert offer["name"] == json_listing_config["definition"]["displayText"]
     assert offer["id"]
+
 
 def _assert_vm_offer_listing(offer, json_listing_config):
     assert offer["offerTypeId"] == json_listing_config["offerTypeId"]

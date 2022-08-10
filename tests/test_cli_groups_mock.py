@@ -494,7 +494,7 @@ def test_vm_delete_success_mock(config_yml, monkeypatch, capsys):
 
     # Mock VM offer delete API endpoint
     def mock_delete_product(self, product_id, authorization, **kwargs):
-        return ''
+        return ""
 
     monkeypatch.setattr(ProductApi, "products_product_id_delete", mock_delete_product)
     cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)

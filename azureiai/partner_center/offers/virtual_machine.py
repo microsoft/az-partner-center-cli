@@ -119,7 +119,7 @@ class VirtualMachine(Submission):
 
     def _get_auth(self, resource) -> str:
         with open(self.config_yaml, encoding="utf8") as file:
-                settings = yaml.safe_load(file)
+            settings = yaml.safe_load(file)
 
         client_id = os.getenv(AAD_ID, settings["aad_id"])
         client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
