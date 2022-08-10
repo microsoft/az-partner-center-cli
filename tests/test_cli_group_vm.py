@@ -29,6 +29,7 @@ from tests.cli_groups_tests import (
     _assert_pricing_and_availability,
     _assert_technical_configuration,
     _assert_plan_listing,
+    _assert_vm_show,
     _assert_vm_properties,
     _assert_vm_offer_listing,
     _assert_vm_preview_audience,
@@ -200,10 +201,7 @@ def test_vm_show_success(config_yml, monkeypatch, capsys):
     with open(Path(app_path_fix).joinpath(json_listing_config), "r", encoding="utf8") as read_file:
         json_config = json.load(read_file)
 
-    _assert_vm_properties(offer_listing, json_config, 1)
-    _assert_vm_offer_listing(offer_listing, json_config)
-    _assert_vm_preview_audience(offer_listing, json_config)
-    _assert_vm_plan_listing(offer_listing, json_config)
+    _assert_vm_show(offer_listing, json_config)
 
 
 @pytest.mark.integration
@@ -231,7 +229,7 @@ def test_vm_show_invalid_auth_details(config_yml, monkeypatch, capsys):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=ConnectionError)
+@pytest.mark.xfail(raises=LookupError)
 def test_vm_show_invalid_offer(config_yml, monkeypatch, capsys):
     # Invalid configuration to show an offer that doesnt exist
     json_listing_config = "vm_config_uncreated_offer.json"
@@ -321,7 +319,7 @@ def test_vm_publish_offer_doesnot_exist(config_yml, monkeypatch, capsys):
     json_listing_config = "vm_config_uncreated_offer.json"
 
     # Confirm that the offer does not exist
-    with pytest.raises(ApiException):
+    with pytest.raises(LookupError):
         vm_show_command(config_yml, json_listing_config, monkeypatch, capsys)
 
     # Expecting a failure as the offer does not exist

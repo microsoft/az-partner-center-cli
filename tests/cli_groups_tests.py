@@ -126,7 +126,9 @@ def _delete_command_args(config_yml, subgroup):
 
 
 def vm_create_command(config_yml, json_config, monkeypatch, capsys):
-    return args_test(monkeypatch, _create_command_args(config_yml, json_config, subgroup="vm"), capsys)
+    args = _create_command_args(config_yml, json_config, subgroup="vm")
+    args["name"] = "test-vm"
+    return args_test(monkeypatch, args, capsys)
 
 
 def vm_update_command(config_yml, json_config, monkeypatch, capsys):
@@ -169,6 +171,7 @@ def vm_delete_plan_command(config_yml, monkeypatch, capsys):
 
 def vm_show_command(config_yml, json_config, monkeypatch, capsys):
     args = _show_command_args(config_yml, subgroup="vm")
+    args["name"] = "test-vm"
     args["config_json"] = json_config
     args["app_path"] = APP_PATH
     return args_test(monkeypatch, args, capsys)
@@ -379,11 +382,9 @@ def _assert_offer_listing(offer, json_listing_config):
 def _assert_vm_list_all_offers(vm_list, json_listing_config):
     assert len(vm_list) >= 1
     assert vm_list[0]["offerTypeId"] == json_listing_config["offerTypeId"]
-    assert vm_list[0]["publisherId"] == json_listing_config["publisherId"]
     assert vm_list[0]["id"] == json_listing_config["id"]
     assert vm_list[0]["definition"]["displayText"] == json_listing_config["definition"]["displayText"]
     assert vm_list[1]["offerTypeId"] == json_listing_config["offerTypeId"]
-    assert vm_list[1]["publisherId"] == json_listing_config["publisherId"]
 
 
 def _assert_vm_offer_listing_integration(vm_list):
@@ -437,6 +438,9 @@ def _assert_technical_configuration(offer, json_listing_config):
     print("Technical Configuration: " + str(tech_configuration))
     assert tech_configuration
 
+def _assert_vm_show(offer, json_listing_config):
+    assert offer["name"] == json_listing_config["definition"]["displayText"]
+    assert offer["id"]
 
 def _assert_vm_offer_listing(offer, json_listing_config):
     assert offer["offerTypeId"] == json_listing_config["offerTypeId"]
