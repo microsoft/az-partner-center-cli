@@ -34,21 +34,11 @@
               ]
           }
       ],
-      "microsoft-azure-marketplace.smallLogo": "https://github.com/alexandrakoller/test_logos/blob/main/image_48_48_small.png",
-      "microsoft-azure-marketplace.mediumLogo": "https://github.com/alexandrakoller/test_logos/blob/main/image_90_90_medium.png",
-      "microsoft-azure-marketplace.largeLogo": "https://github.com/alexandrakoller/test_logos/blob/main/image_216_216_large.png",
-      "microsoft-azure-marketplace.wideLogo": "https://github.com/alexandrakoller/test_logos/blob/main/image_255_115_wide.png",
       "microsoft-azure-marketplace.screenshots": [],
       "microsoft-azure-marketplace.videos": [],
       "microsoft-azure-marketplace.leadDestination": "None",
       "microsoft-azure-marketplace.privacyURL": "https://azuremarketplace.microsoft.com",
       "microsoft-azure-marketplace.termsOfUse": "Terms of use",
-      "microsoft-azure-marketplace.engineeringContactName": "Jon Doe",
-      "microsoft-azure-marketplace.engineeringContactEmail": "jondoe@outlook.com",
-      "microsoft-azure-marketplace.engineeringContactPhone": "555-555-5555",
-      "microsoft-azure-marketplace.supportContactName": "Jon Doe",
-      "microsoft-azure-marketplace.supportContactEmail": "jondoe@outlook.com",
-      "microsoft-azure-marketplace.supportContactPhone": "555-555-5555",
       "microsoft-azure-marketplace.publicAzureSupportUrl": "",
       "microsoft-azure-marketplace.fairfaxSupportUrl": ""
   },

@@ -7,6 +7,7 @@ from pathlib import Path
 from adal import AuthenticationContext, adal_error
 
 from tests import cli_groups_tests as cli_tests
+from swagger_client import ProductApi
 
 import requests
 
@@ -59,21 +60,18 @@ def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch, capsys)
 
     mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
 
-    # Mock the show VM offer API method
+    # Mock VM offer show API endpoint
+    # Set up Requests mock class
     class ShowMockResponse:
-        def __init__(self):
-            self.status_code = 404
-            self.text = "Mock Response"
-
         @staticmethod
-        def json():
+        def to_dict():
             with open(Path("tests/test_data/vm_show_offer_not_found_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    def mock_show_offer(self, headers, url=mock_url):
+    def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(requests, "get", mock_show_offer)
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
 
     # Mock creation VM offer API endpoint
     # Set up Requests mock class
@@ -83,7 +81,7 @@ def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch, capsys)
 
         @staticmethod
         def json():
-            with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
+            with open(Path("tests/test_data/vm_create_valid_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
     def mock_create_offer(self, headers, json={}, url=mock_url):
@@ -113,22 +111,18 @@ def test_vm_create_offer_exists_mock(config_yml, monkeypatch, vm_config_json, ca
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    # Mock the show VM offer API method
+    # Mock VM offer show API endpoint
+    # Set up Requests mock class
     class ShowMockResponse:
-        def __init__(self):
-            self.status_code = 200
-
         @staticmethod
-        def json():
+        def to_dict():
             with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
-
-    def mock_show_offer(self, headers, url=mock_url):
+    def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(requests, "get", mock_show_offer)
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
     # The create PUT method does not need mocking as the test should fail before that point
     cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch, capsys)
 
@@ -148,21 +142,18 @@ def test_vm_create_invalid_offer_mock(config_yml, monkeypatch, capsys):
 
     mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
 
-    # Mock the show VM offer API method
+    # Mock VM offer show API endpoint
+    # Set up Requests mock class
     class ShowMockResponse:
-        def __init__(self):
-            self.status_code = 403
-            self.text = "Mock Response"
-
         @staticmethod
-        def json():
-            with open(Path("tests/test_data/vm_show_unauth_publisher.json"), "r", encoding="utf8") as read_file:
+        def to_dict():
+            with open(Path("tests/test_data/vm_show_offer_not_found_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    def mock_show_offer(self, headers, url=mock_url):
+    def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(requests, "get", mock_show_offer)
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
 
     # Expecting a failure as the offer is unable to be created
     cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch, capsys)
@@ -182,23 +173,18 @@ def test_vm_show_success_mock(config_yml, vm_config_json, monkeypatch, capsys):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    # Mock VM offer API endpoint
+    # Mock VM offer show API endpoint
     # Set up Requests mock class
-    class MockResponse:
-        def __init__(self):
-            self.status_code = 200
-
+    class ShowMockResponse:
         @staticmethod
-        def json():
+        def to_dict():
             with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
+    def mock_show_product(self, authorization, **kwargs):
+        return ShowMockResponse()
 
-    def mock_show_offer(self, headers, url=mock_url):
-        return MockResponse()
-
-    monkeypatch.setattr(requests, "get", mock_show_offer)
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
 
     offer_response = cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch, capsys)
 
@@ -209,20 +195,7 @@ def test_vm_show_success_mock(config_yml, vm_config_json, monkeypatch, capsys):
     with open(Path(app_path_fix).joinpath(vm_config_json), "r", encoding="utf8") as read_file:
         json_config = json.load(read_file)
 
-    cli_tests._assert_vm_properties(offer_listing, json_config, 1)
-    cli_tests._assert_vm_offer_listing(offer_listing, json_config)
-    cli_tests._assert_vm_preview_audience(offer_listing, json_config)
-    cli_tests._assert_vm_plan_listing(offer_listing, json_config)
-
-
-@pytest.mark.integration
-@pytest.mark.xfail(raises=ValueError)
-def test_vm_show_missing_publisher_id_mock(config_yml, monkeypatch, capsys):
-    # Invalid JSON config with missing publisher ID
-    vm_config_json = "vm_config_missing_publisher_id.json"
-
-    # No mocks required because it does not hit any APIs
-    cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch, capsys)
+    cli_tests._assert_vm_show(offer_listing, json_config)
 
 
 @pytest.mark.integration
@@ -246,7 +219,7 @@ def test_vm_show_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=ConnectionError)
+@pytest.mark.xfail(raises=LookupError)
 def test_vm_show_invalid_offer_mock(config_yml, monkeypatch, capsys):
     # Invalid configuration to show an offer that doesnt exist
     vm_config_json = "vm_config_uncreated_offer.json"
@@ -259,21 +232,18 @@ def test_vm_show_invalid_offer_mock(config_yml, monkeypatch, capsys):
 
     mock_url = "https://cloudpartner.azure.com/api/publishers/contoso/offers/test-vm?api-version=2017-10-31"
 
-    # Mock the show VM offer API method
+    # Mock VM offer show API endpoint
+    # Set up Requests mock class
     class ShowMockResponse:
-        def __init__(self):
-            self.status_code = 404
-            self.text = "Mock Response"
-
         @staticmethod
-        def json():
+        def to_dict():
             with open(Path("tests/test_data/vm_show_offer_not_found_response.json"), "r", encoding="utf8") as read_file:
                 return json.load(read_file)
 
-    def mock_show_offer(self, headers, url=mock_url):
+    def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(requests, "get", mock_show_offer)
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
 
     # Expecting a failure as the offer does not exist
     cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch, capsys)
@@ -502,8 +472,69 @@ def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch, capsys):
     cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
-@pytest.mark.skip(reason="Delete functionality not yet implemented.")
-def test_vm_delete_mock(config_yml, monkeypatch, ama_mock, capsys):
+def test_vm_delete_success_mock(config_yml, monkeypatch, capsys):
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock VM offer show API endpoint
+    # Set up Requests mock class
+    class ShowMockResponse:
+        @staticmethod
+        def to_dict():
+            with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
+    def mock_show_product(self, authorization, **kwargs):
+        return ShowMockResponse()
+
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+
+    # Mock VM offer delete API endpoint
+    def mock_delete_product(self, product_id, authorization, **kwargs):
+        return ""
+
+    monkeypatch.setattr(ProductApi, "products_product_id_delete", mock_delete_product)
+    cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)
+
+
+@pytest.mark.xfail(raises=LookupError)
+def test_vm_delete_offer_doesnot_exist_mock(config_yml, monkeypatch, capsys):
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock VM offer show API endpoint
+    # Set up Requests mock class
+    class ShowMockResponse:
+        @staticmethod
+        def to_dict():
+            with open(Path("tests/test_data/vm_show_offer_not_found_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
+    def mock_show_product(self, authorization, **kwargs):
+        return ShowMockResponse()
+
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+
+    cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)
+
+
+@pytest.mark.xfail(raises=adal_error.AdalError)
+def test_vm_delete_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
+    # Invalid config yaml file using incorrect client ID & secret
+    config_yml = "tests/sample_app/config_invalid.yml"
+
+    # Mock authorization token retreival to return an error
+    def mock_get_auth(self, resource, client_id, client_secret):
+        raise adal_error.AdalError("Get Token request returned http error: 401 and server response: ...")
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
     cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)
 
 

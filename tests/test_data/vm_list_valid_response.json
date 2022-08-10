@@ -13,7 +13,7 @@
         "version": 0,
         "id": "test-vm",
         "definition": {
-            "displayText": "Test Virtual Machine Offer"
+            "displayText": "test-vm"
         },
         "changedTime": "2022-06-02T12:25:56.651"
     },
