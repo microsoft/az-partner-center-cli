@@ -122,7 +122,7 @@ azpc vm create --name $name --config-yml $config_yml --config-json $config_json 
 azpc vm show --name $name --config-yml $config_yml --config-json $config_json --app-path $app_path
 azpc vm update --name $name
 azpc vm publish --name $name --config-yml $config_yml --config-json $config_json --app-path $app_path
-# azpc vm delete --name $name
+azpc vm delete --name $name
 
 azpc vm plan list   --name $name
 azpc vm plan create --name $name --plan-name $plan_name 
