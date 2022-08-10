@@ -7,6 +7,7 @@ from pathlib import Path
 from adal import AuthenticationContext, adal_error
 
 from tests import cli_groups_tests as cli_tests
+from swagger_client import ProductApi
 
 import requests
 
@@ -502,8 +503,69 @@ def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch, capsys):
     cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
 
 
-@pytest.mark.skip(reason="Delete functionality not yet implemented.")
-def test_vm_delete_mock(config_yml, monkeypatch, ama_mock, capsys):
+def test_vm_delete_success_mock(config_yml, monkeypatch, capsys):
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock VM offer show API endpoint
+    # Set up Requests mock class
+    class ShowMockResponse:
+        @staticmethod
+        def to_dict():
+            with open(Path("tests/test_data/vm_show_valid_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
+    def mock_show_product(self, authorization, **kwargs):
+        return ShowMockResponse()
+
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+
+    # Mock VM offer delete API endpoint
+    def mock_delete_product(self, product_id, authorization, **kwargs):
+        return ''
+
+    monkeypatch.setattr(ProductApi, "products_product_id_delete", mock_delete_product)
+    cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)
+
+
+@pytest.mark.xfail(raises=LookupError)
+def test_vm_delete_offer_doesnot_exist_mock(config_yml, monkeypatch, capsys):
+    # Mock authorization token retreival
+    def mock_get_auth(self, resource, client_id, client_secret):
+        return {"accessToken": "test-token"}
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
+    # Mock VM offer show API endpoint
+    # Set up Requests mock class
+    class ShowMockResponse:
+        @staticmethod
+        def to_dict():
+            with open(Path("tests/test_data/vm_show_offer_not_found_response.json"), "r", encoding="utf8") as read_file:
+                return json.load(read_file)
+
+    def mock_show_product(self, authorization, **kwargs):
+        return ShowMockResponse()
+
+    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+
+    cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)
+
+
+@pytest.mark.xfail(raises=adal_error.AdalError)
+def test_vm_delete_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
+    # Invalid config yaml file using incorrect client ID & secret
+    config_yml = "tests/sample_app/config_invalid.yml"
+
+    # Mock authorization token retreival to return an error
+    def mock_get_auth(self, resource, client_id, client_secret):
+        raise adal_error.AdalError("Get Token request returned http error: 401 and server response: ...")
+
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
+
     cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)
 
 

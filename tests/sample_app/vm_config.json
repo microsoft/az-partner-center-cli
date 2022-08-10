@@ -1,13 +1,13 @@
 {
   "publisherId": "contoso",
   "offerTypeId": "microsoft-azure-virtualmachines",
-  "id": "test-vm",
+  "id": "test_vm",
   "offerTypeVersions": {
       "microsoft-azure-virtualmachines": 87,
       "microsoft-azure-marketplace": 39
   },
   "definition": {
-      "displayText": "Test Virtual Machine Offer",
+      "displayText": "test_vm",
       "offer": {
       "microsoft-azure-marketplace.title": "Contoso App",
       "microsoft-azure-marketplace.summary": "Contoso App makes dev ops a breeze",

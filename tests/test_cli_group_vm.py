@@ -339,6 +339,36 @@ def test_vm_publish_invalid_offer(config_yml, monkeypatch, capsys):
 
 
 @pytest.mark.integration
+def test_vm_delete_success(config_yml, monkeypatch, capsys):
+    json_listing_config = "vm_config.json"
+    try:
+        with pytest.raises(ApiException):
+            vm_create_command(config_yml, json_listing_config, monkeypatch, capsys)
+    except:
+        print("VM Offer already has been created")
+
+    vm_delete_command(config_yml, monkeypatch)
+
+    # Confirm that the offer has been deleted
+    with pytest.raises(LookupError):
+        vm_show_command(config_yml, json_listing_config, monkeypatch, capsys)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=LookupError)
+def test_vm_delete_offer_doesnot_exist(config_yml, monkeypatch, capsys):
+    vm_delete_command(config_yml, monkeypatch, capsys)
+
+
+@pytest.mark.integration
+@pytest.mark.xfail(raises=adal_error.AdalError)
+def test_vm_delete_invalid_auth_details(config_yml, monkeypatch, capsys):
+    # Invalid config yaml file using incorrect client ID & secret
+    config_yml = "tests/sample_app/config_invalid.yml"
+    vm_delete_command(config_yml, monkeypatch, capsys)
+
+
+@pytest.mark.integration
 def test_vm_plan_create(config_yml, monkeypatch, app_path_fix, json_listing_config, capsys):
     try:
         vm_show_plan_command(config_yml, monkeypatch, capsys)
@@ -385,8 +415,3 @@ def test_vm_plan_list(config_yml, monkeypatch, capsys):
 @pytest.mark.integration
 def test_vm_plan_delete(config_yml, monkeypatch, capsys):
     vm_delete_plan_command(config_yml, monkeypatch, capsys)
-
-
-@pytest.mark.integration
-def test_vm_delete(config_yml, monkeypatch, capsys):
-    vm_delete_command(config_yml, monkeypatch, capsys)
