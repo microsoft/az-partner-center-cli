@@ -179,11 +179,13 @@ def vm_show_command(config_yml, json_config, monkeypatch, capsys):
 
 def vm_list_command(config_yml, monkeypatch, capsys):
     args = _list_command_args(config_yml, subgroup="vm")
+    args["name"] = "test-vm"
     return args_test(monkeypatch, args, capsys)
 
 
 def vm_publish_command(config_yml, json_config, monkeypatch, capsys):
     args = _publish_command_args(config_yml, subgroup="vm")
+    args["name"] = "test-vm"
     args["config_json"] = json_config
     args["app_path"] = APP_PATH
     return args_test(monkeypatch, args, capsys)
@@ -192,6 +194,7 @@ def vm_publish_command(config_yml, json_config, monkeypatch, capsys):
 def vm_delete_command(config_yml, monkeypatch, capsys):
     subgroup = "vm"
     input_args = _delete_command_args(config_yml, subgroup)
+    input_args["name"] = "test-vm"
     args_test(monkeypatch, input_args, capsys)
 
 

@@ -114,8 +114,7 @@ class VirtualMachine(Submission):
             if self._legacy_authorization is None:
                 self._legacy_authorization = f"Bearer {self._get_auth(resource)}"
             return self._legacy_authorization
-        else:
-            raise Exception("The provided resource is unsupported.")
+        raise Exception("The provided resource is unsupported.")
 
     def _get_auth(self, resource) -> str:
         with open(self.config_yaml, encoding="utf8") as file:
