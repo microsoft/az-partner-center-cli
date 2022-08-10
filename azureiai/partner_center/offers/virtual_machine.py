@@ -110,7 +110,7 @@ class VirtualMachine(Submission):
                 self._authorization = f"Bearer {self._get_auth(resource)}"
             return self._authorization
 
-        elif resource == RESOURCE_CPP_API:
+        if resource == RESOURCE_CPP_API:
             if self._legacy_authorization is None:
                 self._legacy_authorization = f"Bearer {self._get_auth(resource)}"
             return self._legacy_authorization
