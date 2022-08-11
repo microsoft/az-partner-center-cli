@@ -74,7 +74,7 @@ class Plan(Submission):
             self.show()
 
         self._update_plan_listing()
-        self._update_pricing_and_availability()  # 401 error
+        self._update_pricing_and_availability()
         self._update_technical_configuration()
         return self._ids["product_id"]
 
