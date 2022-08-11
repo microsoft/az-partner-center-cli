@@ -4,7 +4,6 @@
 """CLI Wrapper for Creating, Updating, or Deleting Azure Partner Center Submissions"""
 import argparse
 from distutils.util import strtobool
-import logging
 
 from azureiai.partner_center.submission import Submission
 
