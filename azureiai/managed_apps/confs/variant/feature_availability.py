@@ -3,6 +3,7 @@
 #  ---------------------------------------------------------
 """The feature availability configuration sets the visibility of the Azure Marketplace offer"""
 import json
+import logging
 from pathlib import Path
 
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import (
@@ -82,6 +83,7 @@ class FeatureAvailability(VariantPlanConfiguration):
                 "id": settings_id,
             }
 
+        logging.debug(body)
         self.fa_api.products_product_id_featureavailabilities_feature_availability_id_put(
             authorization=self.authorization,
             if_match=odata_etag,
