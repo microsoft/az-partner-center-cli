@@ -38,7 +38,6 @@ class ProductAvailability(OfferConfigurations):
         properties = {
             "resourceType": "ProductAvailability",
             "visibility": visibility,
-            "enterpriseLicensing": "Online",
             "audiences": [{"Type": "PreviewMarketplaceGroup", "Values": azure_subscription}],
             "@odata.etag": odata_etag,
             "id": settings_id,
