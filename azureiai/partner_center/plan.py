@@ -138,7 +138,7 @@ class Plan(Submission):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
-        azure_subscription = json_config["plan_overview"][0]["pricing_and_availability"]["azure_private_subscriptions"]
+        azure_subscription = json_config["plan_overview"][0]["pricing_and_availability"].get('azure_private_subscriptions', [])
 
         feature_availability = FeatureAvailability(
             product_id=self.get_product_id(),
