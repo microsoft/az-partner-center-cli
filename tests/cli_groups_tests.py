@@ -335,7 +335,6 @@ def args_test(monkeypatch, input_args, capsys):
     azpc_app.main()
     captured = capsys.readouterr()
     assert captured.out
-    print(captured.out)
     return captured.out
 
 
