@@ -141,7 +141,7 @@ class Plan(Submission):
         azure_subscription = json_config["plan_overview"][0]["pricing_and_availability"].get(
             "azure_private_subscriptions", []
         )
-
+        visibility = json_config["plan_overview"][0]["pricing_and_availability"]["visibility"]
         feature_availability = FeatureAvailability(
             product_id=self.get_product_id(),
             plan_id=self._ids["plan_id"],
@@ -149,7 +149,7 @@ class Plan(Submission):
             subtype=self.subtype,
         )
         try:
-            feature_availability.set(azure_subscription=azure_subscription)
+            feature_availability.set(azure_subscription=azure_subscription, visibility=visibility)
         except ApiException as error:
             error_message = bytes.decode(error.body).replace("\\", "").split(". ")
             error_json = json.loads(error_message[1].removesuffix('"'))
