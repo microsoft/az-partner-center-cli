@@ -36,7 +36,7 @@ class FeatureAvailability(VariantPlanConfiguration):
     def set(
         self,
         azure_subscription,
-        visibility="Public",
+        visibility="Private",
     ):
         """Set Availability for Application
 
@@ -55,7 +55,6 @@ class FeatureAvailability(VariantPlanConfiguration):
                 "resourceType": "FeatureAvailability",
                 "visibility": visibility,
                 "marketStates": market_states,
-                "subscriptionAudiences": azure_subscription,
                 "@odata.etag": odata_etag,
                 "id": settings_id,
                 "priceSchedules": [
@@ -77,10 +76,12 @@ class FeatureAvailability(VariantPlanConfiguration):
             body = {
                 "resourceType": "FeatureAvailability",
                 "visibility": visibility,
-                "subscriptionAudiences": azure_subscription,
                 "@odata.etag": odata_etag,
                 "id": settings_id,
             }
+            
+        if visibility == "Private":
+            body["subscriptionAudiences"] = azure_subscription
 
         self.fa_api.products_product_id_featureavailabilities_feature_availability_id_put(
             authorization=self.authorization,
