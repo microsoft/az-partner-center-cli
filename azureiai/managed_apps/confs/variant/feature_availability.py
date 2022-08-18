@@ -36,7 +36,7 @@ class FeatureAvailability(VariantPlanConfiguration):
     def set(
         self,
         azure_subscription,
-        visibility="Private",
+        visibility="Public",
     ):
         """Set Availability for Application
 
