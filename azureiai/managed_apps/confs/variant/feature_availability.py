@@ -79,7 +79,7 @@ class FeatureAvailability(VariantPlanConfiguration):
                 "@odata.etag": odata_etag,
                 "id": settings_id,
             }
-            
+
         if visibility == "Private":
             body["subscriptionAudiences"] = azure_subscription
 
