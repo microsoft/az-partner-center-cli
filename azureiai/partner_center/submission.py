@@ -6,7 +6,7 @@ import json
 import os
 from pathlib import Path
 
-from azureiai.managed_apps.confs import Properties, ProductAvailability, Listing, ListingImage
+from azureiai.managed_apps.confs import Properties, ProductAvailability, Listing, ListingImage, ResellerConfiguration
 from azureiai.partner_center.offer import Offer
 from swagger_client.rest import ApiException
 
@@ -150,6 +150,14 @@ class Submission(Offer):
             version,
             leveled_categories=leveled_categories,
         )
+
+    def _set_resell_through_csps(self):
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+            reseller_channel_state=json_config["offer_listing"].get("reseller_channel", "Optin")
+
+        reseller = ResellerConfiguration(product_id=self.get_product_id(), authorization=self.get_auth())
+        reseller.set(reseller_channel_state=reseller_channel_state)
 
     def _update_preview_audience(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
