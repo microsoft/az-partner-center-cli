@@ -2,7 +2,6 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """Reseller Settings for Plan configurations"""
-import os
 
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from swagger_client import ResellerConfigurationApi
