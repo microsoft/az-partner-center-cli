@@ -6,7 +6,14 @@ import json
 import os
 from pathlib import Path
 
-from azureiai.managed_apps.confs import Properties, ProductAvailability, Listing, ListingImage, ResellerConfiguration, DEFAULT_STATE
+from azureiai.managed_apps.confs import (
+    Properties,
+    ProductAvailability,
+    Listing,
+    ListingImage,
+    ResellerConfiguration,
+    DEFAULT_STATE,
+)
 from azureiai.partner_center.offer import Offer
 from swagger_client.rest import ApiException
 
