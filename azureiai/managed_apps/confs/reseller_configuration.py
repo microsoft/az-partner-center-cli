@@ -7,6 +7,8 @@ import os
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from swagger_client import ResellerConfigurationApi
 
+DEFAULT_STATE = "Optin"
+
 
 class ResellerConfiguration(OfferConfigurations):
     """Managed Application Offer - Reseller Configuration Configuration"""
@@ -21,7 +23,7 @@ class ResellerConfiguration(OfferConfigurations):
             product_id=self.product_id, authorization=self.authorization
         )
 
-    def set(self, reseller_channel_state="Optin"):
+    def set(self, reseller_channel_state=DEFAULT_STATE):
         """
         Set Availability for Application
 
