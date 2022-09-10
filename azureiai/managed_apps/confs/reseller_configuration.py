@@ -28,6 +28,7 @@ class ResellerConfiguration(OfferConfigurations):
 
         :param reseller_channel_state: must be one of ['PartialOptIn', 'Disabled', 'Optin']
         """
+        reseller_channel_state = os.getenv("RESELLER_CHANNEL", reseller_channel_state)
         if reseller_channel_state not in ["PartialOptIn", "Disabled", "Optin"]:
             raise ValueError(
                 "Not a known value, expected one of the following: 'PartialOptIn', 'Disabled', 'Optin'; but got ",
