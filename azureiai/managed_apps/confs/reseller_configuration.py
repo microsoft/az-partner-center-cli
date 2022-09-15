@@ -21,7 +21,7 @@ class ResellerConfiguration(OfferConfigurations):
             product_id=self.product_id, authorization=self.authorization
         )
 
-    def set(self, reseller_channel_state="Optin"):
+    def set(self, reseller_channel_state="OptIn"):
         """
         Set Availability for Application
 
