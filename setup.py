@@ -12,7 +12,7 @@ SWAGGER_JSON = "Partner_Ingestion_SwaggerDocument.json"
 generate_swagger(SWAGGER_JSON)
 
 NAME = "az-partner-center-cli"
-VERSION = "0.0.37"
+VERSION = "0.0.38"
 
 REQUIRES = [
     "azure-mgmt-deploymentmanager",
