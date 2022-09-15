@@ -21,16 +21,16 @@ class ResellerConfiguration(OfferConfigurations):
             product_id=self.product_id, authorization=self.authorization
         )
 
-    def set(self, reseller_channel_state="Optin"):
+    def set(self, reseller_channel_state="OptIn"):
         """
         Set Availability for Application
 
-        :param reseller_channel_state: must be one of ['PartialOptIn', 'Disabled', 'Optin']
+        :param reseller_channel_state: must be one of ['PartialOptIn', 'Disabled', 'OptIn']
         """
         reseller_channel_state = os.getenv("RESELLER_CHANNEL", reseller_channel_state)
-        if reseller_channel_state not in ["PartialOptIn", "Disabled", "Optin"]:
+        if reseller_channel_state not in ["PartialOptIn", "Disabled", "OptIn"]:
             raise ValueError(
-                "Not a known value, expected one of the following: 'PartialOptIn', 'Disabled', 'Optin'; but got ",
+                "Not a known value, expected one of the following: 'PartialOptIn', 'Disabled', 'OptIn'; but got ",
                 reseller_channel_state,
             )
         properties = {
