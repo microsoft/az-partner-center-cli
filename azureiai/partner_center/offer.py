@@ -61,7 +61,7 @@ class Offer:
         :return: Authorization Header contents
         """
         if self._authorization is None:
-            try:
+            if os.path.exists(self.config_yaml):
                 with open(self.config_yaml, encoding="utf8") as file:
                     settings = yaml.safe_load(file)
 
@@ -77,7 +77,7 @@ class Offer:
                     client_secret=client_secret,
                 )
                 self._authorization = f"Bearer {token_response['accessToken']}"
-            except KeyError:
+            else:
                 azure_cli = AzureCliCredential()
                 token_response = azure_cli.get_token("https://api.partner.microsoft.com")
 
