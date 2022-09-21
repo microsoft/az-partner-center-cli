@@ -114,7 +114,7 @@ def _publish_command_args(config_yml, subgroup):
         "command": "publish",
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
-        "notification_emails": "dcibs@microsoft.com"
+        "notification_emails": "dcibs@microsoft.com",
     }
     return input_args
 
