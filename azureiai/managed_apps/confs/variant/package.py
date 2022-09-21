@@ -136,12 +136,6 @@ class Package(VariantPlanConfiguration):
         odata_etag = settings["@odata.etag"]
         settings_id = settings["id"]
 
-        with open(config_yaml, encoding="utf8") as file:
-            config_settings = yaml.safe_load(file)
-
-        tenant_id = os.getenv(TENANT_ID, config_settings["tenant_id"])
-        access_id = os.getenv(ACCESS_ID, config_settings["access_id"])
-
         if resource_type == "AzureSolutionTemplatePackageConfiguration":
             settings = {
                 "resourceType": resource_type,
@@ -150,6 +144,12 @@ class Package(VariantPlanConfiguration):
                 "ID": settings_id,
             }
         else:
+            with open(config_yaml, encoding="utf8") as file:
+                config_settings = yaml.safe_load(file)
+
+            tenant_id = os.getenv(TENANT_ID, config_settings["tenant_id"])
+            access_id = os.getenv(ACCESS_ID, config_settings["access_id"])
+
             settings = {
                 "resourceType": resource_type,
                 "version": version,

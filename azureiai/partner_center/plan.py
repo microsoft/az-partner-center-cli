@@ -152,6 +152,8 @@ class Plan(Submission):
             feature_availability.set(azure_subscription=azure_subscription, visibility=visibility)
         except ApiException as error:
             error_message = bytes.decode(error.body).replace("\\", "").split(". ")
+            if isinstance(error_message, str):
+                raise PermissionError(error_message) from error
             error_json = json.loads(error_message[1].removesuffix('"'))
             raise PermissionError(
                 error_message[0].removeprefix('"')

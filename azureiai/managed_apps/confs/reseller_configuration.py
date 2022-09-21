@@ -2,11 +2,12 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """Reseller Settings for Plan configurations"""
+import os
 
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from swagger_client import ResellerConfigurationApi
 
-DEFAULT_STATE = "Optin"
+DEFAULT_STATE = "Enabled"
 
 
 class ResellerConfiguration(OfferConfigurations):
@@ -26,12 +27,12 @@ class ResellerConfiguration(OfferConfigurations):
         """
         Set Availability for Application
 
-        :param reseller_channel_state: must be one of ['PartialOptIn', 'Disabled', 'Optin']
+        :param reseller_channel_state: must be one of ['PartialOptIn', 'Disabled', 'OptIn']
         """
         reseller_channel_state = os.getenv("RESELLER_CHANNEL", reseller_channel_state)
-        if reseller_channel_state not in ["PartialOptIn", "Disabled", "Optin"]:
+        if reseller_channel_state not in ["PartialOptIn", "Disabled", "Enabled"]:
             raise ValueError(
-                "Not a known value, expected one of the following: 'PartialOptIn', 'Disabled', 'Optin'; but got ",
+                "Not a known value, expected one of the following: 'PartialOptIn', 'Disabled', 'Enabled'; but got ",
                 reseller_channel_state,
             )
         properties = {
