@@ -46,3 +46,8 @@ class AbstractParser(metaclass=ABCMeta):
     def update(self):
         """Update a Managed Application"""
         pass
+
+    @abstractmethod
+    def release(self):
+        """Release a Managed Application"""
+        pass

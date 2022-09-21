@@ -101,6 +101,13 @@ class Offer:
 
         return self._ids["product_id"]
 
+    def get_submission_id(self) -> str:
+        if self._ids["submission_id"] == None:
+            product_id = self.get_product_id
+            filter_name = ""
+            self._ids["submission_id"] = "Get this from the API"
+        return self._ids["submission_id"]
+
     def get_offer_id(self) -> str:
         """
         Get Offer ID

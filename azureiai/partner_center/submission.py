@@ -138,6 +138,15 @@ class Submission(Offer):
             submission_id=response.id,
         )
 
+    def release(self):
+        if not self._ids["product_id"]:
+            self.show()
+        return self._apis["submission"].products_product_id_submissions_submission_id_promote_post(
+            product_id=self.get_product_id(),
+            submission_id=self.get_submission_id(),
+            authorization=self.get_auth(),
+        )
+
     def _update_properties(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
