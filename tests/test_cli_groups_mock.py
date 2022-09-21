@@ -352,7 +352,7 @@ def test_vm_list_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
 
 
 def test_vm_publish_success_mock(config_yml, monkeypatch, capsys):
-    vm_config_json = "vm_config.json"
+    name = "test-vm"
 
     # Mock authorization token retreival
     def mock_get_auth(self, resource, client_id, client_secret):
@@ -373,7 +373,7 @@ def test_vm_publish_success_mock(config_yml, monkeypatch, capsys):
 
     monkeypatch.setattr(requests, "post", mock_publish_offer)
 
-    response = cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
+    response = cli_tests.vm_publish_command(config_yml, name, monkeypatch, capsys)
 
     assert json.loads(response) == True
 
@@ -381,11 +381,13 @@ def test_vm_publish_success_mock(config_yml, monkeypatch, capsys):
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ValueError)
 def test_vm_publish_missing_publisher_id_mock(config_yml, monkeypatch, capsys):
-    # Invalid JSON config with missing publisher ID
-    vm_config_json = "vm_config_missing_publisher_id.json"
+    # Invalid config yaml file missing publisher ID
+    config_yml = "tests/sample_app/config_invalid_publisher.yml"
+
+    name = "test-vm"
 
     # No mocks required because it does not hit any APIs
-    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
+    cli_tests.vm_publish_command(config_yml, name, monkeypatch, capsys)
 
 
 @pytest.mark.integration
@@ -394,8 +396,7 @@ def test_vm_publish_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
     # Invalid config yaml file using incorrect client ID & secret
     config_yml = "tests/sample_app/config_invalid.yml"
 
-    # Valid JSON configuration file
-    json_listing_config = "vm_config.json"
+    name = "test-vm"
 
     # Mock authorization token retreival to return an error
     def mock_get_auth(self, resource, client_id, client_secret):
@@ -403,14 +404,13 @@ def test_vm_publish_invalid_auth_details_mock(config_yml, monkeypatch, capsys):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_get_auth)
 
-    cli_tests.vm_publish_command(config_yml, json_listing_config, monkeypatch, capsys)
+    cli_tests.vm_publish_command(config_yml, name, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ConnectionError)
 def test_vm_publish_offer_does_not_exist_mock(config_yml, monkeypatch, capsys):
-    # Invalid configuration to show an offer that doesnt exist
-    vm_config_json = "vm_config_uncreated_offer.json"
+    name = "test-nevercreated"
 
     # Mock authorization token retreival
     def mock_get_auth(self, resource, client_id, client_secret):
@@ -436,14 +436,13 @@ def test_vm_publish_offer_does_not_exist_mock(config_yml, monkeypatch, capsys):
     monkeypatch.setattr(requests, "post", mock_publish_offer)
 
     # Expecting a failure as the offer does not exist
-    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
+    cli_tests.vm_publish_command(config_yml, name, monkeypatch, capsys)
 
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ConnectionError)
 def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch, capsys):
-    # Invalid configuration to show an offer that doesnt exist
-    vm_config_json = "vm_config.json"
+    name = "test-invalid"
 
     # Mock authorization token retreival
     def mock_get_auth(self, resource, client_id, client_secret):
@@ -469,7 +468,7 @@ def test_vm_publish_invalid_offer_mock(config_yml, monkeypatch, capsys):
     monkeypatch.setattr(requests, "post", mock_publish_offer)
 
     # Expecting a failure as the offer does not exist
-    cli_tests.vm_publish_command(config_yml, vm_config_json, monkeypatch, capsys)
+    cli_tests.vm_publish_command(config_yml, name, monkeypatch, capsys)
 
 
 def test_vm_delete_success_mock(config_yml, monkeypatch, capsys):

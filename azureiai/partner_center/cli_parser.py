@@ -105,9 +105,5 @@ class CLIParser:
             self._notification_emails, type=str, required=True, help="Notification e-mails to use when publishing"
         )
 
-        self.parser.add_argument(
-            self._config_json, type=str, help="Listing Configuration Json", default="listing_config.json"
-        )
-        self.parser.add_argument(self._app_path, type=str, help="Application Root Directory", default=".")
         args = self.parser.parse_args()
         return args

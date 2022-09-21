@@ -114,8 +114,7 @@ def _publish_command_args(config_yml, subgroup):
         "command": "publish",
         "name": f"test_{subgroup}",
         "config_yml": config_yml,
-        "notification_emails": "dcibs@microsoft.com",
-        "app_path": APP_PATH,
+        "notification_emails": "dcibs@microsoft.com"
     }
     return input_args
 
@@ -183,11 +182,9 @@ def vm_list_command(config_yml, monkeypatch, capsys):
     return args_test(monkeypatch, args, capsys)
 
 
-def vm_publish_command(config_yml, json_config, monkeypatch, capsys):
+def vm_publish_command(config_yml, name, monkeypatch, capsys):
     args = _publish_command_args(config_yml, subgroup="vm")
-    args["name"] = "test-vm"
-    args["config_json"] = json_config
-    args["app_path"] = APP_PATH
+    args["name"] = name
     return args_test(monkeypatch, args, capsys)
 
 

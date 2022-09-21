@@ -81,15 +81,14 @@ class VirtualMachine(Submission):
 
     def publish(self):
         """Publish Existing Virtual Machine offer"""
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
-        if "publisherId" not in json_config:
-            raise ValueError(f"Key: publisherId is missing from {self.app_path}/{self.json_listing_config}")
-        publisher_id = json_config["publisherId"]
-        offer_id = json_config["id"]
+        with open(self.config_yaml, encoding="utf8") as file:
+            settings = yaml.safe_load(file)
+            if "publisherId" not in settings:
+                raise ValueError(f"Key: publisherId is missing from {self.config_yaml}")
+            publisher_id = settings["publisherId"]
 
+        offer_id = self.name
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/publish?api-version=2017-10-31"
-
         headers = {"Authorization": self.get_auth(RESOURCE_CPP_API), "Content-Type": "application/json"}
 
         response = requests.post(
@@ -165,7 +164,5 @@ class VirtualMachineCLI(CLIParser):
         return VirtualMachine(
             args.name,
             notification_emails=args.notification_emails,
-            app_path=args.app_path,
-            json_listing_config=args.config_json,
             config_yaml=args.config_yml,
         ).publish()

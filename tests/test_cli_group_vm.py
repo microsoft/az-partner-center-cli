@@ -270,11 +270,8 @@ def test_vm_list_invalid_auth_details(config_yml, monkeypatch, capsys):
 @pytest.mark.integration
 @pytest.mark.skip(reason="Need to determine how to clean up test safely")
 def test_vm_publish_success(config_yml, vm_offer_setup_teardown, monkeypatch, capsys):
-    # Need to determine how to clean up tests so that it cancels the publish
-    # operation and can then delete the offer
-    json_listing_config = "vm_config.json"
-
-    offer_response = vm_publish_command(config_yml, json_listing_config, monkeypatch, capsys)
+    name = "test-vm"
+    offer_response = vm_publish_command(config_yml, name, monkeypatch, capsys)
 
     print(offer_response)
 
@@ -282,11 +279,13 @@ def test_vm_publish_success(config_yml, vm_offer_setup_teardown, monkeypatch, ca
 @pytest.mark.integration
 @pytest.mark.xfail(raises=ValueError)
 def test_vm_publish_missing_publisher_id(config_yml, monkeypatch, capsys):
-    # Invalid JSON config with missing publisher ID
-    json_listing_config = "vm_config_missing_publisher_id.json"
+    # Invalid config yaml file missing publisher ID
+    config_yml = "tests/sample_app/config_invalid_publisher.yml"
+
+    name = "test-vm"
 
     # Expecting a Value error when unable to access Publisher ID
-    vm_publish_command(config_yml, json_listing_config, monkeypatch, capsys)
+    vm_publish_command(config_yml, name, monkeypatch, capsys)
 
 
 @pytest.mark.integration
@@ -295,12 +294,11 @@ def test_vm_publish_invalid_auth_details(config_yml, monkeypatch, capsys):
     # Invalid config yaml file using incorrect client ID & secret
     config_yml = "tests/sample_app/config_invalid.yml"
 
-    # Valid JSON configuration file
-    json_listing_config = "vm_config.json"
+    name = "test-vm"
 
     # Expecting a failure from the Authentication Context package as the
     # auth token is unable to be retreived
-    vm_publish_command(config_yml, json_listing_config, monkeypatch, capsys)
+    vm_publish_command(config_yml, name, monkeypatch, capsys)
 
 
 @pytest.mark.integration
@@ -309,22 +307,14 @@ def test_vm_publish_offer_doesnot_exist(config_yml, monkeypatch, capsys):
     # Invalid configuration to show an offer that doesnt exist
     json_listing_config = "vm_config_uncreated_offer.json"
 
+    name = "test-nevercreated"
+
     # Confirm that the offer does not exist
     with pytest.raises(LookupError):
         vm_show_command(config_yml, json_listing_config, monkeypatch, capsys)
 
     # Expecting a failure as the offer does not exist
-    vm_publish_command(config_yml, json_listing_config, monkeypatch, capsys)
-
-
-@pytest.mark.integration
-@pytest.mark.xfail(raises=ConnectionError)
-def test_vm_publish_invalid_offer(config_yml, monkeypatch, capsys):
-    # All of the required config is not set, so unable to publish offer
-    json_listing_config = "vm_invalid_config.json"
-
-    # Expecting a failure as the offer isnt fully configured
-    vm_publish_command(config_yml, json_listing_config, monkeypatch, capsys)
+    vm_publish_command(config_yml, name, monkeypatch, capsys)
 
 
 @pytest.mark.integration
