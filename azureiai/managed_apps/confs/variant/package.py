@@ -101,9 +101,7 @@ class Package(VariantPlanConfiguration):
             "fileName": file_name,
         }
 
-        post_response = self.package_api.create(
-            self.authorization, self.product_id, body=post_body
-        )
+        post_response = self.package_api.create(self.authorization, self.product_id, body=post_body)
 
         file_name_full_path = str(Path(app_zip_dir).joinpath(file_name))
 
