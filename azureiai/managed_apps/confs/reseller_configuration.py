@@ -33,9 +33,7 @@ class ResellerConfiguration(OfferConfigurations):
                 "Not a known value, expected one of the following: 'PartialOptIn', 'Disabled', 'Enabled'; but got ",
                 reseller_channel_state,
             )
-        body = Body(
-            resource_type="ResellerConfiguration", reseller_channel_state=reseller_channel_state, tenant_ids=[]
-        )
+        body = Body(resource_type="ResellerConfiguration", reseller_channel_state=reseller_channel_state, tenant_ids=[])
         self.api.create(
             authorization=self.authorization,
             product_id=self.product_id,
