@@ -16,12 +16,12 @@ class Submission(Offer):
     """New Version of Offer used for v2 CLI"""
 
     def __init__(
-            self,
-            name=None,
-            config_yaml: str = "config.yml",
-            resource_type: str = "",
-            app_path: str = ".",
-            json_listing_config: str = "listing_config.json",
+        self,
+        name=None,
+        config_yaml: str = "config.yml",
+        resource_type: str = "",
+        app_path: str = ".",
+        json_listing_config: str = "listing_config.json",
     ):
         super().__init__(name, config_yaml)
         self.resource_type = resource_type
@@ -75,14 +75,11 @@ class Submission(Offer):
                 return submission
         raise LookupError(f"{self.resource_type} with this name not found: {self.name}")
 
-
     def delete(self):
         """List Azure Submissions."""
         if not self._ids["product_id"]:
             self.show()
-        api_response = self._apis["product"].delete(
-            product_id=self._ids["product_id"], authorization=self.get_auth()
-        )
+        api_response = self._apis["product"].delete(product_id=self._ids["product_id"], authorization=self.get_auth())
         return api_response
 
     def publish(self):
@@ -102,9 +99,7 @@ class Submission(Offer):
             "variantResources": [],
         }
 
-        response = self._apis["variant"].list(
-            product_id=self._ids["product_id"], authorization=self.get_auth()
-        )
+        response = self._apis["variant"].list(product_id=self._ids["product_id"], authorization=self.get_auth())
 
         for variant in response.to_dict()["value"]:
             if variant["id"] != "testdrive":

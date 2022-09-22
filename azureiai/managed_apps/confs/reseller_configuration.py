@@ -19,9 +19,7 @@ class ResellerConfiguration(OfferConfigurations):
 
     def get(self):
         """Get Availability for Application"""
-        return self.api.list(
-            product_id=self.product_id, authorization=self.authorization
-        )
+        return self.api.list(product_id=self.product_id, authorization=self.authorization)
 
     def set(self, reseller_channel_state=DEFAULT_STATE):
         """

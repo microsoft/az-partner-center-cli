@@ -19,9 +19,7 @@ def get_draft_instance_id(product_id, authorization, module: str, retry: int = 0
     :param retry: retry attempt number, will retry 3 times before failing
     :return: response
     """
-    api_response = BRANCHES_API.get(
-        product_id=product_id, module=module, authorization=authorization
-    )
+    api_response = BRANCHES_API.get(product_id=product_id, module=module, authorization=authorization)
     if not api_response.value:
         if retry < 5:
             return get_draft_instance_id(product_id, authorization, module=module, retry=retry + 1)

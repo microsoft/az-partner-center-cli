@@ -71,9 +71,7 @@ class ManagedApplication(Offer):
 
         :return: product delete api response
         """
-        return self._apis["product"].delete(
-            product_id=self.get_product_id(), authorization=self.get_auth()
-        )
+        return self._apis["product"].delete(product_id=self.get_product_id(), authorization=self.get_auth())
 
     def manifest_publish(self, manifest_yml, config_yml) -> bool:
         """

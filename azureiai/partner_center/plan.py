@@ -82,18 +82,14 @@ class Plan(Submission):
         """List Azure Submissions."""
         if not self._ids["product_id"]:
             self._set_product_id()
-        api_response = self._apis["variant"].list(
-            product_id=self._ids["product_id"], authorization=self.get_auth()
-        )
+        api_response = self._apis["variant"].list(product_id=self._ids["product_id"], authorization=self.get_auth())
         return api_response.to_dict()
 
     def show(self):
         if not self._ids["product_id"]:
             self._set_product_id()
 
-        api_response = self._apis["variant"].list(
-            product_id=self._ids["product_id"], authorization=self.get_auth()
-        )
+        api_response = self._apis["variant"].list(product_id=self._ids["product_id"], authorization=self.get_auth())
         submissions = api_response.to_dict()
         for submission in submissions["value"]:
             if "externalID" in submission and submission["externalID"] == self.plan_name:
