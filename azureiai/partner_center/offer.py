@@ -102,10 +102,18 @@ class Offer:
         return self._ids["product_id"]
 
     def get_submission_id(self) -> str:
-        if self._ids["submission_id"] == None:
-            product_id = self.get_product_id
-            filter_name = ""
-            self._ids["submission_id"] = "Get this from the API"
+        if self._ids["submission_id"] == "":
+            filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
+            api_response = self._apis["submission"].products_product_id_submissions_get(
+                product_id=self.get_product_id(),
+                authorization=self.get_auth(),
+                filter=filter_name
+            )
+            submissions = api_response.to_dict()
+            for submission in submissions["value"]:
+                if submission["name"] == self.name:
+                    self._ids["submission_id"] = submission["id"]
+
         return self._ids["submission_id"]
 
     def get_offer_id(self) -> str:
