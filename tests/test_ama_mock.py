@@ -272,7 +272,7 @@ def test_package_get_mock(monkeypatch):
 
     monkeypatch.setattr(
         PackageConfigurationApi,
-        "products_product_id_package_configurations_get_by_instance_id_instance_i_dinstance_id_get",
+        "get_by",
         mock_package_config_get,
     )
     monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
