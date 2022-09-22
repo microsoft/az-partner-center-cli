@@ -210,7 +210,7 @@ def ama_mock(ama_name, monkeypatch):
 
     def mock_response_submissions_get(self, authorization, product_id):
         value = namedtuple("value", ["id", "are_resources_ready", "state", "substate"])(
-            *["", true, "Publish", "Publishing"]
+            *["", True, "Publish", "Publishing"]
         )
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[value], "", ""])
 
