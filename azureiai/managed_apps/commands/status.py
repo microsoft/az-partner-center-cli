@@ -17,8 +17,8 @@ import argparse
 
 from azureiai.managed_apps import ManagedApplication
 from azureiai.managed_apps.commands.common import add_config_yml, add_ama_name, add_command, add_product_id
-from swagger_client.models.microsoft_ingestion_api_models_submissions_submission import (
-    MicrosoftIngestionApiModelsSubmissionsSubmission,
+from swagger_client.models import (
+    SubmissionsSubmission,
 )
 from swagger_client.rest import ApiException
 
@@ -37,7 +37,7 @@ def run():
     try:
         response = ama.submission_status()
         if response.value:
-            submission_response: MicrosoftIngestionApiModelsSubmissionsSubmission = response.value[0]
+            submission_response: SubmissionsSubmission = response.value[0]
             return {
                 "are-resources-ready": submission_response.are_resources_ready,
                 "state": submission_response.state,
