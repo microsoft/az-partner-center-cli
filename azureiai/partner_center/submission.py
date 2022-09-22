@@ -16,12 +16,12 @@ class Submission(Offer):
     """New Version of Offer used for v2 CLI"""
 
     def __init__(
-            self,
-            name=None,
-            config_yaml: str = "config.yml",
-            resource_type: str = "",
-            app_path: str = ".",
-            json_listing_config: str = "listing_config.json",
+        self,
+        name=None,
+        config_yaml: str = "config.yml",
+        resource_type: str = "",
+        app_path: str = ".",
+        json_listing_config: str = "listing_config.json",
     ):
         super().__init__(name, config_yaml)
         self.resource_type = resource_type

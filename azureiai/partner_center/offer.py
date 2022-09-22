@@ -105,9 +105,7 @@ class Offer:
         if self._ids["submission_id"] == "":
             filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
             api_response = self._apis["submission"].products_product_id_submissions_get(
-                product_id=self.get_product_id(),
-                authorization=self.get_auth(),
-                filter=filter_name
+                product_id=self.get_product_id(), authorization=self.get_auth(), filter=filter_name
             )
             submissions = api_response.to_dict()
             for submission in submissions["value"]:
