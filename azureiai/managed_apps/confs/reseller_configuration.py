@@ -19,7 +19,7 @@ class ResellerConfiguration(OfferConfigurations):
 
     def get(self):
         """Get Availability for Application"""
-        return self.api.list(product_id=self.product_id, authorization=self.authorization)
+        return self.api.get(product_id=self.product_id, authorization=self.authorization)
 
     def set(self, reseller_channel_state=DEFAULT_STATE):
         """
@@ -33,8 +33,8 @@ class ResellerConfiguration(OfferConfigurations):
                 "Not a known value, expected one of the following: 'PartialOptIn', 'Disabled', 'Enabled'; but got ",
                 reseller_channel_state,
             )
-        body = Body(resource_type="ResellerConfiguration", reseller_channel_state=reseller_channel_state, tenant_ids=[])
-        self.api.create(
+        body = Body(reseller_channel_state=reseller_channel_state)
+        self.api.set(
             authorization=self.authorization,
             product_id=self.product_id,
             body=body,

@@ -5394,7 +5394,7 @@
     },
     "/products/{productID}/resellerConfiguration"                                         : {
       "get" : {
-        "operationId": "list",
+        "operationId": "get",
         "tags"       : [
           "ResellerConfiguration"
         ],
@@ -5454,7 +5454,7 @@
         }
       },
       "post": {
-        "operationId": "create",
+        "operationId": "set",
         "tags"       : [
           "ResellerConfiguration"
         ],
@@ -6939,10 +6939,16 @@
                 "enum": [
                   "ProductAvailability"
                 ],
-                "type": "string"
+                "type": "string",
+                "default": "ProductAvailability"
               },
               "visibility"           : {
-                "type": "string"
+                "enum": [
+                  "Public",
+                  "Private"
+                ],
+                "type": "string",
+                "default": "Public"
               },
               "enterpriseLicensing"  : {
                 "type": "string"
@@ -8435,10 +8441,11 @@
         "type"      : "object",
         "properties": {
           "resourceType"        : {
-            "enum": [
+            "enum"   : [
               "ResellerConfiguration"
             ],
-            "type": "string"
+            "type"   : "string",
+            "default": "ResellerConfiguration"
           },
           "resellerChannelState": {
             "enum": [
@@ -8447,11 +8454,12 @@
               "OptOut",
               "Enabled"
             ],
-            "type": "string"
+            "type": "string",
+            "default": "Disabled"
           },
           "tenantIds"           : {
-            "type" : "array",
-            "items": {
+            "type"   : "array",
+            "items"  : {
               "type": "string"
             }
           }
