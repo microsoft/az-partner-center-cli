@@ -105,7 +105,7 @@ class Offer:
         """
         Get or Set Submission ID
 
-        May return empty submission_id if no preview offer has been created.
+        May return empty submission_id if no preview offer has been created, which can cause API error later.
         :return: Submission ID of new Managed Application
         """
         if self._ids["submission_id"] is None:
