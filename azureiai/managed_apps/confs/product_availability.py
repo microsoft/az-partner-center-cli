@@ -3,7 +3,7 @@
 #  ---------------------------------------------------------
 """Product Availability settings for Offer Configuration"""
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
-from swagger_client import ProductAvailabilityApi
+from swagger_client import PreviewMarketplaceGroup, ProductAvailabilityApi, ProductAvailability as Body
 
 
 class ProductAvailability(OfferConfigurations):
@@ -32,18 +32,17 @@ class ProductAvailability(OfferConfigurations):
         settings = self.get()
         odata_etag = settings.odata_etag
         settings_id = settings.id
-
-        properties = {
-            "resourceType": "ProductAvailability",
-            "visibility": visibility,
-            "audiences": [{"Type": "PreviewMarketplaceGroup", "Values": azure_subscription}],
-            "@odata.etag": odata_etag,
-            "id": settings_id,
-        }
+        audiences = PreviewMarketplaceGroup(values=azure_subscription)
+        body = Body(
+            visibility=visibility,
+            audiences=[audiences],
+            odata_etag=odata_etag,
+            id=settings_id,
+        )
         self.api.set(
             authorization=self.authorization,
             if_match=odata_etag,
             product_id=self.product_id,
             product_availability_id=settings_id,
-            body=properties,
+            body=body,
         )

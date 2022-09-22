@@ -5,7 +5,7 @@
 import uuid
 
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
-from swagger_client import PropertyApi
+from swagger_client import PropertyApi, AzureProperty as Body
 
 
 class Properties(OfferConfigurations):
@@ -37,25 +37,23 @@ class Properties(OfferConfigurations):
         property_id = property_settings.id
 
         submission_version = str(uuid.uuid4())
-
-        properties = {
-            "resourceType": "AzureProperty",
-            "industries": [""],
-            "submissionVersion": submission_version,
-            "productTags": ["y89royn4xnxbe5e9mfmm6ukufp1hn8gt6d6osyd83sprfgdtib8jqfmikiya5hmf"],
-            "appVersion": version,
-            "useEnterpriseContract": use_enterprise_contract,
-            "termsOfUse": "testTermsOfUse",
-            "globalAmendmentTerms": None,
-            "customAmendments": [],
-            "leveledCategories": leveled_categories,
-            "@odata.etag": odata_etag,
-        }
+        body = Body(
+            industries=[""],
+            submission_version=submission_version,
+            product_tags=["y89royn4xnxbe5e9mfmm6ukufp1hn8gt6d6osyd83sprfgdtib8jqfmikiya5hmf"],
+            app_version=version,
+            use_enterprise_contract=use_enterprise_contract,
+            terms_of_use="testTermsOfUse",
+            global_amendment_terms=None,
+            custom_amendments=[],
+            leveled_categories=leveled_categories,
+            odata_etag=odata_etag,
+        )
 
         self.api.set(
             authorization=self.authorization,
             if_match=odata_etag,
             product_id=self.product_id,
             property_id=property_id,
-            body=properties,
+            body=body,
         )

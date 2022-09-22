@@ -7,7 +7,7 @@ from pathlib import Path
 
 from azureiai.managed_apps.confs.listing import Listing
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
-from swagger_client import ListingImageApi
+from swagger_client import ListingImageApi, ListingImage as Body
 
 
 class ListingImage(OfferConfigurations):
@@ -45,15 +45,7 @@ class ListingImage(OfferConfigurations):
                 )
 
         image_id = str(uuid.uuid4())
-
-        body = {
-            "resourceType": "ListingImage",
-            "fileName": file_name,
-            "type": logo_type,
-            "state": "PendingUpload",
-            "order": 0,
-            "id": image_id,
-        }
+        body = Body(file_name=file_name, type=logo_type, state=logo_type, order=0, id=image_id)
 
         api_response = self.listing_image_api.create(
             authorization=self.authorization,
@@ -64,16 +56,16 @@ class ListingImage(OfferConfigurations):
         status_code = self.upload_using_sas(api_response.file_sas_uri, Path(file_path).joinpath(file_name))
         if status_code != 201:
             raise ConnectionError("Upload via SAS Failed")
-        body = {
-            "resourceType": "ListingImage",
-            "fileName": file_name,
-            "type": logo_type,
-            "fileSasUri": api_response.file_sas_uri,
-            "state": "Uploaded",
-            "order": 0,
-            "@odata.etag": api_response.odata_etag,
-            "id": api_response.id,
-        }
+
+        body = Body(
+            file_name=file_name,
+            type=logo_type,
+            file_sas_uri=api_response.file_sas_uri,
+            state="uploaded",
+            order=0,
+            odata_etag=api_response.odata_etag,
+            id=api_response.id,
+        )
 
         return self.listing_image_api.set(
             authorization=self.authorization,

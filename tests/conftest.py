@@ -261,7 +261,7 @@ def ama_mock(ama_name, monkeypatch):
     monkeypatch.setattr(SubmissionApi, "list", mock_response_submissions_get)
     monkeypatch.setattr(SubmissionApi, "create", mock_submission_response)
     monkeypatch.setattr(SubmissionApi, "get", mock_products_get)
-    monkeypatch.setattr(ResellerConfigurationApi, "create", mock_reseller_response)
+    monkeypatch.setattr(ResellerConfigurationApi, "set", mock_reseller_response)
     monkeypatch.setattr(requests, "put", mock_put_request)
     monkeypatch.setattr(VariantApi, "list", mock_products_get)
     monkeypatch.setattr(VariantApi, "create", mock_variant_post)

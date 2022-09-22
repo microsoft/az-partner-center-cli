@@ -21,6 +21,7 @@ def generate_swagger(swagger_json, swagger_module_dir="./", output=True, swagger
     """
     swagger_client_path = Path(__file__).parents[1].joinpath(swagger_dir)
     swagger_jar_path = Path(__file__).parents[1].joinpath("bin").joinpath("swagger-codegen-cli-3.0.35.jar")
+    swagger_mustache_path = Path(__file__).parents[1].joinpath("customSwagger")
     if not swagger_client_path.is_dir():
         if not os.path.exists(swagger_json) or not os.path.exists(swagger_jar_path.__str__()):
             raise FileNotFoundError("Missing Swagger Spec: ", swagger_json, swagger_jar_path.__str__())
@@ -39,6 +40,8 @@ def generate_swagger(swagger_json, swagger_module_dir="./", output=True, swagger
                 "python",
                 "-o",
                 tmp_dir,
+                "-t",
+                swagger_mustache_path,
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
