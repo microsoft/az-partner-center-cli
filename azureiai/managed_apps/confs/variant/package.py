@@ -56,7 +56,7 @@ class Package(VariantPlanConfiguration):
     def get(self):
         """Get Availability for Application"""
         instance_id = self._get_draft_instance_id(module=self.module)
-        api_res = self.api.list_by(
+        api_res = self.api.get_by(
             product_id=self.product_id,
             instance_id=instance_id,
             authorization=self.authorization,

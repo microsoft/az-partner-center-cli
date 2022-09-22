@@ -14,7 +14,7 @@ class ProductAvailability(OfferConfigurations):
 
         self.api = ProductAvailabilityApi()
         self.module = "Availability"
-        self.get_instance = self.api.list_by
+        self.get_instance = self.api.get_by
 
         self._settings = None
         self.setting_id = None

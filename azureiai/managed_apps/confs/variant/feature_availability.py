@@ -24,7 +24,7 @@ class FeatureAvailability(VariantPlanConfiguration):
     def get(self):
         """Get Availability for Application"""
         instance_id = self._get_draft_instance_id(module="Availability")
-        resp = self.fa_api.list_by(
+        resp = self.fa_api.get_by(
             product_id=self.product_id,
             instance_id=instance_id,
             authorization=self.authorization,

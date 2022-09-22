@@ -705,7 +705,7 @@
     },
     "/products/{productID}/productAvailabilities/getByInstanceID(instanceID={instanceID})": {
       "get": {
-        "operationId": "list_by",
+        "operationId": "get_by",
         "tags"       : [
           "ProductAvailability"
         ],
@@ -1027,7 +1027,7 @@
     },
     "/products/{productID}/properties/getByInstanceID(instanceID={instanceID})"           : {
       "get": {
-        "operationId": "list_by",
+        "operationId": "get_by",
         "tags"       : [
           "Property"
         ],
@@ -2269,7 +2269,7 @@
     },
     "/products/{productID}/listings/getByInstanceID(instanceID={instanceID})"             : {
       "get": {
-        "operationId": "list_by",
+        "operationId": "get_by",
         "tags"       : [
           "Listing"
         ],
@@ -2753,7 +2753,7 @@
     },
     "/products/{productID}/packageConfigurations/getByInstanceID(instanceID={instanceID})": {
       "get": {
-        "operationId": "list_by",
+        "operationId": "get_by",
         "tags"       : [
           "PackageConfiguration"
         ],
@@ -3697,7 +3697,7 @@
     },
     "/products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})": {
       "get": {
-        "operationId": "list_by",
+        "operationId": "get_by",
         "tags"       : [
           "FeatureAvailability"
         ],

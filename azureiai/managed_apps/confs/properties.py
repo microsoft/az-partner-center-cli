@@ -15,7 +15,7 @@ class Properties(OfferConfigurations):
         super().__init__(product_id, authorization)
         self.api = PropertyApi()
         self.module = "Property"
-        self.get_instance = self.api.list_by
+        self.get_instance = self.api.get_by
 
     def set(
         self,

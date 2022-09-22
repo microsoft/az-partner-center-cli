@@ -14,7 +14,7 @@ class Listing(ListingOfferConfigurations):
     def __init__(self, product_id, authorization):
         super().__init__(product_id, authorization)
         self.module = "Listing"
-        self.get_instance = self.api.list_by
+        self.get_instance = self.api.get_by
 
         self._settings = None
         self.settings_id = None
