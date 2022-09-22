@@ -101,6 +101,22 @@ class Offer:
 
         return self._ids["product_id"]
 
+    def get_submission_id(self) -> str:
+        """
+        Get or Set Submission ID
+
+        May return empty submission_id if no preview offer has been created, which can cause API error later.
+        :return: Submission ID of new Managed Application
+        """
+        if self._ids["submission_id"] is None:
+            api_response = self._apis["submission"].products_product_id_submissions_get(
+                authorization=self.get_auth(),
+                product_id=self.get_product_id(),
+            )
+            self._ids["submission_id"] = api_response.value[0].id
+
+        return self._ids["submission_id"]
+
     def get_offer_id(self) -> str:
         """
         Get Offer ID

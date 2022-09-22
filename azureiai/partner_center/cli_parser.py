@@ -65,6 +65,11 @@ class CLIParser:
         args = self._add_name_argument()
         return self.submission_type(args.name, config_yaml=args.config_yml).publish()
 
+    def release(self) -> dict:
+        """Release a Managed Application"""
+        args = self._add_name_argument()
+        return self.submission_type(args.name, config_yaml=args.config_yml).release()
+
     def show(self) -> dict:
         """Show a Managed Application"""
         args = self._add_name_argument()

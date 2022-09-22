@@ -139,6 +139,21 @@ class Submission(Offer):
             submission_id=response.id,
         )
 
+    def release(self):
+        """
+        Release Marketplace Application by submitting Submission ID
+
+        :return: Submission API Response
+        """
+        try:
+            return self._apis["submission"].products_product_id_submissions_submission_id_promote_post(
+                product_id=self.get_product_id(),
+                submission_id=self.get_submission_id(),
+                authorization=self.get_auth(),
+            )
+        except ApiException as error:
+            raise SystemError("Release Failed! Is preview creation in progress?") from error
+
     def _update_properties(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
