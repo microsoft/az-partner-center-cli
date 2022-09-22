@@ -130,7 +130,7 @@ def test_ama_get_draft_instance_id_retry_mock(ama_mock, monkeypatch):
     def mock_branches_get(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     with pytest.raises(BaseException):
         ama_mock._get_draft_instance_id(module="")
@@ -141,12 +141,12 @@ def test_ama_get_draft_instance_id_retry_mock(ama_mock, monkeypatch):
         )
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
 
 def test_variant_plan_mock(monkeypatch):
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     vp_config = VariantPlanConfiguration(product_id="test-id", plan_id="abc-123", authorization="test-auth")
     vp_config._get_draft_instance_id(module="")
@@ -156,11 +156,11 @@ def test_ama_mock_missing_value(ama_mock, monkeypatch):
     def mock_branches_error(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_error)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_error)
     with pytest.raises(BaseException):
         ama_mock._get_variant_draft_instance_id(module="")
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     ama_mock._get_variant_draft_instance_id(module="")
 
@@ -169,7 +169,7 @@ def test_reseller_configuration_mock(ama_mock, monkeypatch):
     def mock_branches_get(self, product_id, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(ResellerConfigurationApi, "products_product_id_reseller_configuration_get", mock_branches_get)
+    monkeypatch.setattr(ResellerConfigurationApi, "list", mock_branches_get)
 
     response = ResellerConfiguration(product_id="", authorization="").get()
     assert response
@@ -184,7 +184,7 @@ def test_offer_config_mock(monkeypatch):
     def mock_branches_get(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     offer_config = OfferConfigurations("test-id", "no-auth")
     with pytest.raises(BaseException):
@@ -196,7 +196,7 @@ def test_offer_config_mock(monkeypatch):
         )
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
 
 def create_folders():
@@ -275,7 +275,7 @@ def test_package_get_mock(monkeypatch):
         "products_product_id_package_configurations_get_by_instance_id_instance_i_dinstance_id_get",
         mock_package_config_get,
     )
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     package = Package(product_id="test-id", plan_id="abc-123", authorization="test-auth")
     response = package.get()
@@ -323,7 +323,7 @@ def test_variant_plan_mock_error(monkeypatch):
     def mock_branches_get(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     vp_config = VariantPlanConfiguration(product_id="test-id", plan_id="abc-123", authorization="test-auth")
     with pytest.raises(BaseException):
@@ -349,7 +349,7 @@ def test_offer_get_product_id(monkeypatch, template_config):
 
         return mock_response()
 
-    monkeypatch.setattr(ProductApi, "products_get", mock_products_get)
+    monkeypatch.setattr(ProductApi, "list", mock_products_get)
 
     offer = Offer(name="test-offer", config_yaml=template_config)
     product_id = offer.get_product_id()
@@ -367,7 +367,7 @@ def test_branch_get_mock(monkeypatch):
         )
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
     get_draft_instance_id(product_id="test-id", authorization="auth", module="test-module")
 
     def mock_branches_get(self, product_id, module, authorization):
@@ -376,7 +376,7 @@ def test_branch_get_mock(monkeypatch):
         )
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
     with pytest.raises(BaseException):
         get_draft_instance_id(product_id="test-id", authorization="auth", module="test-module")
 
