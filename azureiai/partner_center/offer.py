@@ -108,15 +108,12 @@ class Offer:
         May return empty submission_id if no preview offer has been created.
         :return: Submission ID of new Managed Application
         """
-        if self._ids["submission_id"] == "":
-            filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
+        if self._ids["submission_id"] is None:
             api_response = self._apis["submission"].products_product_id_submissions_get(
-                product_id=self.get_product_id(), authorization=self.get_auth(), filter=filter_name
+                authorization=self.get_auth(),
+                product_id=self.get_product_id(),
             )
-            submissions = api_response.to_dict()
-            for submission in submissions["value"]:
-                if submission["name"] == self.name:
-                    self._ids["submission_id"] = submission["id"]
+            self._ids["submission_id"] = api_response.value[0].id
 
         return self._ids["submission_id"]
 
