@@ -62,7 +62,7 @@ class ManagedApplication(Offer):
             "externalIDs": [{"type": "AzureOfferId", "value": offer_id}],
             "isModularPublishing": True,
         }
-        api_response = self._apis["product"].products_post(authorization=self.get_auth(), body=body)
+        api_response = self._apis["product"].create(authorization=self.get_auth(), body=body)
         self._ids["product_id"] = api_response.id
 
     def delete(self):
@@ -71,7 +71,7 @@ class ManagedApplication(Offer):
 
         :return: product delete api response
         """
-        return self._apis["product"].products_product_id_delete(
+        return self._apis["product"].delete(
             product_id=self.get_product_id(), authorization=self.get_auth()
         )
 
@@ -197,7 +197,7 @@ class ManagedApplication(Offer):
             ],
         }
 
-        response = self._apis["submission"].products_product_id_submissions_post(
+        response = self._apis["submission"].create(
             authorization=self.get_auth(),
             product_id=self.get_product_id(),
             body=body,
@@ -212,7 +212,7 @@ class ManagedApplication(Offer):
 
         :return: submission api response
         """
-        return self._apis["submission"].products_product_id_submissions_get(
+        return self._apis["submission"].list(
             authorization=self.get_auth(),
             product_id=self.get_product_id(),
         )
@@ -265,7 +265,7 @@ class ManagedApplication(Offer):
         }
 
         try:
-            api_response = self._apis["variant"].products_product_id_variants_post(
+            api_response = self._apis["variant"].create(
                 authorization=self.get_auth(),
                 product_id=self.get_product_id(),
                 body=body,
@@ -401,7 +401,7 @@ class ManagedApplication(Offer):
 
         :return: submission api response
         """
-        return self._apis["submission"].products_product_id_submissions_submission_id_promote_post(
+        return self._apis["submission"].promote(
             product_id=self.get_product_id(),
             submission_id=self._ids["submission_id"],
             authorization=self.get_auth(),
@@ -413,4 +413,4 @@ class ManagedApplication(Offer):
 
         :return: List of managed applications.
         """
-        return self._apis["product"].products_get(authorization=self.get_auth())
+        return self._apis["product"].list(authorization=self.get_auth())

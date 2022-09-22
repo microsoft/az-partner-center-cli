@@ -59,7 +59,7 @@ class Plan(Submission):
         if not self._ids["product_id"]:
             self._set_product_id()
 
-        api_response = self._apis["variant"].products_product_id_variants_post(
+        api_response = self._apis["variant"].create(
             authorization=self.get_auth(),
             product_id=self._ids["product_id"],
             body=body,
@@ -82,7 +82,7 @@ class Plan(Submission):
         """List Azure Submissions."""
         if not self._ids["product_id"]:
             self._set_product_id()
-        api_response = self._apis["variant"].products_product_id_variants_get(
+        api_response = self._apis["variant"].list(
             product_id=self._ids["product_id"], authorization=self.get_auth()
         )
         return api_response.to_dict()
@@ -91,7 +91,7 @@ class Plan(Submission):
         if not self._ids["product_id"]:
             self._set_product_id()
 
-        api_response = self._apis["variant"].products_product_id_variants_get(
+        api_response = self._apis["variant"].list(
             product_id=self._ids["product_id"], authorization=self.get_auth()
         )
         submissions = api_response.to_dict()
@@ -105,7 +105,7 @@ class Plan(Submission):
         if not self._ids["plan_id"]:
             self.show()
 
-        self._apis["variant"].products_product_id_variants_variant_id_delete(
+        self._apis["variant"].delete(
             product_id=self._ids["product_id"],
             variant_id=self._ids["plan_id"],
             authorization=self.get_auth(),
@@ -115,7 +115,7 @@ class Plan(Submission):
     def _set_product_id(self):
         """Set Azure Partner Center Product ID"""
         filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
-        api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
+        api_response = self._apis["product"].list(authorization=self.get_auth(), filter=filter_name)
         submissions = api_response.to_dict()
         for submission in submissions["value"]:
             if submission["name"] == self.name:

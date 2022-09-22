@@ -16,12 +16,12 @@ class Submission(Offer):
     """New Version of Offer used for v2 CLI"""
 
     def __init__(
-        self,
-        name=None,
-        config_yaml: str = "config.yml",
-        resource_type: str = "",
-        app_path: str = ".",
-        json_listing_config: str = "listing_config.json",
+            self,
+            name=None,
+            config_yaml: str = "config.yml",
+            resource_type: str = "",
+            app_path: str = ".",
+            json_listing_config: str = "listing_config.json",
     ):
         super().__init__(name, config_yaml)
         self.resource_type = resource_type
@@ -30,7 +30,7 @@ class Submission(Offer):
 
     def list_contents(self):
         """List Azure Submissions."""
-        api_response = self._apis["product"].products_get(
+        api_response = self._apis["product"].list(
             authorization=self.get_auth(), filter=f"ResourceType eq '{self.resource_type}'"
         )
         return api_response.to_dict()
@@ -44,7 +44,7 @@ class Submission(Offer):
             "isModularPublishing": True,
         }
         try:
-            api_response = self._apis["product"].products_post(authorization=self.get_auth(), body=body)
+            api_response = self._apis["product"].create(authorization=self.get_auth(), body=body)
         except ApiException as error:
             raise NameError("Application already exists. Try using 'update'?") from error
 
@@ -67,7 +67,7 @@ class Submission(Offer):
     def show(self):
         """Show details of an Azure Submission"""
         filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
-        api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
+        api_response = self._apis["product"].list(authorization=self.get_auth(), filter=filter_name)
         submissions = api_response.to_dict()
         for submission in submissions["value"]:
             if submission["name"] == self.name:
@@ -75,11 +75,12 @@ class Submission(Offer):
                 return submission
         raise LookupError(f"{self.resource_type} with this name not found: {self.name}")
 
+
     def delete(self):
         """List Azure Submissions."""
         if not self._ids["product_id"]:
             self.show()
-        api_response = self._apis["product"].products_product_id_delete(
+        api_response = self._apis["product"].delete(
             product_id=self._ids["product_id"], authorization=self.get_auth()
         )
         return api_response
@@ -101,7 +102,7 @@ class Submission(Offer):
             "variantResources": [],
         }
 
-        response = self._apis["variant"].products_product_id_variants_get(
+        response = self._apis["variant"].list(
             product_id=self._ids["product_id"], authorization=self.get_auth()
         )
 
@@ -122,7 +123,7 @@ class Submission(Offer):
                 ]
 
         try:
-            response = self._apis["submission"].products_product_id_submissions_post(
+            response = self._apis["submission"].create(
                 authorization=self.get_auth(),
                 product_id=self.get_product_id(),
                 body=body,
@@ -133,7 +134,7 @@ class Submission(Offer):
             ) from error
         self._ids["submission_id"] = response.id
 
-        return self._apis["submission"].products_product_id_submissions_submission_id_get(
+        return self._apis["submission"].get(
             authorization=self.get_auth(),
             product_id=self.get_product_id(),
             submission_id=response.id,

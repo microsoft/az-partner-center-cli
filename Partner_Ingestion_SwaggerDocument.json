@@ -12,6 +12,7 @@
   "paths"            : {
     "/products"                                                                           : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "Product"
         ],
@@ -76,6 +77,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "Product"
         ],
@@ -139,6 +141,7 @@
     },
     "/products/{productID}"                                                               : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "Product"
         ],
@@ -190,6 +193,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "Product"
         ],
@@ -3121,6 +3125,7 @@
     },
     "/products/{productID}/variants"                                                      : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "Variant"
         ],
@@ -3190,6 +3195,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "Variant"
         ],
@@ -3300,6 +3306,7 @@
     },
     "/products/{productID}/variants/{variantID}"                                          : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "Variant"
         ],
@@ -3377,6 +3384,7 @@
         }
       },
       "put"   : {
+        "operationId": "set",
         "tags"       : [
           "Variant"
         ],
@@ -3464,6 +3472,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "Variant"
         ],
@@ -3732,6 +3741,7 @@
     },
     "/products/{productID}/submissions"                                                   : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "Submission"
         ],
@@ -3802,6 +3812,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "Submission"
         ],
@@ -3868,6 +3879,7 @@
     },
     "/products/{productID}/submissions/{submissionID}"                                    : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "Submission"
         ],
@@ -3933,6 +3945,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "Submission"
         ],
@@ -3985,6 +3998,7 @@
     },
     "/products/{productID}/submissions/{submissionID}/promote"                            : {
       "post": {
+        "operationId": "promote",
         "tags"       : [
           "Submission"
         ],
