@@ -34,7 +34,7 @@ jobs:
           pip install -r requirements.test.txt
           pip install -r requirements.txt 
           pip install pytest-cov coverage pytest-github-actions-annotate-failures
-          pytest -m "not integration and not gpu" -c tox.ini tests
+          # pytest -m "not integration and not gpu" -c tox.ini tests
 
           coverage erase
           python3 -m pytest \
@@ -57,22 +57,22 @@ jobs:
         with:
           pytest-coverage-path: pytest-coverage.txt
           junitxml-path: pytest-results.xml
-#       - name: Integration Tests
-#         run: |
-#           echo "tenant_id: \"${{ secrets.TENANT_ID }}\"" >> config.yml
-#           echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
-#           echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
-#           echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
-#           echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
-#           echo "publisherId: \"${{ secrets.PUBLISHER_ID }}\"" >> config.yml
+      - name: Integration Tests
+        run: |
+          echo "tenant_id: \"${{ secrets.TENANT_ID }}\"" >> config.yml
+          echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
+          echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
+          echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
+          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
+          echo "publisherId: \"${{ secrets.PUBLISHER_ID }}\"" >> config.yml
           
-#           python -m pip install --upgrade pip
-#           pip install -r requirements.test.txt
-#           pip install -r requirements.txt 
-#           pip install pytest-cov coverage pytest-github-actions-annotate-failures
+          python -m pip install --upgrade pip
+          pip install -r requirements.test.txt
+          pip install -r requirements.txt 
+          pip install pytest-cov coverage pytest-github-actions-annotate-failures
 
-#           python3 -m pytest \
-#              -c "tox.ini" \
-#              -m "integration" \
-#              --junitxml=pytest-results.xml \
-#              "tests"
+          python3 -m pytest \
+             -c "tox.ini" \
+             -m "integration" \
+             --junitxml=pytest-results.xml \
+             "tests"
