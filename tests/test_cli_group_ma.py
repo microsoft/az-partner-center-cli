@@ -116,6 +116,11 @@ def test_ma_publish(config_yml, monkeypatch, capsys):
     ma_publish_command(config_yml, monkeypatch, capsys)
 
 
+# @pytest.mark.integration
+# def test_ma_release(config_yml, monkeypatch, capsys):
+#     ma_release_command(config_yml, monkeypatch, capsys)
+
+
 @pytest.mark.integration
 def test_ma_delete(config_yml, monkeypatch, capsys):
     ma_delete_command(config_yml, monkeypatch, capsys)
