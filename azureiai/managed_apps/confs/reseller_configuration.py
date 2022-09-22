@@ -5,7 +5,7 @@
 import os
 
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
-from swagger_client import ResellerConfigurationApi
+from swagger_client import ResellerConfigurationApi, ResellerConfiguration as Body
 
 DEFAULT_STATE = "Enabled"
 
@@ -33,14 +33,11 @@ class ResellerConfiguration(OfferConfigurations):
                 "Not a known value, expected one of the following: 'PartialOptIn', 'Disabled', 'Enabled'; but got ",
                 reseller_channel_state,
             )
-        properties = {
-            "resourceType": "ResellerConfiguration",
-            "ResellerChannelState": reseller_channel_state,
-            "TenantIds": [],
-        }
-
+        body = Body(
+            resource_type="ResellerConfiguration", reseller_channel_state=reseller_channel_state, tenant_ids=[]
+        )
         self.api.create(
             authorization=self.authorization,
             product_id=self.product_id,
-            body=properties,
+            body=body,
         )

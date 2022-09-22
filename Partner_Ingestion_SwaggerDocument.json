@@ -5422,7 +5422,7 @@
             "content"    : {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.Ingestion.Api.Models.Reseller.ResellerConfiguration"
+                  "$ref": "#/components/schemas/ResellerConfiguration"
                 }
               }
             }
@@ -5473,7 +5473,7 @@
           "content"    : {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Microsoft.Ingestion.Api.Models.Reseller.ResellerConfiguration"
+                "$ref": "#/components/schemas/ResellerConfiguration"
               }
             }
           }
@@ -5492,7 +5492,7 @@
             "content"    : {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.Ingestion.Api.Models.Reseller.ResellerConfiguration"
+                  "$ref": "#/components/schemas/ResellerConfiguration"
                 }
               }
             }
@@ -8431,7 +8431,7 @@
           }
         }
       },
-      "Microsoft.Ingestion.Api.Models.Reseller.ResellerConfiguration"                                                             : {
+      "ResellerConfiguration"                                                                                                     : {
         "type"      : "object",
         "properties": {
           "resourceType"        : {
