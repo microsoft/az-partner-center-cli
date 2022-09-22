@@ -140,6 +140,11 @@ class Submission(Offer):
         )
 
     def release(self):
+        """
+        Release Marketplace Application by submitting Submission ID
+
+        :return: Submission API Response
+        """
         if not self._ids["product_id"]:
             self.show()
         if not self._ids["submission_id"]:

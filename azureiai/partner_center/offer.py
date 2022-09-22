@@ -102,6 +102,12 @@ class Offer:
         return self._ids["product_id"]
 
     def get_submission_id(self) -> str:
+        """
+        Get or Set Submission ID
+
+        May return empty submission_id if no preview offer has been created.
+        :return: Submission ID of new Managed Application
+        """
         if self._ids["submission_id"] == "":
             filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
             api_response = self._apis["submission"].products_product_id_submissions_get(

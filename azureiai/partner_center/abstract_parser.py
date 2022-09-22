@@ -50,4 +50,3 @@ class AbstractParser(metaclass=ABCMeta):
     @abstractmethod
     def release(self):
         """Release a Managed Application"""
-        pass
