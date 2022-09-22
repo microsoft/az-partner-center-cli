@@ -145,15 +145,6 @@ class Submission(Offer):
 
         :return: Submission API Response
         """
-        if not self._ids["product_id"]:
-            self.show()
-        # if not self._ids["submission_id"]:
-        #     api_response = self._apis["submission"].products_product_id_submissions_get(
-        #         authorization=self.get_auth(),
-        #         product_id=self.get_product_id(),
-        #     )
-        #     self._ids["submission_id"] = api_response.value[0].id
-
         try:
             return self._apis["submission"].products_product_id_submissions_submission_id_promote_post(
                 product_id=self.get_product_id(),
