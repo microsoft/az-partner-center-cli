@@ -134,7 +134,7 @@ def status_check(config_yml, manifest_yml, monkeypatch):
     def mock_response_submissions_get(self, authorization, product_id):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(SubmissionApi, "products_product_id_submissions_get", mock_response_submissions_get)
+    monkeypatch.setattr(SubmissionApi, "list", mock_response_submissions_get)
     product_id = "test-id"
 
     status_args = {
@@ -150,7 +150,7 @@ def status_check(config_yml, manifest_yml, monkeypatch):
     def mock_response_submissions_get(self, authorization, product_id):
         raise ApiException()
 
-    monkeypatch.setattr(SubmissionApi, "products_product_id_submissions_get", mock_response_submissions_get)
+    monkeypatch.setattr(SubmissionApi, "list", mock_response_submissions_get)
     product_id = "test-id"
 
     status_args = {
@@ -167,7 +167,7 @@ def status_check(config_yml, manifest_yml, monkeypatch):
         value = namedtuple("value", ["are_resources_ready", "state", "substate"])(*["true", "true", "true"])
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[value], "", ""])
 
-    monkeypatch.setattr(SubmissionApi, "products_product_id_submissions_get", mock_response_submissions_get)
+    monkeypatch.setattr(SubmissionApi, "list", mock_response_submissions_get)
     product_id = "test-id"
 
     status_args = {

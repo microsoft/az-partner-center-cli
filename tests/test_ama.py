@@ -211,7 +211,7 @@ def test_ama_get_draft_instance_id_retry(ama, monkeypatch):
     def mock_branches_get(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     with pytest.raises(BaseException):
         ama._get_draft_instance_id(module="")
@@ -222,7 +222,7 @@ def test_ama_get_draft_instance_id_retry(ama, monkeypatch):
         )
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
 
 @pytest.mark.integration
@@ -230,7 +230,7 @@ def test_ama_promote(ama, monkeypatch):
     def mock_branches_get(self, product_id, submission_id, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(SubmissionApi, "products_product_id_submissions_submission_id_promote_post", mock_branches_get)
+    monkeypatch.setattr(SubmissionApi, "promote", mock_branches_get)
 
     ama.promote()
 
@@ -243,7 +243,7 @@ def test_branch_get(monkeypatch):
         )
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
     with pytest.raises(BaseException):
         get_draft_instance_id(product_id="test-id", authorization="auth", module="test-module")
 
@@ -282,7 +282,7 @@ def test_package_error(app_path_fix, monkeypatch):
     def mock_response_products_post(self, authorization, product_id, body):
         return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(PackageApi, "products_product_id_packages_post", mock_response_products_post)
+    monkeypatch.setattr(PackageApi, "create", mock_response_products_post)
     package = Package(product_id="test-id", authorization="test-auth")
     with pytest.raises(BaseException):
         package.set("not-found", str(app_path_fix), version="0.0.0", allow_jit_access=True, policies="")
@@ -296,7 +296,7 @@ def test_variant_plan_error(monkeypatch):
     def mock_branches_get(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     vp_config = VariantPlanConfiguration(product_id="test-id", authorization="test-auth")
     with pytest.raises(RetryException):
@@ -305,7 +305,7 @@ def test_variant_plan_error(monkeypatch):
     def mock_branches_error(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_error)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_error)
     with pytest.raises(BaseException):
         vp_config._get_draft_instance_id(module="")
 
@@ -317,7 +317,7 @@ def test_variant_plan_error(monkeypatch):
         variant_3 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc123", "draft-instance-id"])
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant_1, variant_2, variant_3], "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     vp_config._get_draft_instance_id(module="")
 
@@ -332,7 +332,7 @@ def test_ama_retry(monkeypatch, ama_name, config_yml):
     def mock_branches_get(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     with pytest.raises(RetryException):
         ama._get_variant_draft_instance_id(module="")
@@ -340,7 +340,7 @@ def test_ama_retry(monkeypatch, ama_name, config_yml):
     def mock_branches_error(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_error)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_error)
     with pytest.raises(RetryException):
         ama._get_variant_draft_instance_id(module="")
 
@@ -352,6 +352,6 @@ def test_ama_retry(monkeypatch, ama_name, config_yml):
         variant_3 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc123", "draft-instance-id"])
         return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant_1, variant_2, variant_3], "", ""])
 
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
+    monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
     ama._get_variant_draft_instance_id(module="")
