@@ -101,7 +101,7 @@ class Package(VariantPlanConfiguration):
             "fileName": file_name,
         }
 
-        post_response = self.package_api.products_product_id_packages_post(
+        post_response = self.package_api.create(
             self.authorization, self.product_id, body=post_body
         )
 
@@ -123,7 +123,7 @@ class Package(VariantPlanConfiguration):
             "@odata.etag": post_response.odata_etag,
         }
 
-        self.package_api.products_product_id_packages_package_id_put(
+        self.package_api.set(
             authorization=self.authorization,
             product_id=self.product_id,
             package_id=post_response.id,
@@ -168,7 +168,7 @@ class Package(VariantPlanConfiguration):
             }
 
         try:
-            response = self.api.products_product_id_packageconfigurations_package_configuration_id_put(
+            response = self.api.create(
                 authorization=self.authorization,
                 if_match=odata_etag,
                 product_id=self.product_id,
@@ -184,7 +184,7 @@ class Package(VariantPlanConfiguration):
     def _check_upload(self, post_response):
         state = None
         while state != "Processed":
-            get_response = self.package_api.products_product_id_packages_package_id_get(
+            get_response = self.package_api.get(
                 product_id=self.product_id,
                 package_id=post_response.id,
                 authorization=self.authorization,

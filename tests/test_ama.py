@@ -283,7 +283,7 @@ def test_package_error(app_path_fix, monkeypatch):
         return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     monkeypatch.setattr(PackageApi, "create", mock_response_products_post)
-    package = Package(product_id="test-id", authorization="test-auth")
+    package = Package(product_id="test-id", plan_id="plan-id", authorization="test-auth")
     with pytest.raises(BaseException):
         package.set("not-found", str(app_path_fix), version="0.0.0", allow_jit_access=True, policies="")
 
@@ -298,7 +298,7 @@ def test_variant_plan_error(monkeypatch):
 
     monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
 
-    vp_config = VariantPlanConfiguration(product_id="test-id", authorization="test-auth")
+    vp_config = VariantPlanConfiguration(product_id="test-id", plan_id="plan-id", authorization="test-auth")
     with pytest.raises(RetryException):
         vp_config._get_draft_instance_id(module="")
 

@@ -211,9 +211,6 @@ def ama_mock(ama_name, monkeypatch):
     def mock_response_submissions_get(self, authorization, product_id):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
 
-    def mock_submission_response_post(self, authorization, product_id, body):
-        return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
-
     def mock_submission_response(self, authorization, product_id, submission_id):
         return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
@@ -223,16 +220,13 @@ def ama_mock(ama_name, monkeypatch):
     def mock_image_response(self, authorization, product_id, body, if_match, listing_id, image_id):
         return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
-    def mock_package_sas_upload(sas_url, file_name_full_path):
-        return 201
-
     def mock_listing_package_sas_upload(self, sas_url, file_name_full_path):
         return 201
 
     def mock_put_request(url, data="", headers="", params="", json=""):
         return namedtuple("response", ["status_code"])(*[201])
 
-    def mock_acquire_token_with_client_credentials(self, resource, client_id, client_secret):
+    def mock_creds(self, resource, client_id, client_secret):
         return {"accessToken": "mock-token"}
 
     def mock_image_listing(self, authorization, product_id, listing_id):
@@ -240,74 +234,37 @@ def ama_mock(ama_name, monkeypatch):
             *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
         )
 
-    def mock_app_path(self, authorization, product_id, listing_id):
-        return namedtuple("response", ["value"])(
-            *[namedtuple("value", ["file_name"])(*[namedtuple("file_name", ["file_name"])(*[""])])]
-        )
-
-    monkeypatch.setattr(SubmissionApi, "get", mock_products_get)
-    monkeypatch.setattr(VariantApi, "list", mock_products_get)
-
-    monkeypatch.setattr(
-        AuthenticationContext, "acquire_token_with_client_credentials", mock_acquire_token_with_client_credentials
-    )
-    monkeypatch.setattr(ManagedApplication, "get_auth", mock_auth)
-    monkeypatch.setattr(VariantApi, "create", mock_variant_post)
-    monkeypatch.setattr(ProductApi, "delete", mock_delete)
-    monkeypatch.setattr(PackageApi, "create", mock_response_products_post)
-    monkeypatch.setattr(PackageApi, "set", mock_package_put)
-    monkeypatch.setattr(PackageApi, "get", mock_package_api_get)
-    monkeypatch.setattr(PackageConfigurationApi, "get_by", mock_package_config_get)
+    monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", mock_creds)
     monkeypatch.setattr(BranchesApi, "get", mock_branches_get)
-    monkeypatch.setattr(Package, "get", mock_package_get)
-    monkeypatch.setattr(PackageConfigurationApi, "set", mock_variant_response_package)
+    monkeypatch.setattr(FeatureAvailabilityApi, "set", mock_variant_response_fa_put)
     monkeypatch.setattr(FeatureAvailabilityApi, "get_by", mock_variant_response_fa_get)
-    monkeypatch.setattr(
-        FeatureAvailabilityApi,
-        "set",
-        mock_variant_response_fa_put,
-    )
-    monkeypatch.setattr(
-        ListingApi,
-        "get_by",
-        mock_variant_module_get,
-    )
     monkeypatch.setattr(ListingApi, "set", mock_response)
-    monkeypatch.setattr(
-        ProductAvailabilityApi,
-        "get_by",
-        mock_variant_get,
-    )
-    monkeypatch.setattr(
-        ProductAvailabilityApi,
-        "set",
-        mock_pa_response,
-    )
-    monkeypatch.setattr(
-        PropertyApi,
-        "get_by",
-        mock_variant_get,
-    )
-    monkeypatch.setattr(PropertyApi, "set", mock_propery_response)
-    monkeypatch.setattr(
-        ListingImageApi, "create", mock_post_response_listing
-    )
+    monkeypatch.setattr(ListingApi, "get_by", mock_variant_module_get)
     monkeypatch.setattr(ListingImage, "upload_using_sas", mock_listing_package_sas_upload)
-    monkeypatch.setattr(
-        ListingImageApi, "set", mock_image_response
-    )
+    monkeypatch.setattr(ListingImageApi, "create", mock_post_response_listing)
     monkeypatch.setattr(ListingImageApi, "get", mock_image_listing)
-    monkeypatch.setattr(
-        ResellerConfigurationApi, "create", mock_reseller_response
-    )
-    monkeypatch.setattr(
-        SubmissionApi, "create", mock_submission_response
-    )
-    monkeypatch.setattr(SubmissionApi, "create", mock_submission_response_post)
-    monkeypatch.setattr(SubmissionApi, "list", mock_response_submissions_get)
-    monkeypatch.setattr(requests, "put", mock_put_request)
-    monkeypatch.setattr(ProductApi, "create", mock_products_post)
+    monkeypatch.setattr(ListingImageApi, "set", mock_image_response)
+    monkeypatch.setattr(ManagedApplication, "get_auth", mock_auth)
+    monkeypatch.setattr(Package, "get", mock_package_get)
+    monkeypatch.setattr(PackageConfigurationApi, "create", mock_variant_response_package)
+    monkeypatch.setattr(ProductAvailabilityApi, "set", mock_pa_response)
+    monkeypatch.setattr(ProductAvailabilityApi, "get_by", mock_variant_get)
+    monkeypatch.setattr(PropertyApi, "set", mock_propery_response)
+    monkeypatch.setattr(PropertyApi, "get_by", mock_variant_get)
+    monkeypatch.setattr(PackageApi, "create", mock_response_products_post)
+    monkeypatch.setattr(PackageApi, "get", mock_package_api_get)
+    monkeypatch.setattr(PackageApi, "set", mock_package_put)
+    monkeypatch.setattr(PackageConfigurationApi, "get_by", mock_package_config_get)
     monkeypatch.setattr(ProductApi, "list", mock_products_get)
+    monkeypatch.setattr(ProductApi, "create", mock_products_post)
+    monkeypatch.setattr(ProductApi, "delete", mock_delete)
+    monkeypatch.setattr(SubmissionApi, "list", mock_response_submissions_get)
+    monkeypatch.setattr(SubmissionApi, "create", mock_submission_response)
+    monkeypatch.setattr(SubmissionApi, "get", mock_products_get)
+    monkeypatch.setattr(ResellerConfigurationApi, "create", mock_reseller_response)
+    monkeypatch.setattr(requests, "put", mock_put_request)
+    monkeypatch.setattr(VariantApi, "list", mock_products_get)
+    monkeypatch.setattr(VariantApi, "create", mock_variant_post)
 
     ama = ManagedApplication(ama_name, config_yaml=str(__file__).split("tests")[0] + "template.config.yml")
     ama.set_product_id("mock-test")

@@ -243,6 +243,7 @@
     },
     "/products/{productID}/setup"                                                         : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "Product"
         ],
@@ -297,6 +298,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "Product"
         ],
@@ -432,7 +434,7 @@
         }
       }
     },
-    "/products/{productID}/productavailabilities"                                         : {
+    "/products/{productID}/productAvailabilities"                                         : {
       "get" : {
         "operationId": "list",
         "tags"       : [
@@ -554,7 +556,7 @@
         }
       }
     },
-    "/products/{productID}/productavailabilities/{productAvailabilityID}"                 : {
+    "/products/{productID}/productAvailabilities/{productAvailabilityID}"                 : {
       "get": {
         "operationId": "get",
         "tags"       : [
@@ -1265,6 +1267,7 @@
     },
     "/products/{productID}/listings/{listingID}/assets"                                   : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "ListingAsset"
         ],
@@ -1321,6 +1324,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "ListingAsset"
         ],
@@ -1390,6 +1394,7 @@
     },
     "/products/{productID}/listings/{listingID}/assets/{assetID}"                         : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "ListingAsset"
         ],
@@ -1458,6 +1463,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "ListingAsset"
         ],
@@ -1511,6 +1517,7 @@
         }
       },
       "put"   : {
+        "operationId": "set",
         "tags"       : [
           "ListingAsset"
         ],
@@ -1924,6 +1931,7 @@
     },
     "/products/{productID}/listings/{listingID}/videos"                                   : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "ListingVideo"
         ],
@@ -1989,6 +1997,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "ListingVideo"
         ],
@@ -2058,6 +2067,7 @@
     },
     "/products/{productID}/listings/{listingID}/videos/{videoID}"                         : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "ListingVideo"
         ],
@@ -2132,6 +2142,7 @@
         }
       },
       "put"   : {
+        "operationId": "set",
         "tags"       : [
           "ListingVideo"
         ],
@@ -2208,6 +2219,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "ListingVideo"
         ],
@@ -2836,6 +2848,7 @@
     },
     "/products/{productID}/packages"                                                      : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "Package"
         ],
@@ -2890,6 +2903,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "Package"
         ],
@@ -2956,6 +2970,7 @@
     },
     "/products/{productID}/packages/{packageID}"                                          : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "Package"
         ],
@@ -3018,6 +3033,7 @@
         }
       },
       "put"   : {
+        "operationId": "set",
         "tags"       : [
           "Package"
         ],
@@ -3091,6 +3107,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "Package"
         ],
@@ -4085,6 +4102,7 @@
     },
     "/products/{productID}/submissions/{submissionID}/reports"                            : {
       "get": {
+        "operationId": "reports",
         "tags"       : [
           "Submission"
         ],
@@ -4144,6 +4162,7 @@
     },
     "/products/{productID}/submissions/{submissionID}/validations"                        : {
       "get": {
+        "operationId": "validations",
         "tags"       : [
           "Submission"
         ],
@@ -4211,6 +4230,7 @@
     },
     "/products/{productID}/submissions/{submissionID}/workflowdetails"                    : {
       "get": {
+        "operationId": "workflowdetails",
         "tags"       : [
           "Submission"
         ],
@@ -4269,6 +4289,7 @@
     },
     "/products/{productID}/leadconfiguration"                                             : {
       "get" : {
+        "operationId": "get",
         "tags"       : [
           "LeadConfiguration"
         ],
@@ -4362,6 +4383,7 @@
         }
       },
       "post": {
+        "operationId": "set",
         "tags"       : [
           "LeadConfiguration"
         ],
@@ -4482,6 +4504,7 @@
     },
     "/products/{productID}/supplementalcontents/getByInstanceID(instanceID={instanceID})" : {
       "get": {
+        "operationId": "get_by",
         "tags"       : [
           "SupplementalContent"
         ],
@@ -4540,6 +4563,7 @@
     },
     "/products/{productID}/supplementalContents/{instanceID}"                             : {
       "get": {
+        "operationId": "get",
         "tags"       : [
           "SupplementalContent"
         ],
@@ -4602,6 +4626,7 @@
         }
       },
       "put": {
+        "operationId": "set",
         "tags"       : [
           "SupplementalContent"
         ],
@@ -4694,6 +4719,7 @@
     },
     "/products/{productID}/supplementalContents/{instanceID}/commit"                      : {
       "post": {
+        "operationId": "commit",
         "tags"       : [
           "SupplementalContent"
         ],
@@ -4767,6 +4793,7 @@
     },
     "/products/{productID}/cosellAssets"                                                  : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "CosellAsset"
         ],
@@ -4823,6 +4850,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "CosellAsset"
         ],
@@ -4891,6 +4919,7 @@
     },
     "/products/{productID}/cosellAssets/getByInstanceID(instanceID={instanceID})"         : {
       "get": {
+        "operationId": "get_by",
         "tags"       : [
           "CosellAsset"
         ],
@@ -4958,6 +4987,7 @@
     },
     "/products/{productID}/cosellAssets/{cosellAssetID}"                                  : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "CosellAsset"
         ],
@@ -5023,6 +5053,7 @@
         }
       },
       "put"   : {
+        "operationId": "set",
         "tags"       : [
           "CosellAsset"
         ],
@@ -5098,6 +5129,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "CosellAsset"
         ],
@@ -5150,6 +5182,7 @@
     },
     "/products/{productID}/cosellListing/{instanceID}"                                    : {
       "get": {
+        "operationId": "get",
         "tags"       : [
           "CosellListing"
         ],
@@ -5215,6 +5248,7 @@
         }
       },
       "put": {
+        "operationId": "set",
         "tags"       : [
           "CosellListing"
         ],
@@ -5292,6 +5326,7 @@
     },
     "/products/{productID}/cosellListing/getByInstanceID(instanceID={instanceID})"        : {
       "get": {
+        "operationId": "get_by",
         "tags"       : [
           "CosellListing"
         ],

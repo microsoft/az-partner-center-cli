@@ -48,6 +48,7 @@ def _create_plan_args(config_yml, config_json, subgroup):
         "config_yml": config_yml,
         "config_json": config_json,
         "app_path": APP_PATH,
+        "update": False,
     }
 
 
