@@ -2,7 +2,7 @@
   "openapi"          : "3.0.1",
   "info"             : {
     "title"  : "https://api.partner.microsoft.com/v1.0/ingestion",
-    "version": "1.0"
+    "version": "2.0"
   },
   "servers"          : [
     {
