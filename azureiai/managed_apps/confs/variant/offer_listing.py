@@ -16,7 +16,7 @@ class OfferListing(VariantPlanConfiguration, ListingOfferConfigurations):
         self.plan_id = plan_id
         self.subtype = subtype
         self.module = "Listing"
-        self.get_instance = self.api.products_product_id_listings_get_by_instance_id_instance_i_dinstance_id_get
+        self.get_instance = self.api.list_by
 
     def _get_properties(self, properties):
         settings = self.get()

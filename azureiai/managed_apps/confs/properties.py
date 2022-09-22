@@ -15,7 +15,7 @@ class Properties(OfferConfigurations):
         super().__init__(product_id, authorization)
         self.api = PropertyApi()
         self.module = "Property"
-        self.get_instance = self.api.products_product_id_properties_get_by_instance_id_instance_i_dinstance_id_get
+        self.get_instance = self.api.list_by
 
     def set(
         self,
@@ -52,7 +52,7 @@ class Properties(OfferConfigurations):
             "@odata.etag": odata_etag,
         }
 
-        self.api.products_product_id_properties_property_id_put(
+        self.api.set(
             authorization=self.authorization,
             if_match=odata_etag,
             product_id=self.product_id,

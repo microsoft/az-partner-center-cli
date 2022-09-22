@@ -19,7 +19,7 @@ class ResellerConfiguration(OfferConfigurations):
 
     def get(self):
         """Get Availability for Application"""
-        return self.api.products_product_id_reseller_configuration_get(
+        return self.api.list(
             product_id=self.product_id, authorization=self.authorization
         )
 
@@ -41,7 +41,7 @@ class ResellerConfiguration(OfferConfigurations):
             "TenantIds": [],
         }
 
-        self.api.products_product_id_reseller_configuration_post(
+        self.api.create(
             authorization=self.authorization,
             product_id=self.product_id,
             body=properties,

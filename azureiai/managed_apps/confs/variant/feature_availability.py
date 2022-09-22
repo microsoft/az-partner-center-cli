@@ -24,7 +24,7 @@ class FeatureAvailability(VariantPlanConfiguration):
     def get(self):
         """Get Availability for Application"""
         instance_id = self._get_draft_instance_id(module="Availability")
-        resp = self.fa_api.products_product_id_feature_availabilities_get_by_instance_id_instance_i_dinstance_id_get(
+        resp = self.fa_api.list_by(
             product_id=self.product_id,
             instance_id=instance_id,
             authorization=self.authorization,
@@ -83,7 +83,7 @@ class FeatureAvailability(VariantPlanConfiguration):
         if visibility == "Private":
             body["subscriptionAudiences"] = azure_subscription
 
-        self.fa_api.products_product_id_featureavailabilities_feature_availability_id_put(
+        self.fa_api.set(
             authorization=self.authorization,
             if_match=odata_etag,
             product_id=self.product_id,

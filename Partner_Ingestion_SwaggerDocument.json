@@ -363,6 +363,7 @@
     },
     "/products/{productID}/branches/getByModule(module={module})"                         : {
       "get": {
+        "operationId": "get",
         "tags"       : [
           "Branches"
         ],
@@ -433,6 +434,7 @@
     },
     "/products/{productID}/productavailabilities"                                         : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "ProductAvailability"
         ],
@@ -487,6 +489,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "ProductAvailability"
         ],
@@ -553,6 +556,7 @@
     },
     "/products/{productID}/productavailabilities/{productAvailabilityID}"                 : {
       "get": {
+        "operationId": "get",
         "tags"       : [
           "ProductAvailability"
         ],
@@ -616,6 +620,7 @@
         }
       },
       "put": {
+        "operationId": "set",
         "tags"       : [
           "ProductAvailability"
         ],
@@ -700,6 +705,7 @@
     },
     "/products/{productID}/productAvailabilities/getByInstanceID(instanceID={instanceID})": {
       "get": {
+        "operationId": "list_by",
         "tags"       : [
           "ProductAvailability"
         ],
@@ -750,6 +756,7 @@
     },
     "/products/{productID}/properties"                                                    : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "Property"
         ],
@@ -804,6 +811,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "Property"
         ],
@@ -870,6 +878,7 @@
     },
     "/products/{productID}/properties/{propertyID}"                                       : {
       "get": {
+        "operationId": "get",
         "tags"       : [
           "Property"
         ],
@@ -933,6 +942,7 @@
         }
       },
       "put": {
+        "operationId": "set",
         "tags"       : [
           "Property"
         ],
@@ -1017,6 +1027,7 @@
     },
     "/products/{productID}/properties/getByInstanceID(instanceID={instanceID})"           : {
       "get": {
+        "operationId": "list_by",
         "tags"       : [
           "Property"
         ],
@@ -1075,6 +1086,7 @@
     },
     "/products/{productID}/listings/{listingID}"                                          : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "Listing"
         ],
@@ -1123,6 +1135,7 @@
         }
       },
       "put"   : {
+        "operationId": "set",
         "tags"       : [
           "Listing"
         ],
@@ -1199,6 +1212,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "Listing"
         ],
@@ -1569,6 +1583,7 @@
     },
     "/products/{productID}/listings/{listingID}/images"                                   : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "ListingImage"
         ],
@@ -1634,6 +1649,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "ListingImage"
         ],
@@ -1703,6 +1719,7 @@
     },
     "/products/{productID}/listings/{listingID}/images/{imageID}"                         : {
       "get"   : {
+        "operationId": "get",
         "tags"       : [
           "ListingImage"
         ],
@@ -1771,6 +1788,7 @@
         }
       },
       "put"   : {
+        "operationId": "set",
         "tags"       : [
           "ListingImage"
         ],
@@ -1850,6 +1868,7 @@
         }
       },
       "delete": {
+        "operationId": "delete",
         "tags"       : [
           "ListingImage"
         ],
@@ -2250,6 +2269,7 @@
     },
     "/products/{productID}/listings/getByInstanceID(instanceID={instanceID})"             : {
       "get": {
+        "operationId": "list_by",
         "tags"       : [
           "Listing"
         ],
@@ -2314,6 +2334,7 @@
     },
     "/products/{productID}/listings/createWithInstanceID(instanceID={instanceID})"        : {
       "post": {
+        "operationId": "create",
         "tags"       : [
           "Listing"
         ],
@@ -2394,6 +2415,7 @@
     },
     "/products/{productID}/packageconfigurations/{packageConfigurationID}"                : {
       "get": {
+        "operationId": "list",
         "tags"       : [
           "PackageConfiguration"
         ],
@@ -2520,6 +2542,7 @@
         }
       },
       "put": {
+        "operationId": "create",
         "tags"       : [
           "PackageConfiguration"
         ],
@@ -2730,6 +2753,7 @@
     },
     "/products/{productID}/packageConfigurations/getByInstanceID(instanceID={instanceID})": {
       "get": {
+        "operationId": "list_by",
         "tags"       : [
           "PackageConfiguration"
         ],
@@ -3531,78 +3555,9 @@
         }
       }
     },
-    "/products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})": {
+    "/products/{productID}/featureAvailabilities/{featureAvailabilityID}"                 : {
       "get": {
-        "tags"       : [
-          "FeatureAvailability"
-        ],
-        "summary"    : "Returns a paged collection of feature availability resource",
-        "description": "Sample request:\r\n                 GET /products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})\r\n                 GET /products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})&amp;$expand=MarketStates,PriceSchedule,Trial",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/instanceID"
-          },
-          {
-            "$ref": "#/components/parameters/FeatureAvailabilityExpand"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns a paged collection of feature availability resources",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Microsoft.Ingestion.Api.Models.Common.PagedCollection_Microsoft.Ingestion.Api.Models.Availabilities.FeatureAvailability_"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/featureavailabilities/{featureAvailabilityID}"                 : {
-      "get": {
+        "operationId": "get",
         "tags"       : [
           "FeatureAvailability"
         ],
@@ -3660,6 +3615,7 @@
         }
       },
       "put": {
+        "operationId": "set",
         "tags"       : [
           "FeatureAvailability"
         ],
@@ -3708,6 +3664,77 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Microsoft.Ingestion.Api.Models.Availabilities.FeatureAvailability"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})": {
+      "get": {
+        "operationId": "list_by",
+        "tags"       : [
+          "FeatureAvailability"
+        ],
+        "summary"    : "Returns a paged collection of feature availability resource",
+        "description": "Sample request:\r\n                 GET /products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})\r\n                 GET /products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})&amp;$expand=MarketStates,PriceSchedule,Trial",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/instanceID"
+          },
+          {
+            "$ref": "#/components/parameters/FeatureAvailabilityExpand"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns a paged collection of feature availability resources",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.Ingestion.Api.Models.Common.PagedCollection_Microsoft.Ingestion.Api.Models.Availabilities.FeatureAvailability_"
                 }
               }
             }
@@ -5332,6 +5359,7 @@
     },
     "/products/{productID}/resellerConfiguration"                                         : {
       "get" : {
+        "operationId": "list",
         "tags"       : [
           "ResellerConfiguration"
         ],
@@ -5391,6 +5419,7 @@
         }
       },
       "post": {
+        "operationId": "create",
         "tags"       : [
           "ResellerConfiguration"
         ],

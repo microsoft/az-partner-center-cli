@@ -383,7 +383,7 @@ class ManagedApplication(Offer):
         return allowed_customer_actions, allowed_data_actions
 
     def _get_variant_draft_instance_id(self, module: str, retry: int = 0) -> str:
-        api_response = self._apis["branches"].products_product_id_branches_get_by_module_modulemodule_get(
+        api_response = self._apis["branches"].get(
             product_id=self.get_product_id(),
             module=module,
             authorization=self.get_auth(),

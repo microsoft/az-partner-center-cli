@@ -15,7 +15,7 @@ class ProductAvailability(OfferConfigurations):
         self.api = ProductAvailabilityApi()
         self.module = "Availability"
         self.get_instance = (
-            self.api.products_product_id_product_availabilities_get_by_instance_id_instance_i_dinstance_id_get
+            self.api.list_by
         )
 
         self._settings = None
@@ -42,7 +42,7 @@ class ProductAvailability(OfferConfigurations):
             "@odata.etag": odata_etag,
             "id": settings_id,
         }
-        self.api.products_product_id_productavailabilities_product_availability_id_put(
+        self.api.set(
             authorization=self.authorization,
             if_match=odata_etag,
             product_id=self.product_id,

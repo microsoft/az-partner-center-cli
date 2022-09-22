@@ -32,12 +32,12 @@ class ListingImage(OfferConfigurations):
         :return: api_response
         """
 
-        api_response = self.listing_image_api.products_product_id_listings_listing_id_images_get(
+        api_response = self.listing_image_api.list(
             authorization=self.authorization, product_id=self.product_id, listing_id=self.list.get().id
         )
         for value in api_response.value:
             if value.file_name == file_name:
-                self.listing_image_api.products_product_id_listings_listing_id_images_image_id_delete(
+                self.listing_image_api.delete(
                     authorization=self.authorization,
                     product_id=self.product_id,
                     listing_id=self.list.get().id,
@@ -55,7 +55,7 @@ class ListingImage(OfferConfigurations):
             "id": image_id,
         }
 
-        api_response = self.listing_image_api.products_product_id_listings_listing_id_images_post(
+        api_response = self.listing_image_api.create(
             authorization=self.authorization,
             product_id=self.product_id,
             listing_id=self.list.get().id,
@@ -75,7 +75,7 @@ class ListingImage(OfferConfigurations):
             "id": api_response.id,
         }
 
-        return self.listing_image_api.products_product_id_listings_listing_id_images_image_id_put(
+        return self.listing_image_api.set(
             authorization=self.authorization,
             if_match=api_response.odata_etag,
             product_id=self.product_id,
