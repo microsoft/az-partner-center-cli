@@ -32,7 +32,7 @@ class ListingImage(OfferConfigurations):
         :return: api_response
         """
 
-        api_response = self.listing_image_api.list(
+        api_response = self.listing_image_api.get(
             authorization=self.authorization, product_id=self.product_id, listing_id=self.list.get().id
         )
         for value in api_response.value:
