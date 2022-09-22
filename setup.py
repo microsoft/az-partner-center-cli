@@ -1,5 +1,6 @@
 #   ---------------------------------------------------------
 #   Copyright (c) 2020 Microsoft Corporation. All rights reserved.
+#   MIT License
 #   ---------------------------------------------------------
 """Azure Managed Applications Python SDK"""
 from os import environ
