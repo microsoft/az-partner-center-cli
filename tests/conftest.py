@@ -209,7 +209,8 @@ def ama_mock(ama_name, monkeypatch):
         return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
 
     def mock_response_submissions_get(self, authorization, product_id):
-        return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
+        value = namedtuple("value", ["id"])(*[""])
+        return namedtuple("response", ["value", "odata_etag", "id"])(*[[value], "", ""])
 
     def mock_submission_response_post(self, authorization, product_id, body):
         return namedtuple("response", ["file_sas_uri", "odata_etag", "id"])(*["", "", ""])
