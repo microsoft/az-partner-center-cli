@@ -71,7 +71,7 @@ def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch, capsys)
     def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+    monkeypatch.setattr(ProductApi, "list", mock_show_product)
 
     # Mock creation VM offer API endpoint
     # Set up Requests mock class
@@ -122,7 +122,7 @@ def test_vm_create_offer_exists_mock(config_yml, monkeypatch, vm_config_json, ca
     def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+    monkeypatch.setattr(ProductApi, "list", mock_show_product)
     # The create PUT method does not need mocking as the test should fail before that point
     cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch, capsys)
 
@@ -153,7 +153,7 @@ def test_vm_create_invalid_offer_mock(config_yml, monkeypatch, capsys):
     def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+    monkeypatch.setattr(ProductApi, "list", mock_show_product)
 
     # Expecting a failure as the offer is unable to be created
     cli_tests.vm_create_command(config_yml, vm_config_json, monkeypatch, capsys)
@@ -184,7 +184,7 @@ def test_vm_show_success_mock(config_yml, vm_config_json, monkeypatch, capsys):
     def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+    monkeypatch.setattr(ProductApi, "list", mock_show_product)
 
     offer_response = cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch, capsys)
 
@@ -243,7 +243,7 @@ def test_vm_show_invalid_offer_mock(config_yml, monkeypatch, capsys):
     def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+    monkeypatch.setattr(ProductApi, "list", mock_show_product)
 
     # Expecting a failure as the offer does not exist
     cli_tests.vm_show_command(config_yml, vm_config_json, monkeypatch, capsys)
@@ -490,7 +490,7 @@ def test_vm_delete_success_mock(config_yml, monkeypatch, capsys):
     def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+    monkeypatch.setattr(ProductApi, "list", mock_show_product)
 
     # Mock VM offer delete API endpoint
     def mock_delete_product(self, product_id, authorization, **kwargs):
@@ -519,7 +519,7 @@ def test_vm_delete_offer_doesnot_exist_mock(config_yml, monkeypatch, capsys):
     def mock_show_product(self, authorization, **kwargs):
         return ShowMockResponse()
 
-    monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
+    monkeypatch.setattr(ProductApi, "list", mock_show_product)
 
     cli_tests.vm_delete_command(config_yml, monkeypatch, capsys)
 
