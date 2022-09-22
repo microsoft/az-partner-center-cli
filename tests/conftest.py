@@ -289,20 +289,12 @@ def ama_mock(ama_name, monkeypatch):
         mock_variant_get,
     )
     monkeypatch.setattr(PropertyApi, "set", mock_propery_response)
-    monkeypatch.setattr(
-        ListingImageApi, "create", mock_post_response_listing
-    )
+    monkeypatch.setattr(ListingImageApi, "create", mock_post_response_listing)
     monkeypatch.setattr(ListingImage, "upload_using_sas", mock_listing_package_sas_upload)
-    monkeypatch.setattr(
-        ListingImageApi, "set", mock_image_response
-    )
+    monkeypatch.setattr(ListingImageApi, "set", mock_image_response)
     monkeypatch.setattr(ListingImageApi, "get", mock_image_listing)
-    monkeypatch.setattr(
-        ResellerConfigurationApi, "create", mock_reseller_response
-    )
-    monkeypatch.setattr(
-        SubmissionApi, "create", mock_submission_response
-    )
+    monkeypatch.setattr(ResellerConfigurationApi, "create", mock_reseller_response)
+    monkeypatch.setattr(SubmissionApi, "create", mock_submission_response)
     monkeypatch.setattr(SubmissionApi, "create", mock_submission_response_post)
     monkeypatch.setattr(SubmissionApi, "list", mock_response_submissions_get)
     monkeypatch.setattr(requests, "put", mock_put_request)
