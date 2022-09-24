@@ -17,9 +17,7 @@ import argparse
 
 from azureiai.managed_apps import ManagedApplication
 from azureiai.managed_apps.commands.common import add_config_yml, add_ama_name, add_command, add_product_id
-from swagger_client.models import (
-    SubmissionsSubmission,
-)
+from swagger_client.models import SubmissionsSubmission
 from swagger_client.rest import ApiException
 
 

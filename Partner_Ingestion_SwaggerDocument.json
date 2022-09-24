@@ -241,128 +241,6 @@
         }
       }
     },
-    "/products/{productID}/setup"                                                         : {
-      "get" : {
-        "operationId": "list",
-        "tags"       : [
-          "Product"
-        ],
-        "summary"    : "Returns ProductSetup of a Product.",
-        "description": "Sample requests:\r\n            \r\n    GET /products/{productID}/setup",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Success",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Products.AzureProductSetup"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "post": {
-        "operationId": "create",
-        "tags"       : [
-          "Product"
-        ],
-        "summary"    : "Creates a ProductSetup [AzureProductSetup is allowed]",
-        "description": "Sample requests:\r\n            \r\n    POST /product/{productID}/setup\r\n    {\r\n        \"resourceType\": \"AzureProductSetup\",\r\n        \"leadGenID\": \"testLeadGenID\"\r\n    }",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a Products.BaseProductSetup",
-          "content"    : {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Products.AzureProductSetup"
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "201"    : {
-            "description": "Success",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Products.AzureProductSetup"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
     "/products/{productID}/branches/getByModule(module={module})"                         : {
       "get": {
         "operationId": "get",
@@ -434,624 +312,22 @@
         }
       }
     },
-    "/products/{productID}/productAvailabilities"                                         : {
+    "/products/{productID}/cosellAssets"                                                  : {
       "get" : {
         "operationId": "list",
         "tags"       : [
-          "ProductAvailability"
+          "CosellAsset"
         ],
-        "summary"    : "Returns a paged collection of ProductAvailability resource for Product",
-        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/productAvailabilities",
+        "summary"    : "Returns a paged collection of CosellAsset resources for product",
+        "description": "Returns a paged collection of CosellAsset resources for product",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
           }
         ],
         "responses"  : {
           "200"    : {
-            "description": "Returns a paged collection of ProductAvailability resource",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_ProductAvailability_"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "post": {
-        "operationId": "create",
-        "tags"       : [
-          "ProductAvailability"
-        ],
-        "summary"    : "Create ProductAvailability resource for Product",
-        "description": "Sample request:\r\n            \r\n    POST /products/{productID}/productAvailabilities",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a ProductAvailability",
-          "content"    : {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductAvailability"
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "201"    : {
-            "description": "Returns ProductAvailability resource",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductAvailability"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/productAvailabilities/{productAvailabilityID}"                 : {
-      "get": {
-        "operationId": "get",
-        "tags"       : [
-          "ProductAvailability"
-        ],
-        "summary"    : "Returns ProductAvailability resource for Product",
-        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/productAvailabilities/{productAvailabilityID}",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "productAvailabilityID",
-            "in"         : "path",
-            "description": "ID of ProductAvailability",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns ProductAvailability resource",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductAvailability"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "put": {
-        "operationId": "set",
-        "tags"       : [
-          "ProductAvailability"
-        ],
-        "summary"    : "Update ProductAvailability resource for Product",
-        "description": "Sample request:\r\n            \r\n    PUT /products/{productID}/productAvailabilities/{productAvailabilityID}",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "productAvailabilityID",
-            "in"         : "path",
-            "description": "ID of ProductAvailability",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          },
-          {
-            "name"       : "If-Match",
-            "in"         : "header",
-            "description": "ETag of the resource to be matched",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a ProductAvailability",
-          "content"    : {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductAvailability"
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "200"    : {
-            "description": "Returns ProductAvailability resource",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductAvailability"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/productAvailabilities/getByInstanceID(instanceID={instanceID})": {
-      "get": {
-        "operationId": "get_by",
-        "tags"       : [
-          "ProductAvailability"
-        ],
-        "summary"    : "Returns a paged collection of ProductAvailability resource for Product",
-        "description": "Sample request:\r\n                 GET /products/{productID}/productAvailabilities/getByInstanceID(instanceID={instanceID})",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/instanceID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "A PagedCollection of ProductAvailability",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_ProductAvailability_"
-                }
-              }
-            }
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/properties"                                                    : {
-      "get" : {
-        "operationId": "list",
-        "tags"       : [
-          "Property"
-        ],
-        "summary"    : "Returns a paged collection of Property resources for a Product",
-        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/properties",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns a paged collection of Property resources",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_Properties.BaseProperty_"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "post": {
-        "operationId": "create",
-        "tags"       : [
-          "Property"
-        ],
-        "summary"    : "Create a Property resource for a Product",
-        "description": "Sample request:\r\n            \r\n    POST /products/{productID}/properties [Body Property]",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a Properties.BaseProperty",
-          "content"    : {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AzureProperty"
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "200"    : {
-            "description": "Returns Property resource",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AzureProperty"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/properties/{propertyID}"                                       : {
-      "get": {
-        "operationId": "get",
-        "tags"       : [
-          "Property"
-        ],
-        "summary"    : "Returns a Property resource for a Product",
-        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/properties/{propertyID}",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "propertyID",
-            "in"         : "path",
-            "description": "ID of Property",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns Property resource",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AzureProperty"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "put": {
-        "operationId": "set",
-        "tags"       : [
-          "Property"
-        ],
-        "summary"    : "Update the Property resource for a Product",
-        "description": "Sample request:\r\n            \r\n    PUT /products/{productID}/properties/{propertyID} [Body Property]",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "propertyID",
-            "in"         : "path",
-            "description": "ID of Property",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          },
-          {
-            "name"       : "If-Match",
-            "in"         : "header",
-            "description": "ETag of the resource to be matched",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a Properties.BaseProperty",
-          "content"    : {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AzureProperty"
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "200"    : {
-            "description": "Returns Property resource",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AzureProperty"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/properties/getByInstanceID(instanceID={instanceID})"           : {
-      "get": {
-        "operationId": "get_by",
-        "tags"       : [
-          "Property"
-        ],
-        "summary"    : "Returns a paged collection of Property resources for a Product",
-        "description": "Sample request:\r\n                 GET /products/{productID}/properties/getByInstanceID(instanceID={instanceID})",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/instanceID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "A PagedCollection of a certain type of BaseProperty",
+            "description": "Returns a paged collection of CosellAsset resource",
             "headers"    : {
               "Request-ID": {
                 "description": "ID of request generated by service",
@@ -1063,10 +339,13 @@
             "content"    : {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_Properties.BaseProperty_"
+                  "$ref": "#/components/schemas/PagedCollection_Cosell.CosellAsset_"
                 }
               }
             }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
           },
           "401"    : {
             "$ref": "#/components/responses/401"
@@ -1077,11 +356,985 @@
           "404"    : {
             "$ref": "#/components/responses/404"
           },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
           "429"    : {
             "$ref": "#/components/responses/429"
           },
           "default": {
             "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create",
+        "tags"       : [
+          "CosellAsset"
+        ],
+        "summary"    : "Create a CosellAsset",
+        "description": "Create a CosellAsset",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a CosellAsset",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cosell.CosellAsset"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200"    : {
+            "description": "Returns the created CosellAsset resource",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cosell.CosellAsset"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/cosellAssets/getByInstanceID(instanceID={instanceID})"         : {
+      "get": {
+        "operationId": "get_by",
+        "tags"       : [
+          "CosellAsset"
+        ],
+        "summary"    : "Returns a paged collection of CosellAsset resources for given CosellListing instanceID",
+        "description": "Returns a paged collection of CosellAsset resources for given CosellListing instanceID",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "instanceID",
+            "in"         : "path",
+            "description": "Instance ID",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns a paged collection of CosellAsset resource",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollection_Cosell.CosellAsset_"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/cosellAssets/{cosellAssetID}"                                  : {
+      "get"   : {
+        "operationId": "get",
+        "tags"       : [
+          "CosellAsset"
+        ],
+        "summary"    : "Returns a CosellAsset",
+        "description": "Returns a CosellAsset",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "cosellAssetID",
+            "in"         : "path",
+            "description": "ID of Cosellasset",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns a paged collection of CosellAsset resource",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cosell.CosellAsset"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "put"   : {
+        "operationId": "set",
+        "tags"       : [
+          "CosellAsset"
+        ],
+        "summary"    : "Updates a CosellAsset",
+        "description": "Updates a CosellAsset",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "cosellAssetID",
+            "in"         : "path",
+            "description": "ID of Cosellasset",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a CosellAsset",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cosell.CosellAsset"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200"    : {
+            "description": "Returns an updated CosellAsset resource",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cosell.CosellAsset"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete",
+        "tags"       : [
+          "CosellAsset"
+        ],
+        "summary"    : "Deletes a CosellAsset",
+        "description": "Deletes a CosellAsset",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "cosellAssetID",
+            "in"         : "path",
+            "description": "ID of Cosellasset",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "responses"  : {
+          "204"    : {
+            "description": "Success"
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/cosellListing/{instanceID}"                                    : {
+      "get": {
+        "operationId": "get",
+        "tags"       : [
+          "CosellListing"
+        ],
+        "summary"    : "Returns CosellListing resource",
+        "description": "Returns CosellListing resource",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "instanceID",
+            "in"         : "path",
+            "description": "Instance ID",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns an specific CosellListing resource",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cosell.CosellListing"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "put": {
+        "operationId": "set",
+        "tags"       : [
+          "CosellListing"
+        ],
+        "summary"    : "Updates CosellListing resource",
+        "description": "Updates CosellListing resource",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "instanceID",
+            "in"         : "path",
+            "description": "Instance ID",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a CosellListing",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cosell.CosellListing"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200"    : {
+            "description": "Returns the updated CosellListing resource",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cosell.CosellListing"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/cosellListing/getByInstanceID(instanceID={instanceID})"        : {
+      "get": {
+        "operationId": "get_by",
+        "tags"       : [
+          "CosellListing"
+        ],
+        "summary"    : "Returns a paged collection of Listing resources",
+        "description": "Returns a paged collection of Listing resources",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "instanceID",
+            "in"         : "path",
+            "description": "Instance ID",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns a paged collection of CosellListing resource",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollection_Cosell.CosellListing_"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/featureAvailabilities/{featureAvailabilityID}"                 : {
+      "get": {
+        "operationId": "get",
+        "tags"       : [
+          "FeatureAvailability"
+        ],
+        "summary"    : "Returns a feature availability.",
+        "description": "Sample request:\r\n                 GET products/{productID}/featureavailabilities/{featureAvailabilityID}",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/featureAvailabilityID"
+          },
+          {
+            "$ref": "#/components/parameters/FeatureAvailabilityExpand"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns FeatureAvailability resource",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Availabilities.FeatureAvailability"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "put": {
+        "operationId": "set",
+        "tags"       : [
+          "FeatureAvailability"
+        ],
+        "summary"    : "Update a feature availability resouce",
+        "description": "Sample request:\r\n                 PUT products/{productID}/featureavailabilities/{featureavailabilityID}\r\n                 {\r\n                     ...\r\n                 }",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/featureAvailabilityID"
+          },
+          {
+            "$ref": "#/components/parameters/FeatureAvailabilityExpand"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          },
+          {
+            "name"       : "If-Match",
+            "in"         : "header",
+            "description": "ETag of the resource to be matched",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a Availabilities.FeatureAvailability",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Availabilities.FeatureAvailability"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200"    : {
+            "description": "Returns FeatureAvailability resource",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Availabilities.FeatureAvailability"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})": {
+      "get": {
+        "operationId": "get_by",
+        "tags"       : [
+          "FeatureAvailability"
+        ],
+        "summary"    : "Returns a paged collection of feature availability resource",
+        "description": "Sample request:\r\n                 GET /products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})\r\n                 GET /products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})&amp;$expand=MarketStates,PriceSchedule,Trial",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/instanceID"
+          },
+          {
+            "$ref": "#/components/parameters/FeatureAvailabilityExpand"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns a paged collection of feature availability resources",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollection_Availabilities.FeatureAvailability_"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/leadconfiguration"                                             : {
+      "get" : {
+        "operationId": "get",
+        "tags"       : [
+          "LeadConfiguration"
+        ],
+        "summary"    : "Returns the LeadConfiguration associated with the product",
+        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/leadconfiguration\r\n",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns the LeadConfiguration resource associated with the product",
+            "content"    : {
+              "application/json": {
+                "schema"  : {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.AzureBlobLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.AzureTableLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.HttpsEndpointLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.MarketoLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.SalesForceLeadConfiguration"
+                    }
+                  ]
+                },
+                "examples": {
+                  "AzureBlobLeadConfiguration"                             : {
+                    "$ref": "#/components/examples/LeadManagement.AzureBlobLeadConfiguration"
+                  },
+                  "AzureTableLeadConfiguration"                            : {
+                    "$ref": "#/components/examples/LeadManagement.AzureTableLeadConfiguration"
+                  },
+                  "DynamicsCustomerRelationshipManagementLeadConfiguration": {
+                    "$ref": "#/components/examples/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
+                  },
+                  "HttpsEndpointLeadConfiguration"                         : {
+                    "$ref": "#/components/examples/LeadManagement.HttpsEndpointLeadConfiguration"
+                  },
+                  "MarketoLeadConfiguration"                               : {
+                    "$ref": "#/components/examples/LeadManagement.MarketoLeadConfiguration"
+                  },
+                  "SalesForceLeadConfiguration"                            : {
+                    "$ref": "#/components/examples/LeadManagement.SalesForceLeadConfiguration"
+                  }
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "post": {
+        "operationId": "set",
+        "tags"       : [
+          "LeadConfiguration"
+        ],
+        "summary"    : "Creates a new LeadConfiguration associated with the product",
+        "description": "Sample request:\r\n            \r\n    POST /products/{productID}/leadconfiguration\r\n",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a LeadManagement.BaseLeadConfiguration",
+          "content"    : {
+            "application/json": {
+              "schema"  : {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LeadManagement.AzureBlobLeadConfiguration"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LeadManagement.AzureTableLeadConfiguration"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LeadManagement.HttpsEndpointLeadConfiguration"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LeadManagement.MarketoLeadConfiguration"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LeadManagement.SalesForceLeadConfiguration"
+                  }
+                ]
+              },
+              "examples": {
+                "AzureBlobLeadConfiguration"                             : {
+                  "$ref": "#/components/examples/LeadManagement.AzureBlobLeadConfiguration"
+                },
+                "AzureTableLeadConfiguration"                            : {
+                  "$ref": "#/components/examples/LeadManagement.AzureTableLeadConfiguration"
+                },
+                "DynamicsCustomerRelationshipManagementLeadConfiguration": {
+                  "$ref": "#/components/examples/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
+                },
+                "HttpsEndpointLeadConfiguration"                         : {
+                  "$ref": "#/components/examples/LeadManagement.HttpsEndpointLeadConfiguration"
+                },
+                "MarketoLeadConfiguration"                               : {
+                  "$ref": "#/components/examples/LeadManagement.MarketoLeadConfiguration"
+                },
+                "SalesForceLeadConfiguration"                            : {
+                  "$ref": "#/components/examples/LeadManagement.SalesForceLeadConfiguration"
+                }
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200": {
+            "description": "Returns the newly created LeadConfiguration resource associated with the product",
+            "content"    : {
+              "application/json": {
+                "schema"  : {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.AzureBlobLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.AzureTableLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.HttpsEndpointLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.MarketoLeadConfiguration"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LeadManagement.SalesForceLeadConfiguration"
+                    }
+                  ]
+                },
+                "examples": {
+                  "AzureBlobLeadConfiguration"                             : {
+                    "$ref": "#/components/examples/LeadManagement.AzureBlobLeadConfiguration"
+                  },
+                  "AzureTableLeadConfiguration"                            : {
+                    "$ref": "#/components/examples/LeadManagement.AzureTableLeadConfiguration"
+                  },
+                  "DynamicsCustomerRelationshipManagementLeadConfiguration": {
+                    "$ref": "#/components/examples/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
+                  },
+                  "HttpsEndpointLeadConfiguration"                         : {
+                    "$ref": "#/components/examples/LeadManagement.HttpsEndpointLeadConfiguration"
+                  },
+                  "MarketoLeadConfiguration"                               : {
+                    "$ref": "#/components/examples/LeadManagement.MarketoLeadConfiguration"
+                  },
+                  "SalesForceLeadConfiguration"                            : {
+                    "$ref": "#/components/examples/LeadManagement.SalesForceLeadConfiguration"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2425,7 +2678,325 @@
         }
       }
     },
-    "/products/{productID}/packageconfigurations/{packageConfigurationID}"                : {
+    "/products/{productID}/packages"                                                      : {
+      "get" : {
+        "operationId": "list",
+        "tags"       : [
+          "Package"
+        ],
+        "summary"    : "Returns a set of package instances for the product.",
+        "description": "Returns a set of package instances for the product.",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Success",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollection_Packages.BasePackage_"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create",
+        "tags"       : [
+          "Package"
+        ],
+        "summary"    : "Create a package resource.",
+        "description": "Sample request:\r\n            \r\n    POST products/{productID}/packages\r\n    {\r\n        \"resourceType\": \"package\",\r\n        \"fileName\": \"sample.appx\"\r\n    }",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a Packages.BasePackage",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Packages.AzurePackage"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "201"    : {
+            "description": "Success",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Packages.AzurePackage"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/packages/{packageID}"                                          : {
+      "get"   : {
+        "operationId": "get",
+        "tags"       : [
+          "Package"
+        ],
+        "summary"    : "Returns a package instance for the product.",
+        "description": "Returns a package instance for the product.",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"    : "packageID",
+            "in"      : "path",
+            "required": true,
+            "schema"  : {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Success",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Packages.AzurePackage"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "put"   : {
+        "operationId": "set",
+        "tags"       : [
+          "Package"
+        ],
+        "summary"    : "Update the package.",
+        "description": "Update the package.",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "packageID",
+            "in"         : "path",
+            "description": "The ID of package",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a Packages.BasePackage",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Packages.AzurePackage"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200"    : {
+            "description": "Success",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Packages.AzurePackage"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete",
+        "tags"       : [
+          "Package"
+        ],
+        "summary"    : "Delete the package.",
+        "description": "Delete the package.",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "packageID",
+            "in"         : "path",
+            "description": "the ID of package",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "204"    : {
+            "$ref": "#/components/responses/204"
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/packageConfigurations/{packageConfigurationID}"                : {
       "get": {
         "operationId": "list",
         "tags"       : [
@@ -2846,14 +3417,14 @@
         }
       }
     },
-    "/products/{productID}/packages"                                                      : {
+    "/products/{productID}/productAvailabilities"                                         : {
       "get" : {
         "operationId": "list",
         "tags"       : [
-          "Package"
+          "ProductAvailability"
         ],
-        "summary"    : "Returns a set of package instances for the product.",
-        "description": "Returns a set of package instances for the product.",
+        "summary"    : "Returns a paged collection of ProductAvailability resource for Product",
+        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/productAvailabilities",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
@@ -2867,11 +3438,11 @@
         ],
         "responses"  : {
           "200"    : {
-            "description": "Success",
+            "description": "Returns a paged collection of ProductAvailability resource",
             "content"    : {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_Packages.BasePackage_"
+                  "$ref": "#/components/schemas/PagedCollection_ProductAvailability_"
                 }
               }
             }
@@ -2905,10 +3476,10 @@
       "post": {
         "operationId": "create",
         "tags"       : [
-          "Package"
+          "ProductAvailability"
         ],
-        "summary"    : "Create a package resource.",
-        "description": "Sample request:\r\n            \r\n    POST products/{productID}/packages\r\n    {\r\n        \"resourceType\": \"package\",\r\n        \"fileName\": \"sample.appx\"\r\n    }",
+        "summary"    : "Create ProductAvailability resource for Product",
+        "description": "Sample request:\r\n            \r\n    POST /products/{productID}/productAvailabilities",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
@@ -2921,22 +3492,22 @@
           }
         ],
         "requestBody": {
-          "description": "Request body of a Packages.BasePackage",
+          "description": "Request body of a ProductAvailability",
           "content"    : {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Packages.AzurePackage"
+                "$ref": "#/components/schemas/ProductAvailability"
               }
             }
           }
         },
         "responses"  : {
           "201"    : {
-            "description": "Success",
+            "description": "Returns ProductAvailability resource",
             "content"    : {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Packages.AzurePackage"
+                  "$ref": "#/components/schemas/ProductAvailability"
                 }
               }
             }
@@ -2968,627 +3539,26 @@
         }
       }
     },
-    "/products/{productID}/packages/{packageID}"                                          : {
-      "get"   : {
-        "operationId": "get",
-        "tags"       : [
-          "Package"
-        ],
-        "summary"    : "Returns a package instance for the product.",
-        "description": "Returns a package instance for the product.",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"    : "packageID",
-            "in"      : "path",
-            "required": true,
-            "schema"  : {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Success",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Packages.AzurePackage"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "put"   : {
-        "operationId": "set",
-        "tags"       : [
-          "Package"
-        ],
-        "summary"    : "Update the package.",
-        "description": "Update the package.",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "packageID",
-            "in"         : "path",
-            "description": "The ID of package",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a Packages.BasePackage",
-          "content"    : {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Packages.AzurePackage"
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "200"    : {
-            "description": "Success",
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Packages.AzurePackage"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "delete": {
-        "operationId": "delete",
-        "tags"       : [
-          "Package"
-        ],
-        "summary"    : "Delete the package.",
-        "description": "Delete the package.",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "packageID",
-            "in"         : "path",
-            "description": "the ID of package",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "204"    : {
-            "$ref": "#/components/responses/204"
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/variants"                                                      : {
-      "get" : {
-        "operationId": "list",
-        "tags"       : [
-          "Variant"
-        ],
-        "summary"    : "Returns a set of variants for the product.",
-        "description": "Returns a set of variants for the product.",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "$skipToken",
-            "in"         : "query",
-            "description": "Skip token for paged collection",
-            "schema"     : {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "A paged collection of a certain type of BaseVariant resource",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema"  : {
-                  "$ref": "#/components/schemas/PagedCollection_Variants.BaseVariant_"
-                },
-                "examples": {
-                  "AzureSkuVariant"      : {
-                    "$ref": "#/components/examples/PagedCollection_Variants.BaseVariant_AzureSkuVariant"
-                  },
-                  "AzureTestDriveVariant": {
-                    "$ref": "#/components/examples/PagedCollection_Variants.BaseVariant_AzureTestDriveVariant"
-                  }
-                }
-              }
-            }
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "post": {
-        "operationId": "create",
-        "tags"       : [
-          "Variant"
-        ],
-        "summary"    : "Create a variant resource.",
-        "description": "Sample request:\r\n                 POST products/{productID}/variants\r\n                 {\r\n                     \"resourceType\": \"AzureSkuVariant\",\r\n                     ...\r\n                 }",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a Base Variant",
-          "content"    : {
-            "application/json": {
-              "schema"  : {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Variants.AzureSkuVariant"
-                  },
-                  {
-                    "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
-                  }
-                ]
-              },
-              "examples": {
-                "AzureSkuVariant"      : {
-                  "$ref": "#/components/examples/Variants.AzureSkuVariant"
-                },
-                "AzureTestDriveVariant": {
-                  "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
-                }
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "201"    : {
-            "description": "A type of BaseVariant resource",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              },
-              "ETag"      : {
-                "description": "ETag of returned resource",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema"  : {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Variants.AzureSkuVariant"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
-                    }
-                  ]
-                },
-                "examples": {
-                  "AzureSkuVariant"      : {
-                    "$ref": "#/components/examples/Variants.AzureSkuVariant"
-                  },
-                  "AzureTestDriveVariant": {
-                    "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
-                  }
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/variants/{variantID}"                                          : {
-      "get"   : {
-        "operationId": "get",
-        "tags"       : [
-          "Variant"
-        ],
-        "summary"    : "Returns a variant for the product.",
-        "description": "Returns a variant for the product.",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/variantID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "A type of BaseVariant resource",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              },
-              "ETag"      : {
-                "description": "ETag of returned resource",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema"  : {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Variants.AzureSkuVariant"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
-                    }
-                  ]
-                },
-                "examples": {
-                  "AzureSkuVariant"      : {
-                    "$ref": "#/components/examples/Variants.AzureSkuVariant"
-                  },
-                  "AzureTestDriveVariant": {
-                    "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
-                  }
-                }
-              }
-            }
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "put"   : {
-        "operationId": "set",
-        "tags"       : [
-          "Variant"
-        ],
-        "summary"    : "Update the variant.",
-        "description": "Update the variant.",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/variantID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a type of base variant",
-          "content"    : {
-            "application/json": {
-              "schema"  : {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Variants.AzureSkuVariant"
-                  },
-                  {
-                    "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
-                  }
-                ]
-              },
-              "examples": {
-                "AzureSkuVariant"      : {
-                  "$ref": "#/components/examples/Variants.AzureSkuVariant"
-                },
-                "AzureTestDriveVariant": {
-                  "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
-                }
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "200": {
-            "description": "A certain type of BaseVariant resource",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              },
-              "ETag"      : {
-                "description": "ETag of returned resource",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema"  : {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Variants.AzureSkuVariant"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
-                    }
-                  ]
-                },
-                "examples": {
-                  "AzureSkuVariant"      : {
-                    "$ref": "#/components/examples/Variants.AzureSkuVariant"
-                  },
-                  "AzureTestDriveVariant": {
-                    "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "delete",
-        "tags"       : [
-          "Variant"
-        ],
-        "summary"    : "Delete the variant.",
-        "description": "Delete the variant.",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/variantID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "204"    : {
-            "description": "Variant is deleted successfuly",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/featureAvailabilities/{featureAvailabilityID}"                 : {
+    "/products/{productID}/productAvailabilities/{productAvailabilityID}"                 : {
       "get": {
         "operationId": "get",
         "tags"       : [
-          "FeatureAvailability"
+          "ProductAvailability"
         ],
-        "summary"    : "Returns a feature availability.",
-        "description": "Sample request:\r\n                 GET products/{productID}/featureavailabilities/{featureAvailabilityID}",
+        "summary"    : "Returns ProductAvailability resource for Product",
+        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/productAvailabilities/{productAvailabilityID}",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
           },
           {
-            "$ref": "#/components/parameters/featureAvailabilityID"
-          },
-          {
-            "$ref": "#/components/parameters/FeatureAvailabilityExpand"
+            "name"       : "productAvailabilityID",
+            "in"         : "path",
+            "description": "ID of ProductAvailability",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
           },
           {
             "$ref": "#/components/parameters/Authorization"
@@ -3599,11 +3569,11 @@
         ],
         "responses"  : {
           "200"    : {
-            "description": "Returns FeatureAvailability resource",
+            "description": "Returns ProductAvailability resource",
             "content"    : {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Availabilities.FeatureAvailability"
+                  "$ref": "#/components/schemas/ProductAvailability"
                 }
               }
             }
@@ -3619,6 +3589,9 @@
           },
           "404"    : {
             "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
           },
           "409"    : {
             "$ref": "#/components/responses/409"
@@ -3634,19 +3607,22 @@
       "put": {
         "operationId": "set",
         "tags"       : [
-          "FeatureAvailability"
+          "ProductAvailability"
         ],
-        "summary"    : "Update a feature availability resouce",
-        "description": "Sample request:\r\n                 PUT products/{productID}/featureavailabilities/{featureavailabilityID}\r\n                 {\r\n                     ...\r\n                 }",
+        "summary"    : "Update ProductAvailability resource for Product",
+        "description": "Sample request:\r\n            \r\n    PUT /products/{productID}/productAvailabilities/{productAvailabilityID}",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
           },
           {
-            "$ref": "#/components/parameters/featureAvailabilityID"
-          },
-          {
-            "$ref": "#/components/parameters/FeatureAvailabilityExpand"
+            "name"       : "productAvailabilityID",
+            "in"         : "path",
+            "description": "ID of ProductAvailability",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
           },
           {
             "$ref": "#/components/parameters/Authorization"
@@ -3665,22 +3641,22 @@
           }
         ],
         "requestBody": {
-          "description": "Request body of a Availabilities.FeatureAvailability",
+          "description": "Request body of a ProductAvailability",
           "content"    : {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Availabilities.FeatureAvailability"
+                "$ref": "#/components/schemas/ProductAvailability"
               }
             }
           }
         },
         "responses"  : {
           "200"    : {
-            "description": "Returns FeatureAvailability resource",
+            "description": "Returns ProductAvailability resource",
             "content"    : {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Availabilities.FeatureAvailability"
+                  "$ref": "#/components/schemas/ProductAvailability"
                 }
               }
             }
@@ -3712,23 +3688,20 @@
         }
       }
     },
-    "/products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})": {
+    "/products/{productID}/productAvailabilities/getByInstanceID(instanceID={instanceID})": {
       "get": {
         "operationId": "get_by",
         "tags"       : [
-          "FeatureAvailability"
+          "ProductAvailability"
         ],
-        "summary"    : "Returns a paged collection of feature availability resource",
-        "description": "Sample request:\r\n                 GET /products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})\r\n                 GET /products/{productID}/featureAvailabilities/getByInstanceID(instanceID={instanceID})&amp;$expand=MarketStates,PriceSchedule,Trial",
+        "summary"    : "Returns a paged collection of ProductAvailability resource for Product",
+        "description": "Sample request:\r\n                 GET /products/{productID}/productAvailabilities/getByInstanceID(instanceID={instanceID})",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
           },
           {
             "$ref": "#/components/parameters/instanceID"
-          },
-          {
-            "$ref": "#/components/parameters/FeatureAvailabilityExpand"
           },
           {
             "$ref": "#/components/parameters/Authorization"
@@ -3739,7 +3712,329 @@
         ],
         "responses"  : {
           "200"    : {
-            "description": "Returns a paged collection of feature availability resources",
+            "description": "A PagedCollection of ProductAvailability",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollection_ProductAvailability_"
+                }
+              }
+            }
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/properties"                                                    : {
+      "get" : {
+        "operationId": "list",
+        "tags"       : [
+          "Property"
+        ],
+        "summary"    : "Returns a paged collection of Property resources for a Product",
+        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/properties",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns a paged collection of Property resources",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedCollection_Properties.BaseProperty_"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create",
+        "tags"       : [
+          "Property"
+        ],
+        "summary"    : "Create a Property resource for a Product",
+        "description": "Sample request:\r\n            \r\n    POST /products/{productID}/properties [Body Property]",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a Properties.BaseProperty",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AzureProperty"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200"    : {
+            "description": "Returns Property resource",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AzureProperty"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/properties/{propertyID}"                                       : {
+      "get": {
+        "operationId": "get",
+        "tags"       : [
+          "Property"
+        ],
+        "summary"    : "Returns a Property resource for a Product",
+        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/properties/{propertyID}",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "propertyID",
+            "in"         : "path",
+            "description": "ID of Property",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns Property resource",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AzureProperty"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "put": {
+        "operationId": "set",
+        "tags"       : [
+          "Property"
+        ],
+        "summary"    : "Update the Property resource for a Product",
+        "description": "Sample request:\r\n            \r\n    PUT /products/{productID}/properties/{propertyID} [Body Property]",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "propertyID",
+            "in"         : "path",
+            "description": "ID of Property",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          },
+          {
+            "name"       : "If-Match",
+            "in"         : "header",
+            "description": "ETag of the resource to be matched",
+            "required"   : true,
+            "schema"     : {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a Properties.BaseProperty",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AzureProperty"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200"    : {
+            "description": "Returns Property resource",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AzureProperty"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/properties/getByInstanceID(instanceID={instanceID})"           : {
+      "get": {
+        "operationId": "get_by",
+        "tags"       : [
+          "Property"
+        ],
+        "summary"    : "Returns a paged collection of Property resources for a Product",
+        "description": "Sample request:\r\n                 GET /products/{productID}/properties/getByInstanceID(instanceID={instanceID})",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/instanceID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "A PagedCollection of a certain type of BaseProperty",
             "headers"    : {
               "Request-ID": {
                 "description": "ID of request generated by service",
@@ -3751,7 +4046,252 @@
             "content"    : {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_Availabilities.FeatureAvailability_"
+                  "$ref": "#/components/schemas/PagedCollection_Properties.BaseProperty_"
+                }
+              }
+            }
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/resellerConfiguration"                                         : {
+      "get" : {
+        "operationId": "get",
+        "tags"       : [
+          "ResellerConfiguration"
+        ],
+        "summary"    : "Returns ResellerConfiguration for a product",
+        "description": "Returns ResellerConfiguration for a product",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Returns ResellerConfiguration for a product",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResellerConfiguration"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "post": {
+        "operationId": "set",
+        "tags"       : [
+          "ResellerConfiguration"
+        ],
+        "summary"    : "Creates a ResellerConfiguration",
+        "description": "Creates a ResellerConfiguration",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a ResellerConfiguration",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResellerConfiguration"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "200"    : {
+            "description": "Returns created ResellerConfiguration for a product",
+            "headers"    : {
+              "Request-ID": {
+                "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              }
+            },
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResellerConfiguration"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/products/{productID}/setup"                                                         : {
+      "get" : {
+        "operationId": "list",
+        "tags"       : [
+          "Product"
+        ],
+        "summary"    : "Returns ProductSetup of a Product.",
+        "description": "Sample requests:\r\n            \r\n    GET /products/{productID}/setup",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "responses"  : {
+          "200"    : {
+            "description": "Success",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products.AzureProductSetup"
+                }
+              }
+            }
+          },
+          "400"    : {
+            "$ref": "#/components/responses/400"
+          },
+          "401"    : {
+            "$ref": "#/components/responses/401"
+          },
+          "403"    : {
+            "$ref": "#/components/responses/403"
+          },
+          "404"    : {
+            "$ref": "#/components/responses/404"
+          },
+          "405"    : {
+            "$ref": "#/components/responses/405"
+          },
+          "409"    : {
+            "$ref": "#/components/responses/409"
+          },
+          "429"    : {
+            "$ref": "#/components/responses/429"
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create",
+        "tags"       : [
+          "Product"
+        ],
+        "summary"    : "Creates a ProductSetup [AzureProductSetup is allowed]",
+        "description": "Sample requests:\r\n            \r\n    POST /product/{productID}/setup\r\n    {\r\n        \"resourceType\": \"AzureProductSetup\",\r\n        \"leadGenID\": \"testLeadGenID\"\r\n    }",
+        "parameters" : [
+          {
+            "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body of a Products.BaseProductSetup",
+          "content"    : {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Products.AzureProductSetup"
+              }
+            }
+          }
+        },
+        "responses"  : {
+          "201"    : {
+            "description": "Success",
+            "content"    : {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products.AzureProductSetup"
                 }
               }
             }
@@ -4287,222 +4827,7 @@
         }
       }
     },
-    "/products/{productID}/leadconfiguration"                                             : {
-      "get" : {
-        "operationId": "get",
-        "tags"       : [
-          "LeadConfiguration"
-        ],
-        "summary"    : "Returns the LeadConfiguration associated with the product",
-        "description": "Sample request:\r\n            \r\n    GET /products/{productID}/leadconfiguration\r\n",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns the LeadConfiguration resource associated with the product",
-            "content"    : {
-              "application/json": {
-                "schema"  : {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.AzureBlobLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.AzureTableLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.HttpsEndpointLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.MarketoLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.SalesForceLeadConfiguration"
-                    }
-                  ]
-                },
-                "examples": {
-                  "AzureBlobLeadConfiguration"                             : {
-                    "$ref": "#/components/examples/LeadManagement.AzureBlobLeadConfiguration"
-                  },
-                  "AzureTableLeadConfiguration"                            : {
-                    "$ref": "#/components/examples/LeadManagement.AzureTableLeadConfiguration"
-                  },
-                  "DynamicsCustomerRelationshipManagementLeadConfiguration": {
-                    "$ref": "#/components/examples/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
-                  },
-                  "HttpsEndpointLeadConfiguration"                         : {
-                    "$ref": "#/components/examples/LeadManagement.HttpsEndpointLeadConfiguration"
-                  },
-                  "MarketoLeadConfiguration"                               : {
-                    "$ref": "#/components/examples/LeadManagement.MarketoLeadConfiguration"
-                  },
-                  "SalesForceLeadConfiguration"                            : {
-                    "$ref": "#/components/examples/LeadManagement.SalesForceLeadConfiguration"
-                  }
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "post": {
-        "operationId": "set",
-        "tags"       : [
-          "LeadConfiguration"
-        ],
-        "summary"    : "Creates a new LeadConfiguration associated with the product",
-        "description": "Sample request:\r\n            \r\n    POST /products/{productID}/leadconfiguration\r\n",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "$ref": "#/components/parameters/Client-Request-ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a LeadManagement.BaseLeadConfiguration",
-          "content"    : {
-            "application/json": {
-              "schema"  : {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/LeadManagement.AzureBlobLeadConfiguration"
-                  },
-                  {
-                    "$ref": "#/components/schemas/LeadManagement.AzureTableLeadConfiguration"
-                  },
-                  {
-                    "$ref": "#/components/schemas/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
-                  },
-                  {
-                    "$ref": "#/components/schemas/LeadManagement.HttpsEndpointLeadConfiguration"
-                  },
-                  {
-                    "$ref": "#/components/schemas/LeadManagement.MarketoLeadConfiguration"
-                  },
-                  {
-                    "$ref": "#/components/schemas/LeadManagement.SalesForceLeadConfiguration"
-                  }
-                ]
-              },
-              "examples": {
-                "AzureBlobLeadConfiguration"                             : {
-                  "$ref": "#/components/examples/LeadManagement.AzureBlobLeadConfiguration"
-                },
-                "AzureTableLeadConfiguration"                            : {
-                  "$ref": "#/components/examples/LeadManagement.AzureTableLeadConfiguration"
-                },
-                "DynamicsCustomerRelationshipManagementLeadConfiguration": {
-                  "$ref": "#/components/examples/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
-                },
-                "HttpsEndpointLeadConfiguration"                         : {
-                  "$ref": "#/components/examples/LeadManagement.HttpsEndpointLeadConfiguration"
-                },
-                "MarketoLeadConfiguration"                               : {
-                  "$ref": "#/components/examples/LeadManagement.MarketoLeadConfiguration"
-                },
-                "SalesForceLeadConfiguration"                            : {
-                  "$ref": "#/components/examples/LeadManagement.SalesForceLeadConfiguration"
-                }
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "200": {
-            "description": "Returns the newly created LeadConfiguration resource associated with the product",
-            "content"    : {
-              "application/json": {
-                "schema"  : {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.AzureBlobLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.AzureTableLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.HttpsEndpointLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.MarketoLeadConfiguration"
-                    },
-                    {
-                      "$ref": "#/components/schemas/LeadManagement.SalesForceLeadConfiguration"
-                    }
-                  ]
-                },
-                "examples": {
-                  "AzureBlobLeadConfiguration"                             : {
-                    "$ref": "#/components/examples/LeadManagement.AzureBlobLeadConfiguration"
-                  },
-                  "AzureTableLeadConfiguration"                            : {
-                    "$ref": "#/components/examples/LeadManagement.AzureTableLeadConfiguration"
-                  },
-                  "DynamicsCustomerRelationshipManagementLeadConfiguration": {
-                    "$ref": "#/components/examples/LeadManagement.DynamicsCustomerRelationshipManagementLeadConfiguration"
-                  },
-                  "HttpsEndpointLeadConfiguration"                         : {
-                    "$ref": "#/components/examples/LeadManagement.HttpsEndpointLeadConfiguration"
-                  },
-                  "MarketoLeadConfiguration"                               : {
-                    "$ref": "#/components/examples/LeadManagement.MarketoLeadConfiguration"
-                  },
-                  "SalesForceLeadConfiguration"                            : {
-                    "$ref": "#/components/examples/LeadManagement.SalesForceLeadConfiguration"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products/{productID}/supplementalcontents/getByInstanceID(instanceID={instanceID})" : {
+    "/products/{productID}/supplementalContents/getByInstanceID(instanceID={instanceID})" : {
       "get": {
         "operationId": "get_by",
         "tags"       : [
@@ -4791,22 +5116,36 @@
         }
       }
     },
-    "/products/{productID}/cosellAssets"                                                  : {
+    "/products/{productID}/variants"                                                      : {
       "get" : {
         "operationId": "list",
         "tags"       : [
-          "CosellAsset"
+          "Variant"
         ],
-        "summary"    : "Returns a paged collection of CosellAsset resources for product",
-        "description": "Returns a paged collection of CosellAsset resources for product",
+        "summary"    : "Returns a set of variants for the product.",
+        "description": "Returns a set of variants for the product.",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
+          },
+          {
+            "name"       : "$skipToken",
+            "in"         : "query",
+            "description": "Skip token for paged collection",
+            "schema"     : {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
           }
         ],
         "responses"  : {
           "200"    : {
-            "description": "Returns a paged collection of CosellAsset resource",
+            "description": "A paged collection of a certain type of BaseVariant resource",
             "headers"    : {
               "Request-ID": {
                 "description": "ID of request generated by service",
@@ -4817,14 +5156,19 @@
             },
             "content"    : {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_Cosell.CosellAsset_"
+                "schema"  : {
+                  "$ref": "#/components/schemas/PagedCollection_Variants.BaseVariant_"
+                },
+                "examples": {
+                  "AzureSkuVariant"      : {
+                    "$ref": "#/components/examples/PagedCollection_Variants.BaseVariant_AzureSkuVariant"
+                  },
+                  "AzureTestDriveVariant": {
+                    "$ref": "#/components/examples/PagedCollection_Variants.BaseVariant_AzureTestDriveVariant"
+                  }
                 }
               }
             }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
           },
           "401"    : {
             "$ref": "#/components/responses/401"
@@ -4834,12 +5178,6 @@
           },
           "404"    : {
             "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
           },
           "429"    : {
             "$ref": "#/components/responses/429"
@@ -4852,31 +5190,58 @@
       "post": {
         "operationId": "create",
         "tags"       : [
-          "CosellAsset"
+          "Variant"
         ],
-        "summary"    : "Create a CosellAsset",
-        "description": "Create a CosellAsset",
+        "summary"    : "Create a variant resource.",
+        "description": "Sample request:\r\n                 POST products/{productID}/variants\r\n                 {\r\n                     \"resourceType\": \"AzureSkuVariant\",\r\n                     ...\r\n                 }",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
           }
         ],
         "requestBody": {
-          "description": "Request body of a CosellAsset",
+          "description": "Request body of a Base Variant",
           "content"    : {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cosell.CosellAsset"
+              "schema"  : {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Variants.AzureSkuVariant"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
+                  }
+                ]
+              },
+              "examples": {
+                "AzureSkuVariant"      : {
+                  "$ref": "#/components/examples/Variants.AzureSkuVariant"
+                },
+                "AzureTestDriveVariant": {
+                  "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
+                }
               }
             }
           }
         },
         "responses"  : {
-          "200"    : {
-            "description": "Returns the created CosellAsset resource",
+          "201"    : {
+            "description": "A type of BaseVariant resource",
             "headers"    : {
               "Request-ID": {
                 "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              },
+              "ETag"      : {
+                "description": "ETag of returned resource",
                 "schema"     : {
                   "type": "string"
                 }
@@ -4884,8 +5249,23 @@
             },
             "content"    : {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cosell.CosellAsset"
+                "schema"  : {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Variants.AzureSkuVariant"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
+                    }
+                  ]
+                },
+                "examples": {
+                  "AzureSkuVariant"      : {
+                    "$ref": "#/components/examples/Variants.AzureSkuVariant"
+                  },
+                  "AzureTestDriveVariant": {
+                    "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
+                  }
                 }
               }
             }
@@ -4917,102 +5297,40 @@
         }
       }
     },
-    "/products/{productID}/cosellAssets/getByInstanceID(instanceID={instanceID})"         : {
-      "get": {
-        "operationId": "get_by",
-        "tags"       : [
-          "CosellAsset"
-        ],
-        "summary"    : "Returns a paged collection of CosellAsset resources for given CosellListing instanceID",
-        "description": "Returns a paged collection of CosellAsset resources for given CosellListing instanceID",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "instanceID",
-            "in"         : "path",
-            "description": "Instance ID",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns a paged collection of CosellAsset resource",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_Cosell.CosellAsset_"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/cosellAssets/{cosellAssetID}"                                  : {
+    "/products/{productID}/variants/{variantID}"                                          : {
       "get"   : {
         "operationId": "get",
         "tags"       : [
-          "CosellAsset"
+          "Variant"
         ],
-        "summary"    : "Returns a CosellAsset",
-        "description": "Returns a CosellAsset",
+        "summary"    : "Returns a variant for the product.",
+        "description": "Returns a variant for the product.",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
           },
           {
-            "name"       : "cosellAssetID",
-            "in"         : "path",
-            "description": "ID of Cosellasset",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/variantID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
           }
         ],
         "responses"  : {
           "200"    : {
-            "description": "Returns a paged collection of CosellAsset resource",
+            "description": "A type of BaseVariant resource",
             "headers"    : {
               "Request-ID": {
                 "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              },
+              "ETag"      : {
+                "description": "ETag of returned resource",
                 "schema"     : {
                   "type": "string"
                 }
@@ -5020,14 +5338,26 @@
             },
             "content"    : {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cosell.CosellAsset"
+                "schema"  : {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Variants.AzureSkuVariant"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
+                    }
+                  ]
+                },
+                "examples": {
+                  "AzureSkuVariant"      : {
+                    "$ref": "#/components/examples/Variants.AzureSkuVariant"
+                  },
+                  "AzureTestDriveVariant": {
+                    "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
+                  }
                 }
               }
             }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
           },
           "401"    : {
             "$ref": "#/components/responses/401"
@@ -5037,12 +5367,6 @@
           },
           "404"    : {
             "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
           },
           "429"    : {
             "$ref": "#/components/responses/429"
@@ -5055,40 +5379,61 @@
       "put"   : {
         "operationId": "set",
         "tags"       : [
-          "CosellAsset"
+          "Variant"
         ],
-        "summary"    : "Updates a CosellAsset",
-        "description": "Updates a CosellAsset",
+        "summary"    : "Update the variant.",
+        "description": "Update the variant.",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
           },
           {
-            "name"       : "cosellAssetID",
-            "in"         : "path",
-            "description": "ID of Cosellasset",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/variantID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
           }
         ],
         "requestBody": {
-          "description": "Request body of a CosellAsset",
+          "description": "Request body of a type of base variant",
           "content"    : {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cosell.CosellAsset"
+              "schema"  : {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Variants.AzureSkuVariant"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
+                  }
+                ]
+              },
+              "examples": {
+                "AzureSkuVariant"      : {
+                  "$ref": "#/components/examples/Variants.AzureSkuVariant"
+                },
+                "AzureTestDriveVariant": {
+                  "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
+                }
               }
             }
           }
         },
         "responses"  : {
-          "200"    : {
-            "description": "Returns an updated CosellAsset resource",
+          "200": {
+            "description": "A certain type of BaseVariant resource",
             "headers"    : {
               "Request-ID": {
                 "description": "ID of request generated by service",
+                "schema"     : {
+                  "type": "string"
+                }
+              },
+              "ETag"      : {
+                "description": "ETag of returned resource",
                 "schema"     : {
                   "type": "string"
                 }
@@ -5096,403 +5441,58 @@
             },
             "content"    : {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cosell.CosellAsset"
+                "schema"  : {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Variants.AzureSkuVariant"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Variants.AzureTestDriveVariant"
+                    }
+                  ]
+                },
+                "examples": {
+                  "AzureSkuVariant"      : {
+                    "$ref": "#/components/examples/Variants.AzureSkuVariant"
+                  },
+                  "AzureTestDriveVariant": {
+                    "$ref": "#/components/examples/Variants.AzureTestDriveVariant"
+                  }
                 }
               }
             }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
           }
         }
       },
       "delete": {
         "operationId": "delete",
         "tags"       : [
-          "CosellAsset"
+          "Variant"
         ],
-        "summary"    : "Deletes a CosellAsset",
-        "description": "Deletes a CosellAsset",
+        "summary"    : "Delete the variant.",
+        "description": "Delete the variant.",
         "parameters" : [
           {
             "$ref": "#/components/parameters/productID"
           },
           {
-            "name"       : "cosellAssetID",
-            "in"         : "path",
-            "description": "ID of Cosellasset",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/variantID"
+          },
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Client-Request-ID"
           }
         ],
         "responses"  : {
           "204"    : {
-            "description": "Success"
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/cosellListing/{instanceID}"                                    : {
-      "get": {
-        "operationId": "get",
-        "tags"       : [
-          "CosellListing"
-        ],
-        "summary"    : "Returns CosellListing resource",
-        "description": "Returns CosellListing resource",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "instanceID",
-            "in"         : "path",
-            "description": "Instance ID",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns an specific CosellListing resource",
+            "description": "Variant is deleted successfuly",
             "headers"    : {
               "Request-ID": {
                 "description": "ID of request generated by service",
                 "schema"     : {
                   "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cosell.CosellListing"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "put": {
-        "operationId": "set",
-        "tags"       : [
-          "CosellListing"
-        ],
-        "summary"    : "Updates CosellListing resource",
-        "description": "Updates CosellListing resource",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "instanceID",
-            "in"         : "path",
-            "description": "Instance ID",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a CosellListing",
-          "content"    : {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cosell.CosellListing"
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "200"    : {
-            "description": "Returns the updated CosellListing resource",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cosell.CosellListing"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/cosellListing/getByInstanceID(instanceID={instanceID})"        : {
-      "get": {
-        "operationId": "get_by",
-        "tags"       : [
-          "CosellListing"
-        ],
-        "summary"    : "Returns a paged collection of Listing resources",
-        "description": "Returns a paged collection of Listing resources",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "name"       : "instanceID",
-            "in"         : "path",
-            "description": "Instance ID",
-            "required"   : true,
-            "schema"     : {
-              "type": "string"
-            }
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns a paged collection of CosellListing resource",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedCollection_Cosell.CosellListing_"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      }
-    },
-    "/products/{productID}/resellerConfiguration"                                         : {
-      "get" : {
-        "operationId": "get",
-        "tags"       : [
-          "ResellerConfiguration"
-        ],
-        "summary"    : "Returns ResellerConfiguration for a product",
-        "description": "Returns ResellerConfiguration for a product",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          }
-        ],
-        "responses"  : {
-          "200"    : {
-            "description": "Returns ResellerConfiguration for a product",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResellerConfiguration"
-                }
-              }
-            }
-          },
-          "400"    : {
-            "$ref": "#/components/responses/400"
-          },
-          "401"    : {
-            "$ref": "#/components/responses/401"
-          },
-          "403"    : {
-            "$ref": "#/components/responses/403"
-          },
-          "404"    : {
-            "$ref": "#/components/responses/404"
-          },
-          "405"    : {
-            "$ref": "#/components/responses/405"
-          },
-          "409"    : {
-            "$ref": "#/components/responses/409"
-          },
-          "429"    : {
-            "$ref": "#/components/responses/429"
-          },
-          "default": {
-            "$ref": "#/components/responses/default"
-          }
-        }
-      },
-      "post": {
-        "operationId": "set",
-        "tags"       : [
-          "ResellerConfiguration"
-        ],
-        "summary"    : "Creates a ResellerConfiguration",
-        "description": "Creates a ResellerConfiguration",
-        "parameters" : [
-          {
-            "$ref": "#/components/parameters/productID"
-          },
-          {
-            "$ref": "#/components/parameters/Authorization"
-          }
-        ],
-        "requestBody": {
-          "description": "Request body of a ResellerConfiguration",
-          "content"    : {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResellerConfiguration"
-              }
-            }
-          }
-        },
-        "responses"  : {
-          "200"    : {
-            "description": "Returns created ResellerConfiguration for a product",
-            "headers"    : {
-              "Request-ID": {
-                "description": "ID of request generated by service",
-                "schema"     : {
-                  "type": "string"
-                }
-              }
-            },
-            "content"    : {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResellerConfiguration"
                 }
               }
             }
@@ -5536,10 +5536,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"                   : {
-                "enum": [
+                "enum"   : [
                   "AzureListing"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "AzureListing"
               },
               "productDisplayName"             : {
                 "type": "string"
@@ -5588,10 +5589,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"         : {
-                "enum": [
+                "enum"   : [
                   "AzureProperty"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "AzureProperty"
               },
               "industries"           : {
                 "type" : "array",
@@ -6021,10 +6023,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"         : {
-                "enum": [
+                "enum"   : [
                   "FeatureAvailability"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "FeatureAvailability"
               },
               "visibility"           : {
                 "enum": [
@@ -6083,6 +6086,13 @@
       "Availabilities.CustomMeter"                                            : {
         "type"      : "object",
         "properties": {
+          "resourceType"          : {
+            "enum"   : [
+              "CustomMeter"
+            ],
+            "type"   : "string",
+            "default": "CustomMeter"
+          },
           "isEnabled"             : {
             "type": "boolean"
           },
@@ -6328,10 +6338,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"          : {
-                "enum": [
+                "enum"   : [
                   "Branch"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "Branch"
               },
               "friendlyName"          : {
                 "type": "string"
@@ -6373,10 +6384,11 @@
             "type"      : "object",
             "properties": {
               "resourceType": {
-                "enum": [
+                "enum"   : [
                   "CosellAsset"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "CosellAsset"
               },
               "fileName"    : {
                 "type": "string"
@@ -6403,10 +6415,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"       : {
-                "enum": [
+                "enum"   : [
                   "CosellListing"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "CosellListing"
               },
               "offerPlatforms"     : {
                 "type" : "array",
@@ -6680,10 +6693,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"    : {
-                "enum": [
+                "enum"   : [
                   "AzureTableLeadConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "AzureTableLeadConfiguration"
               },
               "connectionString": {
                 "type": "string"
@@ -6701,10 +6715,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"    : {
-                "enum": [
+                "enum"   : [
                   "AzureBlobLeadConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "AzureBlobLeadConfiguration"
               },
               "connectionString": {
                 "type": "string"
@@ -6725,10 +6740,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"  : {
-                "enum": [
+                "enum"   : [
                   "DynamicsCustomerRelationshipManagementLeadConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "DynamicsCustomerRelationshipManagementLeadConfiguration"
               },
               "uri"           : {
                 "type": "string"
@@ -6764,10 +6780,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"    : {
-                "enum": [
+                "enum"   : [
                   "HttpsEndpointLeadConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "HttpsEndpointLeadConfiguration"
               },
               "httpsEndpointUri": {
                 "type": "string"
@@ -6785,10 +6802,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"     : {
-                "enum": [
+                "enum"   : [
                   "MarketoLeadConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "MarketoLeadConfiguration"
               },
               "serverID"         : {
                 "type": "string"
@@ -6812,10 +6830,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"    : {
-                "enum": [
+                "enum"   : [
                   "SalesForceLeadConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "SalesForceLeadConfiguration"
               },
               "objectIdentifier": {
                 "type": "string"
@@ -6833,10 +6852,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"          : {
-                "enum": [
+                "enum"   : [
                   "ListingAsset"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "ListingAsset"
               },
               "fileName"              : {
                 "type": "string"
@@ -6954,10 +6974,11 @@
             "type"      : "object",
             "properties": {
               "resourceType": {
-                "enum": [
+                "enum"   : [
                   "ListingVideo"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "ListingVideo"
               },
               "fileName"    : {
                 "type": "string"
@@ -7031,10 +7052,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"              : {
-                "enum": [
+                "enum"   : [
                   "Dynamics365BusinessCentralPackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "Dynamics365BusinessCentralPackageConfiguration"
               },
               "packageType"               : {
                 "enum": [
@@ -7065,10 +7087,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"                             : {
-                "enum": [
+                "enum"   : [
                   "Dynamics365CustomerEngagementPackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "Dynamics365CustomerEngagementPackageConfiguration"
               },
               "baseLicenseModel"                         : {
                 "enum": [
@@ -7143,10 +7166,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"      : {
-                "enum": [
+                "enum"   : [
                   "Dynamics365OperationsPackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "Dynamics365OperationsPackageConfiguration"
               },
               "releaseVersion"    : {
                 "type": "string"
@@ -7167,10 +7191,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"                     : {
-                "enum": [
+                "enum"   : [
                   "AzureApplicationPackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "AzureApplicationPackageConfiguration"
               },
               "azureActiveDirectoryTenantID"     : {
                 "type": "string"
@@ -7191,10 +7216,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"                 : {
-                "enum": [
+                "enum"   : [
                   "AzureManagedApplicationPackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "AzureManagedApplicationPackageConfiguration"
               },
               "version"                      : {
                 "type": "string"
@@ -7284,10 +7310,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"     : {
-                "enum": [
+                "enum"   : [
                   "AzureSolutionTemplatePackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "AzureSolutionTemplatePackageConfiguration"
               },
               "version"          : {
                 "type": "string"
@@ -7337,10 +7364,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"       : {
-                "enum": [
+                "enum"   : [
                   "AzureResourceManagerTestDrivePackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "AzureResourceManagerTestDrivePackageConfiguration"
               },
               "regions"            : {
                 "type" : "array",
@@ -7379,10 +7407,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"                  : {
-                "enum": [
+                "enum"   : [
                   "Dynamics365BusinessCentralTestDrivePackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "Dynamics365BusinessCentralTestDrivePackageConfiguration"
               },
               "azureActiveDirectoryTenantName": {
                 "type": "string"
@@ -7411,10 +7440,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"                  : {
-                "enum": [
+                "enum"   : [
                   "Dynamics365CustomerEngagementTestDrivePackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "Dynamics365CustomerEngagementTestDrivePackageConfiguration"
               },
               "azureActiveDirectoryTenantName": {
                 "type": "string"
@@ -7446,10 +7476,11 @@
             "type"      : "object",
             "properties": {
               "resourceType"                  : {
-                "enum": [
+                "enum"   : [
                   "Dynamics365OperationsTestDrivePackageConfiguration"
                 ],
-                "type": "string"
+                "type"   : "string",
+                "default": "Dynamics365OperationsTestDrivePackageConfiguration"
               },
               "azureActiveDirectoryTenantName": {
                 "type": "string"
@@ -7806,7 +7837,8 @@
             "enum": [
               "AzureProductSetup"
             ],
-            "type": "string"
+            "type": "string",
+            "default": "AzureProductSetup"
           },
           "sellingOption"  : {
             "enum": [
@@ -7901,7 +7933,8 @@
             "enum": [
               "Submission"
             ],
-            "type": "string"
+            "type": "string",
+            "default": "Submission"
           },
           "state"             : {
             "enum": [
@@ -8087,7 +8120,8 @@
             "enum": [
               "SubmissionCreationRequest"
             ],
-            "type": "string"
+            "type": "string",
+            "default": "SubmissionCreationRequest"
           },
           "targets"           : {
             "type" : "array",
@@ -8230,7 +8264,8 @@
                 "enum": [
                   "SupplementalContent"
                 ],
-                "type": "string"
+                "type": "string",
+            "default": "SupplementalContent"
               },
               "targetRelease"    : {
                 "type": "string"
@@ -8309,7 +8344,8 @@
                 "enum": [
                   "AzureSkuVariant"
                 ],
-                "type": "string"
+                "type": "string",
+                "default": "AzureSkuVariant"
               },
               "state"                        : {
                 "enum": [
@@ -8389,7 +8425,8 @@
                 "enum": [
                   "AzureTestDriveVariant"
                 ],
-                "type": "string"
+                "type": "string",
+                "default": "AzureTestDriveVariant"
               },
               "testDriveType": {
                 "type": "string"
