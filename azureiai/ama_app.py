@@ -2,7 +2,7 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """
-This method has been replaced by az_app.py. These methods may not be kept up to date.
+This 'main' method has been replaced with the 'main' found in 'az_app.py'. These methods may not be kept up to date.
 They are currently kept for test coverage against APIs.
 
 CLI Wrapper for Creating, Updating, or Deleting Azure Managed Applications
@@ -18,6 +18,8 @@ from azureiai.managed_apps.commands import (
     status,
     update,
 )
+
+
 
 
 def main():
