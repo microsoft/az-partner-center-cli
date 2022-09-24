@@ -20,9 +20,6 @@ from azureiai.managed_apps.commands import (
 )
 
 
-
-
-
 def main():
     """CLI Application"""
     parser = argparse.ArgumentParser("Azure Managed Applications - Python SDK")
