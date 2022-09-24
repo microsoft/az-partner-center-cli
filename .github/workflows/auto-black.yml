@@ -30,6 +30,6 @@ jobs:
         git add azureiai tests
 
         if ! git diff-index --quiet HEAD --; then
-          git commit --no-edit --allow-empty
+          git commit -m "Auto Black Formatting Action" --no-edit --allow-empty
           git push --force-with-lease
         fi
