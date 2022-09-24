@@ -29,6 +29,6 @@ jobs:
         git add azureiai tests
 
         if ! git diff-index --quiet HEAD --; then
-          git commit --no-edit --amend
+          git commit --no-edit --amend --allow-empty
           git push --force-with-lease
         fi
