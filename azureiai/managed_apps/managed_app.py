@@ -386,9 +386,7 @@ class ManagedApplication(Offer):
         allowed_customer_actions = None
         plan_config = ManagedApplication._load_plan_config(json_config)
         if "allowedCustomerActions" in plan_config:
-            allowed_customer_actions = plan_config["technical_configuration"][
-                "allowedCustomerActions"
-            ]
+            allowed_customer_actions = plan_config["technical_configuration"]["allowedCustomerActions"]
         allowed_data_actions = None
         if "allowedDataActions" in plan_config:
             allowed_data_actions = plan_config["technical_configuration"]["allowedDataActions"]

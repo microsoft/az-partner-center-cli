@@ -65,17 +65,17 @@ class Package(VariantPlanConfiguration):
         return api_res["value"][0]
 
     def set(
-            self,
-            app_zip_dir: str,
-            file_name: str,
-            version: str,
-            allow_jit_access: bool = False,
-            policies=None,
-            resource_type: str = "AzureManagedApplicationPackageConfiguration",
-            config_yaml: str = "config.yml",
-            allowed_customer_actions: list = None,
-            allowed_data_actions: list = None,
-            json_config: dict = None,
+        self,
+        app_zip_dir: str,
+        file_name: str,
+        version: str,
+        allow_jit_access: bool = False,
+        policies=None,
+        resource_type: str = "AzureManagedApplicationPackageConfiguration",
+        config_yaml: str = "config.yml",
+        allowed_customer_actions: list = None,
+        allowed_data_actions: list = None,
+        json_config: dict = None,
     ):
         """
         Set Package Configuration
@@ -148,12 +148,8 @@ class Package(VariantPlanConfiguration):
         else:
             plan_config = self._load_plan_config(json_config)
             tenant_id = os.getenv(TENANT_ID, plan_config["technical_configuration"]["tenant_id"])
-            access_id = os.getenv(
-                ACCESS_ID, plan_config["technical_configuration"]["authorizations"][0]["id"]
-            )
-            role = os.getenv(
-                "ACCESS_OWNER", plan_config["technical_configuration"]["authorizations"][0]["role"]
-            )
+            access_id = os.getenv(ACCESS_ID, plan_config["technical_configuration"]["authorizations"][0]["id"])
+            role = os.getenv("ACCESS_OWNER", plan_config["technical_configuration"]["authorizations"][0]["role"])
 
             settings = {
                 "resourceType": resource_type,

@@ -134,9 +134,7 @@ class Plan(Submission):
 
     def _update_pricing_and_availability(self):
         plan_config = self._load_plan_config()
-        azure_subscription = plan_config["pricing_and_availability"].get(
-            "azure_private_subscriptions", []
-        )
+        azure_subscription = plan_config["pricing_and_availability"].get("azure_private_subscriptions", [])
         visibility = plan_config["pricing_and_availability"]["visibility"]
         feature_availability = FeatureAvailability(
             product_id=self.get_product_id(),
