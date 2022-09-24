@@ -147,7 +147,7 @@ class Package(VariantPlanConfiguration):
         else:
             tenant_id = os.getenv(TENANT_ID, json_config[plan_overview][0]["technical_configuration"]["tenant_id"])
             access_id = os.getenv(ACCESS_ID, json_config[plan_overview][0]["authorizations"][0]["id"])
-            role = os.getenv(ACCESS_ID, json_config[plan_overview][0]["authorizations"][0]["role"])
+            role = os.getenv("ACCESS_OWNER", json_config[plan_overview][0]["authorizations"][0]["role"])
 
             settings = {
                 "resourceType": resource_type,
