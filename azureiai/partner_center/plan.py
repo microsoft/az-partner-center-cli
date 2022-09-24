@@ -191,6 +191,7 @@ class Plan(Submission):
                     policies=policies,
                     allowed_customer_actions=allowed_customer_actions,
                     allowed_data_actions=allowed_data_actions,
+                    json_config=json_config,
                 )
             if self.subtype == "st":
                 package = Package(
