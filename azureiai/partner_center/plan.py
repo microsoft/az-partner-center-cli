@@ -189,7 +189,7 @@ class Plan(Submission):
                     allow_jit_access=allow_jit_access,
                     resource_type="AzureManagedApplicationPackageConfiguration",
                     policies=policies,
-                    config_yaml=self.config_yaml,
+                    json_config=json_config,
                     allowed_customer_actions=allowed_customer_actions,
                     allowed_data_actions=allowed_data_actions,
                 )
@@ -201,8 +201,7 @@ class Plan(Submission):
                     app_zip_dir=self.app_path,
                     file_name=file_name,
                     version=version,
-                    resource_type="AzureSolutionTemplatePackageConfiguration",
-                    config_yaml=self.config_yaml,
+                    resource_type="AzureSolutionTemplatePackageConfiguration"
                 )
         except ApiException as error:
             raise ValueError(bytes.decode(error.body).replace("\\", "")) from error
