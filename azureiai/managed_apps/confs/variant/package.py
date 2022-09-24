@@ -75,6 +75,7 @@ class Package(VariantPlanConfiguration):
         config_yaml: str = "config.yml",
         allowed_customer_actions: list = None,
         allowed_data_actions: list = None,
+        json_config: dict = None,
     ):
         """
         Set Package Configuration
@@ -144,11 +145,13 @@ class Package(VariantPlanConfiguration):
                 "ID": settings_id,
             }
         else:
-            with open(config_yaml, encoding="utf8") as file:
-                config_settings = yaml.safe_load(file)
-
-            tenant_id = os.getenv(TENANT_ID, config_settings["tenant_id"])
-            access_id = os.getenv(ACCESS_ID, config_settings["access_id"])
+            tenant_id = os.getenv(TENANT_ID, json_config["plan_overview"][0]["technical_configuration"]["tenant_id"])
+            access_id = os.getenv(
+                ACCESS_ID, json_config["plan_overview"][0]["technical_configuration"]["authorizations"][0]["id"]
+            )
+            role = os.getenv(
+                "ACCESS_OWNER", json_config["plan_overview"][0]["technical_configuration"]["authorizations"][0]["role"]
+            )
 
             settings = {
                 "resourceType": resource_type,
@@ -159,7 +162,7 @@ class Package(VariantPlanConfiguration):
                 "allowedDataActions": allowed_data_actions,
                 "deploymentMode": "Incremental",
                 "publicAzureTenantID": tenant_id,
-                "publicAzureAuthorizations": [{"principalID": access_id, "roleDefinitionID": "Contributor"}],
+                "publicAzureAuthorizations": [{"principalID": access_id, "roleDefinitionID": role}],
                 "azureGovernmentTenantID": "string",
                 "azureGovernmentAuthorizations": [],
                 "policies": policies,

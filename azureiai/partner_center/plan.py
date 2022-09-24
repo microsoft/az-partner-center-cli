@@ -191,6 +191,7 @@ class Plan(Submission):
                     policies=policies,
                     allowed_customer_actions=allowed_customer_actions,
                     allowed_data_actions=allowed_data_actions,
+                    json_config=json_config,
                 )
             if self.subtype == "st":
                 package = Package(
@@ -200,7 +201,7 @@ class Plan(Submission):
                     app_zip_dir=self.app_path,
                     file_name=file_name,
                     version=version,
-                    resource_type="AzureSolutionTemplatePackageConfiguration"
+                    resource_type="AzureSolutionTemplatePackageConfiguration",
                 )
         except ApiException as error:
             raise ValueError(bytes.decode(error.body).replace("\\", "")) from error
