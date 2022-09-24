@@ -189,7 +189,6 @@ class Plan(Submission):
                     allow_jit_access=allow_jit_access,
                     resource_type="AzureManagedApplicationPackageConfiguration",
                     policies=policies,
-                    json_config=json_config,
                     allowed_customer_actions=allowed_customer_actions,
                     allowed_data_actions=allowed_data_actions,
                 )
