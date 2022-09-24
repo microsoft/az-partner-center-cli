@@ -154,12 +154,22 @@ class Submission(Offer):
         except ApiException as error:
             raise SystemError("Release Failed! Is preview creation in progress?") from error
 
-    def _update_properties(self):
+    def _load_plan_config(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
+        plan_overview = json_config["plan_overview"]
+        if isinstance(plan_overview, list):
+            return plan_overview[0]
+        return plan_overview[next(iter(plan_overview))]
+
+    def _update_properties(self):
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+        plan_config = self._load_plan_config()
+
         leveled_categories = json_config["property_settings"].get("leveledCategories", {})
-        version = json_config["plan_overview"][0]["technical_configuration"]["version"]
+        version = plan_config["technical_configuration"]["version"]
 
         offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
         offer_listing_properties.set(

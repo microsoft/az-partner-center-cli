@@ -158,6 +158,9 @@ class Plan(Submission):
             ) from error
 
     def _update_technical_configuration(self):
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+
         plan_config = self._load_plan_config()
 
         with open("manifest.yml", encoding="utf8") as file:
@@ -208,7 +211,7 @@ class Plan(Submission):
         plan_overview = json_config["plan_overview"]
         if isinstance(plan_overview, list):
             return plan_overview[0]
-        return plan_overview[self.plan_name]
+        return plan_overview[next(iter(plan_overview))]
 
     @staticmethod
     def _get_allowed_actions(json_config):
