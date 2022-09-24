@@ -365,9 +365,9 @@ class ManagedApplication(Offer):
             version=version,
             allow_jit_access=allow_jit_access,
             policies=policies,
-            config_yaml=config_yml,
             allowed_customer_actions=allowed_customer_actions,
             allowed_data_actions=allowed_data_actions,
+            json_config=json_config,
         )
 
     @staticmethod
