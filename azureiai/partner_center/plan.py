@@ -209,7 +209,7 @@ class Plan(Submission):
         plan_overview = json_config["plan_overview"]
         if isinstance(plan_overview, list):
             return plan_overview[0]
-        return plan_overview[next(iter(plan_overview))]
+        return plan_overview[self.plan_name]
 
     @staticmethod
     def _get_allowed_actions(json_config):
