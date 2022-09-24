@@ -201,7 +201,7 @@ class Plan(Submission):
                     app_zip_dir=self.app_path,
                     file_name=file_name,
                     version=version,
-                    resource_type="AzureSolutionTemplatePackageConfiguration"
+                    resource_type="AzureSolutionTemplatePackageConfiguration",
                 )
         except ApiException as error:
             raise ValueError(bytes.decode(error.body).replace("\\", "")) from error
