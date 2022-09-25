@@ -19,7 +19,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [check-changed-code]
-    if: needs.check-changed-code.outputs.module_dir
+    if: needs.check-changed-code.outputs.module_dir == true
     steps:
       - uses: actions/checkout@v2
       - name: Setup Python
