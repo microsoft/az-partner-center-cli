@@ -246,7 +246,6 @@ def ama_mock(ama_name, monkeypatch):
     monkeypatch.setattr(
         AuthenticationContext, "acquire_token_with_client_credentials", mock_acquire_token_with_client_credentials
     )
-    monkeypatch.setattr(ManagedApplication, "get_auth", mock_auth)
     monkeypatch.setattr(VariantApi, "products_product_id_variants_post", mock_variant_post)
     monkeypatch.setattr(ProductApi, "products_product_id_delete", mock_delete)
     monkeypatch.setattr(PackageApi, "products_product_id_packages_post", mock_response_products_post)
@@ -315,8 +314,3 @@ def ama_mock(ama_name, monkeypatch):
     monkeypatch.setattr(requests, "put", mock_put_request)
     monkeypatch.setattr(ProductApi, "products_post", mock_products_post)
     monkeypatch.setattr(ProductApi, "products_get", mock_products_get)
-
-    ama = ManagedApplication(ama_name)
-    ama.set_product_id("mock-test")
-
-    return ama

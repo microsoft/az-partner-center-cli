@@ -20,115 +20,6 @@ from azure.partner_center.utils import get_draft_instance_id
 from swagger_client import BranchesApi, PackageConfigurationApi, ResellerConfigurationApi, ProductApi
 
 
-def test_ama_create_mock(ama_mock):
-    assert ama_mock is not None
-
-
-def test_create_plan_mock(ama_mock, plan_name):
-
-    ama_mock._create_new_plan(plan_name)
-    assert ama_mock._ids["plan_id"]
-
-
-def test_ama_delete_mock(ama_mock):
-    ama_mock.delete()
-
-
-def test_ama_publish_pre_prepare_mock(ama_mock, manifest_yml):
-    prepared = ama_mock.manifest_publish(manifest_yml=manifest_yml)
-    assert prepared
-
-
-def test_ama_publish_prepare_mock(ama_mock, plan_name, app_path_fix, app_zip, json_listing_config):
-    prepared = ama_mock.prepare_publish(
-        plan_name=plan_name, app_path=app_path_fix, app=app_zip, json_listing_config=json_listing_config
-    )
-    assert prepared
-
-
-def test_ama_publish_prepare_error_mock(
-    ama_mock, plan_name, app_path_fix, app_zip, json_listing_config, broken_json_listing_config
-):
-    with pytest.raises(FileNotFoundError):
-        assert ama_mock.prepare_publish(
-            plan_name=plan_name,
-            app="not-found",
-            app_path=app_path_fix,
-            json_listing_config=json_listing_config,
-        )
-
-    with pytest.raises(KeyError):
-        assert ama_mock.prepare_publish(
-            plan_name=plan_name,
-            app_path=app_path_fix,
-            app=app_zip,
-            json_listing_config=broken_json_listing_config,
-        )
-    with pytest.raises(KeyError):
-        assert ama_mock.prepare_publish(
-            plan_name=plan_name,
-            app_path=app_path_fix,
-            app=app_zip,
-            json_listing_config=broken_json_listing_config,
-        )
-    with pytest.raises(KeyError):
-        assert ama_mock.prepare_publish(
-            plan_name=plan_name,
-            app_path=app_path_fix,
-            app=app_zip,
-            json_listing_config=broken_json_listing_config,
-        )
-    with pytest.raises(KeyError):
-        assert ama_mock.prepare_publish(
-            plan_name=plan_name,
-            app_path=app_path_fix,
-            app=app_zip,
-            json_listing_config=broken_json_listing_config,
-        )
-    with pytest.raises(FileNotFoundError):
-        assert ama_mock.prepare_publish(
-            plan_name=plan_name,
-            app_path=app_path_fix,
-            app=app_zip,
-        )
-
-
-def test_ama_get_offers_mock(ama_mock):
-    offers = ama_mock.get_offers()
-    assert offers.value
-
-
-def test_ama_promote_mock(ama_mock):
-    promoted = ama_mock.promote()
-    assert promoted
-
-
-def test_ama_publish_mock(ama_mock):
-    promoted = ama_mock.publish()
-    assert promoted
-
-
-def test_ama_submission_status_mock(ama_mock):
-    submission_status = ama_mock.submission_status()
-    assert submission_status
-
-
-def test_ama_get_draft_instance_id_retry_mock(ama_mock, monkeypatch):
-    def mock_branches_get(self, product_id, module, authorization):
-        return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
-
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
-
-    with pytest.raises(BaseException):
-        ama_mock._get_draft_instance_id(module="")
-
-    def mock_branches_get(self, product_id, module, authorization):
-        variant = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(
-            *["variant-id", "draft-instance-id"]
-        )
-        return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant], "", ""])
-
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
 
 
 def test_variant_plan_mock(monkeypatch):
@@ -137,19 +28,6 @@ def test_variant_plan_mock(monkeypatch):
 
     vp_config = VariantPlanConfiguration(product_id="test-id", plan_id="abc-123", authorization="test-auth")
     vp_config._get_draft_instance_id(module="")
-
-
-def test_ama_mock_missing_value(ama_mock, monkeypatch):
-    def mock_branches_error(self, product_id, module, authorization):
-        return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
-
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_error)
-    with pytest.raises(BaseException):
-        ama_mock._get_variant_draft_instance_id(module="")
-
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
-
-    ama_mock._get_variant_draft_instance_id(module="")
 
 
 def test_reseller_configuration_mock(ama_mock, monkeypatch):
