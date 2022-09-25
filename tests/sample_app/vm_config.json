@@ -1,5 +1,5 @@
 {
-  "publisherId": "contoso",
+  "publisherId": "microsoftcorporation1590077852919",
   "offerTypeId": "microsoft-azure-virtualmachines",
   "id": "test-vm",
   "offerTypeVersions": {
@@ -52,7 +52,7 @@
       "microsoft-azure-marketplace.publicAzureSupportUrl": "",
       "microsoft-azure-marketplace.fairfaxSupportUrl": ""
   },
-  "plans": 
+  "plans":
   [
       {
           "planId": "contososkuidentifier",
@@ -82,9 +82,9 @@
           "microsoft-azure-virtualmachines.operationSystem": "Contoso App",
           "microsoft-azure-virtualmachines.recommendedVMSizes": ["a0-basic", "a0-standard", "a1-basic", "a1-standard", "a2-basic", "a2-standard"],
           "microsoft-azure-virtualmachines.openPorts": [],
-          "microsoft-azure-virtualmachines.vmImages": 
+          "microsoft-azure-virtualmachines.vmImages":
           {
-              "1.0.1": 
+              "1.0.1":
               {
                   "osVhdUrl": "",
                   "lunVhdDetails": []

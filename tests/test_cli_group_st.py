@@ -85,6 +85,6 @@ def test_st_release(monkeypatch, capsys):
     st_release_command(monkeypatch, capsys)
 
 
-@pytest.mark.skip
+@pytest.mark.integration
 def test_st_delete(monkeypatch, capsys):
     st_delete_command(monkeypatch, capsys)
