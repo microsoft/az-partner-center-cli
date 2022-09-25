@@ -14,7 +14,6 @@ from azure.partner_center.submission import Submission
 
 AZURE_VIRTUAL_MACHINE = "AzureThirdPartyVirtualMachine"
 RESOURCE_CPP_API = "https://cloudpartner.azure.com"
-RESOURCE_PC_API = "https://api.partner.microsoft.com"
 URL_BASE = RESOURCE_CPP_API + "/api/publishers"
 
 
@@ -71,7 +70,7 @@ class VirtualMachine(Submission):
             publisher_id = settings["publisherId"]
         offer_type_filter = "offerTypeId eq 'microsoft-azure-virtualmachines'"
         url = f"{URL_BASE}/{publisher_id}/offers?api-version=2017-10-31&$filter={offer_type_filter}"
-        headers = {"Authorization": self.get_auth(RESOURCE_CPP_API), "Content-Type": "application/json"}
+        headers = {"Authorization": self.get_auth(), "Content-Type": "application/json"}
         response = requests.get(url, headers=headers)
         return response.json()
 
@@ -86,7 +85,7 @@ class VirtualMachine(Submission):
 
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}/publish?api-version=2017-10-31"
 
-        headers = {"Authorization": self.get_auth(RESOURCE_CPP_API), "Content-Type": "application/json"}
+        headers = {"Authorization": self.get_auth(), "Content-Type": "application/json"}
 
         response = requests.post(
             url, json={"metadata": {"notification-emails": self.notification_emails}}, headers=headers
@@ -101,9 +100,7 @@ class VirtualMachine(Submission):
 
         :return: Authorization Header contents
         """
-        if self._legacy_authorization is None:
-            self._legacy_authorization = f"Bearer {self._get_auth(resource)}"
-        return self._legacy_authorization
+        return super().get_auth(resource)
 
     def _prepare_request(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
@@ -113,7 +110,7 @@ class VirtualMachine(Submission):
             publisher_id = json_config["publisherId"]
         offer_id = json_config["id"]
         url = f"{URL_BASE}/{publisher_id}/offers/{offer_id}?api-version=2017-10-31"
-        headers = {"Authorization": self.get_auth(RESOURCE_CPP_API), "Content-Type": "application/json"}
+        headers = {"Authorization": self.get_auth(), "Content-Type": "application/json"}
         return headers, json_config, url
 
     def _raise_connection_error(self, response):
