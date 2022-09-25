@@ -28,7 +28,7 @@ def run():
     manifest_yml = args.manifest_yml
     if not os.path.isfile(manifest_yml):
         raise FileNotFoundError("Manifest File not found: ", manifest_yml)
-    prepared = ama.manifest_publish(manifest_yml=manifest_yml, config_yml=config_yml)
+    prepared = ama.manifest_publish(manifest_yml=manifest_yml)
 
     output = {
         "ama_name": ama_name,
