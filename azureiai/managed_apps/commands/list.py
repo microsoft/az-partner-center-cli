@@ -18,8 +18,6 @@ def run():
     add_command(parser)
     add_config_yml(parser)
 
-    args = parser.parse_args()
-    config_yml = args.config_yml
-    ama = ManagedApplication(config_yaml=config_yml)
+    ama = ManagedApplication()
     offers = ama.get_offers()
     return offers

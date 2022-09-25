@@ -23,8 +23,7 @@ def run():
 
     args = parser.parse_args()
     ama_name = args.ama_name
-    config_yml = args.config_yml
-    ama = ManagedApplication(ama_name, config_yaml=config_yml)
+    ama = ManagedApplication(ama_name)
     ama.create()
     manifest_yml = args.manifest_yml
     if not os.path.isfile(manifest_yml):

@@ -88,14 +88,11 @@ def _load_ama(parser):
     add_manifest_yml(parser)
     add_offer_id(parser)
     args = parser.parse_args()
-    config_yml = args.config_yml
-    if not os.path.isfile(config_yml):
-        raise FileNotFoundError("Configuration File not found!")
-    ama = ManagedApplication(name=args.ama_name, config_yaml=config_yml)
+    ama = ManagedApplication(name=args.ama_name)
     ama.set_product_id(args.product_id)
     if "offer_id" in args:
         ama.set_offer_id(args.offer_id)
     manifest_yml = args.manifest_yml
     if not os.path.isfile(manifest_yml):
         raise FileNotFoundError("Manifest File not found: ", manifest_yml)
-    return ama, config_yml, manifest_yml, args
+    return ama, manifest_yml, args

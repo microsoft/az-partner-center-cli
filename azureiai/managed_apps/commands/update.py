@@ -17,7 +17,7 @@ def run():
     """Implementation of run interface for update"""
     parser = argparse.ArgumentParser("Azure Managed Applications - Update")
     add_image_toggle(parser)
-    ama, config_yml, manifest_yml, args = _load_ama(parser)
+    ama, manifest_yml, args = _load_ama(parser)
 
     with open(manifest_yml, encoding="utf8") as file:
         manifest = yaml.safe_load(file)
@@ -26,7 +26,6 @@ def run():
         app_path=manifest["app_path"],
         app=manifest["app"],
         json_listing_config=manifest["json_listing_config"],
-        config_yml=config_yml,
         update_image=True,
     )
     url = "https://partner.microsoft.com/en-us/dashboard/commercial-marketplace/offers/%s/overview" % args.product_id

@@ -14,7 +14,7 @@ from azureiai.managed_apps.commands.common import _load_ama
 def run():
     """Implementation of run interface for publish"""
     parser = argparse.ArgumentParser("Azure Managed Applications - Publish")
-    ama, _, _, args = _load_ama(parser)
+    ama, _, args = _load_ama(parser)
 
     response = ama.publish()
 
