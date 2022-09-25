@@ -154,13 +154,15 @@ class Submission(Offer):
         except ApiException as error:
             raise SystemError("Release Failed! Is preview creation in progress?") from error
 
-    def _load_plan_config(self):
+    def _load_plan_config(self, plan_name: str = None):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
         plan_overview = json_config["plan_overview"]
         if isinstance(plan_overview, list):
             return plan_overview[0]
+        if plan_name:
+            return plan_overview[plan_name]
         return plan_overview[next(iter(plan_overview))]
 
     def _update_properties(self):

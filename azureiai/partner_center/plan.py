@@ -123,6 +123,9 @@ class Plan(Submission):
                 return submission
         raise LookupError(f"{self.resource_type} with this name not found: {self.name}")
 
+    def _load_plan_config(self, plan_name=None):
+        return super()._load_plan_config(plan_name=self.plan_name)
+
     def _update_plan_listing(self):
         plan_config = self._load_plan_config()
         offer_listing_properties = plan_config["plan_listing"]
@@ -201,15 +204,6 @@ class Plan(Submission):
                 )
         except ApiException as error:
             raise ValueError(bytes.decode(error.body).replace("\\", "")) from error
-
-    def _load_plan_config(self):
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
-
-        plan_overview = json_config["plan_overview"]
-        if isinstance(plan_overview, list):
-            return plan_overview[0]
-        return plan_overview[self.plan_name]
 
     @staticmethod
     def _get_allowed_actions(json_config):
