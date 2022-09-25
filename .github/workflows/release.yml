@@ -1,0 +1,30 @@
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: "${{ steps.parse-path.outputs.module_name }}/"
+          dry_run: true
+      - name: Set Configurations
+        shell: bash
+        env:
+          WORKING_DIR: "${{ needs.get-module-to-publish.outputs.module_dir }}"
+          VERSION: ${{ steps.tag_version.outputs.new_version }}
+        run: |
+          cd $WORKING_DIR || exit 1
+          
+          sed -ri "s/0.0.0/$VERSION/" "listing_config.json" || exit 1          
+      - name: Create and Publish an App with Plan
+        uses: ./.github/actions/azpc/publish-app/flow
+        with:
+         appName: testapppreview
+         planName: solutiontemplate
+         workingDirectory:  "${{ needs.get-module-to-publish.outputs.module_dir }}"
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ steps.tag_version.outputs.new_tag }}-${{ github.run_number }}"
+          prerelease: true
+          files: |
+            LICENSE.md
+            ${{ needs.get-module-to-publish.outputs.module_dir }}/*.zip
