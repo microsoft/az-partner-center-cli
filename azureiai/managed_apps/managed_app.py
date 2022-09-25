@@ -277,8 +277,16 @@ class ManagedApplication(Offer):
                 return self._create_new_plan(plan_name=plan_name, retry=retry + 1)
             raise RetryException() from api_expection
 
+    @staticmethod
+    def _load_plan_config(json_config):
+        plan_overview = json_config["plan_overview"]
+        if isinstance(plan_overview, list):
+            return plan_overview[0]
+        return plan_overview[next(iter(plan_overview))]
+
     def _set_plan_listing(self, json_config):
-        offer_listing_properties = json_config["plan_overview"][0]["plan_listing"]
+        plan_config = self._load_plan_config(json_config)
+        offer_listing_properties = plan_config["plan_listing"]
         offer_listing = OfferListing(
             product_id=self.get_product_id(), plan_id=self.get_plan_id(), authorization=self.get_auth()
         )
@@ -313,7 +321,8 @@ class ManagedApplication(Offer):
             listing_image.set(file_name=logo_wide, file_path=app_path, logo_type="AzureLogoWide")
 
     def _set_properties(self, json_config):
-        version = json_config["plan_overview"][0]["technical_configuration"]["version"]
+        plan_config = self._load_plan_config(json_config)
+        version = plan_config["technical_configuration"]["version"]
 
         offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
         offer_listing_properties.set(version=version)
@@ -326,7 +335,8 @@ class ManagedApplication(Offer):
 
     def _create_plan(self, app, app_path, config_yml, json_config, plan_name):
 
-        azure_subscription = json_config["plan_overview"][0]["pricing_and_availability"]["azure_private_subscriptions"]
+        plan_config = self._load_plan_config(json_config)
+        azure_subscription = plan_config["pricing_and_availability"]["azure_private_subscriptions"]
         self._create_new_plan(plan_name=plan_name)
 
         self._set_technical_configuration(
@@ -352,10 +362,11 @@ class ManagedApplication(Offer):
         config_yml,
     ):
 
-        version = json_config["plan_overview"][0]["technical_configuration"]["version"]
+        plan_config = self._load_plan_config(json_config)
+        version = plan_config["technical_configuration"]["version"]
 
-        allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
-        policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
+        allow_jit_access = plan_config["technical_configuration"]["allow_jit_access"]
+        policies = plan_config["technical_configuration"]["policy_settings"]
 
         allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(json_config)
         package = Package(product_id=self.get_product_id(), plan_id=self.get_plan_id(), authorization=self.get_auth())
@@ -365,21 +376,20 @@ class ManagedApplication(Offer):
             version=version,
             allow_jit_access=allow_jit_access,
             policies=policies,
-            config_yaml=config_yml,
             allowed_customer_actions=allowed_customer_actions,
             allowed_data_actions=allowed_data_actions,
+            json_config=json_config,
         )
 
     @staticmethod
     def _get_allowed_actions(json_config):
         allowed_customer_actions = None
-        if "allowedCustomerActions" in json_config:
-            allowed_customer_actions = json_config["plan_overview"][0]["technical_configuration"][
-                "allowedCustomerActions"
-            ]
+        plan_config = ManagedApplication._load_plan_config(json_config)
+        if "allowedCustomerActions" in plan_config:
+            allowed_customer_actions = plan_config["technical_configuration"]["allowedCustomerActions"]
         allowed_data_actions = None
-        if "allowedDataActions" in json_config:
-            allowed_data_actions = json_config["plan_overview"][0]["technical_configuration"]["allowedDataActions"]
+        if "allowedDataActions" in plan_config:
+            allowed_data_actions = plan_config["technical_configuration"]["allowedDataActions"]
         return allowed_customer_actions, allowed_data_actions
 
     def _get_variant_draft_instance_id(self, module: str, retry: int = 0) -> str:

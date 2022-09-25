@@ -558,6 +558,10 @@ def test_ma_publish_mock(config_yml, monkeypatch, ama_mock, capsys):
     cli_tests.ma_publish_command(config_yml, monkeypatch, capsys)
 
 
+def test_ma_release_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.ma_release_command(config_yml, monkeypatch, capsys)
+
+
 def test_ma_delete_mock(config_yml, monkeypatch, ama_mock, capsys):
     cli_tests.ma_delete_command(config_yml, monkeypatch, capsys)
 
@@ -580,6 +584,10 @@ def test_st_show_mock(config_yml, monkeypatch, ama_mock, capsys):
 
 def test_st_publish_mock(config_yml, monkeypatch, ama_mock, capsys):
     cli_tests.st_publish_command(config_yml, monkeypatch, capsys)
+
+
+def test_st_release_mock(config_yml, monkeypatch, ama_mock, capsys):
+    cli_tests.st_release_command(config_yml, monkeypatch, capsys)
 
 
 def test_st_delete_mock(config_yml, monkeypatch, ama_mock, capsys):

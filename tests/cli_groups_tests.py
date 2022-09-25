@@ -120,6 +120,18 @@ def _publish_command_args(config_yml, subgroup):
     return input_args
 
 
+def _release_command_args(config_yml, subgroup):
+    input_args = {
+        "subgroup": subgroup,
+        "command": "release",
+        "name": f"test_{subgroup}",
+        "config_yml": config_yml,
+        "notification_emails": "dcibs@microsoft.com",
+        "app_path": APP_PATH,
+    }
+    return input_args
+
+
 def _delete_command_args(config_yml, subgroup):
     input_args = {"subgroup": subgroup, "command": "delete", "name": f"test_{subgroup}", "config_yml": config_yml}
     return input_args
@@ -282,6 +294,10 @@ def ma_publish_command(config_yml, monkeypatch, capsys):
     args_test(monkeypatch, _publish_command_args(config_yml, "ma"), capsys)
 
 
+def ma_release_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _release_command_args(config_yml, "ma"), capsys)
+
+
 def ma_delete_command(config_yml, monkeypatch, capsys):
     args_test(monkeypatch, _delete_command_args(config_yml, "ma"), capsys)
 
@@ -324,6 +340,10 @@ def st_show_command(config_yml, monkeypatch, capsys):
 
 def st_publish_command(config_yml, monkeypatch, capsys):
     args_test(monkeypatch, _publish_command_args(config_yml, "st"), capsys)
+
+
+def st_release_command(config_yml, monkeypatch, capsys):
+    args_test(monkeypatch, _release_command_args(config_yml, "st"), capsys)
 
 
 def st_delete_command(config_yml, monkeypatch, capsys):

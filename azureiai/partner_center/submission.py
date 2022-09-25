@@ -139,12 +139,39 @@ class Submission(Offer):
             submission_id=response.id,
         )
 
-    def _update_properties(self):
+    def release(self):
+        """
+        Release Marketplace Application by submitting Submission ID
+
+        :return: Submission API Response
+        """
+        try:
+            return self._apis["submission"].products_product_id_submissions_submission_id_promote_post(
+                product_id=self.get_product_id(),
+                submission_id=self.get_submission_id(),
+                authorization=self.get_auth(),
+            )
+        except ApiException as error:
+            raise SystemError("Release Failed! Is preview creation in progress?") from error
+
+    def _load_plan_config(self, plan_name: str = None):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
+        plan_overview = json_config["plan_overview"]
+        if isinstance(plan_overview, list):
+            return plan_overview[0]
+        if plan_name:
+            return plan_overview[plan_name]
+        return plan_overview[next(iter(plan_overview))]
+
+    def _update_properties(self):
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+        plan_config = self._load_plan_config()
+
         leveled_categories = json_config["property_settings"].get("leveledCategories", {})
-        version = json_config["plan_overview"][0]["technical_configuration"]["version"]
+        version = plan_config["technical_configuration"]["version"]
 
         offer_listing_properties = Properties(product_id=self.get_product_id(), authorization=self.get_auth())
         offer_listing_properties.set(
