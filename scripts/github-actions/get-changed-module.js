@@ -49,12 +49,9 @@ async function getChangedModule({ require, github, context, core }) {
   const moduleDirs = [
     ...new Set(
       data.files
-        .filter((file) => file.filename.startsWith("modules/"))
+        .filter((file) => file.filename.startsWith("azureiai/"))
         .map((file) => {
-          const dir = path.dirname(file.filename);
-          const segments = dir.split("/");
-          // modules/moduleFolder/moduleRoot/* => modules/moduleFolder/moduleRoot
-          return segments.slice(0, 3).join("/");
+          return true;
         })
         // Ignore removed module directories.
         .filter((dir) => fs.existsSync(dir))
@@ -64,15 +61,11 @@ async function getChangedModule({ require, github, context, core }) {
   switch (moduleDirs.length) {
     case 0:
       core.info("No changed module found.");
-      return "";
-    case 1:
-      core.info("Found 1 changed module:");
-      core.info(`- ${cyan}${moduleDirs[0]}`);
-      return moduleDirs[0];
+      return false;
     default:
-      core.info(`Found ${moduleDirs.length} changed modules:`);
-      moduleDirs.forEach((dir) => core.info(`- ${cyan}${dir}`));
-      core.setFailed("Only one module can be added or updated at a time.");
+      core.info("Found changed module:");
+      core.info(`- ${cyan}azureiai`);
+      return true;    
   }
 }
 
