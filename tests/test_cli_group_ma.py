@@ -9,12 +9,26 @@ import pytest
 from azure.partner_center.offers.managed_app import ManagedApp
 from azure.partner_center.plan import Plan
 from swagger_client.rest import ApiException
-from tests.cli_groups_tests import (_assert_offer_listing, _assert_plan_listing, _assert_preview_audience,
-                                    _assert_pricing_and_availability, _assert_properties,
-                                    _assert_technical_configuration, ma_create_command, ma_create_plan_command,
-                                    ma_delete_command, ma_delete_plan_command, ma_list_command, ma_list_plan_command,
-                                    ma_publish_command, ma_release_command, ma_show_command, ma_show_plan_command,
-                                    ma_update_command, ma_update_plan_command)
+from tests.cli_groups_tests import (
+    _assert_offer_listing,
+    _assert_plan_listing,
+    _assert_preview_audience,
+    _assert_pricing_and_availability,
+    _assert_properties,
+    _assert_technical_configuration,
+    ma_create_command,
+    ma_create_plan_command,
+    ma_delete_command,
+    ma_delete_plan_command,
+    ma_list_command,
+    ma_list_plan_command,
+    ma_publish_command,
+    ma_release_command,
+    ma_show_command,
+    ma_show_plan_command,
+    ma_update_command,
+    ma_update_plan_command,
+)
 
 
 @pytest.mark.integration

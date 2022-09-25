@@ -4,9 +4,20 @@
 import pytest
 
 from swagger_client.rest import ApiException
-from tests.cli_groups_tests import (_show_plan_args, st_create_command, st_create_plan_command, st_delete_command,
-                                    st_list_command, st_list_plan_command, st_publish_command, st_release_command,
-                                    st_show_command, st_show_plan_command, st_update_command, st_update_plan_command)
+from tests.cli_groups_tests import (
+    _show_plan_args,
+    st_create_command,
+    st_create_plan_command,
+    st_delete_command,
+    st_list_command,
+    st_list_plan_command,
+    st_publish_command,
+    st_release_command,
+    st_show_command,
+    st_show_plan_command,
+    st_update_command,
+    st_update_plan_command,
+)
 
 
 @pytest.mark.integration

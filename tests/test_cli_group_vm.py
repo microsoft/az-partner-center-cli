@@ -11,13 +11,27 @@ from adal import AuthenticationContext
 
 from azure.partner_center.plan import Plan
 from swagger_client.rest import ApiException
-from tests.cli_groups_tests import (_assert_plan_listing, _assert_pricing_and_availability,
-                                    _assert_technical_configuration, _assert_vm_offer_listing,
-                                    _assert_vm_offer_listing_integration, _assert_vm_plan_listing,
-                                    _assert_vm_preview_audience, _assert_vm_properties, _assert_vm_show,
-                                    vm_create_command, vm_create_plan_command, vm_delete_command,
-                                    vm_delete_plan_command, vm_list_command, vm_list_plan_command, vm_publish_command,
-                                    vm_show_command, vm_show_plan_command, vm_update_plan_command)
+from tests.cli_groups_tests import (
+    _assert_plan_listing,
+    _assert_pricing_and_availability,
+    _assert_technical_configuration,
+    _assert_vm_offer_listing,
+    _assert_vm_offer_listing_integration,
+    _assert_vm_plan_listing,
+    _assert_vm_preview_audience,
+    _assert_vm_properties,
+    _assert_vm_show,
+    vm_create_command,
+    vm_create_plan_command,
+    vm_delete_command,
+    vm_delete_plan_command,
+    vm_list_command,
+    vm_list_plan_command,
+    vm_publish_command,
+    vm_show_command,
+    vm_show_plan_command,
+    vm_update_plan_command,
+)
 
 
 @pytest.fixture()
