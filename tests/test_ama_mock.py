@@ -20,8 +20,6 @@ from azure.partner_center.utils import get_draft_instance_id
 from swagger_client import BranchesApi, PackageConfigurationApi, ResellerConfigurationApi, ProductApi
 
 
-
-
 def test_variant_plan_mock(monkeypatch):
 
     monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
