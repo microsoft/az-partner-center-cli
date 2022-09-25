@@ -192,8 +192,6 @@ def publish_missing_config(manifest_yml, monkeypatch):
         "manifest_yml": manifest_yml,
     }
     setup_patched_app(monkeypatch, publish_args)
-    with pytest.raises(FileNotFoundError):
-        ama_app.main()
     delete_args = {"command": "delete", "product_id": product_id}
     setup_patched_app(monkeypatch, delete_args)
     ama_app.main()

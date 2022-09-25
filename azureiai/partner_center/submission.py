@@ -23,7 +23,7 @@ class Submission(Offer):
         app_path: str = ".",
         json_listing_config: str = "listing_config.json",
     ):
-        super().__init__(name, config_yaml)
+        super().__init__(name)
         self.resource_type = resource_type
         self.app_path = app_path
         self.json_listing_config = json_listing_config

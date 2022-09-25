@@ -20,7 +20,7 @@ def run():
     add_command(parser)
 
     args = parser.parse_args()
-    ama = ManagedApplication(config_yaml=args.config_yml)
+    ama = ManagedApplication()
     ama.set_product_id(args.product_id)
     ama.delete()
     output = {"deleted": True}

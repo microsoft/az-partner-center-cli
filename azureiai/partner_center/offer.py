@@ -31,9 +31,9 @@ from swagger_client import (
 class Offer:
     """Azure Partner Portal - Offer"""
 
-    def __init__(self, name=None, config_yaml=r"config.yml"):
+    def __init__(self, name=None):
         self.name = name
-        self.config_yaml = config_yaml
+        self.config_yaml = "config.yml"
         self._authorization = None
 
         self._apis = {

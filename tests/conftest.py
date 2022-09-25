@@ -317,7 +317,7 @@ def ama_mock(ama_name, monkeypatch):
     monkeypatch.setattr(ProductApi, "products_post", mock_products_post)
     monkeypatch.setattr(ProductApi, "products_get", mock_products_get)
 
-    ama = ManagedApplication(ama_name, config_yaml=str(__file__).split("tests")[0] + "template.config.yml")
+    ama = ManagedApplication(ama_name)
     ama.set_product_id("mock-test")
 
     return ama
