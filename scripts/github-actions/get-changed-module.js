@@ -49,7 +49,7 @@ async function getChangedModule({ require, github, context, core }) {
   const moduleDirs = [
     ...new Set(
       data.files
-        .filter((file) => file.filename.startsWith("azureiai/") || file.filename.startsWith("setup.py"))
+        .filter((file) => file.filename.startsWith("azureiai/") || file.filename.startsWith("setup.py") || file.filename.startsWith("tests"))
         .map((file) => {
           const dir = path.dirname(file.filename);
           return dir;
