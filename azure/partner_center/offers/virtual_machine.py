@@ -9,6 +9,7 @@ from pathlib import Path
 import requests
 import yaml
 from adal import AuthenticationContext
+from azure.identity import AzureCliCredential
 
 from azure.partner_center.cli_parser import CLIParser
 from azure.partner_center.submission import Submission
@@ -115,20 +116,29 @@ class VirtualMachine(Submission):
         raise Exception("The provided resource is unsupported.")
 
     def _get_auth(self, resource) -> str:
-        with open(self.config_yaml, encoding="utf8") as file:
-            settings = yaml.safe_load(file)
+        if self._authorization is None:
+            if os.path.exists(self.config_yaml):
+                with open(self.config_yaml, encoding="utf8") as file:
+                    settings = yaml.safe_load(file)
 
-        client_id = os.getenv(AAD_ID, settings["aad_id"])
-        client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
-        tenant_id = os.getenv(TENANT_ID, settings["tenant_id"])
+                client_id = os.getenv(AAD_ID, settings["aad_id"])
+                client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
+                tenant_id = os.getenv(TENANT_ID, settings["tenant_id"])
 
-        auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
-        token_response = auth_context.acquire_token_with_client_credentials(
-            resource=resource,
-            client_id=client_id,
-            client_secret=client_secret,
-        )
-        return token_response["accessToken"]
+                auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
+
+                token_response = auth_context.acquire_token_with_client_credentials(
+                    resource="https://api.partner.microsoft.com",
+                    client_id=client_id,
+                    client_secret=client_secret,
+                )
+                self._authorization = f"Bearer {token_response['accessToken']}"
+            else:
+                azure_cli = AzureCliCredential()
+                token_response = azure_cli.get_token("https://api.partner.microsoft.com")
+
+                self._authorization = f"Bearer {token_response.token}"
+        return self._authorization
 
     def _prepare_request(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
