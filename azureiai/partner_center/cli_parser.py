@@ -15,7 +15,6 @@ class CLIParser:
         self.parser = argparse.ArgumentParser("azpc")
         self.parser.add_argument("subgroup", type=str, help="Which subgroup to run")
         self.parser.add_argument("command", type=str, help="Which command to run")
-        self.parser.add_argument("--config-yml", type=str, help="Configuration YML", default="config.yml")
         self.parser.add_argument(
             "--manifest-yml",
             type=str,
@@ -43,7 +42,7 @@ class CLIParser:
         args = self._add_name_config_json_argument()
         try:
             return self.submission_type(
-                args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
+                args.name, app_path=args.app_path, json_listing_config=args.config_json
             ).create()
         except NameError as error:
             if hasattr(args, "update"):
@@ -53,7 +52,7 @@ class CLIParser:
     def delete(self) -> dict:
         """Delete a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name, config_yaml=args.config_yml).delete()
+        return self.submission_type(args.name).delete()
 
     def list_command(self) -> dict:
         """List Managed Applications"""
@@ -63,17 +62,17 @@ class CLIParser:
     def publish(self) -> dict:
         """Publish a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name, config_yaml=args.config_yml).publish()
+        return self.submission_type(args.name).publish()
 
     def release(self) -> dict:
         """Release a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name, config_yaml=args.config_yml).release()
+        return self.submission_type(args.name).release()
 
     def show(self) -> dict:
         """Show a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.name, config_yaml=args.config_yml).show()
+        return self.submission_type(args.name).show()
 
     def update(self) -> dict:
         """Update a Managed Application"""
@@ -82,13 +81,13 @@ class CLIParser:
 
     def _update(self, args):
         return self.submission_type(
-            args.name, config_yaml=args.config_yml, app_path=args.app_path, json_listing_config=args.config_json
+            args.name, app_path=args.app_path, json_listing_config=args.config_json
         ).update()
 
     def status(self) -> dict:
         """Get the Status of an offer"""
         args = self._add_name_argument()
-        return self.submission_type(args.name, config_yaml=args.config_yml).status()
+        return self.submission_type(args.name).status()
 
     def _add_name_argument(self):
         self.parser.add_argument(self._name, type=str, help="Managed App Name")
