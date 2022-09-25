@@ -34,7 +34,6 @@ class VirtualMachine(Submission):
             json_listing_config=json_listing_config,
         )
         self.notification_emails = notification_emails
-        self._legacy_authorization = None
 
     def create(self):
         """
@@ -47,7 +46,7 @@ class VirtualMachine(Submission):
         """
         try:
             if self.show()["id"]:
-                raise NameError("Virtual Machine offer already exists. Try using 'update'?")
+                raise NameError("Virtual Machine offer already exists. Try adding '--update'.")
         except LookupError:
             pass  # Passing this error is the only way to determine that an offer does not exist
         return self.update()
