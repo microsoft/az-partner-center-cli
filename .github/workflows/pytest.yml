@@ -3,12 +3,11 @@ name: PyTest
 on:
   workflow_dispatch:
   workflow_call:
-    inputs:
-      AzureCredentials:
-        type: string
+    secrets:
+      AZURE_CREDENTIALS:
         required: true
         description: Setup following these steps, https://github.com/azure/login#configure-deployment-credentials
-        default: ${{ secrets.AZURE_CREDENTIALS }}
+
 jobs:
   unit:
     runs-on: ubuntu-latest    
