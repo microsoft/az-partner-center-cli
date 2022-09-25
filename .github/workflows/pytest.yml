@@ -17,6 +17,10 @@ jobs:
         uses: actions/setup-python@v2.2.2
         with:
           python-version: 3.7
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS}}
       - name: Run Pytest
         run: |
           echo "tenant_id: \"${{ secrets.TENANT_ID }}\"" >> config.yml
@@ -64,7 +68,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS || inputs.AzureCredentials }}
+          creds: ${{ secrets.AZURE_CREDENTIALS}}
       - name: Integration Tests
         id: integartion_tests
         run: |
