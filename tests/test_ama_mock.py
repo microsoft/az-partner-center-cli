@@ -42,19 +42,18 @@ def test_ama_publish_pre_prepare_mock(ama_mock, manifest_yml):
     assert prepared
 
 
-def test_ama_publish_prepare_mock(ama_mock, plan_name, app_path_fix, app_zip, json_listing_config, template_config):
+def test_ama_publish_prepare_mock(ama_mock, plan_name, app_path_fix, app_zip, json_listing_config):
     prepared = ama_mock.prepare_publish(
         plan_name=plan_name,
         app_path=app_path_fix,
         app=app_zip,
-        json_listing_config=json_listing_config,
-        config_yml=template_config,
+        json_listing_config=json_listing_config
     )
     assert prepared
 
 
 def test_ama_publish_prepare_error_mock(
-    ama_mock, plan_name, app_path_fix, app_zip, json_listing_config, broken_json_listing_config, template_config
+    ama_mock, plan_name, app_path_fix, app_zip, json_listing_config, broken_json_listing_config
 ):
     with pytest.raises(FileNotFoundError):
         assert ama_mock.prepare_publish(
@@ -62,7 +61,6 @@ def test_ama_publish_prepare_error_mock(
             app="not-found",
             app_path=app_path_fix,
             json_listing_config=json_listing_config,
-            config_yml=template_config,
         )
 
     with pytest.raises(KeyError):
@@ -71,7 +69,6 @@ def test_ama_publish_prepare_error_mock(
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
         )
     with pytest.raises(KeyError):
         assert ama_mock.prepare_publish(
@@ -79,7 +76,6 @@ def test_ama_publish_prepare_error_mock(
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
         )
     with pytest.raises(KeyError):
         assert ama_mock.prepare_publish(
@@ -87,7 +83,6 @@ def test_ama_publish_prepare_error_mock(
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
         )
     with pytest.raises(KeyError):
         assert ama_mock.prepare_publish(
@@ -95,14 +90,12 @@ def test_ama_publish_prepare_error_mock(
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
         )
     with pytest.raises(FileNotFoundError):
         assert ama_mock.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            config_yml=template_config,
         )
 
 
@@ -258,7 +251,7 @@ def test_offer_get_auth_mock(template_config, monkeypatch):
 
     monkeypatch.setattr(AuthenticationContext, "acquire_token_with_client_credentials", request_post_mock)
 
-    offer = Offer("test", template_config)
+    offer = Offer("test")
     offer.get_auth()
 
 
@@ -330,7 +323,7 @@ def test_variant_plan_mock_error(monkeypatch):
         vp_config._get_draft_instance_id(module="")
 
 
-def test_offer_get_product_id(monkeypatch, template_config):
+def test_offer_get_product_id(monkeypatch):
     def mock_create(self):
         self._ids["product_id"] = "sample-product-id"
         return namedtuple("response", ["id", "odata_etag"])(*["sample-product-id", ""])

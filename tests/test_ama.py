@@ -31,10 +31,9 @@ def test_create_plan(ama, plan_name):
 
 
 @pytest.mark.integration
-def test_ama_delete(ama_name, config_yml):
+def test_ama_delete(ama_name):
     ama = ManagedApplication(
-        ama_name,
-        config_yaml=config_yml,
+        ama_name
     )
     ama.create()
     product_id = ama.get_product_id()
@@ -44,24 +43,22 @@ def test_ama_delete(ama_name, config_yml):
 
 
 @pytest.mark.integration
-def test_ama_delete_no_create(ama_name, config_yml):
+def test_ama_delete_no_create(ama_name):
     ama = ManagedApplication(
-        ama_name,
-        config_yaml=config_yml,
+        ama_name
     )
     ama.get_product_id()
     ama.delete()
 
 
 @pytest.mark.integration
-def test_ama_publish(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+def test_ama_publish(ama, plan_name, app_path_fix, app_zip, json_listing_config):
     try:
         prepared = ama.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=json_listing_config,
-            config_yml=config_yml,
         )
     except ValueError as error:
         raise ValueError(f"{app_path_fix}{os.path.sep}{json_listing_config}") from error
@@ -76,13 +73,12 @@ def test_ama_publish(ama, plan_name, app_path_fix, app_zip, json_listing_config,
 
 
 @pytest.mark.integration
-def test_ama_update_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+def test_ama_update_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config):
     prepared = ama.prepare_publish(
         plan_name=plan_name,
         app_path=app_path_fix,
         app=app_zip,
         json_listing_config=json_listing_config,
-        config_yml=config_yml,
     )
     assert prepared
 
@@ -93,7 +89,7 @@ def test_ama_update_plan(ama, plan_name, app_path_fix, app_zip, json_listing_con
         json_config = json.load(read_file)
 
     json_config["version"] = "0.0.1"
-    ama._set_technical_configuration(json_config, app_zip, app_path_fix, config_yml)
+    ama._set_technical_configuration(json_config, app_zip, app_path_fix)
 
     published = ama.publish()
     assert published
@@ -101,22 +97,21 @@ def test_ama_update_plan(ama, plan_name, app_path_fix, app_zip, json_listing_con
 
 
 @pytest.mark.integration
-def test_ama_update_existing(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+def test_ama_update_existing(ama, plan_name, app_path_fix, app_zip, json_listing_config):
     with open(Path(app_path_fix).joinpath(json_listing_config), "r") as read_file:
         json_config = json.load(read_file)
     json_config["version"] = "0.0.3"
     ama.set_product_id("411968ab-9f17-40dd-8378-f22d8e39acbb")
-    ama.update(json_listing_config=json_listing_config, app=app_zip, app_path=app_path_fix, config_yml=config_yml)
+    ama.update(json_listing_config=json_listing_config, app=app_zip, app_path=app_path_fix)
 
 
 @pytest.mark.integration
-def test_ama_2nd_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config, config_yml):
+def test_ama_2nd_plan(ama, plan_name, app_path_fix, app_zip, json_listing_config):
     prepared = ama.prepare_publish(
         plan_name=plan_name,
         app_path=app_path_fix,
         app=app_zip,
         json_listing_config=json_listing_config,
-        config_yml=config_yml,
     )
     assert prepared
 
@@ -154,7 +149,7 @@ def test_swagger_integration(swagger_json):
 
 @pytest.mark.integration
 def test_ama_publish_prepare_error(
-    ama, plan_name, app_path_fix, app_zip, json_listing_config, broken_json_listing_config, template_config
+    ama, plan_name, app_path_fix, app_zip, json_listing_config, broken_json_listing_config
 ):
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
@@ -162,7 +157,6 @@ def test_ama_publish_prepare_error(
             app="not-found",
             app_path=app_path_fix,
             json_listing_config=json_listing_config,
-            config_yml=template_config,
         )
 
     with pytest.raises(FileNotFoundError):
@@ -171,7 +165,6 @@ def test_ama_publish_prepare_error(
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
         )
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
@@ -179,7 +172,6 @@ def test_ama_publish_prepare_error(
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
         )
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
@@ -187,7 +179,6 @@ def test_ama_publish_prepare_error(
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
         )
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
@@ -195,14 +186,12 @@ def test_ama_publish_prepare_error(
             app_path=app_path_fix,
             app=app_zip,
             json_listing_config=broken_json_listing_config,
-            config_yml=template_config,
         )
     with pytest.raises(FileNotFoundError):
         assert ama.prepare_publish(
             plan_name=plan_name,
             app_path=app_path_fix,
             app=app_zip,
-            config_yml=template_config,
         )
 
 
@@ -323,10 +312,9 @@ def test_variant_plan_error(monkeypatch):
 
 
 @pytest.mark.integration
-def test_ama_retry(monkeypatch, ama_name, config_yml):
+def test_ama_retry(monkeypatch, ama_name):
     ama = ManagedApplication(
-        ama_name,
-        config_yaml=config_yml,
+        ama_name
     )
 
     def mock_branches_get(self, product_id, module, authorization):

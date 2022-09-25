@@ -18,70 +18,70 @@ from tests.cli_groups_tests import (
 
 
 @pytest.mark.integration
-def test_st_list(config_yml, monkeypatch, capsys):
-    st_list_command(config_yml, monkeypatch, capsys)
+def test_st_list(monkeypatch, capsys):
+    st_list_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_st_create(config_yml, json_listing_config, monkeypatch, capsys):
+def test_st_create(json_listing_config, monkeypatch, capsys):
     try:
-        st_show_command(config_yml, monkeypatch, capsys)
+        st_show_command(monkeypatch, capsys)
 
         print("Solution Template Found")
         with pytest.raises(ApiException):
-            st_create_command(config_yml, json_listing_config, monkeypatch, capsys)
+            st_create_command(json_listing_config, monkeypatch, capsys)
     except:
-        st_create_command(config_yml, json_listing_config, monkeypatch, capsys)
+        st_create_command(json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_st_update(config_yml, json_listing_config, monkeypatch, capsys):
-    st_update_command(config_yml, json_listing_config, monkeypatch, capsys)
+def test_st_update(json_listing_config, monkeypatch, capsys):
+    st_update_command(json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_st_show(config_yml, monkeypatch, capsys):
-    st_show_command(config_yml, monkeypatch, capsys)
+def test_st_show(monkeypatch, capsys):
+    st_show_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_st_plan_create(config_yml, json_listing_config, monkeypatch, capsys):
+def test_st_plan_create(json_listing_config, monkeypatch, capsys):
     try:
-        st_show_plan_command(config_yml, monkeypatch, capsys)
+        st_show_plan_command(monkeypatch, capsys)
 
         with pytest.raises(ApiException):
-            st_create_plan_command(config_yml, json_listing_config, monkeypatch, capsys)
+            st_create_plan_command(json_listing_config, monkeypatch, capsys)
     except:
-        st_create_plan_command(config_yml, json_listing_config, monkeypatch, capsys)
+        st_create_plan_command(json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_st_plan_show(config_yml, monkeypatch, capsys):
-    output = st_show_plan_command(config_yml, monkeypatch, capsys)
-    name = _show_plan_args(config_yml, "st")["plan_name"]
+def test_st_plan_show(monkeypatch, capsys):
+    output = st_show_plan_command(monkeypatch, capsys)
+    name = _show_plan_args("st")["plan_name"]
     assert f'"externalID": "{name}",' in output, f"{name} not found in output"
 
 
 @pytest.mark.integration
-def test_st_plan_update(config_yml, json_listing_config, monkeypatch, capsys):
-    st_update_plan_command(config_yml, json_listing_config, monkeypatch, capsys)
+def test_st_plan_update(json_listing_config, monkeypatch, capsys):
+    st_update_plan_command(json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_st_plan_list(config_yml, monkeypatch, capsys):
-    st_list_plan_command(config_yml, monkeypatch, capsys)
+def test_st_plan_list(monkeypatch, capsys):
+    st_list_plan_command(monkeypatch, capsys)
 
 
 @pytest.mark.skip
-def test_st_publish(config_yml, monkeypatch, capsys):
-    st_publish_command(config_yml, monkeypatch, capsys)
+def test_st_publish(monkeypatch, capsys):
+    st_publish_command(monkeypatch, capsys)
 
 
 @pytest.mark.skip
-def test_st_release(config_yml, monkeypatch, capsys):
-    st_release_command(config_yml, monkeypatch, capsys)
+def test_st_release(monkeypatch, capsys):
+    st_release_command(monkeypatch, capsys)
 
 
 @pytest.mark.skip
-def test_st_delete(config_yml, monkeypatch, capsys):
-    st_delete_command(config_yml, monkeypatch, capsys)
+def test_st_delete(monkeypatch, capsys):
+    st_delete_command(monkeypatch, capsys)

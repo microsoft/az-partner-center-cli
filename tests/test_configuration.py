@@ -201,7 +201,7 @@ def test_get_package(package):
 
 
 @pytest.mark.integration
-def test_set_use_package(package, app_path_fix, app_zip, config_yml):
+def test_set_use_package(package, app_path_fix, app_zip):
     version = "0.0.0"
     allow_jit_access = True
     allowed_customer_actions = ["Microsoft.Storage/*;Microsoft.MachineLearningServices/*"]
@@ -212,7 +212,6 @@ def test_set_use_package(package, app_path_fix, app_zip, config_yml):
         file_name=app_zip,
         version=version,
         allow_jit_access=allow_jit_access,
-        config_yaml=config_yml,
         allowed_customer_actions=allowed_customer_actions,
         allowed_data_actions=allowed_data_actions,
     )

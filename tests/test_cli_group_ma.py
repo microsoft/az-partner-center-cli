@@ -32,20 +32,20 @@ from tests.cli_groups_tests import (
 
 
 @pytest.mark.integration
-def test_ma_list(config_yml, monkeypatch, capsys):
-    ma_list_command(config_yml, monkeypatch, capsys)
+def test_ma_list(monkeypatch, capsys):
+    ma_list_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_ma_create(config_yml, monkeypatch, app_path_fix, json_listing_config, capsys):
+def test_ma_create(monkeypatch, app_path_fix, json_listing_config, capsys):
     try:
-        ma_show_command(config_yml, monkeypatch, capsys)
+        ma_show_command(monkeypatch, capsys)
 
         print("Managed App Found")
         with pytest.raises(ApiException):
-            ma_create_command(config_yml, json_listing_config, monkeypatch, capsys)
+            ma_create_command(json_listing_config, monkeypatch, capsys)
     except:
-        ma_create_command(config_yml, json_listing_config, monkeypatch, capsys)
+        ma_create_command(json_listing_config, monkeypatch, capsys)
 
     # Load Managed App
     offer = ManagedApp(name="test_ma")
@@ -59,18 +59,18 @@ def test_ma_create(config_yml, monkeypatch, app_path_fix, json_listing_config, c
 
 
 @pytest.mark.integration
-def test_ma_update(config_yml, json_listing_config, monkeypatch, capsys):
-    ma_update_command(config_yml, json_listing_config, monkeypatch, capsys)
+def test_ma_update(json_listing_config, monkeypatch, capsys):
+    ma_update_command(json_listing_config, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_ma_show(config_yml, monkeypatch, capsys):
-    ma_show_command(config_yml, monkeypatch, capsys)
+def test_ma_show(monkeypatch, capsys):
+    ma_show_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_ma_plan_create(config_yml, monkeypatch, app_path_fix, json_listing_config, capsys):
-    ma_create_plan_command(config_yml, json_listing_config, monkeypatch, capsys)
+def test_ma_plan_create(monkeypatch, app_path_fix, json_listing_config, capsys):
+    ma_create_plan_command(json_listing_config, monkeypatch, capsys)
 
     offer = Plan(name="test_ma", plan_name="test_ma_plan")
     offer.show()
@@ -83,13 +83,13 @@ def test_ma_plan_create(config_yml, monkeypatch, app_path_fix, json_listing_conf
 
 
 @pytest.mark.integration
-def test_ma_plan_show(config_yml, monkeypatch, capsys):
-    ma_show_plan_command(config_yml, monkeypatch, capsys)
+def test_ma_plan_show(monkeypatch, capsys):
+    ma_show_plan_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_ma_plan_update(config_yml, monkeypatch, app_path_fix, json_listing_config, capsys):
-    ma_update_plan_command(config_yml, json_listing_config, monkeypatch, capsys)
+def test_ma_plan_update(monkeypatch, app_path_fix, json_listing_config, capsys):
+    ma_update_plan_command(json_listing_config, monkeypatch, capsys)
 
     offer = Plan(name="test_ma", plan_name="test_ma_plan")
     offer.show()
@@ -102,25 +102,25 @@ def test_ma_plan_update(config_yml, monkeypatch, app_path_fix, json_listing_conf
 
 
 @pytest.mark.integration
-def test_ma_plan_list(config_yml, monkeypatch, capsys):
-    ma_list_plan_command(config_yml, monkeypatch, capsys)
+def test_ma_plan_list(monkeypatch, capsys):
+    ma_list_plan_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_ma_plan_delete(config_yml, monkeypatch, capsys):
-    ma_delete_plan_command(config_yml, monkeypatch, capsys)
+def test_ma_plan_delete(monkeypatch, capsys):
+    ma_delete_plan_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_ma_publish(config_yml, monkeypatch, capsys):
-    ma_publish_command(config_yml, monkeypatch, capsys)
+def test_ma_publish(monkeypatch, capsys):
+    ma_publish_command(monkeypatch, capsys)
 
 
 # @pytest.mark.integration
-# def test_ma_release(config_yml, monkeypatch, capsys):
-#     ma_release_command(config_yml, monkeypatch, capsys)
+# def test_ma_release(monkeypatch, capsys):
+#     ma_release_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration
-def test_ma_delete(config_yml, monkeypatch, capsys):
-    ma_delete_command(config_yml, monkeypatch, capsys)
+def test_ma_delete(monkeypatch, capsys):
+    ma_delete_command(monkeypatch, capsys)
