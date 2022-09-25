@@ -13,8 +13,13 @@ on:
   workflow_dispatch:
 
 jobs:
+  check-changed-code:
+    uses: ./.github/workflows/get-changed-module.yml
+
   build:
     runs-on: ubuntu-latest
+    needs: [check-changed-code]
+    if: needs.check-changed-code.outputs.module_dir
     steps:
       - uses: actions/checkout@v2
       - name: Setup Python
