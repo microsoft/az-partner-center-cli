@@ -128,14 +128,14 @@ class VirtualMachine(Submission):
                 auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
 
                 token_response = auth_context.acquire_token_with_client_credentials(
-                    resource="https://api.partner.microsoft.com",
+                    resource=resource,
                     client_id=client_id,
                     client_secret=client_secret,
                 )
                 self._authorization = f"Bearer {token_response['accessToken']}"
             else:
                 azure_cli = AzureCliCredential()
-                token_response = azure_cli.get_token("https://api.partner.microsoft.com")
+                token_response = azure_cli.get_token(resource)
 
                 self._authorization = f"Bearer {token_response.token}"
         return self._authorization
