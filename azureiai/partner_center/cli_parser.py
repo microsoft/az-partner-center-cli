@@ -80,9 +80,7 @@ class CLIParser:
         return self._update(args)
 
     def _update(self, args):
-        return self.submission_type(
-            args.name, app_path=args.app_path, json_listing_config=args.config_json
-        ).update()
+        return self.submission_type(args.name, app_path=args.app_path, json_listing_config=args.config_json).update()
 
     def status(self) -> dict:
         """Get the Status of an offer"""
