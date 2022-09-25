@@ -46,21 +46,21 @@ def reseller(ama):
 def feature_availability(ama, plan_name):
     """Properties PyTest Fixture"""
     ama._create_new_plan(plan_name=plan_name)
-    return FeatureAvailability(product_id=ama.get_product_id(), authorization=ama.get_auth())
+    return FeatureAvailability(product_id=ama.get_product_id(), authorization=ama.get_auth(), plan_id=ama.get_plan_id())
 
 
 @pytest.fixture
 def package(ama, plan_name):
     """Package PyTest Fixture"""
     ama._create_new_plan(plan_name=plan_name)
-    return Package(product_id=ama.get_product_id(), authorization=ama.get_auth())
+    return Package(product_id=ama.get_product_id(), authorization=ama.get_auth(), plan_id=ama.get_plan_id())
 
 
 @pytest.fixture
 def offer_list(ama, plan_name):
     """Package PyTest Fixture"""
     ama._create_new_plan(plan_name=plan_name)
-    return OfferListing(product_id=ama.get_product_id(), authorization=ama.get_auth())
+    return OfferListing(product_id=ama.get_product_id(), authorization=ama.get_auth(), plan_id=ama.get_plan_id())
 
 
 @pytest.mark.integration
@@ -125,18 +125,18 @@ def test_get_properties(properties):
 
 @pytest.mark.integration
 def test_set_use_enterprise_contract(properties):
-    categories = ""
+    leveled_categories = {}
     version = "0.0.0"
 
-    properties.set(categories=categories, version=version)
+    properties.set(leveled_categories=leveled_categories, version=version)
     settings = properties.get()
     assert settings.use_enterprise_contract, "Set Action Failed."
 
-    properties.set(use_enterprise_contract=False, categories=categories, version=version)
+    properties.set(use_enterprise_contract=False, leveled_categories=leveled_categories, version=version)
     settings = properties.get()
     assert not settings.use_enterprise_contract, "Set Action Failed."
 
-    properties.set(categories=categories, version=version)
+    properties.set(leveled_categories=leveled_categories, version=version)
     settings = properties.get()
     assert settings.use_enterprise_contract, "Set Action Failed."
 
@@ -246,11 +246,15 @@ def test_set_use_offer_list(offer_list):
 @pytest.mark.integration
 def test_all_properties(availability, properties, listing, listing_image, reseller, app_path_fix, json_listing_config):
     availability.set(azure_subscription="2eedf122-c960-4ddc-9146-ac93dbf8b2b0")
-    industries = ""
-    categories = ""
+    use_enterprise_contract = True
+    leveled_categories = {}
     version = "0.0.0"
 
-    properties.set(industries=industries, categories=categories, version=version)
+    properties.set(
+        use_enterprise_contract=use_enterprise_contract,
+        leveled_categories=leveled_categories,
+        version=version,
+    )
     listing.set(properties=app_path_fix.joinpath(json_listing_config))
     listing_image.set(file_name="r_216_216.png", file_path=app_path_fix, logo_type="AzureLogoLarge")
     listing_image.set(file_name="r_48_48.png", file_path=app_path_fix, logo_type="AzureLogoSmall")
