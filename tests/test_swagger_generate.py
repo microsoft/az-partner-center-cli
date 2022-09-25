@@ -2,6 +2,7 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 import pytest
+
 from azure import generate_swagger
 
 

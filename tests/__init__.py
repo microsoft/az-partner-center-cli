@@ -1,8 +1,6 @@
 #  ---------------------------------------------------------
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
-import os
-import pathlib
 
 from azure import generate_swagger
 

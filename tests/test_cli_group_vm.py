@@ -7,37 +7,17 @@ from pathlib import Path
 
 import pytest
 import requests
-from adal import AuthenticationContext, adal_error
+from adal import AuthenticationContext
 
-from azure.partner_center.offers.virtual_machine import VirtualMachine
 from azure.partner_center.plan import Plan
 from swagger_client.rest import ApiException
-from tests.cli_groups_tests import (
-    vm_list_command,
-    vm_create_command,
-    vm_show_command,
-    vm_delete_command,
-    vm_list_plan_command,
-    vm_create_plan_command,
-    vm_show_plan_command,
-    vm_update_plan_command,
-    vm_delete_plan_command,
-    vm_publish_command,
-    _assert_properties,
-    _assert_offer_listing,
-    _assert_preview_audience,
-    _assert_pricing_and_availability,
-    _assert_technical_configuration,
-    _assert_plan_listing,
-    _assert_vm_show,
-    _assert_vm_properties,
-    _assert_vm_offer_listing,
-    _assert_vm_preview_audience,
-    _assert_vm_plan_listing,
-    _assert_vm_list_all_offers,
-    _assert_vm_offer_listing_integration,
-    _assert_vm_empty_listing,
-)
+from tests.cli_groups_tests import (_assert_plan_listing, _assert_pricing_and_availability,
+                                    _assert_technical_configuration, _assert_vm_offer_listing,
+                                    _assert_vm_offer_listing_integration, _assert_vm_plan_listing,
+                                    _assert_vm_preview_audience, _assert_vm_properties, _assert_vm_show,
+                                    vm_create_command, vm_create_plan_command, vm_delete_command,
+                                    vm_delete_plan_command, vm_list_command, vm_list_plan_command, vm_publish_command,
+                                    vm_show_command, vm_show_plan_command, vm_update_plan_command)
 
 
 @pytest.fixture()

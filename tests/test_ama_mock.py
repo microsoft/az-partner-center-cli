@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 import wget
 from adal import AuthenticationContext
+
 from azure import generate_swagger
 from azure.partner_center.confs import Listing, ListingImage, ResellerConfiguration
 from azure.partner_center.confs.offer_configurations import OfferConfigurations
@@ -17,7 +18,7 @@ from azure.partner_center.confs.variant.variant_plan_configuration import Varian
 from azure.partner_center.offer import Offer
 from azure.partner_center.swagger import download_swagger_jar
 from azure.partner_center.utils import get_draft_instance_id
-from swagger_client import BranchesApi, PackageConfigurationApi, ResellerConfigurationApi, ProductApi
+from swagger_client import BranchesApi, PackageConfigurationApi, ProductApi, ResellerConfigurationApi
 
 
 def test_variant_plan_mock(monkeypatch):

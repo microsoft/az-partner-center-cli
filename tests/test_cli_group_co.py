@@ -5,26 +5,13 @@ import json
 from pathlib import Path
 
 import pytest
-from swagger_client.rest import ApiException
 
 from azure.partner_center.offers.container import Container
-
-from tests.cli_groups_tests import (
-    co_list_command,
-    _assert_properties,
-    _assert_offer_listing,
-    _assert_preview_audience,
-    co_update_command,
-    co_show_command,
-    co_create_command,
-    co_create_plan_command,
-    co_show_plan_command,
-    co_update_plan_command,
-    co_list_plan_command,
-    co_delete_plan_command,
-    co_publish_command,
-    co_delete_command,
-)
+from swagger_client.rest import ApiException
+from tests.cli_groups_tests import (_assert_offer_listing, _assert_properties, co_create_command,
+                                    co_create_plan_command, co_delete_command, co_delete_plan_command, co_list_command,
+                                    co_list_plan_command, co_publish_command, co_show_command, co_show_plan_command,
+                                    co_update_command, co_update_plan_command)
 
 
 @pytest.mark.integration

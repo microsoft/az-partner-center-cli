@@ -5,9 +5,10 @@
 import os
 
 import pytest
+
+from azure import RetryException
 from azure.partner_center.confs import Listing, ListingImage, ProductAvailability, Properties, ResellerConfiguration
 from azure.partner_center.confs.variant import FeatureAvailability, OfferListing, Package
-from azure import RetryException
 from swagger_client.rest import ApiException
 
 

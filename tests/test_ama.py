@@ -1,13 +1,12 @@
 #  ---------------------------------------------------------
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
-import json
-import os
 import shutil
 from collections import namedtuple
 from pathlib import Path
 
 import pytest
+
 from azure import RetryException
 from azure.partner_center.confs import Listing, ListingImage, ResellerConfiguration
 from azure.partner_center.confs.offer_configurations import OfferConfigurations
@@ -15,7 +14,7 @@ from azure.partner_center.confs.variant import Package
 from azure.partner_center.confs.variant.variant_plan_configuration import VariantPlanConfiguration
 from azure.partner_center.swagger import download_swagger_jar
 from azure.partner_center.utils import get_draft_instance_id
-from swagger_client import BranchesApi, PackageApi, SubmissionApi
+from swagger_client import BranchesApi, PackageApi
 from tests.test_ama_mock import create_folders, generate_swagger_testing
 
 

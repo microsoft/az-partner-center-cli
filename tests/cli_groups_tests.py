@@ -3,13 +3,14 @@
 #  ---------------------------------------------------------
 """CLI v2 Test Suite"""
 
-import requests
 import json
 from pathlib import Path
 
+import requests
+
 from azure.partner_center import azpc_app
-from azure.partner_center.confs import Properties, Listing, ProductAvailability
-from azure.partner_center.confs.variant import OfferListing, FeatureAvailability, Package
+from azure.partner_center.confs import Listing, ProductAvailability, Properties
+from azure.partner_center.confs.variant import FeatureAvailability, OfferListing, Package
 from tests.cli_tests import setup_patched_app
 
 APP_PATH = "tests/sample_app"

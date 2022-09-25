@@ -1,15 +1,15 @@
 #  ---------------------------------------------------------
 #  Copyright (c) 2020 Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
-import pytest
 import json
 from pathlib import Path
-from adal import AuthenticationContext, adal_error
 
-from tests import cli_groups_tests as cli_tests
-from swagger_client import ProductApi
-
+import pytest
 import requests
+from adal import AuthenticationContext
+
+from swagger_client import ProductApi
+from tests import cli_groups_tests as cli_tests
 
 
 @pytest.fixture
@@ -93,7 +93,6 @@ def test_vm_create_success_mock(vm_config_json, monkeypatch, capsys):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=NameError)
 def test_vm_create_offer_exists_mock(monkeypatch, vm_config_json, capsys):
     vm_config_json = "vm_config.json"
 
@@ -116,11 +115,11 @@ def test_vm_create_offer_exists_mock(monkeypatch, vm_config_json, capsys):
 
     monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
     # The create PUT method does not need mocking as the test should fail before that point
-    cli_tests.vm_create_command(vm_config_json, monkeypatch, capsys)
+    with pytest.raises(SystemExit):
+        cli_tests.vm_create_command(vm_config_json, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=ConnectionError)
 def test_vm_create_invalid_offer_mock(monkeypatch, capsys):
     # Invalid configuration that creates an offer in a publisher
     # that the user does not have access to
@@ -148,7 +147,8 @@ def test_vm_create_invalid_offer_mock(monkeypatch, capsys):
     monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
 
     # Expecting a failure as the offer is unable to be created
-    cli_tests.vm_create_command(vm_config_json, monkeypatch, capsys)
+    with pytest.raises(ConnectionError):
+        cli_tests.vm_create_command(vm_config_json, monkeypatch, capsys)
 
 
 def test_vm_update_mock(vm_config_json, monkeypatch, ama_mock, capsys):
@@ -191,9 +191,8 @@ def test_vm_show_success_mock(vm_config_json, monkeypatch, capsys):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=LookupError)
 def test_vm_show_invalid_offer_mock(monkeypatch, capsys):
-    # Invalid configuration to show an offer that doesnt exist
+    # Invalid configuration to show an offer that doesn't exist
     vm_config_json = "vm_config_uncreated_offer.json"
 
     # Mock authorization token retreival
@@ -218,7 +217,8 @@ def test_vm_show_invalid_offer_mock(monkeypatch, capsys):
     monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
 
     # Expecting a failure as the offer does not exist
-    cli_tests.vm_show_command(vm_config_json, monkeypatch, capsys)
+    with pytest.raises(LookupError):
+        cli_tests.vm_show_command(vm_config_json, monkeypatch, capsys)
 
 
 def test_vm_list_success_mock(vm_config_json, monkeypatch, capsys):
@@ -300,10 +300,10 @@ def test_vm_list_empty_success_mock(vm_config_json, monkeypatch, capsys):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=ValueError)
 def test_vm_list_missing_publisher_id_mock(monkeypatch, capsys):
     # No mocks required because it does not hit any APIs
-    cli_tests.vm_list_command(monkeypatch, capsys)
+    with pytest.raises(ValueError):
+        cli_tests.vm_list_command(monkeypatch, capsys)
 
 
 def test_vm_publish_success_mock(monkeypatch, capsys):
@@ -334,17 +334,15 @@ def test_vm_publish_success_mock(monkeypatch, capsys):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=ValueError)
 def test_vm_publish_missing_publisher_id_mock(monkeypatch, capsys):
     # Invalid JSON config with missing publisher ID
     vm_config_json = "vm_config_missing_publisher_id.json"
 
-    # No mocks required because it does not hit any APIs
-    cli_tests.vm_publish_command(vm_config_json, monkeypatch, capsys)
+    with pytest.raises(ValueError):
+        cli_tests.vm_publish_command(vm_config_json, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=ConnectionError)
 def test_vm_publish_offer_does_not_exist_mock(monkeypatch, capsys):
     # Invalid configuration to show an offer that doesnt exist
     vm_config_json = "vm_config_uncreated_offer.json"
@@ -372,12 +370,11 @@ def test_vm_publish_offer_does_not_exist_mock(monkeypatch, capsys):
 
     monkeypatch.setattr(requests, "post", mock_publish_offer)
 
-    # Expecting a failure as the offer does not exist
-    cli_tests.vm_publish_command(vm_config_json, monkeypatch, capsys)
+    with pytest.raises(ConnectionError):
+        cli_tests.vm_publish_command(vm_config_json, monkeypatch, capsys)
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(raises=ConnectionError)
 def test_vm_publish_invalid_offer_mock(monkeypatch, capsys):
     # Invalid configuration to show an offer that doesnt exist
     vm_config_json = "vm_config.json"
@@ -405,8 +402,8 @@ def test_vm_publish_invalid_offer_mock(monkeypatch, capsys):
 
     monkeypatch.setattr(requests, "post", mock_publish_offer)
 
-    # Expecting a failure as the offer does not exist
-    cli_tests.vm_publish_command(vm_config_json, monkeypatch, capsys)
+    with pytest.raises(ConnectionError):
+        cli_tests.vm_publish_command(vm_config_json, monkeypatch, capsys)
 
 
 def test_vm_delete_success_mock(monkeypatch, capsys):
@@ -437,7 +434,6 @@ def test_vm_delete_success_mock(monkeypatch, capsys):
     cli_tests.vm_delete_command(monkeypatch, capsys)
 
 
-@pytest.mark.xfail(raises=LookupError)
 def test_vm_delete_offer_doesnot_exist_mock(monkeypatch, capsys):
     # Mock authorization token retreival
     def mock_get_auth(self, resource, client_id, client_secret):
@@ -457,8 +453,8 @@ def test_vm_delete_offer_doesnot_exist_mock(monkeypatch, capsys):
         return ShowMockResponse()
 
     monkeypatch.setattr(ProductApi, "products_get", mock_show_product)
-
-    cli_tests.vm_delete_command(monkeypatch, capsys)
+    with pytest.raises(LookupError):
+        cli_tests.vm_delete_command(monkeypatch, capsys)
 
 
 def test_ma_list_mock(monkeypatch, ama_mock, capsys):
