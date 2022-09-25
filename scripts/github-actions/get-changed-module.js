@@ -61,11 +61,11 @@ async function getChangedModule({ require, github, context, core }) {
   switch (moduleDirs.length) {
     case 0:
       core.info("No changed module found.");
-      return false;
+      return "";
     default:
       core.info("Found changed module:");
       core.info(`- ${cyan}azureiai`);
-      return true;    
+      return "azureiai";    
   }
 }
 
