@@ -68,23 +68,6 @@ def swagger_json():
     return str(Path(__file__).parents[1].joinpath("Partner_Ingestion_SwaggerDocument.json"))
 
 
-@pytest.mark.integration
-@pytest.fixture
-def ama(ama_name):
-    """
-    Managed Application Fixture for Testing
-
-    This managed applicaiton is deleted after testing.
-    """
-    ama = ManagedApplication(ama_name)
-    ama.create()
-    yield ama
-    try:
-        ama.delete()
-    except Exception:
-        pass
-
-
 @pytest.fixture
 def template_config():
     return str(__file__).split("tests")[0] + "template.config.yml"

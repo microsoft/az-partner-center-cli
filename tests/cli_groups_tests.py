@@ -7,7 +7,7 @@ import requests
 import json
 from pathlib import Path
 
-from azure import azpc_app
+from azure.partner_center import azpc_app
 from azure.partner_center.confs import Properties, Listing, ProductAvailability
 from azure.partner_center.confs.variant import OfferListing, FeatureAvailability, Package
 from tests.cli_tests import setup_patched_app
