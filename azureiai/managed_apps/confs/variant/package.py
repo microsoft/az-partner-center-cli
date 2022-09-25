@@ -89,6 +89,7 @@ class Package(VariantPlanConfiguration):
         :param config_yaml: configuration file with tenant and aad id
         :param allowed_customer_actions: Control Plane Operation Permissions, single string, ; separated
         :param allowed_data_actions: Control Plane Operation Permissions, single string, ; separated
+        :param json_config: listing configuration in json format
         """
         if policies is None:
             policies = []
@@ -145,13 +146,10 @@ class Package(VariantPlanConfiguration):
                 "ID": settings_id,
             }
         else:
-            tenant_id = os.getenv(TENANT_ID, json_config["plan_overview"][0]["technical_configuration"]["tenant_id"])
-            access_id = os.getenv(
-                ACCESS_ID, json_config["plan_overview"][0]["technical_configuration"]["authorizations"][0]["id"]
-            )
-            role = os.getenv(
-                "ACCESS_OWNER", json_config["plan_overview"][0]["technical_configuration"]["authorizations"][0]["role"]
-            )
+            plan_config = self._load_plan_config(json_config)
+            tenant_id = os.getenv(TENANT_ID, plan_config["technical_configuration"]["tenant_id"])
+            access_id = os.getenv(ACCESS_ID, plan_config["technical_configuration"]["authorizations"][0]["id"])
+            role = os.getenv("ACCESS_OWNER", plan_config["technical_configuration"]["authorizations"][0]["role"])
 
             settings = {
                 "resourceType": resource_type,
@@ -183,6 +181,13 @@ class Package(VariantPlanConfiguration):
                 raise ValueError(f"GUID value not valid. Check {config_yaml}") from error
             raise error
         return response
+
+    @staticmethod
+    def _load_plan_config(json_config: dict):
+        plan_overview = json_config["plan_overview"]
+        if isinstance(plan_overview, list):
+            return plan_overview[0]
+        return plan_overview[next(iter(plan_overview))]
 
     def _check_upload(self, post_response):
         state = None

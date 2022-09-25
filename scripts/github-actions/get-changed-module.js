@@ -51,7 +51,8 @@ async function getChangedModule({ require, github, context, core }) {
       data.files
         .filter((file) => file.filename.startsWith("azureiai/") || file.filename.startsWith("setup.py"))
         .map((file) => {
-          return true;
+          const dir = path.dirname(file.filename);
+          return dir;
         })
         // Ignore removed module directories.
         .filter((dir) => fs.existsSync(dir))
@@ -61,11 +62,11 @@ async function getChangedModule({ require, github, context, core }) {
   switch (moduleDirs.length) {
     case 0:
       core.info("No changed module found.");
-      return false;
+      return "";
     default:
       core.info("Found changed module:");
       core.info(`- ${cyan}azureiai`);
-      return true;    
+      return "azureiai";    
   }
 }
 
