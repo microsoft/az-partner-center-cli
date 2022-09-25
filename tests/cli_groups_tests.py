@@ -2,15 +2,14 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """CLI v2 Test Suite"""
-from collections import namedtuple
 
 import requests
 import json
 from pathlib import Path
 
-from azureiai import azpc_app
-from azureiai.managed_apps.confs import Properties, Listing, ProductAvailability
-from azureiai.managed_apps.confs.variant import OfferListing, FeatureAvailability, Package
+from azure import azpc_app
+from azure.partner_center.confs import Properties, Listing, ProductAvailability
+from azure.partner_center.confs.variant import OfferListing, FeatureAvailability, Package
 from tests.cli_tests import setup_patched_app
 
 APP_PATH = "tests/sample_app"

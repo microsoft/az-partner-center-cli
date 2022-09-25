@@ -41,7 +41,7 @@ jobs:
              -m "not integration and not gpu" \
              --cov-append \
              --cov-config ".coveragerc" \
-             --cov azureiai \
+             --cov azure \
              --junitxml=pytest-results.xml \
              "tests"
 

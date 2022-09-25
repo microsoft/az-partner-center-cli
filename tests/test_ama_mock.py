@@ -9,17 +9,15 @@ from pathlib import Path
 import pytest
 import wget
 from adal import AuthenticationContext
-from azureiai import RetryException, generate_swagger
-from azureiai.managed_apps.confs import Listing, ListingImage, ResellerConfiguration
-from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
-from azureiai.managed_apps.confs.variant import Package
-from azureiai.managed_apps.confs.variant.variant_plan_configuration import VariantPlanConfiguration
-from azureiai.partner_center.offer import Offer
-from azureiai.managed_apps.swagger import download_swagger_jar
-from azureiai.managed_apps.utils import get_draft_instance_id
+from azure import generate_swagger
+from azure.partner_center.confs import Listing, ListingImage, ResellerConfiguration
+from azure.partner_center.confs.offer_configurations import OfferConfigurations
+from azure.partner_center.confs.variant import Package
+from azure.partner_center.confs.variant.variant_plan_configuration import VariantPlanConfiguration
+from azure.partner_center.offer import Offer
+from azure.partner_center.swagger import download_swagger_jar
+from azure.partner_center.utils import get_draft_instance_id
 from swagger_client import BranchesApi, PackageConfigurationApi, ResellerConfigurationApi, ProductApi
-from swagger_client.rest import ApiException
-from swagger_client.rest import RESTClientObject
 
 
 def test_ama_create_mock(ama_mock):

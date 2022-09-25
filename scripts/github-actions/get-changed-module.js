@@ -49,7 +49,7 @@ async function getChangedModule({ require, github, context, core }) {
   const moduleDirs = [
     ...new Set(
       data.files
-        .filter((file) => file.filename.startsWith("azureiai/") || file.filename.startsWith("setup.py") || file.filename.startsWith("tests"))
+        .filter((file) => file.filename.startsWith("azure/") || file.filename.startsWith("setup.py") || file.filename.startsWith("tests"))
         .map((file) => {
           const dir = path.dirname(file.filename);
           return dir;
@@ -65,8 +65,8 @@ async function getChangedModule({ require, github, context, core }) {
       return "";
     default:
       core.info("Found changed module:");
-      core.info(`- ${cyan}azureiai`);
-      return "azureiai";    
+      core.info(`- ${cyan}azure`);
+      return "azure";    
   }
 }
 

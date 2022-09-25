@@ -3,12 +3,11 @@
 #  ---------------------------------------------------------
 """ Azure Managed Application - Unit Tests """
 import os
-from collections import namedtuple
 
 import pytest
-from azureiai.managed_apps.confs import Listing, ListingImage, ProductAvailability, Properties, ResellerConfiguration
-from azureiai.managed_apps.confs.variant import FeatureAvailability, OfferListing, Package
-from azureiai import RetryException
+from azure.partner_center.confs import Listing, ListingImage, ProductAvailability, Properties, ResellerConfiguration
+from azure.partner_center.confs.variant import FeatureAvailability, OfferListing, Package
+from azure import RetryException
 from swagger_client.rest import ApiException
 
 

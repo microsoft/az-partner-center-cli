@@ -1,10 +1,12 @@
 #  ---------------------------------------------------------
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
-import pytest
-from azure import generate_swagger
+"""Configurations for Azure Managed Application Plans"""
 
-
-@pytest.mark.integration
-def test_swagger_generate(swagger_json):
-    generate_swagger(swagger_json)
+__all__ = [
+    "ResellerConfiguration",
+    "Listing",
+    "ListingImage",
+    "ProductAvailability",
+    "Properties",
+]

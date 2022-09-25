@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from azureiai.partner_center.plan import Plan
-from azureiai.partner_center.offers.managed_app import ManagedApp
+from azure.partner_center.plan import Plan
+from azure.partner_center.offers.managed_app import ManagedApp
 
 from swagger_client.rest import ApiException
 from tests.cli_groups_tests import (

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 from swagger_client.rest import ApiException
 
-from azureiai.partner_center.offers.container import Container
+from azure.partner_center.offers.container import Container
 
 from tests.cli_groups_tests import (
     co_list_command,

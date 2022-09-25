@@ -9,8 +9,8 @@ import pytest
 import requests
 from adal import AuthenticationContext, adal_error
 
-from azureiai.partner_center.offers.virtual_machine import VirtualMachine
-from azureiai.partner_center.plan import Plan
+from azure.partner_center.offers.virtual_machine import VirtualMachine
+from azure.partner_center.plan import Plan
 from swagger_client.rest import ApiException
 from tests.cli_groups_tests import (
     vm_list_command,

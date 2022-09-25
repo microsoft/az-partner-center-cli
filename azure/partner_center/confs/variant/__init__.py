@@ -1,10 +1,6 @@
 #  ---------------------------------------------------------
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
-import pytest
-from azure import generate_swagger
+"""Variant Configurations are used for setting up new plans within an offer"""
 
-
-@pytest.mark.integration
-def test_swagger_generate(swagger_json):
-    generate_swagger(swagger_json)
+__all__ = ["FeatureAvailability", "OfferListing", "Package"]

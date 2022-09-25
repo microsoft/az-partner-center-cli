@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 jobs:
   linter_name:
-    name: type checking / mypy 
+    name: type checking / mypy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,4 +30,4 @@ jobs:
         uses: tsuyoshicho/action-mypy@v3.1.0
         with:
           reporter: github-pr-review
-          workdir: azureiai
+          workdir: azure

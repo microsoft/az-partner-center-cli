@@ -2,5 +2,5 @@ include Partner_Ingestion_SwaggerDocument.json
 include template.*.json
 include template.*.txt
 include template.*.yml
-recursive-include azureiai *.json
+recursive-include azure *.json
 recursive-include bin *.jar

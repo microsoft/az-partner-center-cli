@@ -1,10 +1,9 @@
 #  ---------------------------------------------------------
+"""Execute program as module 'azure'"""
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
-import pytest
-from azure import generate_swagger
 
+from azure import azpc_app
 
-@pytest.mark.integration
-def test_swagger_generate(swagger_json):
-    generate_swagger(swagger_json)
+if __name__ == "__main__":
+    azpc_app.main()

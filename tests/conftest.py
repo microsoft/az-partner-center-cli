@@ -8,9 +8,9 @@ from pathlib import Path
 import pytest
 import requests
 from adal import AuthenticationContext
-from azureiai.managed_apps import ManagedApplication
-from azureiai.managed_apps.confs import ListingImage
-from azureiai.managed_apps.confs.variant import Package
+from azure.managed_apps import ManagedApplication
+from azure.partner_center.confs import ListingImage
+from azure.partner_center.confs.variant import Package
 from swagger_client import (
     BranchesApi,
     FeatureAvailabilityApi,

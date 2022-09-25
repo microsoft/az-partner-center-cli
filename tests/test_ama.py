@@ -8,14 +8,14 @@ from collections import namedtuple
 from pathlib import Path
 
 import pytest
-from azureiai import RetryException
-from azureiai.managed_apps import ManagedApplication
-from azureiai.managed_apps.confs import Listing, ListingImage, ResellerConfiguration
-from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
-from azureiai.managed_apps.confs.variant import Package
-from azureiai.managed_apps.confs.variant.variant_plan_configuration import VariantPlanConfiguration
-from azureiai.managed_apps.swagger import download_swagger_jar
-from azureiai.managed_apps.utils import get_draft_instance_id
+from azure import RetryException
+from azure.managed_apps import ManagedApplication
+from azure.partner_center.confs import Listing, ListingImage, ResellerConfiguration
+from azure.partner_center.confs.offer_configurations import OfferConfigurations
+from azure.partner_center.confs.variant import Package
+from azure.partner_center.confs.variant.variant_plan_configuration import VariantPlanConfiguration
+from azure.partner_center.swagger import download_swagger_jar
+from azure.partner_center.utils import get_draft_instance_id
 from swagger_client import BranchesApi, PackageApi, SubmissionApi
 from tests.test_ama_mock import create_folders, generate_swagger_testing
 

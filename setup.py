@@ -6,7 +6,7 @@ from os import environ
 
 from setuptools import find_packages, setup  # noqa: H301
 
-from azureiai import generate_swagger
+from azure import generate_swagger
 
 SWAGGER_JSON = "Partner_Ingestion_SwaggerDocument.json"
 generate_swagger(SWAGGER_JSON)
@@ -31,7 +31,7 @@ REQUIRES = [
     "cryptography>=3.3.1",
 ]
 
-ENTRY_POINTS = {"console_scripts": ["azpc=azureiai.azpc_app:main"]}
+ENTRY_POINTS = {"console_scripts": ["azpc=azure.azpc_app:main"]}
 
 setup(
     name=NAME,

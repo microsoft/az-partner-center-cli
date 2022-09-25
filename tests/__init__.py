@@ -4,7 +4,7 @@
 import os
 import pathlib
 
-from azureiai import generate_swagger
+from azure import generate_swagger
 
 SWAGGER_JSON = str(__file__).split("tests")[0] + "Partner_Ingestion_SwaggerDocument.json"
 

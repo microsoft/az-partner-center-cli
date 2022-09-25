@@ -76,7 +76,7 @@ logging-modules=logging
 notes=FIXME,
       XXX,
       TODO
-      
+
 [SIMILARITIES]
 ignore-comments=yes
 ignore-docstrings=yes
@@ -150,7 +150,7 @@ ext-import-graph=
 import-graph=
 int-import-graph=
 known-standard-library=
-known-third-party=enchant, azureiai-logistics-inventoryplanning
+known-third-party=enchant, azure-logistics-inventoryplanning
 preferred-modules=
 
 [EXCEPTIONS]
