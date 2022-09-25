@@ -6,7 +6,7 @@ import json
 import os
 from pathlib import Path
 
-from azure.partner_center.confs import Properties, ProductAvailability, Listing, ListingImage, ResellerConfiguration
+from azure.partner_center.confs import Listing, ListingImage, ProductAvailability, Properties, ResellerConfiguration
 from azure.partner_center.confs.reseller_configuration import DEFAULT_STATE
 from azure.partner_center.offer import Offer
 from swagger_client.rest import ApiException

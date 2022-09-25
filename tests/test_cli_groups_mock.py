@@ -301,9 +301,7 @@ def test_vm_list_empty_success_mock(vm_config_json, monkeypatch, capsys):
 
 @pytest.mark.integration
 def test_vm_list_missing_publisher_id_mock(monkeypatch, capsys):
-    # No mocks required because it does not hit any APIs
-    with pytest.raises(ValueError):
-        cli_tests.vm_list_command(monkeypatch, capsys)
+    cli_tests.vm_list_command(monkeypatch, capsys)
 
 
 def test_vm_publish_success_mock(monkeypatch, capsys):

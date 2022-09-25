@@ -7,8 +7,8 @@ from pygments import highlight
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import JsonLexer
 
-from azure.partner_center.confs.variant import OfferListing, FeatureAvailability, Package
 from azure.partner_center import CLIParser
+from azure.partner_center.confs.variant import FeatureAvailability, OfferListing, Package
 from azure.partner_center.submission import Submission
 from swagger_client.rest import ApiException
 

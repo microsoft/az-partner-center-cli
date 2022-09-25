@@ -70,7 +70,6 @@ class Package(VariantPlanConfiguration):
         allow_jit_access: bool = False,
         policies=None,
         resource_type: str = "AzureManagedApplicationPackageConfiguration",
-        config_yaml: str = "config.yml",
         allowed_customer_actions: list = None,
         allowed_data_actions: list = None,
         json_config: dict = None,
@@ -84,7 +83,6 @@ class Package(VariantPlanConfiguration):
         :param allow_jit_access: boolean enable or disable jit access to customer resources
         :param policies: access policies
         :param resource_type: expecting AzureManagedApplicationPackageConfiguration
-        :param config_yaml: configuration file with tenant and aad id
         :param allowed_customer_actions: Control Plane Operation Permissions, single string, ; separated
         :param allowed_data_actions: Control Plane Operation Permissions, single string, ; separated
         :param json_config: listing configuration in json format
@@ -176,7 +174,7 @@ class Package(VariantPlanConfiguration):
             )
         except ApiException as error:
             if "Enter a valid GUID" in bytes.decode(error.body):
-                raise ValueError(f"GUID value not valid. Check {config_yaml}") from error
+                raise ValueError(f"GUID value not valid") from error
             raise error
         return response
 
