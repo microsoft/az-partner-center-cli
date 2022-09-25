@@ -31,7 +31,7 @@ jobs:
         if: steps.tag_version.outputs.release_type
         shell: bash
         env:
-          OLD_VERSION: ${{ steps.tag_version.outputs.old_version }}
+          OLD_VERSION: ${{ steps.tag_version.outputs.previous_version }}
           VERSION: ${{ steps.tag_version.outputs.new_version }}
         run: sed -ri "s/$OLD_VERSION/$VERSION/" "setup.py" || exit 1
 
