@@ -22,14 +22,12 @@ class Plan(Submission):
         self,
         plan_name=None,
         name=None,
-        config_yaml=r"config.yml",
         app_path: str = ".",
         json_listing_config="ma_config.json",
         subtype="",
     ):
         super().__init__(
             name=name,
-            config_yaml=config_yaml,
             resource_type=AZURE_APPLICATION,
             app_path=app_path,
             json_listing_config=json_listing_config,

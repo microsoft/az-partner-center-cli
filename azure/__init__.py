@@ -2,13 +2,15 @@
 #  Copyright (c) Microsoft Corporation. All rights reserved.
 #  ---------------------------------------------------------
 """Azure Industrial AI"""
+__path__ = __import__("pkgutil").extend_path(__path__, __name__)
+
 import os
 import shutil
 import subprocess
 from pathlib import Path
 from tempfile import mkdtemp
 
-__all__ = ["RetryException"]
+__all__ = ["RetryException", "generate_swagger"]
 
 
 def generate_swagger(swagger_json, swagger_module_dir="./", output=True, swagger_dir="swagger_client"):

@@ -31,7 +31,7 @@ REQUIRES = [
     "cryptography>=3.3.1",
 ]
 
-ENTRY_POINTS = {"console_scripts": ["azpc=azure.azpc_app:main"]}
+ENTRY_POINTS = {"console_scripts": ["azpc=azure.partner_center.azpc_app:main"]}
 
 setup(
     name=NAME,

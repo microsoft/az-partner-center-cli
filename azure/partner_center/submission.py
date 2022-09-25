@@ -18,7 +18,6 @@ class Submission(Offer):
     def __init__(
         self,
         name=None,
-        config_yaml: str = "config.yml",
         resource_type: str = "",
         app_path: str = ".",
         json_listing_config: str = "listing_config.json",
