@@ -67,17 +67,14 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS || inputs.AzureCredentials }}
       - name: Integration Tests
         id: integartion_tests
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            python -m pip install --upgrade pip
-            python -m pip install -r requirements.test.txt
-            python -m pip install -r requirements.txt 
-            python -m pip install pytest-cov coverage pytest-github-actions-annotate-failures
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.test.txt
+          python -m pip install -r requirements.txt 
+          python -m pip install pytest-cov coverage pytest-github-actions-annotate-failures
 
-            python3 -m pytest \
-               -c "tox.ini" \
-               -m "integration" \
-               --junitxml=pytest-results.xml \
-               "tests"
+          python3 -m pytest \
+             -c "tox.ini" \
+             -m "integration" \
+             --junitxml=pytest-results.xml \
+             "tests"
