@@ -14,3 +14,5 @@ jobs:
     needs: [check-changed-code]
     if: needs.check-changed-code.outputs.module_dir
     uses: ./.github/workflows/pytest.yml
+    with:
+      AzureCredentials: ${{ secrets.AZURE_CREDENTIALS }}
