@@ -92,15 +92,11 @@
         "allowedDataActions"    : [
           "Microsoft.Storage/*;Microsoft.MachineLearningServices/*;Microsoft.DocumentDB/*;Microsoft.Kubernetes/*;Microsoft.Insights/*;Microsoft.KeyVault/*;Microsoft.Databricks/*;Microsoft.ManagedIdentity/*;Microsoft.ContainerService/*;Microsoft.MachineLearning/*;Microsoft.Synapse/*;Microsoft.Network/*"
         ],
-        "tenant_id"             : "<AAD Tenant Id>",
+        "tenant_id"             : "72f988bf-86f1-41af-91ab-2d7cd011db47",
         "authorizations"        : [
           {
-            "id"  : "<AAD Owner Application ID>",
+            "id"  : "4af4fb67-9b08-4115-898b-8a21fec164ee",
             "role": "Owner"
-          },
-          {
-            "id"  : "<AAD Contributor Application ID>",
-            "role": "Contributor"
           }
         ],
         "policy_settings"       : [],

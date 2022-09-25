@@ -28,6 +28,8 @@ from swagger_client import (
 )
 
 
+RESOURCE_PC_API = "https://api.partner.microsoft.com"
+
 class Offer:
     """Azure Partner Portal - Offer"""
 
@@ -54,12 +56,17 @@ class Offer:
             "offer_id": "",
         }
 
-    def get_auth(self) -> str:
+    def get_auth(self, resource=RESOURCE_PC_API) -> str:
         """
         Create Authentication Header
 
         :return: Authorization Header contents
         """
+        if self._authorization is None:
+            self._authorization = f"Bearer {self._get_auth(resource)}"
+        return self._authorization
+
+    def _get_auth(self, resource) -> str:
         if self._authorization is None:
             if os.path.exists(self.config_yaml):
                 with open(self.config_yaml, encoding="utf8") as file:
@@ -72,14 +79,14 @@ class Offer:
                 auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
 
                 token_response = auth_context.acquire_token_with_client_credentials(
-                    resource="https://api.partner.microsoft.com",
+                    resource=resource,
                     client_id=client_id,
                     client_secret=client_secret,
                 )
                 self._authorization = f"Bearer {token_response['accessToken']}"
             else:
                 azure_cli = AzureCliCredential()
-                token_response = azure_cli.get_token("https://api.partner.microsoft.com")
+                token_response = azure_cli.get_token(resource)
 
                 self._authorization = f"Bearer {token_response.token}"
         return self._authorization

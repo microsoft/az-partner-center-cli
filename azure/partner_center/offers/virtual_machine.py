@@ -98,47 +98,15 @@ class VirtualMachine(Submission):
             self._raise_connection_error(response)
         return response
 
-    def get_auth(self, resource=RESOURCE_PC_API) -> str:
+    def get_auth(self, resource=RESOURCE_CPP_API) -> str:
         """
         Create Authentication Header
 
         :return: Authorization Header contents
         """
-        if resource == RESOURCE_PC_API:
-            if self._authorization is None:
-                self._authorization = f"Bearer {self._get_auth(resource)}"
-            return self._authorization
-
-        if resource == RESOURCE_CPP_API:
-            if self._legacy_authorization is None:
-                self._legacy_authorization = f"Bearer {self._get_auth(resource)}"
-            return self._legacy_authorization
-        raise Exception("The provided resource is unsupported.")
-
-    def _get_auth(self, resource) -> str:
-        if self._authorization is None:
-            if os.path.exists(self.config_yaml):
-                with open(self.config_yaml, encoding="utf8") as file:
-                    settings = yaml.safe_load(file)
-
-                client_id = os.getenv(AAD_ID, settings["aad_id"])
-                client_secret = os.getenv(AAD_CRED, settings["aad_secret"])
-                tenant_id = os.getenv(TENANT_ID, settings["tenant_id"])
-
-                auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
-
-                token_response = auth_context.acquire_token_with_client_credentials(
-                    resource=resource,
-                    client_id=client_id,
-                    client_secret=client_secret,
-                )
-                self._authorization = f"Bearer {token_response['accessToken']}"
-            else:
-                azure_cli = AzureCliCredential()
-                token_response = azure_cli.get_token(resource)
-
-                self._authorization = f"Bearer {token_response.token}"
-        return self._authorization
+        if self._legacy_authorization is None:
+            self._legacy_authorization = f"Bearer {self._get_auth(resource)}"
+        return self._legacy_authorization
 
     def _prepare_request(self):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
