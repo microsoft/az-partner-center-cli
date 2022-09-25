@@ -105,8 +105,6 @@ class AbstractOffer:
 
     def _set_pricing_and_availability(self, azure_subscription):
         feature_availability = FeatureAvailability(
-            product_id=self.get_product_id(),
-            plan_id=self.get_plan_id(),
-            authorization=self.get_auth()
+            product_id=self.get_product_id(), plan_id=self.get_plan_id(), authorization=self.get_auth()
         )
         feature_availability.set(azure_subscription=azure_subscription)
