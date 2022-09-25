@@ -174,7 +174,7 @@ class Package(VariantPlanConfiguration):
             )
         except ApiException as error:
             if "Enter a valid GUID" in bytes.decode(error.body):
-                raise ValueError(f"GUID value not valid") from error
+                raise ValueError("GUID value not valid") from error
             raise error
         return response
 
