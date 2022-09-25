@@ -60,13 +60,6 @@ def broken_json_listing_config():
 
 
 @pytest.fixture
-def config_yml():
-    test_path = Path(__file__).parents[1]
-    config_path = test_path.joinpath("config.yml")
-    return config_path if config_path.is_file() else test_path.joinpath("template.config.yml")
-
-
-@pytest.fixture
 def manifest_yml():
     return Path(__file__).parents[0].joinpath("sample_app").joinpath("manifest.yml")
 
@@ -78,13 +71,13 @@ def swagger_json():
 
 @pytest.mark.integration
 @pytest.fixture
-def ama(ama_name, config_yml):
+def ama(ama_name):
     """
     Managed Application Fixture for Testing
 
     This managed applicaiton is deleted after testing.
     """
-    ama = ManagedApplication(ama_name, config_yaml=config_yml)
+    ama = ManagedApplication(ama_name)
     ama.create()
     yield ama
     try:
