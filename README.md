@@ -27,7 +27,6 @@ pip install .
 ## Azure Partner Center (azpc) CLI Usage
 ### Create Manifest File
 1. Copy `template.manifest.yml` and create new file `manifest.yml`.
-1. Copy `template.config.yml` and create new file `config.yml`.
 1. Complete `manifest.yml` with pointers to required files.
     1. managed_app.zip
     1. app_listing_config.json
@@ -35,20 +34,7 @@ pip install .
     1. Medium Logo Image (png) - 90x90
     1. Large Logo Image (png) - 216x216
     1. Wide Logo Image (png) - 255x115
-1. Complete `config.yml`.
-    * **tenant_id**: Who will publish the managed app
-    * **azure_preview_subscription**: Who will be the preview audience
-    * **aad_id** and **aad_secret**: Service principal used for calling partner API
-    * **access_id**: Service principal will have access to managed resource group
-
-#### config.yml
-```yaml
-tenant_id                   : "<Azure Tenant ID>"
-azure_preview_subscription  : "<Azure Subscription>"
-aad_id                      : "<Service Principal ID>"
-aad_secret                  : "<Service Principal Secret>"
-access_id                   : "<Service Principal ID>"
-```
+1. Login using `az login`.
 
 #### manifest.yml
 ```yaml
@@ -157,12 +143,8 @@ azpc co publish --name $name
 ```
 
 ## Developer Setup
-### Create Configuration File
-1. Copy `template.config.yml` and create new file `config.yml`
-1. Fill in tenant_id, typically `72f988bf-86f1-41af-91ab-2d7cd011db47` for Microsoft's tenant.
-1. Fill in the Subscription that will have Preview access `azure_preview_subscription`
-1. Create a Service Principal and provide the id `aad_id` and key `aad_secret`
-
+### Azure Login
+1. Login to Azure via `az login`
 
 ### Generate Swagger Python Client
 Insure Java in installed on the machine with `java -v` Download current stable 3.x.x branch (OpenAPI version 3)
