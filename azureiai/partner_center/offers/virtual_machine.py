@@ -167,5 +167,4 @@ class VirtualMachineCLI(CLIParser):
             notification_emails=args.notification_emails,
             app_path=args.app_path,
             json_listing_config=args.config_json,
-            config_yaml=args.config_yml,
         ).publish()

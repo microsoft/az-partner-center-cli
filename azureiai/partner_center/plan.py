@@ -245,7 +245,6 @@ class PlanCLIParser(CLIParser):
             return self.submission_type(
                 args.plan_name,
                 args.name,
-                config_yaml=args.config_yml,
                 json_listing_config=args.config_json,
                 app_path=args.app_path,
                 subtype=args.subgroup,
@@ -258,17 +257,17 @@ class PlanCLIParser(CLIParser):
     def list_command(self) -> {}:
         """Create a new Managed Application"""
         args = self.parser.parse_args()
-        return self.submission_type(name=args.name, config_yaml=args.config_yml).list_contents()
+        return self.submission_type(name=args.name).list_contents()
 
     def show(self) -> {}:
         """Create a new Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.plan_name, args.name, config_yaml=args.config_yml).show()
+        return self.submission_type(args.plan_name, args.name).show()
 
     def delete(self) -> {}:
         """Create a new Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.plan_name, args.name, config_yaml=args.config_yml).delete()
+        return self.submission_type(args.plan_name, args.name).delete()
 
     def update(self) -> {}:
         """Create a new Managed Application"""
@@ -279,7 +278,6 @@ class PlanCLIParser(CLIParser):
         return self.submission_type(
             args.plan_name,
             args.name,
-            config_yaml=args.config_yml,
             json_listing_config=args.config_json,
             app_path=args.app_path,
             subtype=args.subgroup,
@@ -288,4 +286,4 @@ class PlanCLIParser(CLIParser):
     def publish(self) -> dict:
         """Publish a Managed Application"""
         args = self._add_name_argument()
-        return self.submission_type(args.plan_name, args.name, config_yaml=args.config_yml).publish()
+        return self.submission_type(args.plan_name, args.name).publish()
