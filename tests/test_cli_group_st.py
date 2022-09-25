@@ -72,16 +72,16 @@ def test_st_plan_list(config_yml, monkeypatch, capsys):
     st_list_plan_command(config_yml, monkeypatch, capsys)
 
 
-# @pytest.mark.integration
-# def test_st_publish(config_yml, monkeypatch, capsys):
-#     st_publish_command(config_yml, monkeypatch, capsys)
+@pytest.mark.skip
+def test_st_publish(config_yml, monkeypatch, capsys):
+    st_publish_command(config_yml, monkeypatch, capsys)
 
 
-# @pytest.mark.integration
-# def test_st_release(config_yml, monkeypatch, capsys):
-#     st_release_command(config_yml, monkeypatch, capsys)
+@pytest.mark.skip
+def test_st_release(config_yml, monkeypatch, capsys):
+    st_release_command(config_yml, monkeypatch, capsys)
 
 
-# @pytest.mark.integration
-# def test_st_delete(config_yml, monkeypatch, capsys):
-#     st_delete_command(config_yml, monkeypatch, capsys)
+@pytest.mark.skip
+def test_st_delete(config_yml, monkeypatch, capsys):
+    st_delete_command(config_yml, monkeypatch, capsys)
