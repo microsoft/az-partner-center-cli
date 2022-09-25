@@ -86,7 +86,7 @@ def test_co_plan_delete(monkeypatch, capsys):
     co_delete_plan_command(monkeypatch, capsys)
 
 
-@pytest.mark.integration
+@pytest.mark.skip
 def test_co_publish(monkeypatch, capsys):
     co_publish_command(monkeypatch, capsys)
 

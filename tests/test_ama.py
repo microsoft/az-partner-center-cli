@@ -98,24 +98,5 @@ def test_variant_plan_error(monkeypatch):
     monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
 
     vp_config = VariantPlanConfiguration(product_id="test-id", plan_id="testplan", authorization="test-auth")
-    with pytest.raises(RetryException):
+    with pytest.raises(ValueError):
         vp_config._get_draft_instance_id(module="")
-
-    def mock_branches_error(self, product_id, module, authorization):
-        return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])
-
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_error)
-    with pytest.raises(BaseException):
-        vp_config._get_draft_instance_id(module="")
-
-    def mock_branches_get(self, product_id, module, authorization):
-        variant_1 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*[None, "draft-instance-id"])
-        variant_2 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(
-            *["testdrive", "draft-instance-id"]
-        )
-        variant_3 = namedtuple("variant", ["variant_id", "current_draft_instance_id"])(*["abc123", "draft-instance-id"])
-        return namedtuple("response", ["value", "odata_etag", "id"])(*[[variant_1, variant_2, variant_3], "", ""])
-
-    monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
-
-    vp_config._get_draft_instance_id(module="")

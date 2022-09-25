@@ -226,7 +226,7 @@ def co_update_plan_command(json_config, monkeypatch, capsys):
 
 
 def co_list_plan_command(monkeypatch, capsys):
-    args_test(monkeypatch, _list_plan_args("ma"), capsys)
+    args_test(monkeypatch, _list_plan_args("co"), capsys)
 
 
 def co_show_plan_command(monkeypatch, capsys):

@@ -111,7 +111,7 @@ def test_ma_plan_delete(monkeypatch, capsys):
     ma_delete_plan_command(monkeypatch, capsys)
 
 
-@pytest.mark.integration
+@pytest.mark.skip
 def test_ma_publish(monkeypatch, capsys):
     ma_publish_command(monkeypatch, capsys)
 
