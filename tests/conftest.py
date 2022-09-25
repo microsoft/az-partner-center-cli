@@ -8,7 +8,6 @@ from pathlib import Path
 import pytest
 import requests
 from adal import AuthenticationContext
-from azure.managed_apps import ManagedApplication
 from azure.partner_center.confs import ListingImage
 from azure.partner_center.confs.variant import Package
 from swagger_client import (
