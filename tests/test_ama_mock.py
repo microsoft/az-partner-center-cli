@@ -37,8 +37,8 @@ def test_ama_delete_mock(ama_mock):
     ama_mock.delete()
 
 
-def test_ama_publish_pre_prepare_mock(ama_mock, manifest_yml, config_yml):
-    prepared = ama_mock.manifest_publish(manifest_yml=manifest_yml, config_yml=config_yml)
+def test_ama_publish_pre_prepare_mock(ama_mock, manifest_yml):
+    prepared = ama_mock.manifest_publish(manifest_yml=manifest_yml)
     assert prepared
 
 
