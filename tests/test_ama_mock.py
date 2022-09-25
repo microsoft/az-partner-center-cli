@@ -14,7 +14,6 @@ from azureiai.managed_apps.confs import Listing, ListingImage, ResellerConfigura
 from azureiai.managed_apps.confs.offer_configurations import OfferConfigurations
 from azureiai.managed_apps.confs.variant import Package
 from azureiai.managed_apps.confs.variant.variant_plan_configuration import VariantPlanConfiguration
-from azureiai.managed_apps.managed_app import ManagedApplication
 from azureiai.partner_center.offer import Offer
 from azureiai.managed_apps.swagger import download_swagger_jar
 from azureiai.managed_apps.utils import get_draft_instance_id
@@ -369,36 +368,3 @@ def test_branch_get_mock(monkeypatch):
     monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
     with pytest.raises(BaseException):
         get_draft_instance_id(product_id="test-id", authorization="auth", module="test-module")
-
-
-def test_force_500(plan_name, ama_name, monkeypatch):
-    """Properties PyTest Fixture"""
-
-    def force_500(
-        self,
-        method,
-        url,
-        query_params=None,
-        headers=None,
-        body=None,
-        post_params=None,
-        _preload_content=True,
-        _request_timeout=None,
-    ):
-        raise ApiException()
-
-    def mock_auth(self):
-        return "Test-Header"
-
-    monkeypatch.setattr(ManagedApplication, "get_auth", mock_auth)
-    monkeypatch.setattr(RESTClientObject, "request", force_500)
-
-    ama = ManagedApplication(ama_name, config_yaml=str(__file__).split("tests")[0] + "template.config.yml")
-    ama.set_product_id("mock-test")
-
-    with pytest.raises(RetryException):
-        try:
-            ama._create_new_plan(plan_name=plan_name)
-        except RetryException as exception:
-            print(exception)
-            raise exception

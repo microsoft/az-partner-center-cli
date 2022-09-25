@@ -13,7 +13,7 @@ from swagger_client.rest import ApiException
 from tests.cli_groups_tests import (
     ma_list_command,
     ma_create_command,
-    ma_show_command,
+    ma_release_command, ma_show_command,
     ma_update_command,
     ma_delete_command,
     ma_publish_command,
@@ -116,9 +116,9 @@ def test_ma_publish(monkeypatch, capsys):
     ma_publish_command(monkeypatch, capsys)
 
 
-# @pytest.mark.integration
-# def test_ma_release(monkeypatch, capsys):
-#     ma_release_command(monkeypatch, capsys)
+@pytest.mark.skip
+def test_ma_release(monkeypatch, capsys):
+    ma_release_command(monkeypatch, capsys)
 
 
 @pytest.mark.integration

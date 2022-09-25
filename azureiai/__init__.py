@@ -18,6 +18,7 @@ def generate_swagger(swagger_json, swagger_module_dir="./", output=True, swagger
     :param swagger_json: Path to Swagger JSON OpenAPI V3 file. Required.
     :param swagger_module_dir: Location to drop new swagger_client directory, must not currently exist. Default: "./"
     :param output: Print Swagger Jar output to Console. Default: False
+    :param swagger_dir: Directory to generate swagger_client into. Default: "swagger_client"
     """
     swagger_client_path = Path(__file__).parents[1].joinpath(swagger_dir)
     swagger_jar_path = Path(__file__).parents[1].joinpath("bin").joinpath("swagger-codegen-cli-3.0.29.jar")

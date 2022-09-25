@@ -5,8 +5,11 @@ import pytest
 
 from swagger_client.rest import ApiException
 from tests.cli_groups_tests import (
+    st_delete_command,
     st_list_command,
     st_create_command,
+    st_publish_command,
+    st_release_command,
     st_show_command,
     st_update_command,
     st_create_plan_command,

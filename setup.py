@@ -31,7 +31,7 @@ REQUIRES = [
     "cryptography>=3.3.1",
 ]
 
-ENTRY_POINTS = {"console_scripts": ["ama=azureiai.ama_app:main", "azpc=azureiai.azpc_app:main"]}
+ENTRY_POINTS = {"console_scripts": ["azpc=azureiai.azpc_app:main"]}
 
 setup(
     name=NAME,

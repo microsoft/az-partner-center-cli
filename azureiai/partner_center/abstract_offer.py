@@ -4,17 +4,11 @@
 """Offer Interface"""
 from abc import abstractmethod
 
-import yaml
-from adal import AuthenticationContext
-from azure.core.exceptions import ClientAuthenticationError
-from azure.identity import CredentialUnavailableError
-
 from azureiai.managed_apps.confs import ResellerConfiguration
 from azureiai.managed_apps.confs.variant import FeatureAvailability
 from azureiai.managed_apps.utils import (
     get_draft_instance_id,
     get_variant_draft_instance_id,
-    CONFIG_YML,
 )
 from swagger_client import (
     BranchesApi,
@@ -29,9 +23,8 @@ from swagger_client import (
 class AbstractOffer:
     """Azure Partner Portal - Offer Interface"""
 
-    def __init__(self, name=None, config_yaml=CONFIG_YML):
+    def __init__(self, name=None):
         self.name = name
-        self.config_yaml = config_yaml
         self._authorization = None
 
         self._apis = {
@@ -52,37 +45,13 @@ class AbstractOffer:
             "offer_id": "",
         }
 
+    @abstractmethod
     def get_auth(self) -> str:
         """
         Create Authentication Header
 
         :return: Authorization Header contents
         """
-        if self._authorization is None:
-            try:
-                from azure.identity import AzureCliCredential
-                from azure.mgmt.resource import SubscriptionClient
-
-                credential = AzureCliCredential()
-                token = credential.get_token("https://api.partner.microsoft.com").token
-                self._authorization = f"Bearer {token}"
-            except (CredentialUnavailableError, ClientAuthenticationError):
-
-                with open(self.config_yaml, encoding="utf8") as file:
-                    settings = yaml.safe_load(file)
-
-                client_id = settings["aad_id"]
-                client_secret = settings["aad_secret"]
-                tenant_id = settings["tenant_id"]
-
-                auth_context = AuthenticationContext(f"https://login.microsoftonline.com/{tenant_id}")
-                token_response = auth_context.acquire_token_with_client_credentials(
-                    resource="https://api.partner.microsoft.com",
-                    client_id=client_id,
-                    client_secret=client_secret,
-                )
-                self._authorization = f"Bearer {token_response['accessToken'].token}"
-        return self._authorization
 
     def get_product_id(self) -> str:
         """
@@ -135,5 +104,9 @@ class AbstractOffer:
         reseller.set()
 
     def _set_pricing_and_availability(self, azure_subscription):
-        feature_availability = FeatureAvailability(product_id=self.get_product_id(), authorization=self.get_auth())
+        feature_availability = FeatureAvailability(
+            product_id=self.get_product_id(),
+            plan_id=self.get_plan_id(),
+            authorization=self.get_auth()
+        )
         feature_availability.set(azure_subscription=azure_subscription)

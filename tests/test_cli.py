@@ -3,7 +3,6 @@
 #  ---------------------------------------------------------
 
 import pytest
-from azureiai import ama_app
 from tests.cli_tests import (
     bad_command_integration,
     create_publish_delete,
@@ -16,12 +15,6 @@ from tests.cli_tests import (
     status_check,
     update_ama,
 )
-
-
-@pytest.mark.integration
-def test_app():
-    with pytest.raises(KeyError):
-        ama_app.main()
 
 
 @pytest.mark.integration
