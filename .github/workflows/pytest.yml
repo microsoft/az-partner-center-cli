@@ -8,7 +8,7 @@ on:
         type: string
         required: true
         description: Setup following these steps, https://github.com/azure/login#configure-deployment-credentials
-
+        default: ${{ secrets.AZURE_CREDENTIALS }}
 jobs:
   unit:
     runs-on: ubuntu-latest    
@@ -65,7 +65,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_CREDENTIALS || inputs.AzureCredentials }}
       - name: Integration Tests
         id: integartion_tests
         uses: azure/CLI@v1
