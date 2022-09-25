@@ -8,12 +8,9 @@ from pathlib import Path
 
 import requests
 import yaml
-from adal import AuthenticationContext
-from azure.identity import AzureCliCredential
 
 from azure.partner_center.cli_parser import CLIParser
 from azure.partner_center.submission import Submission
-from azure.partner_center.utils import AAD_CRED, AAD_ID, TENANT_ID
 
 AZURE_VIRTUAL_MACHINE = "AzureThirdPartyVirtualMachine"
 RESOURCE_CPP_API = "https://cloudpartner.azure.com"
