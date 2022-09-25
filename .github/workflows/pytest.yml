@@ -5,7 +5,7 @@ on:
   workflow_call:
 
 jobs:
-  pytest:
+  unit:
     runs-on: ubuntu-latest    
     steps:
       - uses: actions/checkout@v2
@@ -49,22 +49,31 @@ jobs:
           pytest-coverage-path: pytest-coverage.txt
           junitxml-path: pytest-results.xml
 
+  integration:
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 3.7
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Integration Tests
-        run: |
-          echo "tenant_id: \"${{ secrets.TENANT_ID }}\"" >> config.yml
-          echo "azure_preview_subscription: \"${{ secrets.SUBSCRIPTION_ID }}\"" >> config.yml
-          echo "aad_id: \"${{ secrets.AAD_ID }}\"" >> config.yml
-          echo "aad_secret: \"${{ secrets.AAD_SECRET }}\"" >> config.yml
-          echo "access_id: \"${{ secrets.ACCESS_ID }}\"" >> config.yml
-          echo "publisherId: \"${{ secrets.PUBLISHER_ID }}\"" >> config.yml
-          
-          python -m pip install --upgrade pip
-          pip install -r requirements.test.txt
-          pip install -r requirements.txt 
-          pip install pytest-cov coverage pytest-github-actions-annotate-failures
+        id: integartion_tests
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.test.txt
+            python -m pip install -r requirements.txt 
+            python -m pip install pytest-cov coverage pytest-github-actions-annotate-failures
 
-          python3 -m pytest \
-             -c "tox.ini" \
-             -m "integration" \
-             --junitxml=pytest-results.xml \
-             "tests"
+            python3 -m pytest \
+               -c "tox.ini" \
+               -m "integration" \
+               --junitxml=pytest-results.xml \
+               "tests"
