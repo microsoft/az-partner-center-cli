@@ -30,6 +30,7 @@ from swagger_client import (
 
 RESOURCE_PC_API = "https://api.partner.microsoft.com"
 
+
 class Offer:
     """Azure Partner Portal - Offer"""
 
