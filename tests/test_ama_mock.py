@@ -341,7 +341,7 @@ def test_offer_get_product_id(monkeypatch):
 
     monkeypatch.setattr(ProductApi, "products_get", mock_products_get)
 
-    offer = Offer(name="test-offer", config_yaml=template_config)
+    offer = Offer(name="test-offer")
     product_id = offer.get_product_id()
     assert product_id == ""
 

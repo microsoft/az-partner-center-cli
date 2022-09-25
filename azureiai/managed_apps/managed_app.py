@@ -75,12 +75,11 @@ class ManagedApplication(Offer):
             product_id=self.get_product_id(), authorization=self.get_auth()
         )
 
-    def manifest_publish(self, manifest_yml, config_yml) -> bool:
+    def manifest_publish(self, manifest_yml) -> bool:
         """
         Prepare to Publish Application using Manifest File.
 
         :param manifest_yml: path to manifest.yml, see template.manifest.yml for example.
-        :param config_yml: path to config.yml, see template.config.yml for example.
         :return: Publish Outcome
         """
         with open(manifest_yml, encoding="utf8") as file:
@@ -90,7 +89,6 @@ class ManagedApplication(Offer):
             app_path=manifest["app_path"],
             app=manifest["app"],
             json_listing_config=manifest["json_listing_config"],
-            config_yml=config_yml,
         )
 
     def prepare_plan(
