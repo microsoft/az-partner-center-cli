@@ -32,9 +32,7 @@ def test_create_plan(ama, plan_name):
 
 @pytest.mark.integration
 def test_ama_delete(ama_name):
-    ama = ManagedApplication(
-        ama_name
-    )
+    ama = ManagedApplication(ama_name)
     ama.create()
     product_id = ama.get_product_id()
     ama.set_product_id(product_id)
@@ -44,9 +42,7 @@ def test_ama_delete(ama_name):
 
 @pytest.mark.integration
 def test_ama_delete_no_create(ama_name):
-    ama = ManagedApplication(
-        ama_name
-    )
+    ama = ManagedApplication(ama_name)
     ama.get_product_id()
     ama.delete()
 
@@ -313,9 +309,7 @@ def test_variant_plan_error(monkeypatch):
 
 @pytest.mark.integration
 def test_ama_retry(monkeypatch, ama_name):
-    ama = ManagedApplication(
-        ama_name
-    )
+    ama = ManagedApplication(ama_name)
 
     def mock_branches_get(self, product_id, module, authorization):
         return namedtuple("response", ["value", "odata_etag", "id"])(*["", "", ""])

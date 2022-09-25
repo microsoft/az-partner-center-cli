@@ -44,10 +44,7 @@ def test_ama_publish_pre_prepare_mock(ama_mock, manifest_yml):
 
 def test_ama_publish_prepare_mock(ama_mock, plan_name, app_path_fix, app_zip, json_listing_config):
     prepared = ama_mock.prepare_publish(
-        plan_name=plan_name,
-        app_path=app_path_fix,
-        app=app_zip,
-        json_listing_config=json_listing_config
+        plan_name=plan_name, app_path=app_path_fix, app=app_zip, json_listing_config=json_listing_config
     )
     assert prepared
 
