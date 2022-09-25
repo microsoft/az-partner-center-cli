@@ -15,9 +15,9 @@ jobs:
         uses: actions-cool/pr-auto-label@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          enum: 'fix, feat, docs'
+          enum: 'feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert'
           format: '${type}:'
-          extra: 'feat/feature, docs/doc'
+          extra: 'feat/feature, docs/doc, test/tests'
   main:
     name: Validate PR title
     runs-on: ubuntu-latest
