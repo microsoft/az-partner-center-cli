@@ -8,6 +8,16 @@ on:
       - synchronize
 
 jobs:
+  set-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: pr-auto-label
+        uses: actions-cool/pr-auto-label@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          enum: 'fix, feat, docs'
+          format: '${type}:'
+          extra: 'feat/feature, docs/doc'
   main:
     name: Validate PR title
     runs-on: ubuntu-latest
