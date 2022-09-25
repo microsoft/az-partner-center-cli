@@ -48,7 +48,6 @@ jobs:
         with:
           pytest-coverage-path: pytest-coverage.txt
           junitxml-path: pytest-results.xml
-          report-only-changed-files: true
 
 #       - name: Integration Tests
 #         run: |
