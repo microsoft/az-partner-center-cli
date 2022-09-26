@@ -62,11 +62,11 @@ class VirtualMachine(Submission):
 
     def list_contents(self) -> dict:
         """list only the Virtual Machine offers"""
-        with open(self.config_yaml, encoding="utf8") as file:
-            settings = yaml.safe_load(file)
-            if "publisherId" not in settings:
-                raise ValueError(f"Key: publisherId is missing from {self.config_yaml}")
-            publisher_id = settings["publisherId"]
+        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
+            json_config = json.load(read_file)
+        if "publisherId" not in json_config:
+            raise ValueError(f"Key: publisherId is missing from {self.app_path}/{self.json_listing_config}")
+        publisher_id = json_config["publisherId"]
         offer_type_filter = "offerTypeId eq 'microsoft-azure-virtualmachines'"
         url = f"{URL_BASE}/{publisher_id}/offers?api-version=2017-10-31&$filter={offer_type_filter}"
         headers = {"Authorization": self.get_auth(), "Content-Type": "application/json"}
