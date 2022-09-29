@@ -150,7 +150,7 @@ class Package(VariantPlanConfiguration):
             tenant_id = os.getenv(TENANT_ID, plan_config["technical_configuration"]["tenant_id"])
             access_id = os.getenv(ACCESS_ID, plan_config["technical_configuration"]["authorizations"][0]["id"])
             role = os.getenv("ACCESS_OWNER", plan_config["technical_configuration"]["authorizations"][0]["role"])
-
+            deployment_mode = plan_config["technical_configuration"]["tenant_id"].get("deploymentMode", "Incremental")
             settings = {
                 "resourceType": resource_type,
                 "version": version,
@@ -158,7 +158,7 @@ class Package(VariantPlanConfiguration):
                 "canEnableCustomerActions": "true",
                 "allowedCustomerActions": allowed_customer_actions,
                 "allowedDataActions": allowed_data_actions,
-                "deploymentMode": "Incremental",
+                "deploymentMode": deployment_mode,
                 "publicAzureTenantID": tenant_id,
                 "publicAzureAuthorizations": [{"principalID": access_id, "roleDefinitionID": role}],
                 "azureGovernmentTenantID": "string",
