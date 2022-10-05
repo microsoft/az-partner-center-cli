@@ -76,6 +76,7 @@ class Package(VariantPlanConfiguration):
         allowed_customer_actions: list = None,
         allowed_data_actions: list = None,
         json_config: dict = None,
+        plan_name: str = None,
     ):
         """
         Set Package Configuration
@@ -146,7 +147,7 @@ class Package(VariantPlanConfiguration):
                 "ID": settings_id,
             }
         else:
-            plan_config = self._load_plan_config(json_config)
+            plan_config = self._load_plan_config(json_config, plan_name)
             tenant_id = os.getenv(TENANT_ID, plan_config["technical_configuration"]["tenant_id"])
             access_id = os.getenv(ACCESS_ID, plan_config["technical_configuration"]["authorizations"][0]["id"])
             role = os.getenv("ACCESS_OWNER", plan_config["technical_configuration"]["authorizations"][0]["role"])
@@ -183,10 +184,12 @@ class Package(VariantPlanConfiguration):
         return response
 
     @staticmethod
-    def _load_plan_config(json_config: dict):
+    def _load_plan_config(json_config: dict, plan_name=None):
         plan_overview = json_config["plan_overview"]
         if isinstance(plan_overview, list):
             return plan_overview[0]
+        if plan_name:
+            return plan_overview[plan_name]
         return plan_overview[next(iter(plan_overview))]
 
     def _check_upload(self, post_response):

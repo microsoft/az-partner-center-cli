@@ -278,10 +278,12 @@ class ManagedApplication(Offer):
             raise RetryException() from api_expection
 
     @staticmethod
-    def _load_plan_config(json_config):
+    def _load_plan_config(json_config, plan_name=None):
         plan_overview = json_config["plan_overview"]
         if isinstance(plan_overview, list):
             return plan_overview[0]
+        if plan_name:
+            return plan_overview[plan_name]
         return plan_overview[next(iter(plan_overview))]
 
     def _set_plan_listing(self, json_config):
