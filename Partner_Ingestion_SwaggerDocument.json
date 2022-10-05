@@ -8367,7 +8367,7 @@
               "Disabled",
               "PartialOptIn",
               "OptOut",
-              "Optin"
+              "Enabled"
             ],
             "type": "string"
           },

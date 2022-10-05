@@ -1,8 +1,3 @@
 {
-    "Product": {
-        "serviceName": "Product",
-        "error": "Microsoft.Ingestion.Api.Common.Exceptions.Http404Exception: CPP product test-offer not found in current PC environment.",
-        "exceptionCode": "Http404Exception",
-        "httpStatusCode": "NotFound"
-    }
+    "value": []
 }

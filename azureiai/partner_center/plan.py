@@ -74,7 +74,7 @@ class Plan(Submission):
             self.show()
 
         plan_listing_response = self._update_plan_listing()
-        # self._update_pricing_and_availability() # 401 error
+        self._update_pricing_and_availability()
         technical_configuration_response = self._update_technical_configuration()
         return technical_configuration_response.to_dict() + plan_listing_response.to_dict()
 
@@ -123,11 +123,12 @@ class Plan(Submission):
                 return submission
         raise LookupError(f"{self.resource_type} with this name not found: {self.name}")
 
-    def _update_plan_listing(self):
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
+    def _load_plan_config(self, plan_name=None):
+        return super()._load_plan_config(plan_name=self.plan_name)
 
-        offer_listing_properties = json_config["plan_overview"][0]["plan_listing"]
+    def _update_plan_listing(self):
+        plan_config = self._load_plan_config()
+        offer_listing_properties = plan_config["plan_listing"]
         offer_listing_properties["resourceType"] = "AzureListing"
         offer_listing = OfferListing(
             product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth()
@@ -135,11 +136,9 @@ class Plan(Submission):
         return offer_listing.set(properties=offer_listing_properties)
 
     def _update_pricing_and_availability(self):
-        with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
-            json_config = json.load(read_file)
-
-        azure_subscription = json_config["plan_overview"][0]["pricing_and_availability"]["azure_private_subscriptions"]
-
+        plan_config = self._load_plan_config()
+        azure_subscription = plan_config["pricing_and_availability"].get("azure_private_subscriptions", [])
+        visibility = plan_config["pricing_and_availability"]["visibility"]
         feature_availability = FeatureAvailability(
             product_id=self.get_product_id(),
             plan_id=self._ids["plan_id"],
@@ -147,9 +146,11 @@ class Plan(Submission):
             subtype=self.subtype,
         )
         try:
-            feature_availability.set(azure_subscription=azure_subscription)
+            feature_availability.set(azure_subscription=azure_subscription, visibility=visibility)
         except ApiException as error:
             error_message = bytes.decode(error.body).replace("\\", "").split(". ")
+            if isinstance(error_message, str):
+                raise PermissionError(error_message) from error
             error_json = json.loads(error_message[1].removesuffix('"'))
             raise PermissionError(
                 error_message[0].removeprefix('"')
@@ -161,19 +162,21 @@ class Plan(Submission):
         with open(Path(self.app_path).joinpath(self.json_listing_config), "r", encoding="utf8") as read_file:
             json_config = json.load(read_file)
 
+        plan_config = self._load_plan_config()
+
         with open("manifest.yml", encoding="utf8") as file:
             manifest = yaml.safe_load(file)
             file_name = manifest["app"]
 
-        version = json_config["plan_overview"][0]["technical_configuration"]["version"]
+        version = plan_config["technical_configuration"]["version"]
 
         try:
             if self.subtype == "ma":
-                allow_jit_access = json_config["plan_overview"][0]["technical_configuration"]["allow_jit_access"]
-                policies = json_config["plan_overview"][0]["technical_configuration"]["policy_settings"]
+                allow_jit_access = plan_config["technical_configuration"]["allow_jit_access"]
+                policies = plan_config["technical_configuration"]["policy_settings"]
 
                 allowed_customer_actions, allowed_data_actions = self._get_allowed_actions(
-                    json_config["plan_overview"][0]["technical_configuration"]
+                    plan_config["technical_configuration"]
                 )
                 package = Package(
                     product_id=self.get_product_id(), plan_id=self._ids["plan_id"], authorization=self.get_auth()
@@ -185,9 +188,10 @@ class Plan(Submission):
                     allow_jit_access=allow_jit_access,
                     resource_type="AzureManagedApplicationPackageConfiguration",
                     policies=policies,
-                    config_yaml=self.config_yaml,
                     allowed_customer_actions=allowed_customer_actions,
                     allowed_data_actions=allowed_data_actions,
+                    json_config=json_config,
+                    plan_name=self.plan_name,
                 )
             if self.subtype == "st":
                 package = Package(
@@ -198,7 +202,6 @@ class Plan(Submission):
                     file_name=file_name,
                     version=version,
                     resource_type="AzureSolutionTemplatePackageConfiguration",
-                    config_yaml=self.config_yaml,
                 )
         except ApiException as error:
             raise ValueError(bytes.decode(error.body).replace("\\", "")) from error

@@ -78,5 +78,10 @@ def test_st_plan_list(config_yml, monkeypatch, capsys):
 
 
 # @pytest.mark.integration
+# def test_st_release(config_yml, monkeypatch, capsys):
+#     st_release_command(config_yml, monkeypatch, capsys)
+
+
+# @pytest.mark.integration
 # def test_st_delete(config_yml, monkeypatch, capsys):
 #     st_delete_command(config_yml, monkeypatch, capsys)

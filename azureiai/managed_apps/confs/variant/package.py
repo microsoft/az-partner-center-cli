@@ -75,6 +75,8 @@ class Package(VariantPlanConfiguration):
         config_yaml: str = "config.yml",
         allowed_customer_actions: list = None,
         allowed_data_actions: list = None,
+        json_config: dict = None,
+        plan_name: str = None,
     ):
         """
         Set Package Configuration
@@ -88,6 +90,7 @@ class Package(VariantPlanConfiguration):
         :param config_yaml: configuration file with tenant and aad id
         :param allowed_customer_actions: Control Plane Operation Permissions, single string, ; separated
         :param allowed_data_actions: Control Plane Operation Permissions, single string, ; separated
+        :param json_config: listing configuration in json format
         """
         if policies is None:
             policies = []
@@ -136,12 +139,6 @@ class Package(VariantPlanConfiguration):
         odata_etag = settings["@odata.etag"]
         settings_id = settings["id"]
 
-        with open(config_yaml, encoding="utf8") as file:
-            config_settings = yaml.safe_load(file)
-
-        tenant_id = os.getenv(TENANT_ID, config_settings["tenant_id"])
-        access_id = os.getenv(ACCESS_ID, config_settings["access_id"])
-
         if resource_type == "AzureSolutionTemplatePackageConfiguration":
             settings = {
                 "resourceType": resource_type,
@@ -150,6 +147,11 @@ class Package(VariantPlanConfiguration):
                 "ID": settings_id,
             }
         else:
+            plan_config = self._load_plan_config(json_config, plan_name)
+            tenant_id = os.getenv(TENANT_ID, plan_config["technical_configuration"]["tenant_id"])
+            access_id = os.getenv(ACCESS_ID, plan_config["technical_configuration"]["authorizations"][0]["id"])
+            role = os.getenv("ACCESS_OWNER", plan_config["technical_configuration"]["authorizations"][0]["role"])
+            deployment_mode = plan_config["technical_configuration"].get("deploymentMode", "Incremental")
             settings = {
                 "resourceType": resource_type,
                 "version": version,
@@ -157,9 +159,9 @@ class Package(VariantPlanConfiguration):
                 "canEnableCustomerActions": "true",
                 "allowedCustomerActions": allowed_customer_actions,
                 "allowedDataActions": allowed_data_actions,
-                "deploymentMode": "Incremental",
+                "deploymentMode": deployment_mode,
                 "publicAzureTenantID": tenant_id,
-                "publicAzureAuthorizations": [{"principalID": access_id, "roleDefinitionID": "Contributor"}],
+                "publicAzureAuthorizations": [{"principalID": access_id, "roleDefinitionID": role}],
                 "azureGovernmentTenantID": "string",
                 "azureGovernmentAuthorizations": [],
                 "policies": policies,
@@ -180,6 +182,15 @@ class Package(VariantPlanConfiguration):
                 raise ValueError(f"GUID value not valid. Check {config_yaml}") from error
             raise error
         return response
+
+    @staticmethod
+    def _load_plan_config(json_config: dict, plan_name=None):
+        plan_overview = json_config["plan_overview"]
+        if isinstance(plan_overview, list):
+            return plan_overview[0]
+        if plan_name:
+            return plan_overview[plan_name]
+        return plan_overview[next(iter(plan_overview))]
 
     def _check_upload(self, post_response):
         state = None

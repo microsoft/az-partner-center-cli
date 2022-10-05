@@ -144,8 +144,8 @@
                   "visibility"                 : {
                     "type": "string",
                     "enum": [
-                      "private",
-                      "public"
+                      "Private",
+                      "Public"
                     ]
                   },
                   "azure_private_subscriptions": {

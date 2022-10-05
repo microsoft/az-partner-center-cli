@@ -1,0 +1,16 @@
+
+name: Pull Request Workflow
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-changed-code:
+    uses: ./.github/workflows/get-changed-module.yml
+
+  pytest:
+    needs: [check-changed-code]
+    if: needs.check-changed-code.outputs.module_dir
+    uses: ./.github/workflows/pytest.yml

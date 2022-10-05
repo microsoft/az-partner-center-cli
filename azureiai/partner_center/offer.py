@@ -61,7 +61,7 @@ class Offer:
         :return: Authorization Header contents
         """
         if self._authorization is None:
-            try:
+            if os.path.exists(self.config_yaml):
                 with open(self.config_yaml, encoding="utf8") as file:
                     settings = yaml.safe_load(file)
 
@@ -77,7 +77,7 @@ class Offer:
                     client_secret=client_secret,
                 )
                 self._authorization = f"Bearer {token_response['accessToken']}"
-            except KeyError:
+            else:
                 azure_cli = AzureCliCredential()
                 token_response = azure_cli.get_token("https://api.partner.microsoft.com")
 
@@ -100,6 +100,22 @@ class Offer:
                     self._ids["product_id"] = submission["id"]
 
         return self._ids["product_id"]
+
+    def get_submission_id(self) -> str:
+        """
+        Get or Set Submission ID
+
+        May return empty submission_id if no preview offer has been created, which can cause API error later.
+        :return: Submission ID of new Managed Application
+        """
+        if self._ids["submission_id"] is None:
+            api_response = self._apis["submission"].products_product_id_submissions_get(
+                authorization=self.get_auth(),
+                product_id=self.get_product_id(),
+            )
+            self._ids["submission_id"] = api_response.value[0].id
+
+        return self._ids["submission_id"]
 
     def get_offer_id(self) -> str:
         """
