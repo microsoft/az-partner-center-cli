@@ -10,5 +10,5 @@ jobs:
       - name: actions-template-sync
         uses: AndreasAugustin/actions-template-sync@v0.4.2-draft
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
           source_repo_path: microsoft/python-package-template
