@@ -1,16 +1,12 @@
+name: Template Sync
 on:
   workflow_dispatch:
-
 jobs:
-  repo-sync:
+  sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:          
-          token: ${{ secrets.PAT }}
-      - name: actions-template-sync
-        uses: AndreasAugustin/actions-template-sync@v0.4.2-draft
+      - uses: actions/checkout@v3 # important!
+      - uses: euphoricsystems/action-sync-template-repository@v2
         with:
-          github_token: ${{ secrets.PAT }}
-          source_repo_path: microsoft/python-package-template
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          dry-run: true

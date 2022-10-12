@@ -9,8 +9,6 @@ updates:
   assignees:
   - dciborow
   - mattchansky
-  commit-message:
-    prefix: "fix: "
   allow:
   - dependency-type: direct
   - dependency-type: indirect
