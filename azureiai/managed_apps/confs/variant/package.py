@@ -5,6 +5,7 @@
 import os
 import re
 import shutil
+import time
 import zipfile
 from pathlib import Path
 
@@ -194,6 +195,7 @@ class Package(VariantPlanConfiguration):
 
     def _check_upload(self, post_response):
         state = None
+        t_end = time.time() + 60 * 5
         while state != "Processed":
             get_response = self.package_api.products_product_id_packages_package_id_get(
                 product_id=self.product_id,
@@ -203,3 +205,5 @@ class Package(VariantPlanConfiguration):
             state = get_response.state
             if state == "ProcessFailed":
                 raise ConnectionError("Uploading AMA Zip Failed with State: ProcessedFailed. Check if PID is required")
+            if time.time() > t_end:
+                raise ConnectionError("Uploading AMA Zip Failed after 5 minutes. Please retry")
