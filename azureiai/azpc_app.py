@@ -28,7 +28,8 @@ def main():
 """
     subgroup = sys.argv[1]
     if subgroup in ["--help", "-h"]:
-        return help_text
+        print(help_text, file=sys.stdout)
+        return
 
     commands = {
         "app": ApplicationCLI,
@@ -39,6 +40,7 @@ def main():
     }
     try:
         print(run(commands[subgroup]()), file=sys.stdout)
+        return
     except NameError as error:
         print(error, file=sys.stderr)
         sys.exit(1)
