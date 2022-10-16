@@ -3,7 +3,7 @@
 #  ---------------------------------------------------------
 """CLI Wrapper for Creating, Updating, or Deleting Azure Managed Applications"""
 
-import sys
+import sys, traceback, threading
 
 from azureiai.partner_center import run
 from azureiai.partner_center.offers.application import ApplicationCLI
@@ -40,6 +40,13 @@ def main():
     }
     try:
         print(run(commands[subgroup]()), file=sys.stdout)
+
+        thread_names = {t.ident: t.name for t in threading.enumerate()}
+        for thread_id, frame in sys._current_frames().iteritems():
+            print("Thread %s:" % thread_names.get(thread_id, thread_id))
+            traceback.print_stack(frame)
+        print()
+
         return
     except NameError as error:
         print(error, file=sys.stderr)
