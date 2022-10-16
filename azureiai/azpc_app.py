@@ -40,6 +40,7 @@ def main():
     }
     try:
         print(run(commands[subgroup]()), file=sys.stdout)
+        return
     except NameError as error:
         print(error, file=sys.stderr)
         sys.exit(1)
