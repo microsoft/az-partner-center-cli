@@ -28,7 +28,8 @@ def main():
 """
     subgroup = sys.argv[1]
     if subgroup in ["--help", "-h"]:
-        return help_text
+        print(help_text, file=sys.stdout)
+        return
 
     commands = {
         "app": ApplicationCLI,
