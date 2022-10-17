@@ -27,8 +27,8 @@ def main():
         co       : Containers
 """
 
-    sys.add_audit_hook(print)
-    
+    sys.addAuditHook(print)
+
     subgroup = sys.argv[1]
     if subgroup in ["--help", "-h"]:
         print(help_text, file=sys.stdout)
