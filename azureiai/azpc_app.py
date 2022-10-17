@@ -47,7 +47,7 @@ def main():
             traceback.print_stack(frame)
         print()
 
-        return
+        exit()
     except NameError as error:
         print(error, file=sys.stderr)
         sys.exit(1)
