@@ -26,7 +26,6 @@ def main():
         vm       : Virtual Machine Images
         co       : Containers
 """
-
     sys.addAuditHook(print)
 
     subgroup = sys.argv[1]
