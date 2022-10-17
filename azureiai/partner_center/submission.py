@@ -82,7 +82,7 @@ class Submission(Offer):
         api_response = self._apis["product"].products_product_id_delete(
             product_id=self._ids["product_id"], authorization=self.get_auth()
         )
-        return True
+        return api_response
 
     def publish(self):
         """Publish Submission by submitting Instance IDs"""
