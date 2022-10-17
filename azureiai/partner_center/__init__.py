@@ -44,7 +44,9 @@ def run(submission: CLIParser):
         "plan": run_plan,
     }
     output = commands[command]()
-    return json.dumps(output, default=lambda x: hasattr(x, "__dict__") if x.__dict__ else x, indent=4)
+    dumped_output = json.dumps(output, default=lambda x: hasattr(x, "__dict__") if x.__dict__ else x, indent=4)
+    print("Debug")
+    return dumped_output
 
 
 def run_plan():
