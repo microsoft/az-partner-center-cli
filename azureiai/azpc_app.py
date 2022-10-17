@@ -26,7 +26,7 @@ def main():
         vm       : Virtual Machine Images
         co       : Containers
 """
-    sys.addAuditHook(print)
+    sys.addaudithook(print)
 
     subgroup = sys.argv[1]
     if subgroup in ["--help", "-h"]:
