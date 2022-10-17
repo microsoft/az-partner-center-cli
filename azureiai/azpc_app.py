@@ -3,7 +3,7 @@
 #  ---------------------------------------------------------
 """CLI Wrapper for Creating, Updating, or Deleting Azure Managed Applications"""
 
-import sys, traceback, threading
+import sys, traceback, threading, os
 
 from azureiai.partner_center import run
 from azureiai.partner_center.offers.application import ApplicationCLI
@@ -47,7 +47,7 @@ def main():
             traceback.print_stack(frame)
         print()
 
-        return
+        os._exit()
     except NameError as error:
         print(error, file=sys.stderr)
         sys.exit(1)
