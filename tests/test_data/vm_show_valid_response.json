@@ -1,15 +1,15 @@
 {
     "value": [
         {
-            "resourceType": "AzureThirdPartyVirtualMachine",
+            "resource_type": "AzureThirdPartyVirtualMachine",
             "name": "test-vm",
-            "externalIDs": [
+            "external_i_ds": [
                 {
                     "type": "AzureOfferId",
                     "value": "test-vm"
                 }
             ],
-            "isModularPublishing": true,
+            "is_modular_publishing": true,
             "id": "abc123"
         }
     ]

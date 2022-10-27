@@ -70,7 +70,7 @@ class Submission(Offer):
         api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
         submissions = api_response.to_dict()
         for submission in submissions["value"]:
-            if submission["external_i_ds"][0]["value"] == self.name:
+            if submission["name"] == self.name:
                 self._ids["product_id"] = submission["id"]
                 return submission
         raise LookupError(f"{self.resource_type} with this name not found: {self.name}")

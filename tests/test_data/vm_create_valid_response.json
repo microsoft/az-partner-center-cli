@@ -8,7 +8,7 @@
     "version": 1252868275,
     "id": "test-vm",
     "definition": {
-        "displayText": "test-vm",
+        "displayText": "Contoso Virtual Machine Offer",
         "offer": {
             "microsoft-azure-marketplace.leadDestination": "None",
             "microsoft-azure-marketplace.blobLeadConfiguration": {},
