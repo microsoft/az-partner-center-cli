@@ -66,17 +66,6 @@ class VirtualMachine(Submission):
             self._raise_connection_error(response)
         return response.json()
 
-    def show(self):
-        """Show details of an Virtual Machine offer"""
-        filter_name = "ExternalIDs/Any(i:i/Type eq 'AzureOfferId' and i/Value eq '" + self.name + "')"
-        api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
-        submissions = api_response.to_dict()
-        for submission in submissions["value"]:
-            if submission["external_i_ds"][0]["value"] == self.name:
-                self._ids["product_id"] = submission["id"]
-                return submission
-        raise LookupError(f"{self.resource_type} with this name not found: {self.name}")
-
     def list_contents(self) -> dict:
         """list only the Virtual Machine offers"""
         with open(self.config_yaml, encoding="utf8") as file:

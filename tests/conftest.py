@@ -113,16 +113,11 @@ def ama_mock(ama_name, monkeypatch):
         response_json = namedtuple("response", ["value", "odata_etag", "id"])(
             *[
                 [
-                    {"name": "test_vm", "id": "abc-123", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
-                    {
-                        "name": "cicd-test",
-                        "id": "abc-123",
-                        "variant_id": "abcd1324",
-                        "current_draft_instance_id": "123",
-                    },
-                    {"name": "test_ma", "id": "abc-123", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
-                    {"name": "test_st", "id": "abc-123", "variant_id": "abcd1324", "current_draft_instance_id": "123"},
-                    {"name": "test_co", "id": "abc-123", "variant_id": "abcd1234", "current_draft_instance_id": "123"},
+                    {"resource_type": "AzureThirdPartyVirtualMachine", "name": "test_vm", "id": "abc-123", "external_i_ds": [ { "type": "AzureOfferId", "value": "test_vm" } ]},
+                    {"resource_type": "AzureApplication", "name": "cicd-test", "id": "abc-123", "external_i_ds": [ { "type": "AzureOfferId", "value": "cicd-test" } ]},
+                    {"resource_type": "AzureApplication", "name": "test_ma", "id": "abc-123", "external_i_ds": [ { "type": "AzureOfferId", "value": "test_ma" } ]},
+                    {"resource_type": "AzureApplication", "name": "test_st", "id": "abc-123", "external_i_ds": [ { "type": "AzureOfferId", "value": "test_st" } ]},
+                    {"resource_type": "AzureContainer", "name": "test_co", "id": "abc-123", "external_i_ds": [ { "type": "AzureOfferId", "value": "test_co" } ]},
                 ],
                 "",
                 "",
