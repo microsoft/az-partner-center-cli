@@ -462,7 +462,7 @@ def _assert_technical_configuration(offer, json_listing_config):
 
 
 def _assert_vm_show(offer, json_listing_config):
-    assert offer["name"] == json_listing_config["definition"]["displayText"]
+    assert offer["external_i_ds"][0]["value"] == json_listing_config["id"]
     assert offer["id"]
 
 

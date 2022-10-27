@@ -102,6 +102,7 @@ def test_vm_create_success_mock(config_yml, vm_config_json, monkeypatch, capsys)
 
 @pytest.mark.integration
 @pytest.mark.xfail(raises=NameError)
+@pytest.mark.xfail(raises=SystemExit)
 def test_vm_create_offer_exists_mock(config_yml, monkeypatch, vm_config_json, capsys):
     vm_config_json = "vm_config.json"
 
