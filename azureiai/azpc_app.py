@@ -13,6 +13,7 @@ from azureiai.partner_center.offers.solution_template import SolutionTemplateCLI
 from azureiai.partner_center.offers.virtual_machine import VirtualMachineCLI
 
 
+
 def main():
     """CLI Application"""
     help_text = """
