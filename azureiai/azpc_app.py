@@ -30,6 +30,8 @@ def main():
     if subgroup in ["--help", "-h"]:
         return help_text
 
+
+
     commands = {
         "app": ApplicationCLI,
         "ma": ManagedAppCLI,
