@@ -30,8 +30,6 @@ def main():
     if subgroup in ["--help", "-h"]:
         return help_text
 
-
-
     commands = {
         "app": ApplicationCLI,
         "ma": ManagedAppCLI,
@@ -44,7 +42,6 @@ def main():
     except NameError as error:
         print(error, file=sys.stderr)
         sys.exit(1)
-
 
 
 if __name__ == "__main__":
