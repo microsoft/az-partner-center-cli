@@ -13,4 +13,4 @@ wget~=3.2
 pygments
 pytest~=7.2.0
 typing~=3.7.4.3
-setuptools~=65.4.0
+setuptools~=66.1.0
