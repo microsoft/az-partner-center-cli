@@ -1,16 +1,35 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.222.0/containers/python-3-miniconda
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "Miniconda (Python 3)",
-	"build": { 
-		"context": "..",
-		"dockerfile": "Dockerfile",
-		"args": {
-			"NODE_VERSION": "none"
+	"name": "Ubuntu",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",  // Any generic, debian-based image.
+	"features": {
+		"ghcr.io/devcontainers/features/dotnet:1": {},
+		"ghcr.io/devcontainers/features/python:1": {},
+// 		"ghcr.io/devcontainers/features/java:1": {},
+		"ghcr.io/devcontainers/features/azure-cli:1": {}
+	},	
+	"postCreateCommand": "python -m pip install --user pytest pytest-azure",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"microsoft-dciborow.align-bicep",
+				"ms-azuretools.vscode-bicep",
+				"littlefoxteam.vscode-python-test-adapter",
+				"cschleiden.vscode-github-actions"
+// 				"ms-python.python",
+// 				"ms-python.vscode-pylance",
+// 				"ms-python.pylint",
+// 				"ms-python.black-formatter",
+// 				"ms-vsliveshare.vsliveshare",
+// 				"ryanluker.vscode-coverage-gutters",
+// 				"bungcip.better-toml"
+			]
 		}
 	},
-
-	// Set *default* container specific settings.json values on container create.
 	"settings": { 
 		"python.defaultInterpreterPath": "/opt/conda/bin/python",
 		"python.linting.enabled": true,
@@ -25,27 +44,4 @@
 		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
 		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint"
 	},
-
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"ms-python.python",
-		"ms-python.vscode-pylance",
-		"ms-python.pylint",
-		"ms-python.black-formatter",
-		"ms-vsliveshare.vsliveshare",
-		"ryanluker.vscode-coverage-gutters",
-		"bungcip.better-toml"
-	],
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "python --version",
-
-	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode",
-	"features": {
-		"azure-cli": "latest",
-		"java": "8"
-	}
 }
