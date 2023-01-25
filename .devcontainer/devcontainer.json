@@ -7,9 +7,11 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",  // Any generic, debian-based image.
 	"features": {
-		"ghcr.io/devcontainers/features/dotnet:1": {},
+		// "ghcr.io/devcontainers/features/dotnet:1": {},
 		"ghcr.io/devcontainers/features/python:1": {},
-// 		"ghcr.io/devcontainers/features/java:1": {},
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "8"
+		},
 		"ghcr.io/devcontainers/features/azure-cli:1": {}
 	},	
 	"postCreateCommand": "python -m pip install --user pytest pytest-azure",
@@ -17,7 +19,7 @@
 		"vscode": {
 			"extensions": [
 				"microsoft-dciborow.align-bicep",
-				"ms-azuretools.vscode-bicep",
+				// "ms-azuretools.vscode-bicep",
 				"littlefoxteam.vscode-python-test-adapter",
 				"cschleiden.vscode-github-actions"
 // 				"ms-python.python",
@@ -31,7 +33,6 @@
 		}
 	},
 	"settings": { 
-		"python.defaultInterpreterPath": "/opt/conda/bin/python",
 		"python.linting.enabled": true,
 		"python.linting.pylintEnabled": true,
 		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
