@@ -15,6 +15,8 @@ from azureiai.partner_center.offers.virtual_machine import VirtualMachineCLI
 def main():
     """CLI Application"""
     help_text = """
+    Automate publishing actions to the Azure Marketplace.
+
     Group:
         azpc : Manage Partner Center submissions.
 
