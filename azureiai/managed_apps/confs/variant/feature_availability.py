@@ -73,12 +73,7 @@ class FeatureAvailability(VariantPlanConfiguration):
                                 "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
                                 "priceCadence": {"type": "Month", "value": 1},
                                 "pricingModel": "Recurring",
-                            },
-                            {
-                                "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
-                                "priceCadence": {"type": "Month", "value": 1},
-                                "pricingModel": "Recurring",
-                            },
+                            }
                         ],
                     }
                 ],
