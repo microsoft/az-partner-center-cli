@@ -50,7 +50,7 @@ class FeatureAvailability(VariantPlanConfiguration):
         if self.subtype == "ma":
             market_states = self.get_markets()
             # Canada
-            market_states[22]["state"] = "Enabled"
+            market_states[24]["state"] = "Enabled"
             # United States
             market_states[130]["state"] = "Enabled"
 
