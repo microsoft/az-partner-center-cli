@@ -49,6 +49,9 @@ class FeatureAvailability(VariantPlanConfiguration):
 
         if self.subtype == "ma":
             market_states = self.get_markets()
+            # Canada
+            market_states[23]["state"] = "Enabled"
+            # United States
             market_states[130]["state"] = "Enabled"
 
             body = {
@@ -60,14 +63,22 @@ class FeatureAvailability(VariantPlanConfiguration):
                 "priceSchedules": [
                     {
                         "isBaseSchedule": False,
-                        "marketCodes": ["US"],
+                        "marketCodes": [
+                            "CA",
+                            "US",
+                        ],
                         "friendlyName": "free_priceOverrideSchedule_US",
                         "schedules": [
                             {
                                 "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
                                 "priceCadence": {"type": "Month", "value": 1},
                                 "pricingModel": "Recurring",
-                            }
+                            },
+                            {
+                                "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
+                                "priceCadence": {"type": "Month", "value": 1},
+                                "pricingModel": "Recurring",
+                            },
                         ],
                     }
                 ],
