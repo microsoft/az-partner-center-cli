@@ -28,7 +28,6 @@ def test_ama_create_mock(ama_mock):
 
 
 def test_create_plan_mock(ama_mock, plan_name):
-
     ama_mock._create_new_plan(plan_name)
     assert ama_mock._ids["plan_id"]
 
@@ -145,7 +144,6 @@ def test_ama_get_draft_instance_id_retry_mock(ama_mock, monkeypatch):
 
 
 def test_variant_plan_mock(monkeypatch):
-
     monkeypatch.setattr(BranchesApi, "products_product_id_branches_get_by_module_modulemodule_get", mock_branches_get)
 
     vp_config = VariantPlanConfiguration(product_id="test-id", plan_id="abc-123", authorization="test-auth")

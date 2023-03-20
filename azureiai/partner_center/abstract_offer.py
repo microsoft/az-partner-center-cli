@@ -67,7 +67,6 @@ class AbstractOffer:
                 token = credential.get_token("https://api.partner.microsoft.com").token
                 self._authorization = f"Bearer {token}"
             except (CredentialUnavailableError, ClientAuthenticationError):
-
                 with open(self.config_yaml, encoding="utf8") as file:
                     settings = yaml.safe_load(file)
 

@@ -336,7 +336,6 @@ class ManagedApplication(Offer):
         availability.set(azure_subscription=azure_subscription)
 
     def _create_plan(self, app, app_path, config_yml, json_config, plan_name):
-
         plan_config = self._load_plan_config(json_config)
         azure_subscription = plan_config["pricing_and_availability"]["azure_private_subscriptions"]
         self._create_new_plan(plan_name=plan_name)
@@ -363,7 +362,6 @@ class ManagedApplication(Offer):
         app_path,
         config_yml,
     ):
-
         plan_config = self._load_plan_config(json_config)
         version = plan_config["technical_configuration"]["version"]
 
