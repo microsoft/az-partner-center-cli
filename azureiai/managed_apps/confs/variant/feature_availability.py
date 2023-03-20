@@ -88,7 +88,7 @@ class FeatureAvailability(VariantPlanConfiguration):
                                 "pricingModel": "Recurring",
                             }
                         ],
-                    }
+                    },
                 ],
             }
         else:
