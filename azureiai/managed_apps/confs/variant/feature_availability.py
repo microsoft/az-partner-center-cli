@@ -63,7 +63,10 @@ class FeatureAvailability(VariantPlanConfiguration):
                 "priceSchedules": [
                     {
                         "isBaseSchedule": False,
-                        "marketCodes": ["CA", "US"],
+                        "marketCodes": [
+                            "CA",
+                            "US",
+                        ],
                         "friendlyName": "free_priceOverrideSchedule_US",
                         "schedules": [
                             {
