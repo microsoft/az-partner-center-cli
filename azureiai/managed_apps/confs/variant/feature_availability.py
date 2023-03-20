@@ -65,6 +65,19 @@ class FeatureAvailability(VariantPlanConfiguration):
                         "isBaseSchedule": False,
                         "marketCodes": [
                             "CA",
+                        ],
+                        "friendlyName": "free_priceOverrideSchedule_CA",
+                        "schedules": [
+                            {
+                                "retailPrice": {"openPrice": 0, "currencyCode": "USD"},
+                                "priceCadence": {"type": "Month", "value": 1},
+                                "pricingModel": "Recurring",
+                            }
+                        ],
+                    },
+                    {
+                        "isBaseSchedule": False,
+                        "marketCodes": [
                             "US",
                         ],
                         "friendlyName": "free_priceOverrideSchedule_US",
