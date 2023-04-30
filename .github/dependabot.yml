@@ -6,9 +6,8 @@ updates:
     interval: daily
     time: "13:00"
   open-pull-requests-limit: 10
-  assignees:
+  reviewers:
   - dciborow
-  - mattchansky
   commit-message:
     prefix: "fix: "
   allow:
