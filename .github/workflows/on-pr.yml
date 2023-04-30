@@ -7,10 +7,10 @@ on:
     branches: [ main ]
 
 jobs:
-  check-changed-code:
-    uses: ./.github/workflows/get-changed-module.yml
+#   check-changed-code:
+#     uses: ./.github/workflows/get-changed-module.yml
 
   pytest:
-    needs: [check-changed-code]
-    if: needs.check-changed-code.outputs.module_dir
+    # needs: [check-changed-code]
+    # if: needs.check-changed-code.outputs.module_dir
     uses: ./.github/workflows/pytest.yml
