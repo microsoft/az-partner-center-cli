@@ -58,7 +58,7 @@ jobs:
           pip install setuptools wheel twine
           python setup.py sdist bdist_wheel
 
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: "dciborow/action-automatic-releases-2@v1.0.0"
         if: steps.tag_version.outputs.release_type
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
