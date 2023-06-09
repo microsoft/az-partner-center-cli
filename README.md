@@ -174,9 +174,9 @@ pip install -e .
 This runs the following commands are part of the setup.py. You can also run these commands individually. 
 
 ```shell script
-wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.22/swagger-codegen-cli-3.0.22.jar -O swagger-codegen-cli.jar
-java -jar swagger-code-get-cli.jar generate -i Partner_Ingestion_SwaggerDocument.json -l python -o temp
-cp temp/swagger_client ./
+wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.46/swagger-codegen-cli-3.0.46.jar -O swagger-codegen-cli.jar
+java -jar swagger-codegen-cli.jar generate -i Partner_Ingestion_SwaggerDocument.json -l python -o temp
+cp -r temp/swagger_client ./
 ```
 
 # Python SDK Usage
@@ -244,7 +244,7 @@ ama = ManagedApplication(
 )
 ama.manifest_publish(
     manifest_yml=manifest_yml,
-    config_yml=config_yml
+    config_yml=config_yaml
 )
 ama.publish()
 ama.promote()

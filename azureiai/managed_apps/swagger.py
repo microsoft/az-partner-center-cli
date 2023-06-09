@@ -8,7 +8,7 @@ from posixpath import join as url_join
 import wget
 
 
-def download_swagger_jar(swagger_jar_path, swagger_version="3.0.22"):
+def download_swagger_jar(swagger_jar_path, swagger_version="3.0.46"):
     """
     Download Swagger Jar
 
