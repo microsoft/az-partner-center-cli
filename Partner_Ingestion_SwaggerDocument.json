@@ -6966,7 +6966,7 @@
               "name"               : {
                 "type": "string"
               },
-              "externalIds"        : {
+              "externalIDs"        : {
                 "type" : "array",
                 "items": {
                   "$ref": "#/components/schemas/Microsoft.Ingestion.Api.Models.Common.TypeValuePair"
@@ -7021,12 +7021,6 @@
                   "AzureDynamics365BusinessCentral"
                 ],
                 "type": "string"
-              },
-              "externalIDs"        : {
-                "type" : "array",
-                "items": {
-                  "$ref": "#/components/schemas/Microsoft.Ingestion.Api.Models.Common.TypeValuePair"
-                }
               }
             }
           }

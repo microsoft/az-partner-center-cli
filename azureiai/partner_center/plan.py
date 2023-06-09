@@ -118,9 +118,10 @@ class Plan(Submission):
         api_response = self._apis["product"].products_get(authorization=self.get_auth(), filter=filter_name)
         submissions = api_response.to_dict()
         for submission in submissions["value"]:
-            if submission["name"] == self.name:
-                self._ids["product_id"] = submission["id"]
-                return submission
+            for external_id in submission["external_ids"]:
+                if external_id["type"] == 'AzureOfferId' and external_id["value"] == self.name:
+                    self._ids["product_id"] = submission["id"]
+                    return submission
         raise LookupError(f"{self.resource_type} with this name not found: {self.name}")
 
     def _load_plan_config(self, plan_name=None):
